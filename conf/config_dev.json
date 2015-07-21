@@ -1,0 +1,19 @@
+{
+    "VERSION": "1.0.0",
+    "DB": {
+        "mysql": {
+            "host": "127.0.0.1",
+            "user": "root",
+            "pass": "",
+            "name": "crm"
+        }
+        ,
+        "mongo": {
+            "host": "127.0.0.1",
+            "user": "",
+            "pass": "",
+            "name": "gos"
+        }
+    },
+    "static_path": "crm.am"
+}

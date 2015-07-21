@@ -1,0 +1,12 @@
+{
+  "path": {
+    "demo-module": {
+      "dir": "demomodule"
+    }
+  },
+  "subdomain": {
+    "demomodule": {
+      "dir": "demosubdomain"
+    }
+  }
+}

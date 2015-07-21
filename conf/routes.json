@@ -1,0 +1,40 @@
+{
+    "general": [
+        {
+            "action": "loads.main.main"
+        }
+    ],
+    "sales": [
+        {
+            "action": "loads.main.main"
+        }
+    ],
+    "purchases": [
+        {
+            "action": "loads.main.main"
+        }
+    ],
+    "payments": [
+        {
+            "action": "loads.main.main"
+        }
+    ],
+    "billings": [
+        {
+            "action": "loads.main.main"
+        }
+    ],
+    "warehouse": [
+        {
+            "action": "loads.main.main"
+        }
+    ],
+    "products": [
+        {
+            "action": "loads.main.main"
+        }
+    ],
+    "default": {
+        "action": "loads.main.main"
+    }
+}

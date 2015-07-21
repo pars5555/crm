@@ -1,0 +1,62 @@
+[
+	{
+		"output_file": "ngs.js",
+		"compress": true,
+		"builders": [
+			{
+				"output_file": "im_libs.js",
+				"compress": false,
+				"files": ["lib/jquery.min.js", 
+									"lib/jquery-ui.min.js"]
+			},
+			{
+				"output_file": "ngs_framework.js",
+				"compress": false,
+				"files": ["framework/NGS.js", 
+									"framework/Dispatcher.class.js", 
+									"framework/AbstractLoad.class.js", 
+									"framework/AbstractAction.class.js",
+									"framework/AjaxLoader.class.js",
+									"framework/CustomEvent.js",
+									"framework/NGSEvent.js"]
+			},
+			{
+				"output_file": "ngs_global.js",
+				"compress": false,
+				"files": ["index.js", 
+									"conf/config.js"]
+			}
+		]
+	},
+	{
+		"output_file": "ngs_loads.js",
+		"compress": true,
+		"builders": [
+			{
+				"output_file": "ngs_loads_main.js",
+				"compress": false,
+				"files": [
+                    "loads/main/MainLoad.class.js",
+                    "loads/main/PaymentsLoad.class.js",
+                    "loads/main/PaymentsListLoad.class.js"
+                    ]
+			},
+			{
+				"output_file": "ngs_loads_widgets.js",
+				"compress": false,
+				"files": ["loads/widgets/ModifierGroupsLoad.class.js"]
+			}
+		]
+	},
+	{
+		"output_file": "ngs_actions.js",
+		"compress": true,
+		"builders": [
+			{
+				"output_file": "ngs_actions_main.js",
+				"compress": false,
+				"files": ["actions/main/TestAction.class.js"]
+			}
+		]
+	}
+]
