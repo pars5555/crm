@@ -19,23 +19,29 @@ namespace crm\actions\main {
     use NGS;
     use ngs\framework\exceptions\RedirectException;
 
-    class CreatePaymentAction extends BaseAction {
+    class CancelPaymentAction extends BaseAction {
 
         public function service() {
-            try {
-                list($partnerId, $paymentMethodId, $currencyId, $amount, $date) = $this->getFormData();
-            } catch (RedirectException $exc) {
-                $_SESSION['error_message'] = $exc->getMessage();
-                $_SESSION['action_request'] = $_REQUEST;
-                $this->redirect($exc->getRedirectTo());
+            if (isset(NGS()->args()->id)) {
+                $paymentId = NGS()->args()->id;
+            } else {
+                $_SESSION['error_message'] = 'Payment ID is missing';
+                $this->redirect('payments');
             }
-
             $paymentTransactionManager = PaymentTransactionManager::getInstance();
-            $paymentId = $paymentTransactionManager->createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date);
-
-            unset($_SESSION['action_request']);
-            $_SESSION['sucess_message'] = 'Payment Successfully created!';
-            $this->redirect('payments');
+            $paymentDto = $paymentTransactionManager->selectByPK($paymentId);
+            if (!isset($paymentDto)) {
+                $_SESSION['error_message'] = 'Payment with ID ' . NGS()->args()->id . ' does not exists.';
+                $this->redirect('payments');
+            }
+            if ($paymentDto->getCancelled() == 1) {
+                $_SESSION['error_message'] = 'Payment with ID ' . NGS()->args()->id . ' does not exists.';
+                $this->redirect('payments');
+            }
+            $note = NGS()->args()->note;
+            $paymentTransactionManager->cancelPayment($paymentId, $note);
+            $_SESSION['sucess_message'] = 'Payment Successfully cancelled!';
+            $this->redirect('payment/' . $paymentId);
         }
 
         private function getFormData() {

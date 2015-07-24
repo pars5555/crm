@@ -19,6 +19,15 @@
             "action": "loads.main.main"
         }
     ],
+    "payment": [
+        {
+            "action": "loads.main.main",
+            "route": "[:id]",
+			"constraints": {
+				"id": "[0-9]+"
+			}
+        }
+    ],
     "billings": [
         {
             "action": "loads.main.main"

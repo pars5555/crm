@@ -16,5 +16,8 @@
 	-o-transition: color 0.5s ease;
 	transition: color 0.5s ease;
 }
-
+.hide
+{
+    display: none;
+}
 

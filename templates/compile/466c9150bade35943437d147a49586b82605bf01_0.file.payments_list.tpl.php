@@ -1,7 +1,7 @@
-<?php /* Smarty version 3.1.23, created on 2015-07-21 11:11:18
+<?php /* Smarty version 3.1.23, created on 2015-07-23 13:14:27
          compiled from "D:/xampp/htdocs/crm/templates/main/payment/payments_list.tpl" */ ?>
 <?php
-/*%%SmartyHeaderCode:879355ae0cb62ee5d9_09507340%%*/
+/*%%SmartyHeaderCode:460955b0cc93caa9d4_59507083%%*/
 if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
@@ -9,11 +9,11 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '466c9150bade35943437d147a49586b82605bf01' => 
     array (
       0 => 'D:/xampp/htdocs/crm/templates/main/payment/payments_list.tpl',
-      1 => 1437469874,
+      1 => 1437650066,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '879355ae0cb62ee5d9_09507340',
+  'nocache_hash' => '460955b0cc93caa9d4_59507083',
   'variables' => 
   array (
     'ns' => 0,
@@ -21,14 +21,14 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   ),
   'has_nocache_code' => false,
   'version' => '3.1.23',
-  'unifunc' => 'content_55ae0cb634bed4_49481386',
+  'unifunc' => 'content_55b0cc93d07a09_79196787',
 ),false);
 /*/%%SmartyHeaderCode%%*/
-if ($_valid && !is_callable('content_55ae0cb634bed4_49481386')) {
-function content_55ae0cb634bed4_49481386 ($_smarty_tpl) {
+if ($_valid && !is_callable('content_55b0cc93d07a09_79196787')) {
+function content_55b0cc93d07a09_79196787 ($_smarty_tpl) {
 ?>
 <?php
-$_smarty_tpl->properties['nocache_hash'] = '879355ae0cb62ee5d9_09507340';
+$_smarty_tpl->properties['nocache_hash'] = '460955b0cc93caa9d4_59507083';
 ?>
 <div>
     <?php ob_start();?><?php echo $_smarty_tpl->smarty->registered_plugins[Smarty::PLUGIN_FUNCTION]['getTemplateDir'][0][0]->getSmartyTemplateDir(array(),$_smarty_tpl);?>
@@ -54,8 +54,10 @@ $_smarty_tpl->tpl_vars['payment']->_loop = true;
 $foreachItemSav = $_smarty_tpl->tpl_vars['payment'];
 ?>
         <div>
-            <span> <?php echo $_smarty_tpl->tpl_vars['payment']->value->getId();?>
- </span>
+            <a href="<?php echo SITE_PATH;?>
+/payment/<?php echo $_smarty_tpl->tpl_vars['payment']->value->getId();?>
+"><?php echo $_smarty_tpl->tpl_vars['payment']->value->getId();?>
+ </a>
             <span> <?php echo $_smarty_tpl->tpl_vars['payment']->value->getDate();?>
  </span>
             <span> <?php echo $_smarty_tpl->tpl_vars['payment']->value->getPartnerDto()->getName();?>

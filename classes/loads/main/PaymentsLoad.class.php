@@ -26,12 +26,13 @@ namespace crm\loads\main {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $this->addParam('req', isset($_SESSION['action_request']) ? $_SESSION['action_request'] : []);
+            $this->addParam('show_create_form', isset($_SESSION['action_request']));
+            unset($_SESSION['action_request']);
             $this->addParam('payment_methods', PaymentMethodManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
             $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
             $this->addParam('partners', PartnerManager::getInstance()->selectAdvance('*', [], ['name']));
             $this->addParam('defaultCurrencyId', SettingManager::getInstance()->getSetting('default_currency_id'));
             $this->addParam('defaultPaymentMethodId', SettingManager::getInstance()->getSetting('default_payment_method_id'));
-            $this->addParam('payments', PaymentTransactionManager::getInstance()->getPaymentsListFull());
         }
 
         public function getDefaultLoads() {

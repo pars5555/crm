@@ -9,7 +9,7 @@
     </div> 
     {foreach from=$ns.payments item=payment}
         <div>
-            <span> {$payment->getId()} </span>
+            <a href="{SITE_PATH}/payment/{$payment->getId()}">{$payment->getId()} </a>
             <span> {$payment->getDate()} </span>
             <span> {$payment->getPartnerDto()->getName()} </span>
             <span> {$payment->getPaymentMethodDto()->getName()} </span>

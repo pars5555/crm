@@ -35,12 +35,19 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function getPaymentsListFull($orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = 0, $limit = 10000) {
+        public function getPaymentsListFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = 0, $limit = 10000) {
             $order = $orderByFieldsArray;
-            if (is_array($orderByFieldsArray)) {
-                $order = '`' . implode('`, `', $orderByFieldsArray) . '` ' . $orderByAscDesc;
+            if (!in_array(strtoupper($orderByAscDesc), ['ASC', 'DESC'])) {
+                $orderByAscDesc = 'ASC';
             }
-            $rows = $this->mapper->selectAdvance('*', '', $order, $offset, $limit);
+
+            if (is_array($orderByFieldsArray)) {
+                $order = '`' . implode('`, `', $orderByFieldsArray) . '` ';
+            }
+            if (!empty($order)) {
+                $order .= ' ' . $orderByAscDesc;
+            }
+            $rows = $this->selectAdvance('*', $where, $order, $orderByAscDesc, $offset, $limit);
             $partnerIds = array();
             $paymentMethodIds = array();
             $currenciesIds = array();
@@ -49,7 +56,7 @@ namespace crm\managers {
                 $paymentMethodIds[] = $row->getPaymentMethodId();
                 $currenciesIds[] = $row->getCurrencyId();
             }
-            $partnerIds= array_unique($partnerIds);
+            $partnerIds = array_unique($partnerIds);
             $paymentMethodIds = array_unique($paymentMethodIds);
             $currenciesIds = array_unique($currenciesIds);
             $partnerDtos = PartnerManager::getInstance()->selectByPKs($partnerIds, true);
@@ -61,6 +68,17 @@ namespace crm\managers {
                 $row->setCurrencyDto($currencyDtos[$row->getCurrencyId()]);
             }
             return $rows;
+        }
+
+        public function cancelPayment($id, $note) {
+            $paymentDto = $this->selectByPK($id);
+            if (isset($paymentDto)) {
+                $paymentDto->setCancelled(1);
+                $paymentDto->setCancelNote($note);
+                $this->updateByPk($paymentDto);
+                return true;
+            }
+            return false;
         }
 
         public function createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date) {

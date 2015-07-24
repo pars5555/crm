@@ -6,5 +6,8 @@ NGS.createLoad("crm.loads.main.payments_list", {
 
     },
     afterLoad: function () {
+        $('#paymentFilters').find('input, select, checkbox').change(function () {
+            $('#paymentFilters').trigger('submit');
+        });
     }
 });

@@ -15,12 +15,13 @@
 
 namespace crm\loads {
 
-    use \crm\security\RequestGroups;
+use crm\managers\TranslationManager;
+use ngs\framework\AbstractLoad;
 
     /**
      * General parent for a ngs demo loads
      */
-    abstract class NgsLoad extends \ngs\framework\AbstractLoad {
+    abstract class NgsLoad extends AbstractLoad {
 
         /**
          * Initializes translations array for selected language.
@@ -34,6 +35,8 @@ namespace crm\loads {
         //! A constructor.
         public function initialize() {
             parent::initialize();
+            $lm = TranslationManager::getInstance();
+            $this->addParam("lm", $lm);
         }
 
         protected function initErrorMessages() {

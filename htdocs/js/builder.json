@@ -38,6 +38,7 @@
 				"files": [
                     "loads/main/MainLoad.class.js",
                     "loads/main/PaymentsLoad.class.js",
+                    "loads/main/PaymentLoad.class.js",
                     "loads/main/PaymentsListLoad.class.js"
                     ]
 			},

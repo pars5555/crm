@@ -17,6 +17,7 @@ namespace crm\managers {
     abstract class AdvancedAbstractManager extends AbstractManager {
 
         protected $mapper;
+        private $lastSelectAdvanceParams = null;
 
         function __construct($mapper) {
             $this->mapper = $mapper;
@@ -35,6 +36,9 @@ namespace crm\managers {
         }
 
         public function selectByPKs($pks, $mapByIds = False) {
+            if (empty($pks)) {
+                return [];
+            }
             $ret = $this->mapper->selectByPKs($pks);
             if ($mapByIds) {
                 $mappedRet = array();
@@ -70,7 +74,7 @@ namespace crm\managers {
             return $this->mapper->selectAll();
         }
 
-        public function selectAdvance($fieldsArray = '*', $filters = null, $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = 0, $limit = 10000) {
+        public function selectAdvance($fieldsArray = '*', $filters = null, $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             $where = $this->getWhereSubQueryByFilters($filters);
             $fields = $fieldsArray;
             if (is_array($fieldsArray)) {
@@ -80,7 +84,15 @@ namespace crm\managers {
             if (is_array($orderByFieldsArray)) {
                 $order = 'ORDER BY `' . implode('`, `', $orderByFieldsArray) . '` ' . $orderByAscDesc;
             }
-            return $this->mapper->selectAdvance($fields, $where, $order, $offset = 0, $limit = 10000);
+            $this->lastSelectAdvanceWhere = $where;
+            return $this->mapper->selectAdvance($fields, $where, $order, $offset, $limit);
+        }
+
+        public function getLastSelectAdvanceRowsCount() {
+            if (!isset($this->lastSelectAdvanceWhere)) {
+                return 0;
+            }
+            return intval($this->mapper->selectAdvanceCount($this->lastSelectAdvanceWhere));
         }
 
         private function getWhereSubQueryByFilters($filters) {

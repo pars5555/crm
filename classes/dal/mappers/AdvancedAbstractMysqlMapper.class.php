@@ -36,13 +36,18 @@ namespace crm\dal\mappers {
         }
 
         public function selectByPKs($pks) {
-            $sqlQuery = sprintf("SELECT * FROM `%s` WHERE `%s` in (%s) ", $this->getTableName(), $this->getPKFieldName(),implode(',', $pks));
+            $sqlQuery = sprintf("SELECT * FROM `%s` WHERE `%s` in (%s) ", $this->getTableName(), $this->getPKFieldName(), implode(',', $pks));
             return $this->fetchRows($sqlQuery);
+        }
+
+        public function selectAdvanceCount($where) {
+            $sqlQuery = sprintf("SELECT count(`id`) as `count` FROM `%s` %s ", $this->getTableName(), $where);
+            return $this->fetchField($sqlQuery, 'count');
         }
 
         public function selectAdvance($fields, $where, $order, $offset, $limit) {
             $sqlQuery = sprintf("SELECT %s FROM `%s` %s %s ", $fields, $this->getTableName(), $where, $order);
-            if ($limit > 0) {
+            if (isset($limit) && $limit > 0) {
                 $sqlQuery .= ' LIMIT ' . $offset . ', ' . $limit;
             }
             return $this->fetchRows($sqlQuery);
