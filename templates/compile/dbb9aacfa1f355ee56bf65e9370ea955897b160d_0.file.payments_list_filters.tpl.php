@@ -1,7 +1,7 @@
-<?php /* Smarty version 3.1.23, created on 2015-07-24 10:10:12
+<?php /* Smarty version 3.1.23, created on 2015-07-25 12:18:29
          compiled from "D:/xampp/htdocs/crm/templates/main/payment/payments_list_filters.tpl" */ ?>
 <?php
-/*%%SmartyHeaderCode:2847555b1f2e4274ae3_50643492%%*/
+/*%%SmartyHeaderCode:2527355b362757477b4_16375009%%*/
 if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
@@ -9,27 +9,29 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'dbb9aacfa1f355ee56bf65e9370ea955897b160d' => 
     array (
       0 => 'D:/xampp/htdocs/crm/templates/main/payment/payments_list_filters.tpl',
-      1 => 1437725410,
+      1 => 1437819463,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '2847555b1f2e4274ae3_50643492',
+  'nocache_hash' => '2527355b362757477b4_16375009',
   'variables' => 
   array (
     'ns' => 0,
     'p' => 0,
     'c' => 0,
+    'fieldName' => 0,
+    'fieldDisplayName' => 0,
   ),
   'has_nocache_code' => false,
   'version' => '3.1.23',
-  'unifunc' => 'content_55b1f2e42d3f33_09186803',
+  'unifunc' => 'content_55b362757bab53_73047110',
 ),false);
 /*/%%SmartyHeaderCode%%*/
-if ($_valid && !is_callable('content_55b1f2e42d3f33_09186803')) {
-function content_55b1f2e42d3f33_09186803 ($_smarty_tpl) {
+if ($_valid && !is_callable('content_55b362757bab53_73047110')) {
+function content_55b362757bab53_73047110 ($_smarty_tpl) {
 ?>
 <?php
-$_smarty_tpl->properties['nocache_hash'] = '2847555b1f2e4274ae3_50643492';
+$_smarty_tpl->properties['nocache_hash'] = '2527355b362757477b4_16375009';
 ?>
 <form id="paymentFilters" autocomplete="off" action="<?php echo SITE_PATH;?>
 /payments" method="GET">
@@ -88,6 +90,33 @@ $_smarty_tpl->tpl_vars['p']->first = $_smarty_tpl->tpl_vars['p']->iteration == 1
 " <?php if ($_smarty_tpl->tpl_vars['ns']->value['selectedFilterPage']==$_smarty_tpl->tpl_vars['p']->value) {?>selected<?php }?>><?php echo $_smarty_tpl->tpl_vars['p']->value;?>
 </option>
         <?php }} ?>
+    </select>
+    <label>Sort by </label>
+    <select name="srt">
+        <option value="0" <?php if ($_smarty_tpl->tpl_vars['ns']->value['selectedFilterSortBy']==0) {?>selected<?php }?>>None</option>
+        <?php
+$_from = $_smarty_tpl->tpl_vars['ns']->value['sortFields'];
+if (!is_array($_from) && !is_object($_from)) {
+settype($_from, 'array');
+}
+$_smarty_tpl->tpl_vars['fieldDisplayName'] = new Smarty_Variable;
+$_smarty_tpl->tpl_vars['fieldDisplayName']->_loop = false;
+$_smarty_tpl->tpl_vars['fieldName'] = new Smarty_Variable;
+foreach ($_from as $_smarty_tpl->tpl_vars['fieldName']->value => $_smarty_tpl->tpl_vars['fieldDisplayName']->value) {
+$_smarty_tpl->tpl_vars['fieldDisplayName']->_loop = true;
+$foreachItemSav = $_smarty_tpl->tpl_vars['fieldDisplayName'];
+?>
+            <option value="<?php echo $_smarty_tpl->tpl_vars['fieldName']->value;?>
+" <?php if ($_smarty_tpl->tpl_vars['ns']->value['selectedFilterSortBy']==$_smarty_tpl->tpl_vars['fieldName']->value) {?>selected<?php }?>><?php echo $_smarty_tpl->tpl_vars['fieldDisplayName']->value;?>
+</option>
+        <?php
+$_smarty_tpl->tpl_vars['fieldDisplayName'] = $foreachItemSav;
+}
+?>
+    </select>
+    <select name="ascdesc">
+        <option value="ASC" <?php if ($_smarty_tpl->tpl_vars['ns']->value['selectedFilterSortByAscDesc']=='ASC') {?>selected<?php }?>>ASC</option>
+        <option value="DESC" <?php if ($_smarty_tpl->tpl_vars['ns']->value['selectedFilterSortByAscDesc']=='DESC') {?>selected<?php }?>>DESC</option>
     </select>
 </form>
 <?php }

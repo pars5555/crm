@@ -12,24 +12,19 @@
 namespace crm\loads\main {
 
     use crm\loads\NgsLoad;
-    use crm\managers\CurrencyManager;
     use crm\managers\PartnerManager;
-    use crm\managers\PaymentTransactionManager;
     use crm\security\RequestGroups;
     use NGS;
 
-    class PaymentsListLoad extends NgsLoad {
+    class PartnersListLoad extends NgsLoad {
 
         public function load() {
-            $this->addParam('partners', PartnerManager::getInstance()->selectAdvance('*', [], ['name']));
-            $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
-
             $limit = 100;
-            list($where, $offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
-            $payments = PaymentTransactionManager::getInstance()->getPaymentsListFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
-            $this->addParam('payments', $payments);
-            $count = PaymentTransactionManager::getInstance()->getLastSelectAdvanceRowsCount();
-            if (count($payments) == 0 && $count > 0) {
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
+            $partners = PartnerManager::getInstance()->getPartnersListFull(null, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            $this->addParam('partners', $partners);
+            $count = PartnerManager::getInstance()->getLastSelectAdvanceRowsCount();
+            if (count($partners) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }
             $pagesCount = intval($count / $limit);
@@ -37,13 +32,7 @@ namespace crm\loads\main {
         }
 
         private function redirectIncludedParamsExeptPaging() {
-            $url = "payments?";
-            if (isset(NGS()->args()->prt)) {
-                $url .= "prt=" . NGS()->args()->prt . '&';
-            }
-            if (isset(NGS()->args()->cur)) {
-                $url .= "cur=" . NGS()->args()->cur . '&';
-            }
+            $url = "partners?";
             if (isset(NGS()->args()->srt)) {
                 $url .= "srt=" . NGS()->args()->srt . '&';
             }
@@ -54,31 +43,6 @@ namespace crm\loads\main {
         }
 
         private function initFilters($limit) {
-            $where = [];
-            //partner
-            $selectedFilterPartnerId = 0;
-            if (isset(NGS()->args()->prt)) {
-                $selectedFilterPartnerId = intval(NGS()->args()->prt);
-            }
-            $this->addParam('selectedFilterPartnerId', $selectedFilterPartnerId);
-            if ($selectedFilterPartnerId > 0) {
-                $where[] = 'partner_id';
-                $where[] = '=';
-                $where[] = $selectedFilterPartnerId;
-            }
-
-            //currency
-            $selectedFilterCurrencyId = 0;
-            if (isset(NGS()->args()->cur)) {
-                $selectedFilterCurrencyId = intval(NGS()->args()->cur);
-            }
-            $this->addParam('selectedFilterCurrencyId', $selectedFilterCurrencyId);
-            if ($selectedFilterCurrencyId > 0) {
-                $where[] = 'currency_id';
-                $where[] = '=';
-                $where[] = $selectedFilterCurrencyId;
-            }
-
             //pageing
             $selectedFilterPage = 1;
             if (isset(NGS()->args()->pg)) {
@@ -108,11 +72,11 @@ namespace crm\loads\main {
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$where, $offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc];
         }
 
         public function getTemplate() {
-            return NGS()->getTemplateDir() . "/main/payment/payments_list.tpl";
+            return NGS()->getTemplateDir() . "/main/partner/partners_list.tpl";
         }
 
         public function getRequestGroup() {
@@ -120,7 +84,7 @@ namespace crm\loads\main {
         }
 
         public function getSortByFields() {
-            return ['date' => 'Date', 'amount' => 'Amount'];
+            return ['name' => 'Name', 'email' => 'Email'];
         }
 
     }

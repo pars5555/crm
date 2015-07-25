@@ -35,6 +35,47 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function createPartner($name, $email, $address) {
+            $dto = $this->createDto();
+            $dto->setName($name);
+            $dto->setEmail($email);
+            $dto->setAddress($address);
+            $dto->setCreateDate(date('Y-m-d H:i:s'));
+            return $this->insertDto($dto);
+        }
+
+        public function getPartnersListFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = 0, $limit = 10000) {
+            $order = $orderByFieldsArray;
+            if (!in_array(strtoupper($orderByAscDesc), ['ASC', 'DESC'])) {
+                $orderByAscDesc = 'ASC';
+            }
+
+            if (is_array($orderByFieldsArray)) {
+                $order = '`' . implode('`, `', $orderByFieldsArray) . '` ';
+            }
+            $rows = $this->selectAdvance('*', $where, $order, $orderByAscDesc, $offset, $limit);
+            /* $partnerIds = array();
+              $paymentMethodIds = array();
+              $currenciesIds = array();
+              foreach ($rows as $row) {
+              $partnerIds[] = $row->getPartnerId();
+              $paymentMethodIds[] = $row->getPaymentMethodId();
+              $currenciesIds[] = $row->getCurrencyId();
+              }
+              $partnerIds = array_unique($partnerIds);
+              $paymentMethodIds = array_unique($paymentMethodIds);
+              $currenciesIds = array_unique($currenciesIds);
+              $partnerDtos = PartnerManager::getInstance()->selectByPKs($partnerIds, true);
+              $paymentMethodDtos = PaymentMethodManager::getInstance()->selectByPKs($paymentMethodIds, true);
+              $currencyDtos = CurrencyManager::getInstance()->selectByPKs($currenciesIds, true);
+              foreach ($rows as $row) {
+              $row->setPartnerDto($partnerDtos[$row->getPartnerId()]);
+              $row->setPaymentMethodDto($paymentMethodDtos[$row->getPaymentMethodId()]);
+              $row->setCurrencyDto($currencyDtos[$row->getCurrencyId()]);
+              } */
+            return $rows;
+        }
+
     }
 
 }

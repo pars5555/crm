@@ -28,6 +28,20 @@
 			}
         }
     ],
+    "partners": [
+        {
+            "action": "loads.main.main"
+        }
+    ],
+    "partner": [
+        {
+            "action": "loads.main.main",
+            "route": "[:id]",
+			"constraints": {
+				"id": "[0-9]+"
+			}
+        }
+    ],
     "billings": [
         {
             "action": "loads.main.main"

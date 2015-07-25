@@ -75,14 +75,19 @@ namespace crm\managers {
         }
 
         public function selectAdvance($fieldsArray = '*', $filters = null, $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
+
             $where = $this->getWhereSubQueryByFilters($filters);
             $fields = $fieldsArray;
             if (is_array($fieldsArray)) {
                 $fields = '`' . implode('`, `', $fieldsArray) . '`';
             }
-            $order = $orderByFieldsArray;
-            if (is_array($orderByFieldsArray)) {
-                $order = 'ORDER BY `' . implode('`, `', $orderByFieldsArray) . '` ' . $orderByAscDesc;
+            $order = "";
+            if (!empty($orderByFieldsArray)) {
+                $order = $orderByFieldsArray;
+                if (is_array($orderByFieldsArray)) {
+                    $order = implode('`, `', $orderByFieldsArray);
+                }
+                $order = 'ORDER BY `' . $order .'` '. $orderByAscDesc;
             }
             $this->lastSelectAdvanceWhere = $where;
             return $this->mapper->selectAdvance($fields, $where, $order, $offset, $limit);

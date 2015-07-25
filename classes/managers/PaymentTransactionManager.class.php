@@ -44,9 +44,6 @@ namespace crm\managers {
             if (is_array($orderByFieldsArray)) {
                 $order = '`' . implode('`, `', $orderByFieldsArray) . '` ';
             }
-            if (!empty($order)) {
-                $order .= ' ' . $orderByAscDesc;
-            }
             $rows = $this->selectAdvance('*', $where, $order, $orderByAscDesc, $offset, $limit);
             $partnerIds = array();
             $paymentMethodIds = array();

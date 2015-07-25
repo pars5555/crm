@@ -34,7 +34,7 @@ namespace crm\actions\main {
             $paymentId = $paymentTransactionManager->createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date);
 
             unset($_SESSION['action_request']);
-            $_SESSION['sucess_message'] = 'Payment Successfully created!';
+            $_SESSION['success_message'] = 'Payment Successfully created!';
             $this->redirect('payments');
         }
 

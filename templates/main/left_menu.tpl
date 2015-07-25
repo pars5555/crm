@@ -1,6 +1,7 @@
 <div>
     <ul>
         <li><a href="{SITE_PATH}/general">General</a></li>
+        <li><a href="{SITE_PATH}/partners">Partners</a></li>
         <li><a href="{SITE_PATH}/sales">Sale Orders</a></li>
         <li><a href="{SITE_PATH}/purchases">Purchase Orders</a></li>
         <li><a href="{SITE_PATH}/payments">Payment Order</a></li>
