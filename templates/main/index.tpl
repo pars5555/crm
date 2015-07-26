@@ -17,7 +17,7 @@
             </header>
         </section>
         <section class="content">
-            {nest ns=nested_load}
+            {nest ns=content}
         </section>
         <footer>
             footer

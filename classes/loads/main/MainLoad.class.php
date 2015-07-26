@@ -19,20 +19,8 @@ namespace crm\loads\main {
             
         }
 
-        public function getDefaultLoads() {
-            $package = NGS()->getRoutesEngine()->getPackage();
-            if (empty($package) || $package == 'default')
-            {
-                $package = 'general';
-            }
-            $loads = array();
-            $loads["nested_load"]["action"] = "crm.loads.main.".$package;
-            $loads["nested_load"]["args"] = array();
-            return $loads;
-        }
-
         public function getTemplate() {
-           return NGS()->getTemplateDir()."/main/index.tpl";
+            return NGS()->getTemplateDir() . "/main/index.tpl";
         }
 
         public function getRequestGroup() {

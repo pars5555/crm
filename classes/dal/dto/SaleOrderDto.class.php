@@ -26,7 +26,8 @@ namespace crm\dal\dto {
         }
 
         // Map of DB value to Field value
-        private $mapArray = array("id" => "id", "order_date" => "orderDate", "partner_id" => "partnerId", "payment_method_id" => "paymentMethodId", "note" => "note");
+        private $mapArray = array("id" => "id", "order_date" => "orderDate", "partner_id" => "partnerId", "note" => "note",
+            "cancelled"=>"cancelled", "cancel_note"=>"cancelNote");
 
         // returns map array
         public function getMapArray() {

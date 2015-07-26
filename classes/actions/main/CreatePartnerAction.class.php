@@ -32,7 +32,7 @@ use ngs\framework\exceptions\RedirectException;
             $partnerId = PartnerManager::getInstance()->createPartner($name, $email, $address);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Partner Successfully created!';
-            $this->redirect('partners');
+            $this->redirect('partner/'.$partnerId);
         }
 
         private function getFormData() {
@@ -48,15 +48,15 @@ use ngs\framework\exceptions\RedirectException;
 
         private function validateFormData() {
             if (empty(NGS()->args()->name)) {
-                throw new RedirectException('partners', "Partner Name can not be empty.");
+                throw new RedirectException('partner/create', "Partner Name can not be empty.");
             }
             if (!filter_var(NGS()->args()->email, FILTER_VALIDATE_EMAIL)) {
-                throw new RedirectException('partners', "Invalid email address.");
+                throw new RedirectException('partner/create', "Invalid email address.");
             }
             $email = NGS()->args()->email;
             $partnerDtos = PartnerManager::getInstance()->selectByField('email', $email);
             if (!empty($partnerDtos)) {
-                throw new RedirectException('partners', "Partner already exists with given email address");
+                throw new RedirectException('partner/create', "Partner already exists with given email address");
             }
         }
 

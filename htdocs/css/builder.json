@@ -6,7 +6,7 @@
 			{
 				"output_file": "main.css",
 				"compress": false,
-				"files": ["style.css"]
+				"files": ["style.css", "jquery-ui.css"]
 			}
 		]
 	}

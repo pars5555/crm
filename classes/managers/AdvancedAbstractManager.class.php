@@ -39,15 +39,27 @@ namespace crm\managers {
             if (empty($pks)) {
                 return [];
             }
-            $ret = $this->mapper->selectByPKs($pks);
+            $dtos = $this->mapper->selectByPKs($pks);
             if ($mapByIds) {
-                $mappedRet = array();
-                foreach ($ret as $r) {
-                    $mappedRet[$r->getId()] = $r;
-                }
-                return $mappedRet;
+                return $this->mapDtosById($dtos);
             }
-            return $ret;
+            return $dtos;
+        }
+
+        public function mapDtosById($dtos) {
+            $mappedDtos = array();
+            foreach ($dtos as $dto) {
+                $mappedDtos[$dto->getId()] = $dto;
+            }
+            return $mappedDtos;
+        }
+
+        public function getDtosIdsArray($dtos) {
+            $idsArray = array();
+            foreach ($dtos as $dto) {
+                $idsArray[] = $dto->getId();
+            }
+            return $idsArray;
         }
 
         public function createDto() {
@@ -82,12 +94,16 @@ namespace crm\managers {
                 $fields = '`' . implode('`, `', $fieldsArray) . '`';
             }
             $order = "";
+            if (!in_array(strtoupper($orderByAscDesc), ['ASC', 'DESC'])) {
+                $orderByAscDesc = 'ASC';
+            }
+
             if (!empty($orderByFieldsArray)) {
                 $order = $orderByFieldsArray;
                 if (is_array($orderByFieldsArray)) {
                     $order = implode('`, `', $orderByFieldsArray);
                 }
-                $order = 'ORDER BY `' . $order .'` '. $orderByAscDesc;
+                $order = 'ORDER BY `' . $order . '` ' . $orderByAscDesc;
             }
             $this->lastSelectAdvanceWhere = $where;
             return $this->mapper->selectAdvance($fields, $where, $order, $offset, $limit);

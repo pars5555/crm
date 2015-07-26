@@ -1,47 +1,151 @@
 {
     "general": [
         {
-            "action": "loads.main.main"
+            "action": "loads.main.main",
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.general"
+                }
+            }
         }
     ],
-    "sales": [
+    "sale": [
         {
-            "action": "loads.main.main"
-        }
-    ],
-    "purchases": [
+            "action": "loads.main.main",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.sale.list"
+                }
+            }
+        },
         {
-            "action": "loads.main.main"
-        }
-    ],
-    "payments": [
+            "action": "loads.main.main",
+            "route": "create",
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.sale.create"
+                }
+            }
+
+        },       
         {
-            "action": "loads.main.main"
+            "action": "loads.main.main",
+            "route": "[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.sale.open"
+                }
+            }
         }
+
     ],
     "payment": [
         {
             "action": "loads.main.main",
-            "route": "[:id]",
-			"constraints": {
-				"id": "[0-9]+"
-			}
-        }
-    ],
-    "partners": [
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.payment.list"
+                }
+            }
+        },
         {
-            "action": "loads.main.main"
+            "action": "loads.main.main",
+            "route": "create",
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.payment.create"
+                }
+            }
+
+        },       
+        {
+            "action": "loads.main.main",
+            "route": "[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.payment.open"
+                }
+            }
         }
+
+    ],
+    "product": [
+        {
+            "action": "loads.main.main",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.product.list"
+                }
+            }
+        },
+        {
+            "action": "loads.main.main",
+            "route": "create",
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.product.create"
+                }
+            }
+
+        },       
+        {
+            "action": "loads.main.main",
+            "route": "[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.product.open"
+                }
+            }
+        }
+
     ],
     "partner": [
         {
             "action": "loads.main.main",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.partner.list"
+                }
+            }
+        },
+        {
+            "action": "loads.main.main",
+            "route": "create",
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.partner.create"
+                }
+            }
+
+        },       
+        {
+            "action": "loads.main.main",
             "route": "[:id]",
-			"constraints": {
-				"id": "[0-9]+"
-			}
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.partner.open"
+                }
+            }
         }
+
     ],
+    
     "billings": [
         {
             "action": "loads.main.main"
@@ -52,11 +156,7 @@
             "action": "loads.main.main"
         }
     ],
-    "products": [
-        {
-            "action": "loads.main.main"
-        }
-    ],
+    
     "default": {
         "action": "loads.main.main"
     }

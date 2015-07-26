@@ -276,7 +276,7 @@ namespace ngs\framework\routes {
 					return false;
 				}
 				preg_match_all("/([^\/\?]+)/", $newUri, $matches);
-				return $matches[1];
+                                return $matches[1];
 			}
 			preg_match_all("/\[([0-9A-Za-z\:\/]+)\]|([0-9A-Za-z])+/", $routeArr["route"], $matches, PREG_SET_ORDER);
 			$urlMatchArgs = array();

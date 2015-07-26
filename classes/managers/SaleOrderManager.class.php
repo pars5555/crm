@@ -34,7 +34,77 @@ namespace crm\managers {
             }
             return self::$instance;
         }
-     
+
+        public function cancelSaleOrder($id, $note) {
+            $saleOrderDto = $this->selectByPK($id);
+            if (isset($saleOrderDto)) {
+                $saleOrderDto->setCancelled(1);
+                $saleOrderDto->setCancelNote($note);
+                $this->updateByPk($saleOrderDto);
+                return true;
+            }
+            return false;
+        }
+
+        public function createSaleOrder($partnerId, $date, $note) {
+            $dto = $this->createDto();
+            $dto->setPartnerId($partnerId);
+            $dto->setOrderDate($date);
+            $dto->setNote($note);
+            return $this->insertDto($dto);
+        }
+
+        public function getPartnersSaleOrders($partnerIds) {
+            $rows = $this->getSaleOrdersFull(['partner_id', 'in', '(' . implode(',', $partnerIds) . ')']);
+            $ret = array();
+            foreach ($partnerIds as $partnerId) {
+                $ret[$partnerId] = [];
+            }
+            foreach ($rows as $row) {
+                $ret [intval($row->getPartnerId())][] = $row;
+            }
+            return $ret;
+        }
+
+        public function getSaleOrdersFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = 0, $limit = 10000) {
+            $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
+            $partnerIds = array();
+            $saleOrderIds = array();
+            foreach ($rows as $row) {
+                $partnerIds[] = intval($row->getPartnerId());
+                $saleOrderIds[] = intval($row->getId());
+            }
+            $partnerIds = array_unique($partnerIds);
+            $saleOrderIds = array_unique($saleOrderIds);
+            $partnerDtos = PartnerManager::getInstance()->selectByPKs($partnerIds, true);
+            $saleOrderLinesDtos = [];
+            if (!empty($saleOrderIds)) {
+                $saleOrderLinesDtos = SaleOrderLineManager::getInstance()->getSaleOrderLinesFull(['sale_order_id', 'in', '(' . implode(',', $saleOrderIds) . ')']);
+            }
+
+            if (!empty($saleOrderIds)) {
+                $saleOrderLinesDtosMappedBySaleOrderId = $this->mapSaleOrderLinesBySaleOrderId($saleOrderLinesDtos);
+                foreach ($saleOrderIds as $saleOrderId) {
+                    if (!array_key_exists($saleOrderId, $saleOrderLinesDtosMappedBySaleOrderId)) {
+                        $saleOrderLinesDtosMappedBySaleOrderId[$saleOrderId] = [];
+                    }
+                }
+            }
+            foreach ($rows as $row) {
+                $row->setPartnerDto($partnerDtos[$row->getPartnerId()]);
+                $row->setSaleOrderLinesDtos($saleOrderLinesDtosMappedBySaleOrderId[intval($row->getId())]);
+            }
+            return $rows;
+        }
+
+        private function mapSaleOrderLinesBySaleOrderId($saleOrderLinesDtos) {
+            $ret = [];
+            foreach ($saleOrderLinesDtos as $saleOrderLinesDto) {
+                $soId = $saleOrderLinesDto->getSaleOrderId();
+                $ret[$soId][] = $saleOrderLinesDto;
+            }
+            return $ret;
+        }
 
     }
 

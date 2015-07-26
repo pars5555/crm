@@ -21,7 +21,7 @@ namespace crm\dal\mappers {
     class PurchaseOrderLineMapper extends AdvancedAbstractMysqlMapper {
 
         private static $instance;
-        public $tableName = "purchase_order_line";
+        public $tableName = "purchase_order_lines";
 
         public static function getInstance() {
             if (self::$instance == null) {

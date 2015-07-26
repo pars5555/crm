@@ -62,7 +62,7 @@ namespace ngs\framework\util {
 			foreach ($files["files"] as $inputFile) {
 				$filePath = (NGS()->getModuleName()."/js/".$inputFile);
 				$realFilePath = realpath($this->jsPublicDir."/js/".$inputFile);
-				if (!$realFilePath) {
+				if (!$realFilePath) {                                    var_dump(111);exit;
 					throw new NotFoundException( array("type" => "json", "msg" => $filePath." not found"));
 				}
 				$buf .= file_get_contents($realFilePath).";\n\r";

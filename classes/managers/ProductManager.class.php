@@ -35,6 +35,34 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function createProduct($name, $model, $manufacturerId, $uomId) {
+            $dto = $this->createDto();
+            $dto ->setName($name);
+            $dto ->setModel($model);
+            $dto ->setManufacturerId($manufacturerId);
+            $dto ->setUomId($uomId);
+            return $this->insertDto($dto);
+        }
+
+        public function getProductListFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = 0, $limit = 10000) {
+            $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
+            $manufacturerIds = array();
+            $uomIds = array();
+            foreach ($rows as $row) {
+                $manufacturerIds[] = $row->getManufacturerId();
+                $uomIds[] = $row->getUomId();
+            }
+            $manufacturerIds = array_unique($manufacturerIds);
+            $uomIds = array_unique($uomIds);
+            $manufacturerDtos = ManufacturerManager::getInstance()->selectByPKs($manufacturerIds, true);
+            $uomDtos = UomManager::getInstance()->selectByPKs($uomIds, true);
+            foreach ($rows as $row) {
+                $row->setUomDto($uomDtos[$row->getUomId()]);
+                $row->setManufacturerDto($manufacturerDtos[$row->getManufacturerId()]);
+            }
+            return $rows;
+        }
+
     }
 
 }

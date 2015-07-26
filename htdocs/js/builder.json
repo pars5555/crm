@@ -6,8 +6,10 @@
             {
                 "output_file": "im_libs.js",
                 "compress": false,
-                "files": ["lib/jquery.min.js",
-                    "lib/jquery-ui.min.js"]
+                "files": [
+                    "lib/jquery.js",
+                    "lib/jquery-ui.js"
+                    ]
             },
             {
                 "output_file": "ngs_framework.js",
@@ -37,12 +39,18 @@
                 "compress": false,
                 "files": [
                     "loads/main/MainLoad.class.js",
-                    "loads/main/payment/PaymentsLoad.class.js",
-                    "loads/main/payment/PaymentLoad.class.js",
-                    "loads/main/payment/PaymentsListLoad.class.js",
-                    "loads/main/partner/PartnersLoad.class.js",
-                    "loads/main/partner/PartnerLoad.class.js",
-                    "loads/main/partner/PartnersListLoad.class.js"
+                    "loads/main/payment/OpenLoad.class.js",
+                    "loads/main/payment/ListLoad.class.js",
+                    "loads/main/payment/CreateLoad.class.js",
+                    "loads/main/partner/OpenLoad.class.js",
+                    "loads/main/partner/ListLoad.class.js",
+                    "loads/main/partner/CreateLoad.class.js",
+                    "loads/main/product/OpenLoad.class.js",
+                    "loads/main/product/ListLoad.class.js",
+                    "loads/main/product/CreateLoad.class.js",
+                    "loads/main/sale/OpenLoad.class.js",
+                    "loads/main/sale/ListLoad.class.js",
+                    "loads/main/sale/CreateLoad.class.js"
                 ]
             },
             {
@@ -59,7 +67,8 @@
             {
                 "output_file": "ngs_actions_main.js",
                 "compress": false,
-                "files": ["actions/main/TestAction.class.js"]
+                "files": [
+                    ]
             }
         ]
     }

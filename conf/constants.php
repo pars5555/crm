@@ -16,6 +16,7 @@
 | DEFINNING VARIABLES IF SCRIPT RUNNING FROM COMMAND LINE
 |--------------------------------------------------------------------------
 */
+date_default_timezone_set("Asia/Yerevan");
 if(php_sapi_name() == "cli"){
 	$args = substr($argv[1], strpos($argv[1], "?")+1);
 	$uri = substr($argv[1], 0, strpos($argv[1], "?"));

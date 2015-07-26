@@ -26,71 +26,22 @@ namespace crm\actions\main {
                 $paymentId = NGS()->args()->id;
             } else {
                 $_SESSION['error_message'] = 'Payment ID is missing';
-                $this->redirect('payments');
+                $this->redirect('payment/list');
             }
             $paymentTransactionManager = PaymentTransactionManager::getInstance();
             $paymentDto = $paymentTransactionManager->selectByPK($paymentId);
             if (!isset($paymentDto)) {
                 $_SESSION['error_message'] = 'Payment with ID ' . NGS()->args()->id . ' does not exists.';
-                $this->redirect('payments');
+                $this->redirect('payment/list');
             }
             if ($paymentDto->getCancelled() == 1) {
-                $_SESSION['error_message'] = 'Payment with ID ' . NGS()->args()->id . ' does not exists.';
-                $this->redirect('payments');
+                $_SESSION['error_message'] = 'Payment with ID ' . NGS()->args()->id . ' is already cancelled.';
+                $this->redirect('payment/list');
             }
             $note = NGS()->args()->note;
             $paymentTransactionManager->cancelPayment($paymentId, $note);
             $_SESSION['success_message'] = 'Payment Successfully cancelled!';
             $this->redirect('payment/' . $paymentId);
-        }
-
-        private function getFormData() {
-            $this->validateFormData();
-            $note = "";
-            if (isset(NGS()->args()->note)) {
-                $note = NGS()->args()->note;
-            }
-            $year = intval(NGS()->args()->paymentDateYear);
-            $month = intval(NGS()->args()->paymentDateMonth);
-            $day = intval(NGS()->args()->paymentDateDay);
-            $hour = intval(NGS()->args()->paymentTimeHouse);
-            $minute = intval(NGS()->args()->paymentTimeMinute);
-            $partnerId = intval(NGS()->args()->partnerId);
-            $paymentMethodId = intval(NGS()->args()->paymentMethodId);
-            $currencyId = intval(NGS()->args()->currencyId);
-            $amount = floatval(NGS()->args()->amount);
-            $date = "$year-$month-$day $hour:$minute";
-            return array($partnerId, $paymentMethodId, $currencyId, $amount, $date);
-        }
-
-        private function validateFormData() {
-            if (empty(NGS()->args()->paymentDateYear)) {
-                throw new RedirectException('payments', "Invalid Date.");
-            }
-            if (empty(NGS()->args()->paymentDateMonth)) {
-                throw new RedirectException('payments', "Invalid Date.");
-            }
-            if (empty(NGS()->args()->paymentDateDay)) {
-                throw new RedirectException('payments', "Invalid Date.");
-            }
-            if (empty(NGS()->args()->paymentTimeHour)) {
-                throw new RedirectException('payments', "Invalid Time.");
-            }
-            if (empty(NGS()->args()->paymentTimeMinute)) {
-                throw new RedirectException('payments', "Invalid Time.");
-            }
-            if (!isset(NGS()->args()->partnerId) || !is_numeric(NGS()->args()->partnerId) || NGS()->args()->partnerId <= 0) {
-                throw new RedirectException('payments', "Invalid Partner.");
-            }
-            if (!isset(NGS()->args()->paymentMethodId) || !is_numeric(NGS()->args()->paymentMethodId) || NGS()->args()->paymentMethodId <= 0) {
-                throw new RedirectException('payments', "Invalid Payment Method.");
-            }
-            if (!isset(NGS()->args()->currencyId) || !is_numeric(NGS()->args()->currencyId) || NGS()->args()->currencyId <= 0) {
-                throw new RedirectException('payments', "Invalid Currency.");
-            }
-            if (!isset(NGS()->args()->amount) || !is_numeric(NGS()->args()->amount)) {
-                throw new RedirectException('payments', "Invalid Amount.");
-            }
         }
 
     }

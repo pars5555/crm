@@ -35,16 +35,8 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function getPaymentsListFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = 0, $limit = 10000) {
-            $order = $orderByFieldsArray;
-            if (!in_array(strtoupper($orderByAscDesc), ['ASC', 'DESC'])) {
-                $orderByAscDesc = 'ASC';
-            }
-
-            if (is_array($orderByFieldsArray)) {
-                $order = '`' . implode('`, `', $orderByFieldsArray) . '` ';
-            }
-            $rows = $this->selectAdvance('*', $where, $order, $orderByAscDesc, $offset, $limit);
+        public function getPaymentListFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = 0, $limit = 10000) {
+            $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
             $partnerIds = array();
             $paymentMethodIds = array();
             $currenciesIds = array();
@@ -78,7 +70,7 @@ namespace crm\managers {
             return false;
         }
 
-        public function createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date) {
+        public function createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date, $note) {
             $partnerManager = PartnerManager::getInstance();
             $partner = $partnerManager->selectByPK($partnerId);
             if (empty($partner)) {
@@ -95,7 +87,20 @@ namespace crm\managers {
             $dto->setCurrencyId($currencyId);
             $dto->setAmount($amount);
             $dto->setDate($date);
+            $dto->setNote($note);
             return $this->insertDto($dto);
+        }
+
+        public function getPartnersTransactions($partnerIds) {
+            $rows = $this->selectAdvance('*', ['partner_id', 'in', '('.implode(',', $partnerIds).')']);
+            $ret = array();
+            foreach ($partnerIds as $partnerId) {
+                $ret[$partnerId] = [];
+            }
+            foreach ($rows as $row) {
+                $ret [intval($row->getPartnerId())][] = $row;
+            }
+            return $ret;
         }
 
     }
