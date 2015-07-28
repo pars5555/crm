@@ -30,6 +30,9 @@
                 None
             {/if}
         </div>
+        <div>
+            Quantity in warehouse: {$ns.productQuantity}
+        </div>
 
     {/if}
 </div>

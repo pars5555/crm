@@ -34,8 +34,8 @@ namespace crm\managers {
             }
             return self::$instance;
         }
-        
-        public function getPurchaseOrderLinesFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = 0, $limit = 10000) {
+
+        public function getPurchaseOrderLinesFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
             $productIds = array();
             $currencyIds = array();
@@ -54,6 +54,13 @@ namespace crm\managers {
             return $rows;
         }
 
+        public function getProductCountInNonCancelledPurchaseOrders($productId) {
+            return $this->mapper->getProductCountInNonCancelledPurchaseOrders($productId);
+        }
+
+        public function getAllProductCountInNonCancelledPurchaseOrders() {
+            return $this->mapper->getAllProductCountInNonCancelledPurchaseOrders();
+        }
 
     }
 

@@ -66,7 +66,7 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function getSaleOrdersFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = 0, $limit = 10000) {
+        public function getSaleOrdersFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
             $partnerIds = array();
             $saleOrderIds = array();
@@ -80,19 +80,38 @@ namespace crm\managers {
             $saleOrderLinesDtos = [];
             if (!empty($saleOrderIds)) {
                 $saleOrderLinesDtos = SaleOrderLineManager::getInstance()->getSaleOrderLinesFull(['sale_order_id', 'in', '(' . implode(',', $saleOrderIds) . ')']);
-            }
+                $amount = [];
+                foreach ($saleOrderLinesDtos as $saleOrderLine) {
+                    $saleOrderId = intval($saleOrderLine->getSaleOrderId());
+                    $currencyId = intval($saleOrderLine->getCurrencyId());
+                    $unitPrice = floatval($saleOrderLine->getUnitPrice());
+                    $quantity = floatval($saleOrderLine->getQuantity());
+                    if (!array_key_exists($saleOrderId, $amount)) {
+                        $amount[$saleOrderId] = [];
+                    }
+                    if (!array_key_exists($currencyId, $amount[$saleOrderId])) {
+                        $amount[$saleOrderId][$currencyId] = 0;
+                    }
 
+                    $amount[$saleOrderId][$currencyId] += $unitPrice * $quantity;
+                }
+            }
             if (!empty($saleOrderIds)) {
                 $saleOrderLinesDtosMappedBySaleOrderId = $this->mapSaleOrderLinesBySaleOrderId($saleOrderLinesDtos);
                 foreach ($saleOrderIds as $saleOrderId) {
                     if (!array_key_exists($saleOrderId, $saleOrderLinesDtosMappedBySaleOrderId)) {
                         $saleOrderLinesDtosMappedBySaleOrderId[$saleOrderId] = [];
                     }
+                    if (!array_key_exists($saleOrderId, $amount)) {
+                        $amount[$saleOrderId] = [];
+                    }
                 }
             }
             foreach ($rows as $row) {
-                $row->setPartnerDto($partnerDtos[$row->getPartnerId()]);
-                $row->setSaleOrderLinesDtos($saleOrderLinesDtosMappedBySaleOrderId[intval($row->getId())]);
+                $saleOrderId = intval($row->getId());
+                $row->setPartnerDto($partnerDtos[intval($row->getPartnerId())]);
+                $row->setSaleOrderLinesDtos($saleOrderLinesDtosMappedBySaleOrderId[$saleOrderId]);
+                $row->setTotalAmount($amount[$saleOrderId]);
             }
             return $rows;
         }

@@ -45,7 +45,7 @@ namespace crm\managers {
             return $this->insertDto($dto);
         }
 
-        public function getSaleOrderLinesFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = 0, $limit = 10000) {
+        public function getSaleOrderLinesFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
             $productIds = array();
             $currencyIds = array();
@@ -64,6 +64,16 @@ namespace crm\managers {
             return $rows;
         }
 
+        
+         public function getProductCountInNonCancelledSaleOrders($productId)
+         {
+             return $this->mapper->getProductCountInNonCancelledSaleOrders($productId);
+         }
+        
+         public function getAllProductCountInNonCancelledSaleOrders()
+         {
+             return $this->mapper->getAllProductCountInNonCancelledSaleOrders();
+         }
     }
 
 }

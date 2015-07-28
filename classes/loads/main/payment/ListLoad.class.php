@@ -33,6 +33,7 @@ namespace crm\loads\main\payment {
             }
             $pagesCount = intval($count / $limit);
             $this->addParam('pagesCount', $pagesCount);
+            $this->addParam('partners', PartnerManager::getInstance()->selectAdvance('*', [], ['name']));
         }
 
         private function redirectIncludedParamsExeptPaging() {

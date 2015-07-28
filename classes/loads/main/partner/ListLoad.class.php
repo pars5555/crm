@@ -12,6 +12,7 @@
 namespace crm\loads\main\partner {
 
     use crm\loads\NgsLoad;
+    use crm\managers\CurrencyManager;
     use crm\managers\PartnerManager;
     use crm\managers\PaymentTransactionManager;
     use crm\managers\PurchaseOrderManager;
@@ -33,10 +34,11 @@ namespace crm\loads\main\partner {
             $partnersPurchaseOrdersMappedByPartnerId = PurchaseOrderManager::getInstance()->getPartnersPurchaseOrders($partnerIds);
             $partnersTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersTransactions($partnerIds);
 
-            $this->calculatePartnerDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersTransactionsMappedByPartnerId);
+            $partnerDept = $this->calculatePartnerDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersTransactionsMappedByPartnerId);
             $this->addParam('partnersSaleOrdersMappedByPartnerId', $partnersSaleOrdersMappedByPartnerId);
             $this->addParam('partnersPurchaseOrdersMappedByPartnerId', $partnersPurchaseOrdersMappedByPartnerId);
             $this->addParam('partnersTransactionsMappedByPartnerId', $partnersTransactionsMappedByPartnerId);
+            $this->addParam('partnerDept', $partnerDept);
 
             $this->addParam('partners', $partners);
             $count = PartnerManager::getInstance()->getLastSelectAdvanceRowsCount();
@@ -45,54 +47,64 @@ namespace crm\loads\main\partner {
             }
             $pagesCount = intval($count / $limit);
             $this->addParam('pagesCount', $pagesCount);
+
+            $currencyManager = CurrencyManager::getInstance();
+            $this->addParam('currencies', $currencyManager->mapDtosById($currencyManager->selectAdvance('*', ['active', '=', 1], ['name'])));
         }
 
         private function calculatePartnerDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersTransactionsMappedByPartnerId) {
             $partnersDept = [];
             foreach ($partnersSaleOrdersMappedByPartnerId as $partnerId => $saleOrders) {
                 foreach ($saleOrders as $saleOrder) {
-                    foreach ($saleOrder->getSaleOrderLinesDtos() as $saleOrderLine) {
-                        $currencyId = $saleOrderLine->getCurrencyId();
-                        $amount = $saleOrderLine->getAmount();
+                    if ($saleOrder->getCancelled() == 1) {
+                        continue;
+                    }
+                    $totalAmount = $saleOrder->getTotalAmount();
+                    foreach ($totalAmount as $currencyId => $amount) {
                         if (!array_key_exists($partnerId, $partnersDept)) {
                             $partnersDept[$partnerId] = [];
                         }
                         if (!array_key_exists($currencyId, $partnersDept[$partnerId])) {
                             $partnersDept[$partnerId][$currencyId] = 0;
                         }
-
                         $partnersDept[$partnerId][$currencyId] += $amount;
                     }
                 }
             }
             foreach ($partnersPurchaseOrdersMappedByPartnerId as $partnerId => $purchaseOrders) {
                 foreach ($purchaseOrders as $purchaseOrder) {
-                    foreach ($purchaseOrder->getPurchaseOrderLinesDtos() as $purchaseOrderLine) {
-                        $currencyId = $purchaseOrderLine->getCurrencyId();
-                        $amount = $purchaseOrderLine->getAmount();
+                    if ($purchaseOrder->getCancelled() == 1) {
+                        continue;
+                    }
+                    $totalAmount = $purchaseOrder->getTotalAmount();
+                    foreach ($totalAmount as $currencyId => $amount) {
                         if (!array_key_exists($partnerId, $partnersDept)) {
                             $partnersDept[$partnerId] = [];
                         }
                         if (!array_key_exists($currencyId, $partnersDept[$partnerId])) {
                             $partnersDept[$partnerId][$currencyId] = 0;
                         }
-                        $partnersDept[$partnerId][$currencyId] -= $amount;
+                        $partnersDept[$partnerId][$currencyId] += $amount;
                     }
                 }
             }
             foreach ($partnersTransactionsMappedByPartnerId as $partnerId => $transactions) {
                 foreach ($transactions as $transaction) {
+                    if ($transaction->getCancelled() == 1) {
+                        continue;
+                    }
                     $currencyId = $transaction->getCurrencyId();
-                    $amount = $transaction->getAmount();
+                    $unitPrice = floatval($transaction->getAmount());
                     if (!array_key_exists($partnerId, $partnersDept)) {
                         $partnersDept[$partnerId] = [];
                     }
                     if (!array_key_exists($currencyId, $partnersDept[$partnerId])) {
                         $partnersDept[$partnerId][$currencyId] = 0;
                     }
-                    $partnersDept[$partnerId][$currencyId] += $amount;
+                    $partnersDept[$partnerId][$currencyId] += $unitPrice;
                 }
             }
+            return $partnersDept;
         }
 
         private function redirectIncludedParamsExeptPaging() {

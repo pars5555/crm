@@ -1,5 +1,12 @@
 <form id="saleOrderFilters" autocomplete="off" action="{SITE_PATH}/sale/list" method="GET">
     <h2>Filters</h2>
+    <label>Partner</label>
+    <select name="prt">
+        <option value="0" {if $ns.selectedFilterPartnerId == 0}selected{/if}>All</option>
+        {foreach from=$ns.partners item=p}
+            <option value="{$p->getId()}" {if $ns.selectedFilterPartnerId == $p->getId()}selected{/if}>{$p->getName()}</option>
+        {/foreach}
+    </select>
     <label>Page</label>
     <select name="pg">
         {for $p=1 to $ns.pagesCount}

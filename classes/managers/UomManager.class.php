@@ -12,7 +12,7 @@
 
 namespace crm\managers {
 
-    use crm\dal\mappers\UomMapper;
+use crm\dal\mappers\UomMapper;
 
     class UomManager extends AdvancedAbstractManager {
 

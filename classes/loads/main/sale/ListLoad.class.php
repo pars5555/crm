@@ -40,15 +40,15 @@ namespace crm\loads\main\sale {
             }
             $pagesCount = intval($count / $limit);
             $this->addParam('pagesCount', $pagesCount);
+            
+            $currencyManager = CurrencyManager::getInstance();
+            $this->addParam('currencies', $currencyManager->mapDtosById($currencyManager->selectAdvance('*', ['active', '=', 1])));
         }
 
         private function redirectIncludedParamsExeptPaging() {
             $url = "sale.list?";
-            if (isset(NGS()->args()->prd)) {
-                $url .= "prd=" . NGS()->args()->prd . '&';
-            }
-            if (isset(NGS()->args()->cur)) {
-                $url .= "cur=" . NGS()->args()->cur . '&';
+            if (isset(NGS()->args()->prt)) {
+                $url .= "prd=" . NGS()->args()->prt . '&';
             }
             if (isset(NGS()->args()->srt)) {
                 $url .= "srt=" . NGS()->args()->srt . '&';
@@ -62,29 +62,18 @@ namespace crm\loads\main\sale {
         private function initFilters($limit) {
             $where = [];
             //partner
-            $selectedFilterProductId = 0;
-            if (isset(NGS()->args()->prd)) {
-                $selectedFilterProductId = intval(NGS()->args()->prd);
+            $selectedFilterPartnerId = 0;
+            if (isset(NGS()->args()->prt)) {
+                $selectedFilterPartnerId = intval(NGS()->args()->prt);
             }
-            $this->addParam('selectedFilterProductId', $selectedFilterProductId);
-            if ($selectedFilterProductId > 0) {
-                $where[] = 'product_id';
+            $this->addParam('selectedFilterPartnerId', $selectedFilterPartnerId);
+            if ($selectedFilterPartnerId > 0) {
+                $where[] = 'partner_id';
                 $where[] = '=';
-                $where[] = $selectedFilterProductId;
+                $where[] = $selectedFilterPartnerId;
             }
 
-            //currency
-            $selectedFilterCurrencyId = 0;
-            if (isset(NGS()->args()->cur)) {
-                $selectedFilterCurrencyId = intval(NGS()->args()->cur);
-            }
-            $this->addParam('selectedFilterCurrencyId', $selectedFilterCurrencyId);
-            if ($selectedFilterCurrencyId > 0) {
-                $where[] = 'currency_id';
-                $where[] = '=';
-                $where[] = $selectedFilterCurrencyId;
-            }
-
+           
             //pageing
             $selectedFilterPage = 1;
             if (isset(NGS()->args()->pg)) {

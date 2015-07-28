@@ -17,7 +17,7 @@ namespace crm\managers {
     abstract class AdvancedAbstractManager extends AbstractManager {
 
         protected $mapper;
-        private $lastSelectAdvanceParams = null;
+        private $lastSelectAdvanceWhere = null;
 
         function __construct($mapper) {
             $this->mapper = $mapper;

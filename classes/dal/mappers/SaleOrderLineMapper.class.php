@@ -42,6 +42,30 @@ namespace crm\dal\mappers {
             return $this->tableName;
         }
 
+        public function getProductCountInNonCancelledSaleOrders($productId) {
+            $sql = "SELECT SUM(quantity) AS `product_qty` FROM `%s` INNER JOIN  "
+                    . " `sale_orders` ON `sale_order_id` = `sale_orders`.`id` "
+                    . "WHERE `sale_orders`.`cancelled` = 0 AND product_id=:id";
+            $sqlQuery = sprintf($sql, $this->getTableName());
+            $qty = $this->fetchField($sqlQuery, 'product_qty', array("id" => $productId));
+            return isset($qty) ? floatval($qty) : 0;
+        }
+
+        public function getAllProductCountInNonCancelledSaleOrders() {
+            $sql = "SELECT product_id, SUM(quantity) AS `product_qty` FROM `%s` INNER JOIN  "
+                    . " `sale_orders` ON `sale_order_id` = `sale_orders`.`id` "
+                    . "WHERE `sale_orders`.`cancelled` = 0 GROUP by `product_id`";
+            $sqlQuery = sprintf($sql, $this->getTableName());
+            $productIdQtyObjects = $this->fetchRows($sqlQuery);
+            $ret = [];
+            foreach ($productIdQtyObjects as $productIdQtyObject) {
+                $product_id = intval($productIdQtyObject->product_id);
+                $qty = floatval($productIdQtyObject->product_qty);
+                $ret [$product_id] = $qty;
+            }
+            return $ret;
+        }
+
     }
 
 }

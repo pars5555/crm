@@ -43,6 +43,40 @@
         }
 
     ],
+    "purchase": [
+        {
+            "action": "loads.main.main",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.purchase.list"
+                }
+            }
+        },
+        {
+            "action": "loads.main.main",
+            "route": "create",
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.purchase.create"
+                }
+            }
+
+        },       
+        {
+            "action": "loads.main.main",
+            "route": "[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.purchase.open"
+                }
+            }
+        }
+
+    ],
     "payment": [
         {
             "action": "loads.main.main",
@@ -146,18 +180,23 @@
 
     ],
     
-    "billings": [
-        {
-            "action": "loads.main.main"
-        }
-    ],
     "warehouse": [
         {
-            "action": "loads.main.main"
+            "action": "loads.main.main",
+            "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.warehouse"
+                }
+            }
         }
     ],
     
     "default": {
-        "action": "loads.main.main"
+        "action": "loads.main.main",
+        "nestedLoad": {
+                "content": {
+                    "action": "crm.loads.main.general"
+                }
+            }
     }
 }

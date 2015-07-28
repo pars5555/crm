@@ -13,6 +13,7 @@ namespace crm\loads\main\product {
 
     use crm\loads\NgsLoad;
     use crm\managers\ProductManager;
+    use crm\managers\SaleOrderLineManager;
     use crm\security\RequestGroups;
     use NGS;
 
@@ -21,11 +22,16 @@ namespace crm\loads\main\product {
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
-            $paymentId = NGS()->args()->id;
-            $products = ProductManager::getInstance()->getProductListFull(['id', '=', $paymentId]);
+            $productId = NGS()->args()->id;
+            $products = ProductManager::getInstance()->getProductListFull(['id', '=', $productId]);
             if (!empty($products)) {
+                $productQuantity = SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId);
+                if (!isset($productQuantity)) {
+                    $productQuantity = 0;
+                }
                 $product = $products[0];
                 $this->addParam('product', $product);
+                $this->addParam('productQuantity', $productQuantity);
             }
         }
 

@@ -47,13 +47,13 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function getPurchaseOrdersFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = 0, $limit = 10000) {
+        public function getPurchaseOrdersFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
             $partnerIds = array();
             $purchaseOrderIds = array();
             foreach ($rows as $row) {
-                $partnerIds[] = $row->getPartnerId();
-                $purchaseOrderIds[] = $row->getId();
+                $partnerIds[] = intval($row->getPartnerId());
+                $purchaseOrderIds[] = intval($row->getId());
             }
             $partnerIds = array_unique($partnerIds);
             $purchaseOrderIds = array_unique($purchaseOrderIds);
@@ -61,11 +61,38 @@ namespace crm\managers {
             $purchaseOrderLinesDtos = [];
             if (!empty($purchaseOrderIds)) {
                 $purchaseOrderLinesDtos = PurchaseOrderLineManager::getInstance()->getPurchaseOrderLinesFull(['purchase_order_id', 'in', '(' . implode(',', $purchaseOrderIds) . ')']);
+                $amount = [];
+                foreach ($purchaseOrderLinesDtos as $purchaseOrderLine) {
+                        $purchaseOrderId = intval($purchaseOrderLine->getSaleOrderId());
+                        $currencyId = intval($purchaseOrderLine->getCurrencyId());
+                        $unitPrice = floatval($purchaseOrderLine->getUnitPrice());
+                        $quantity = floatval($purchaseOrderLine->getQuantity());
+                        if (!array_key_exists($purchaseOrderId, $amount)) {
+                            $amount[$purchaseOrderId] = [];
+                        }
+                        if (!array_key_exists($currencyId, $amount[$purchaseOrderId])) {
+                            $amount[$purchaseOrderId][$currencyId] = 0;
+                        }
+
+                        $amount[$purchaseOrderId][$currencyId] += $unitPrice * $quantity;
+                    }
             }
-            $purchaseOrderLinesDtosMappedByPurchaseOrderId = $this->mapPurchaseOrderLinesByPurchaseOrderId($purchaseOrderLinesDtos);
+            if (!empty($purchaseOrderIds)) {
+                $purchaseOrderLinesDtosMappedByPurchaseOrderId = $this->mapPurchaseOrderLinesByPurchaseOrderId($purchaseOrderLinesDtos);
+                foreach ($purchaseOrderIds as $purchaseOrderId) {
+                    if (!array_key_exists($purchaseOrderId, $purchaseOrderLinesDtosMappedByPurchaseOrderId)) {
+                        $purchaseOrderLinesDtosMappedByPurchaseOrderId[$purchaseOrderId] = [];
+                    }
+                    if (!array_key_exists($purchaseOrderId, $amount)) {
+                        $amount[$purchaseOrderId] = [];
+                    }
+                }
+            }
             foreach ($rows as $row) {
-                $row->setPartnerDto($partnerDtos[$row->getPartnerId()]);
-                $row->setPurchaseOrderLinesDtos($purchaseOrderLinesDtosMappedByPurchaseOrderId[$row->getId()]);
+                $purchaseOrderId = intval($row->getId());
+                $row->setPartnerDto($partnerDtos[intval($row->getPartnerId())]);
+                $row->setPurchaseOrderLinesDtos($purchaseOrderLinesDtosMappedByPurchaseOrderId[$purchaseOrderId]);
+                $row->setTotalAmount($amount[$purchaseOrderId]);
             }
             return $rows;
         }
