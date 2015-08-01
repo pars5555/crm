@@ -1,5 +1,4 @@
-<div>
-    {include file="{getTemplateDir}/main/left_menu.tpl"}
+<div class="container product--open--container">
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>

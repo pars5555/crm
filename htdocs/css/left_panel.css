@@ -1,0 +1,57 @@
+.left--panel {
+    display:table-cell;
+    width:300px;
+    min-width:250px;
+    vertical-align:top;
+    position: relative;
+
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;	
+}
+.left--panel .left--panel--content{
+    border-radius:3px;
+    overflow:hidden;
+    border:1px solid #E0E0E0;
+}
+.left--panel .left--panel--title{
+    display:block;
+    background-color:#f7f7f7;
+    padding: 7px;
+    font-size: 18px;
+    color:#555;
+    font-weight: 600;
+}
+.left--panel .left--panel--title .glyphicon{
+    font-weight:500;
+    margin-right: 3px;
+}
+.left--panel .left--panel--title span{
+    vertical-align: middle;
+}
+
+
+.left--panel ul li a{
+    display:block;
+    padding: 5px;
+    border-top: 1px solid #E0E0E0;
+    background-color:#fff;
+    font-size: 15px;
+    color:#333;
+
+    -webkit-transition: background-color 0.3s ease;
+    -moz-transition: background-color 0.3s ease;
+    -o-transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease;
+}
+.left--panel ul li a.active{
+    color:#63B4FB;
+    font-weight:600;
+    font-size: 17px;
+}
+.left--panel ul li a:hover{
+    background-color:#63B4FB !important;
+    color:#fff;
+}

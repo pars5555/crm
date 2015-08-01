@@ -1,0 +1,24 @@
+@font-face{
+    font-family:OpenSans;
+    src:url(../../fonts/OpenSans.ttf);
+}
+
+@font-face{
+    font-family:"glyphicons-halflings";
+    src:url(../../fonts/glyphicons-halflings-regular.woff);
+}
+
+@font-face{
+    font-family:"pictos-web";
+    src:url(../../fonts/pictos-web.woff);
+}
+
+@font-face {
+    font-family: "FontAwesome";
+    src: url("../../fonts/FontAwesome.otf");
+}
+
+@font-face {
+    font-family: "ionicons";
+    src: url("../../fonts/ionicons.ttf");
+}

@@ -11,15 +11,16 @@
         <script type="text/javascript" src="{$STATIC_PATH}/js/out/ngs_actions.js?{$VERSION}"></script>
     </head>
     <body>
-        <section id="main" class="content">
-            <header>
-                header
-            </header>
+        <header class="header">
+            header
+        </header>
+        <section class="wrapper">
+            {include file="{getTemplateDir}/main/left_menu.tpl"}
+            <div class="content">
+                {nest ns=content}
+            </div>
         </section>
-        <section class="content">
-            {nest ns=content}
-        </section>
-        <footer>
+        <footer class="footer">
             footer
         </footer>
     </body>

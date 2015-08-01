@@ -1,5 +1,4 @@
-<div>
-    {include file="{getTemplateDir}/main/left_menu.tpl"}
+<div class="container product--create--container">
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>
@@ -10,17 +9,17 @@
             <span style="color:green">{$ns.success_message}</span>
         </div>
     {/if}
-    <form class="createProduct" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main/do_create_product">
-        <div>
-            <label>Name</label>
-            <input type="text" name="name" value="{$ns.req.name|default:''}"/>
+    <form class="createProduct create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main/do_create_product">
+        <div class="form-group">
+            <label class="label">Name</label>
+            <input class="text" type="text" name="name" value="{$ns.req.name|default:''}"/>
         </div>
-        <div>
-            <label>Model</label>
-            <input type="text" name="model" value="{$ns.req.model|default:''}"/>
+        <div class="form-group">
+            <label class="label">Model</label>
+            <input class="text" type="text" name="model" value="{$ns.req.model|default:''}"/>
         </div>
-        <div>
-            <label>Manufacturer</label>
+        <div class="form-group">
+            <label class="label">Manufacturer</label>
             <select name="manufacturerId">
                 {if isset($ns.req.manufacturerId)}
                     {assign selectedManufacturerId $ns.req.manufacturerId}
@@ -32,8 +31,8 @@
                 {/foreach}
             </select>
         </div>
-            <div>
-            <label>Units of Measurement</label>
+        <div class="form-group">
+            <label class="label">Units of Measurement</label>
             <select name="uomId">
                 {if isset($ns.req.uomId)}
                     {assign selectedUomId $ns.req.uomId}
@@ -45,8 +44,8 @@
                 {/foreach}
             </select>
         </div>
-        
-        <input type="submit" value="Save"/>
+
+        <input class="button blue" type="submit" value="Save"/>
 
     </form>
 </div>

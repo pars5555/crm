@@ -1,20 +1,24 @@
-<div>
-    {include file="{getTemplateDir}/main/left_menu.tpl"}
-        <div> 
-            <span>Id</span>
-            <span>Name</span>
-            <span>Model</span>
-            <span>Uom</span>
-            <span>Quantity</span>
+<div class="container warehouse--container">
+    <div class="table_striped">
+        <div class="table_header_group">
+            <span class="table-cell">Id</span>
+            <span class="table-cell">Name</span>
+            <span class="table-cell">Model</span>
+            <span class="table-cell">Uom</span>
+            <span class="table-cell">Quantity</span>
+            <span class="table-cell"> View </span>
         </div> 
-    {foreach from=$ns.products item=product}
-        <div> 
-            <a href="{SITE_PATH}/product/{$product->getId()}">{$product->getId()} </a> 
-            <span>{$product->getName()} </span>
-            <span>{$product->getModel()} </span>
-            <span>{$product->getUomDto()->getName()} </span>
-            <span>{$ns.productsQuantity[$product->getId()]|default:'0'}</span>
-        </div>
-
-    {/foreach}
+        {foreach from=$ns.products item=product}
+            <div class="table-row"> 
+                <span class="table-cell">{$product->getId()} </span> 
+                <span class="table-cell">{$product->getName()} </span>
+                <span class="table-cell">{$product->getModel()} </span>
+                <span class="table-cell">{$product->getUomDto()->getName()} </span>
+                <span class="table-cell">{$ns.productsQuantity[$product->getId()]|default:'0'}</span>
+                <a class="table-cell view_item" href="{SITE_PATH}/product/{$product->getId()}">
+                    <span class="button blue">open</span>
+                </a>
+            </div>
+        {/foreach}
+    </div>
 </div>

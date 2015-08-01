@@ -1,0 +1,76 @@
+/*======= Blue Button =======*/
+.blue{
+    border:1px solid #63b4fb;
+    color:#fff;
+
+    background-color:#63b4fb;
+    background: #63b4fb;	
+    /*    background: -webkit-linear-gradient(#63b4fb, #91e2fe, #63b4fb);
+        background: -o-linear-gradient(#63b4fb, #91e2fe, #63b4fb);
+        background: -moz-linear-gradient(#63b4fb, #91e2fe, #63b4fb);
+        background: linear-gradient(#63b4fb, #91e2fe, #63b4fb);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#91e2fe', endColorstr='#63b4fb',GradientType=0 );*/
+}
+
+.blue:active{
+    /*    background: -webkit-linear-gradient( #91e2fe, #63b4fb, #91e2fe);
+        background: -o-linear-gradient( #91e2fe, #63b4fb, #91e2fe);
+        background: -moz-linear-gradient( #91e2fe, #63b4fb, #91e2fe);
+        background: linear-gradient( #91e2fe, #63b4fb, #91e2fe);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#63b4fb', endColorstr='#91e2fe',GradientType=0 );*/
+    background-color:#fff;
+    color:#63b4fb;
+}
+
+.blue:hover{
+    box-shadow: 0 0 5px #3081C8;
+}
+
+/*======= Grey Button =======*/
+
+.grey{
+    border:1px solid #555;
+    color:#fff;	
+
+    background-color:#777;
+    background: #777;	
+    /*    background: -webkit-linear-gradient(#555, #999, #555);
+        background: -o-linear-gradient(#555, #999, #555);
+        background: -moz-linear-gradient(#555, #999, #555);
+        background: linear-gradient(#555, #999, #555);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#999999', endColorstr='#555555',GradientType=0 );*/
+}
+
+.grey:active{
+    /*    background: -webkit-linear-gradient( #999, #555, #999);
+        background: -o-linear-gradient( #999, #555, #999);
+        background: -moz-linear-gradient( #999, #555, #999);
+        background: linear-gradient( #999, #555, #999);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#555555', endColorstr='#999999',GradientType=0 );*/
+    background-color:#fff;
+    color:#777;
+}
+
+.grey:hover{
+    background-color: #555;
+    box-shadow: 0 0 5px #555;
+}
+
+/* Red text */
+.text_red{
+    color:#cc0000;
+}
+/* Blue text */
+.text_blue{
+    color:#63B4FB;
+}
+/* Green text */
+.text_green{
+    color:#508B01;
+}
+.bold{
+    font-weight:600;
+}
+.text-center{
+    text-align:center;
+}

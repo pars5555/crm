@@ -1,5 +1,4 @@
-<div>
-    {include file="{getTemplateDir}/main/left_menu.tpl"}
+<div class="container sale--create--container">
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>
@@ -10,9 +9,9 @@
             <span style="color:green">{$ns.success_message}</span>
         </div>
     {/if}
-    <form class="createSaleOrder" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main/do_create_sale_order">
-        <div>
-            <label>Date</label>
+    <form class="createSaleOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main/do_create_sale_order">
+        <div class="form-group">
+            <label class="label">Date</label>
             {assign date null}
             {if isset($ns.req.paymentDateYear)}
                 {assign date "`$ns.req.saleOrderDateYear`-`$ns.req.saleOrderDateMonth`-`$ns.req.saleOrderDateDay`"}
@@ -24,8 +23,8 @@
             {/if}
             {html_select_time prefix='saleOrderTime' display_seconds=false time=$time}
         </div>
-        <div>
-            <label>Partner</label>
+        <div class="form-group">
+            <label class="label">Partner</label>
             <select name="partnerId">
                 {if isset($ns.req.partnerId)}
                     {assign selectedPartnerId $ns.req.partnerId}
@@ -37,10 +36,10 @@
                 {/foreach}
             </select>
         </div>
-        <div>
-            <label>Note</label>
-            <textarea  name="note">{$ns.req.note|default:''}</textarea>
+        <div class="form-group">
+            <label class="label">Note</label>
+            <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
         </div>
-        <input type="submit" value="Save"/>
+        <input class="button blue" type="submit" value="Save"/>
     </form>
 </div>

@@ -1,5 +1,4 @@
-<div>
-    {include file="{getTemplateDir}/main/left_menu.tpl"}
+<div class="container payment--create--container">
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>
@@ -10,9 +9,9 @@
             <span style="color:green">{$ns.success_message}</span>
         </div>
     {/if}
-    <form class="createPaymentOrder" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main/do_create_payment">
-        <div>
-            <label>Payment Date</label>
+    <form class="createPaymentOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main/do_create_payment">
+        <div class="form-group">
+            <label class="label">Payment Date</label>
             {assign date null}
             {if isset($ns.req.paymentDateYear)}
                 {assign date "`$ns.req.paymentDateYear`-`$ns.req.paymentDateMonth`-`$ns.req.paymentDateDay`"}
@@ -24,8 +23,8 @@
             {/if}
             {html_select_time prefix='paymentTime' display_seconds=false time=$time}
         </div>
-        <div>
-            <label>Partner</label>
+        <div class="form-group">
+            <label class="label">Partner</label>
             <select name="partnerId">
                 {if isset($ns.req.partnerId)}
                     {assign selectedPartnerId $ns.req.partnerId}
@@ -37,8 +36,8 @@
                 {/foreach}
             </select>
         </div>
-        <div>
-            <label>Payment Method</label>
+        <div class="form-group">
+            <label class="label">Payment Method</label>
             <select name="paymentMethodId">
                 {if isset($ns.req.paymentMethodId)}
                     {assign selectedPaymentMethodId $ns.req.paymentMethodId}
@@ -51,8 +50,8 @@
                 {/foreach}
             </select>
         </div>
-        <div>
-            <label>Currency</label>
+        <div class="form-group">
+            <label class="label">Currency</label>
             <select name="currencyId">
                 {if isset($ns.req.currencyId)}
                     {assign selectedCurrencyId $ns.req.currencyId}
@@ -65,15 +64,15 @@
                 {/foreach}
             </select>
         </div>
-        <div>
-            <label>Amount</label>
-            <input type="number" step="0.01" name="amount" {$ns.req.amount|default:''}/>
+        <div class="form-group">
+            <label class="label">Amount</label>
+            <input class="text" type="number" step="0.01" name="amount" {$ns.req.amount|default:''}/>
         </div>
-        <div>
-            <label>Note</label>
-            <textarea  name="note">{$ns.req.note|default:''}</textarea>
+        <div class="form-group">
+            <label class="label">Note</label>
+            <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
         </div>
-        <input type="submit" value="Save"/>
+        <input class="button blue" type="submit" value="Save"/>
 
     </form>
 </div>

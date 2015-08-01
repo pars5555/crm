@@ -1,5 +1,4 @@
-<div>
-    {include file="{getTemplateDir}/main/left_menu.tpl"}
+<div class="container sale--list--container">
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>
@@ -11,37 +10,46 @@
         </div>
     {/if}
 
-    <a class="button" href="{SITE_PATH}/sale/create">create</a>
     {include file="{getTemplateDir}/main/sale/list_filters.tpl"}
-    <div>
-        <span> ID </span>
-        <span> Partner </span>
-        <span> Date</span>
-        <span> Total Amount</span>
-        <span> Note </span>
-    </div> 
-    {foreach from=$ns.saleOrders item=saleOrder}
-        <div>
-            <a href="{SITE_PATH}/sale/{$saleOrder->getId()}">{$saleOrder->getId()} </a>
-            <span> {$saleOrder->getPartnerDto()->getName()} </span>
-            <span> {$saleOrder->getOrderDate()} </span>
 
-            {assign totalAmount $saleOrder->getTotalAmount()}
-            {foreach from=$totalAmount key=currencyId item=amount}
-                <span>
-                    {assign currencyDto $ns.currencies[$currencyId]}
-                    {if $currencyDto->getSymbolPosition() == 'left'}
-                        {$currencyDto->getTemplateChar()}
-                    {/if}
-                    {$amount}
-                    {if $currencyDto->getSymbolPosition() == 'right'}
-                        {$currencyDto->getTemplateChar()}
-                    {/if}
+    <div class="table_striped">
+        <div class="table_header_group">
+            <span class="table-cell"> ID </span>
+            <span class="table-cell"> Partner </span>
+            <span class="table-cell"> Date</span>
+            <span class="table-cell"> Total Amount</span>
+            <span class="table-cell"> Note </span>
+            <span class="table-cell"> View </span>
+        </div> 
+        {foreach from=$ns.saleOrders item=saleOrder}
+            <div class="table-row">
+                <span class="table-cell">{$saleOrder->getId()} </span>
+                <span class="table-cell"> {$saleOrder->getPartnerDto()->getName()} </span>
+                <span class="table-cell"> {$saleOrder->getOrderDate()} </span>
+
+                {assign totalAmount $saleOrder->getTotalAmount()}
+                <span class="table-cell">
+                    {foreach from=$totalAmount key=currencyId item=amount}
+                        <span class="price">
+                            {assign currencyDto $ns.currencies[$currencyId]}
+                            {if $currencyDto->getSymbolPosition() == 'left'}
+                                {$currencyDto->getTemplateChar()}
+                            {/if}
+                            {$amount}
+                            {if $currencyDto->getSymbolPosition() == 'right'}
+                                {$currencyDto->getTemplateChar()}
+                            {/if}
+                        </span>
+                    {/foreach}
                 </span>
-            {/foreach}
+                <span class="table-cell"> {$saleOrder->getNote()} </span>
+                <a class="table-cell view_item" href="{SITE_PATH}/sale/{$saleOrder->getId()}">
+                    <span class="button blue">open</span>
+                </a>
+            </div>
+        {/foreach}
+    </div>
 
-            <span> {$saleOrder->getNote()} </span>
-        </div>
-    {/foreach}
+    <a class="button blue" href="{SITE_PATH}/sale/create">create</a>
 
 </div>

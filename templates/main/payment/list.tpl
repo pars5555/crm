@@ -1,5 +1,4 @@
-<div>
-    {include file="{getTemplateDir}/main/left_menu.tpl"}
+<div class="container payment--list--container">
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>
@@ -10,33 +9,42 @@
             <span style="color:green">{$ns.success_message}</span>
         </div>
     {/if}
-    
-    <a class="button" href="{SITE_PATH}/payment/create">create</a>
-    {include file="{getTemplateDir}/main/payment/list_filters.tpl"}
-    <div>
-        <span> ID </span>
-        <span> DATE </span>
-        <span> Partner </span>
-        <span> Payment Method </span>
-        <span> Amount </span>
-    </div> 
-    {foreach from=$ns.payments item=payment}
-        <div>
-            <a href="{SITE_PATH}/payment/{$payment->getId()}">{$payment->getId()} </a>
-            <span> {$payment->getDate()} </span>
-            <span> {$payment->getPartnerDto()->getName()} </span>
-            <span> {$payment->getPaymentMethodDto()->getName()} </span>
-            <span> 
-                {if $payment->getCurrencyDto()->getSymbolPosition() == 'left'}
-                    {$payment->getCurrencyDto()->getTemplateChar()}
-                {/if}
-                {$payment->getAmount()}
-                {if $payment->getCurrencyDto()->getSymbolPosition() == 'right'}
-                    {$payment->getCurrencyDto()->getTemplateChar()}
-                {/if}
-            </span>
 
-        </div>
-    {/foreach}
+    {include file="{getTemplateDir}/main/payment/list_filters.tpl"}
+
+    <div class="table_striped">
+        <div class="table_header_group">
+            <span class="table-cell"> ID </span>
+            <span class="table-cell"> DATE </span>
+            <span class="table-cell"> Partner </span>
+            <span class="table-cell"> Payment Method </span>
+            <span class="table-cell"> Amount </span>
+            <span class="table-cell"> View </span>
+        </div> 
+        {foreach from=$ns.payments item=payment}
+            <div class="table-row" href="{SITE_PATH}/payment/{$payment->getId()}">
+                <span class="table-cell">{$payment->getId()} </span>
+                <span class="table-cell"> {$payment->getDate()} </span>
+                <span class="table-cell"> {$payment->getPartnerDto()->getName()} </span>
+                <span class="table-cell"> {$payment->getPaymentMethodDto()->getName()} </span>
+                <span class="table-cell"> 
+                    {if $payment->getCurrencyDto()->getSymbolPosition() == 'left'}
+                        {$payment->getCurrencyDto()->getTemplateChar()}
+                    {/if}
+                    {$payment->getAmount()}
+                    {if $payment->getCurrencyDto()->getSymbolPosition() == 'right'}
+                        {$payment->getCurrencyDto()->getTemplateChar()}
+                    {/if}
+                </span>
+                <a class="table-cell view_item" href="{SITE_PATH}/payment/{$payment->getId()}">
+                    <span class="button blue">open</span>
+                </a>
+            </div>
+        {/foreach}
+
+
+    </div>
+
+    <a class="button blue" href="{SITE_PATH}/payment/create">create</a>
 
 </div>

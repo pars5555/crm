@@ -1,13 +1,20 @@
 [
-	{
-		"output_file": "styles.css",
-		"compress": true,
-		"builders": [
-			{
-				"output_file": "main.css",
-				"compress": false,
-				"files": ["style.css", "jquery-ui.css"]
-			}
-		]
-	}
+    {
+        "output_file": "styles.css",
+        "compress": true,
+        "builders": [
+            {
+                "output_file": "main.css",
+                "compress": false,
+                "files": [
+                    "skin.css",
+                    "style.css",
+                    "main.css",
+                    "left_panel.css",
+                    "fonts.css",
+                    "jquery-ui.css"
+                ]
+            }
+        ]
+    }
 ]

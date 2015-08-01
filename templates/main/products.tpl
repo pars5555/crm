@@ -1,4 +1,3 @@
-<div>
-   {include file="{getTemplateDir}/main/left_menu.tpl"}
+<div class="container products--container">
    products
 </div>

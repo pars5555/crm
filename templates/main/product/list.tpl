@@ -1,5 +1,4 @@
-<div>
-    {include file="{getTemplateDir}/main/left_menu.tpl"}
+<div class="container product--list--container">
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>
@@ -10,25 +9,31 @@
             <span style="color:green">{$ns.success_message}</span>
         </div>
     {/if}
-    
-    <a class="button" href="{SITE_PATH}/product/create">create</a>
-    {include file="{getTemplateDir}/main/product/list_filters.tpl"}
-    <div>
-        <span> ID </span>
-        <span> DATE </span>
-        <span> Partner </span>
-        <span> Payment Method </span>
-        <span> Amount </span>
-    </div> 
-    {foreach from=$ns.products item=product}
-        <div>
-            <a href="{SITE_PATH}/product/{$product->getId()}">{$product->getId()} </a>
-            <span> {$product->getName()} </span>
-            <span> {$product->getModel()} </span>
-            <span> {$product->getManufacturerDto()->getName()} </span>
-            <span> {$product->getUomDto()->getName()} </span>
 
-        </div>
-    {/foreach}
+    {include file="{getTemplateDir}/main/product/list_filters.tpl"}
+
+    <div class="table_striped">
+        <div class="table_header_group">
+            <span class="table-cell"> ID </span>
+            <span class="table-cell"> DATE </span>
+            <span class="table-cell"> Partner </span>
+            <span class="table-cell"> Payment Method </span>
+            <span class="table-cell"> Amount </span>
+            <span class="table-cell"> View </span>
+        </div> 
+        {foreach from=$ns.products item=product}
+            <div class="table-row">
+                <span class="table-cell">{$product->getId()} </span>
+                <span class="table-cell"> {$product->getName()} </span>
+                <span class="table-cell"> {$product->getModel()} </span>
+                <span class="table-cell"> {$product->getManufacturerDto()->getName()} </span>
+                <span class="table-cell"> {$product->getUomDto()->getName()} </span>
+                <a class="table-cell view_item" href="{SITE_PATH}/product/{$product->getId()}">
+                    <span class="button blue">open</span>
+                </a>
+            </div>
+        {/foreach}
+    </div>
+    <a class="button blue" href="{SITE_PATH}/product/create">create</a>
 
 </div>

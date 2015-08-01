@@ -61,7 +61,7 @@ NGS.createLoad("crm.loads.main.sale.open", {
             $('#saleOrderLineUnitPrice').val('');
             $('#saleOrderLineCurrencyId').val('0');
 
-            solRow.css({'display': 'block'});
+            solRow.css({'display': 'table-row'});
             solRow.removeAttr('id');
             solRow.addClass('saleOrderLine');
 
