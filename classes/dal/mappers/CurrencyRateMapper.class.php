@@ -16,22 +16,22 @@
 
 namespace crm\dal\mappers {
 
-    use crm\dal\dto\PaymentTransactionDto;
+    use crm\dal\dto\CurrencyRateDto;
 
-    class PaymentTransactionMapper extends AdvancedAbstractMysqlMapper {
+    class CurrencyRateMapper extends AdvancedAbstractMysqlMapper {
 
         private static $instance;
-        public $tableName = "payment_transactions";
+        public $tableName = "currency_rates";
 
         public static function getInstance() {
             if (self::$instance == null) {
-                self::$instance = new PaymentTransactionMapper();
+                self::$instance = new CurrencyRateMapper();
             }
             return self::$instance;
         }
 
         public function createDto() {
-            return new PaymentTransactionDto();
+            return new CurrencyRateDto();
         }
 
         public function getPKFieldName() {
@@ -42,13 +42,6 @@ namespace crm\dal\mappers {
             return $this->tableName;
         }
 
-        
-        public function getNonCancelledPaymentOrdersByCurrency($currencyId) {
-            $sql = "SELECT SUM(amount) AS amount FROM `%s` WHERE `cancelled` = 0 AND currency_id=:id";
-            $sqlQuery = sprintf($sql, $this->getTableName());
-            $qty = $this->fetchField($sqlQuery, 'amount', array("id" => $currencyId));
-            return isset($qty) ? floatval($qty) : 0;
-        }
     }
 
 }

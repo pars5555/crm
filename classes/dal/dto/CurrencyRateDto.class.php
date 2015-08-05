@@ -18,7 +18,7 @@ namespace crm\dal\dto {
 
     use \ngs\framework\dal\dto\AbstractDto;
 
-    class SaleOrderLineDto extends AbstractDto {
+    class CurrencyRateDto extends AbstractDto {
 
         // constructs class instance
         public function __construct() {
@@ -26,10 +26,7 @@ namespace crm\dal\dto {
         }
 
         // Map of DB value to Field value
-        private $mapArray = array("id" => "id", "sale_order_id" => "saleOrderId", "product_id" => "productId",
-            "product_name" => "productName", "quantity" => "quantity", "unit_price" => "unitPrice",
-            "unit_cost" => "unitCost", "total_profit" => "totalProfit", "currency_id" => "currencyId",
-            "currency_rate" => "currencyRate");
+        private $mapArray = array("id" => "id", "iso" => "iso", "amount" => "amount", "rate" => "rate", "date" => "date");
 
         // returns map array
         public function getMapArray() {

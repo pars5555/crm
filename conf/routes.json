@@ -4,7 +4,7 @@
             "action": "loads.main.main",
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.general"
+                    "action": "crm.loads.main.general.general"
                 }
             }
         }
@@ -195,7 +195,7 @@
         "action": "loads.main.main",
         "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.general"
+                    "action": "crm.loads.main.general.general"
                 }
             }
     }

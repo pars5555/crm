@@ -50,7 +50,12 @@
                     "loads/main/product/CreateLoad.class.js",
                     "loads/main/sale/OpenLoad.class.js",
                     "loads/main/sale/ListLoad.class.js",
-                    "loads/main/sale/CreateLoad.class.js"
+                    "loads/main/sale/CreateLoad.class.js",
+                    "loads/main/purchase/OpenLoad.class.js",
+                    "loads/main/purchase/ListLoad.class.js",
+                    "loads/main/purchase/CreateLoad.class.js",
+                    "loads/main/general/GeneralLoad.class.js",
+                    "loads/main/general/ProfitLoad.class.js"
                 ]
             },
             {
@@ -68,6 +73,8 @@
                 "output_file": "ngs_actions_main.js",
                 "compress": false,
                 "files": [
+                    "actions/main/CheckProductCountToAddSaleOrderLineAction.class.js"
+                    
                     ]
             }
         ]

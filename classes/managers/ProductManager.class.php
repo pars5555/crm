@@ -37,10 +37,10 @@ namespace crm\managers {
 
         public function createProduct($name, $model, $manufacturerId, $uomId) {
             $dto = $this->createDto();
-            $dto ->setName($name);
-            $dto ->setModel($model);
-            $dto ->setManufacturerId($manufacturerId);
-            $dto ->setUomId($uomId);
+            $dto->setName($name);
+            $dto->setModel($model);
+            $dto->setManufacturerId($manufacturerId);
+            $dto->setUomId($uomId);
             return $this->insertDto($dto);
         }
 
@@ -63,6 +63,76 @@ namespace crm\managers {
             return $rows;
         }
 
+        public function calculateProductQuantityInStock($productId) {
+            $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId);
+            $productSoldCount = intval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId));
+            $notSoldProductPurchaseOrderLines = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
+            $ret = 0;
+            foreach ($notSoldProductPurchaseOrderLines as $productPurchaseOrderLine) {
+                $ret += floatval($productPurchaseOrderLine->getQuantity());
+            }
+            return $ret;
+        }
+
+        public function calculateProductCost($productId) {
+            $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId);
+            $productSoldCount = intval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId));
+            $notSoldProductPurchaseOrderLines = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
+            $product_calculation_method = SettingManager::getInstance()->getSetting('product_calculation_method');
+            switch ($product_calculation_method) {
+                case 'max':
+                    return $this->findMaximumProductPriceinPurchaseOrderLines($notSoldProductPurchaseOrderLines);
+                default:
+                    return $this->calculateAverageProductPriceinPurchaseOrderLines($notSoldProductPurchaseOrderLines);
+            }
+        }
+
+        private function findMaximumProductPriceinPurchaseOrderLines($productPurchaseOrderLines) {
+            $maxPrice = 0;
+            foreach ($productPurchaseOrderLines as $productPurchaseOrderLine) {
+                $unitPrice = floatval($productPurchaseOrderLine->getUnitPrice());
+                $currencyRate = floatval($productPurchaseOrderLine->getCurrencyRate());
+                if ($unitPrice * $currencyRate > $maxPrice) {
+                    $maxPrice = $unitPrice * $currencyRate;
+                }
+            }
+            return $maxPrice;
+        }
+
+        private function calculateAverageProductPriceinPurchaseOrderLines($productPurchaseOrderLines) {
+            $sum = 0;
+            $count = 0;
+            foreach ($productPurchaseOrderLines as $productPurchaseOrderLine) {
+                $unitPrice = floatval($productPurchaseOrderLine->getUnitPrice());
+                $currencyRate = floatval($productPurchaseOrderLine->getCurrencyRate());
+                $quantity = floatval($productPurchaseOrderLine->getQuantity());
+                $sum += $unitPrice * $currencyRate;
+                $count += $quantity;
+            }
+            return $count > 0 ? $sum / $count : 0;
+        }
+
+        private function subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount) {
+            foreach ($productPurchaseOrderLines as $productPurchaseOrderLine) {
+                $quantity = floatval($productPurchaseOrderLine->getQuantity());
+                if ($quantity >= $productSoldCount) {
+                    $productPurchaseOrderLine->setQuantity($quantity - $productSoldCount);
+                    break;
+                } else {
+                    $productPurchaseOrderLine->setQuantity(0);
+                    $productSoldCount -= $quantity;
+                }
+            }
+            $ret = [];
+            foreach ($productPurchaseOrderLines as $productPurchaseOrderLine) {
+                if ($productPurchaseOrderLine->getQuantity() > 0) {
+                    $ret [] = $productPurchaseOrderLine;
+                }
+            }
+            return $ret;
+        }
+
     }
 
 }
+    

@@ -1,4 +1,4 @@
-<div class="container sale--create--container">
+<div class="container purchase--create--container">
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>
@@ -9,19 +9,19 @@
             <span style="color:green">{$ns.success_message}</span>
         </div>
     {/if}
-    <form class="createSaleOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main/do_create_sale_order">
+    <form class="createPurchaseOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main/do_create_purchase_order">
         <div class="form-group">
             <label class="label">Date</label>
             {assign date null}
             {if isset($ns.req.paymentDateYear)}
-                {assign date "`$ns.req.saleOrderDateYear`-`$ns.req.saleOrderDateMonth`-`$ns.req.saleOrderDateDay`"}
+                {assign date "`$ns.req.purchaseOrderDateYear`-`$ns.req.purchaseOrderDateMonth`-`$ns.req.purchaseOrderDateDay`"}
             {/if}
-            {html_select_date prefix='saleOrderDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
+            {html_select_date prefix='purchaseOrderDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
             {assign time null}
             {if isset($ns.req.paymentTimeHour)}
-                {assign time "`$ns.req.saleOrderTimeHour`:`$ns.req.saleOrderTimeMinute`"}
+                {assign time "`$ns.req.purchaseOrderTimeHour`:`$ns.req.purchaseOrderTimeMinute`"}
             {/if}
-            {html_select_time prefix='saleOrderTime' display_seconds=false time=$time}
+            {html_select_time prefix='purchaseOrderTime' display_seconds=false time=$time}
         </div>
         <div class="form-group">
             <label class="label">Partner</label>

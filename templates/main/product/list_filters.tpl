@@ -1,5 +1,5 @@
 <form class="filters--form" id="paymentFilters" autocomplete="off" action="{SITE_PATH}/payment/list" method="GET">
-    {if $ns.pagesCount}
+    {if $ns.pagesCount > 0}
         <div class="form-group">     
             <label>Page</label>
             <select name="pg">

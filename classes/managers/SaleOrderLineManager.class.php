@@ -42,6 +42,12 @@ namespace crm\managers {
             $dto->setQuantity($quantity);
             $dto->setUnitPrice($unitPrice);
             $dto->setCurrencyId($currencyId);
+            $productUnitCost = floatval(ProductManager::getInstance()->calculateProductCost($productId));
+            $dto->setUnitCost($productUnitCost);
+            $orderDate = SaleOrderManager::getInstance()->selectByPK($saleOrderId)->getOrderDate();
+            $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
+            $profit = $quantity * ($unitPrice - $productUnitCost) * $rate;
+            $dto->setTotalProfit($profit);
             return $this->insertDto($dto);
         }
 
@@ -64,16 +70,14 @@ namespace crm\managers {
             return $rows;
         }
 
-        
-         public function getProductCountInNonCancelledSaleOrders($productId)
-         {
-             return $this->mapper->getProductCountInNonCancelledSaleOrders($productId);
-         }
-        
-         public function getAllProductCountInNonCancelledSaleOrders()
-         {
-             return $this->mapper->getAllProductCountInNonCancelledSaleOrders();
-         }
+        public function getProductCountInNonCancelledSaleOrders($productId) {
+            return $this->mapper->getProductCountInNonCancelledSaleOrders($productId);
+        }
+
+        public function getAllProductCountInNonCancelledSaleOrders() {
+            return $this->mapper->getAllProductCountInNonCancelledSaleOrders();
+        }
+
     }
 
 }

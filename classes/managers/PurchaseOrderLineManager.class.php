@@ -54,8 +54,22 @@ namespace crm\managers {
             return $rows;
         }
 
+        public function createPurchaseOrderLine($purchaseOrderId, $productId, $quantity, $unitPrice, $currencyId) {
+            $dto = $this->createDto();
+            $dto->setPurchaseOrderId($purchaseOrderId);
+            $dto->setProductId($productId);
+            $dto->setQuantity($quantity);
+            $dto->setUnitPrice($unitPrice);
+            $dto->setCurrencyId($currencyId);
+            return $this->insertDto($dto);
+        }
+
         public function getProductCountInNonCancelledPurchaseOrders($productId) {
             return $this->mapper->getProductCountInNonCancelledPurchaseOrders($productId);
+        }
+
+        public function getNonCancelledProductPurchaseOrders($productId) {
+            return $this->mapper->getNonCancelledProductPurchaseOrders($productId);
         }
 
         public function getAllProductCountInNonCancelledPurchaseOrders() {

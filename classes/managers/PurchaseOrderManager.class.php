@@ -63,19 +63,19 @@ namespace crm\managers {
                 $purchaseOrderLinesDtos = PurchaseOrderLineManager::getInstance()->getPurchaseOrderLinesFull(['purchase_order_id', 'in', '(' . implode(',', $purchaseOrderIds) . ')']);
                 $amount = [];
                 foreach ($purchaseOrderLinesDtos as $purchaseOrderLine) {
-                        $purchaseOrderId = intval($purchaseOrderLine->getSaleOrderId());
-                        $currencyId = intval($purchaseOrderLine->getCurrencyId());
-                        $unitPrice = floatval($purchaseOrderLine->getUnitPrice());
-                        $quantity = floatval($purchaseOrderLine->getQuantity());
-                        if (!array_key_exists($purchaseOrderId, $amount)) {
-                            $amount[$purchaseOrderId] = [];
-                        }
-                        if (!array_key_exists($currencyId, $amount[$purchaseOrderId])) {
-                            $amount[$purchaseOrderId][$currencyId] = 0;
-                        }
-
-                        $amount[$purchaseOrderId][$currencyId] += $unitPrice * $quantity;
+                    $purchaseOrderId = intval($purchaseOrderLine->getPurchaseOrderId());
+                    $currencyId = intval($purchaseOrderLine->getCurrencyId());
+                    $unitPrice = floatval($purchaseOrderLine->getUnitPrice());
+                    $quantity = floatval($purchaseOrderLine->getQuantity());
+                    if (!array_key_exists($purchaseOrderId, $amount)) {
+                        $amount[$purchaseOrderId] = [];
                     }
+                    if (!array_key_exists($currencyId, $amount[$purchaseOrderId])) {
+                        $amount[$purchaseOrderId][$currencyId] = 0;
+                    }
+
+                    $amount[$purchaseOrderId][$currencyId] += $unitPrice * $quantity;
+                }
             }
             if (!empty($purchaseOrderIds)) {
                 $purchaseOrderLinesDtosMappedByPurchaseOrderId = $this->mapPurchaseOrderLinesByPurchaseOrderId($purchaseOrderLinesDtos);
@@ -97,11 +97,19 @@ namespace crm\managers {
             return $rows;
         }
 
+        public function createPurchaseOrder($partnerId, $date, $note) {
+            $dto = $this->createDto();
+            $dto->setPartnerId($partnerId);
+            $dto->setOrderDate($date);
+            $dto->setNote($note);
+            return $this->insertDto($dto);
+        }
+
         private function mapPurchaseOrderLinesByPurchaseOrderId($purchaseOrderLinesDtos) {
             $ret = [];
             foreach ($purchaseOrderLinesDtos as $purchaseOrderLinesDto) {
-                $soId = $purchaseOrderLinesDto->getPurchaseOrderId();
-                $ret[$soId][] = $purchaseOrderLinesDto;
+                $poId = $purchaseOrderLinesDto->getPurchaseOrderId();
+                $ret[$poId][] = $purchaseOrderLinesDto;
             }
             return $ret;
         }

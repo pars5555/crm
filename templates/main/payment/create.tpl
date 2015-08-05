@@ -16,7 +16,7 @@
             {if isset($ns.req.paymentDateYear)}
                 {assign date "`$ns.req.paymentDateYear`-`$ns.req.paymentDateMonth`-`$ns.req.paymentDateDay`"}
             {/if}
-            {html_select_date prefix='paymentDate' start_year=2010 end_year=2020 time=$date}
+            {html_select_date prefix='paymentDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
             {assign time null}
             {if isset($ns.req.paymentTimeHour)}
                 {assign time "`$ns.req.paymentTimeHour`:`$ns.req.paymentTimeMinute`"}

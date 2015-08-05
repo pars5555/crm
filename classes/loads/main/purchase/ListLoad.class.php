@@ -9,39 +9,46 @@
  * @version 2.0.0
  */
 
-namespace crm\loads\main\payment {
+namespace crm\loads\main\purchase {
 
-use crm\loads\NgsLoad;
-use crm\managers\PartnerManager;
-use crm\managers\PaymentTransactionManager;
-use crm\security\RequestGroups;
-use NGS;
+    use crm\loads\NgsLoad;
+    use crm\managers\CurrencyManager;
+    use crm\managers\PartnerManager;
+    use crm\managers\PaymentMethodManager;
+    use crm\managers\ProductManager;
+    use crm\managers\PurchaseOrderManager;
+    use crm\security\RequestGroups;
+    use NGS;
 
     class ListLoad extends NgsLoad {
 
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
+            $this->addParam('payment_methods', PaymentMethodManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
+            $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
+            $this->addParam('partners', PartnerManager::getInstance()->selectAdvance('*', [], ['name']));
+            $this->addParam('products', ProductManager::getInstance()->selectAdvance('*', [], ['name']));
+
             $limit = 100;
             list($where, $offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
-            $payments = PaymentTransactionManager::getInstance()->getPaymentListFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
-            $this->addParam('payments', $payments);
-            $count = PaymentTransactionManager::getInstance()->getLastSelectAdvanceRowsCount();
-            if (count($payments) == 0 && $count > 0) {
+            $purchaseOrders = PurchaseOrderManager::getInstance()->getPurchaseOrdersFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            $this->addParam('purchaseOrders', $purchaseOrders);
+            $count = PurchaseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
+            if (count($purchaseOrders) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }
             $pagesCount = intval($count / $limit);
             $this->addParam('pagesCount', $pagesCount);
-            $this->addParam('partners', PartnerManager::getInstance()->selectAdvance('*', [], ['name']));
+
+            $currencyManager = CurrencyManager::getInstance();
+            $this->addParam('currencies', $currencyManager->mapDtosById($currencyManager->selectAdvance('*', ['active', '=', 1])));
         }
 
         private function redirectIncludedParamsExeptPaging() {
-            $url = "payment/list?";
+            $url = "purchase.list?";
             if (isset(NGS()->args()->prt)) {
-                $url .= "prt=" . NGS()->args()->prt . '&';
-            }
-            if (isset(NGS()->args()->cur)) {
-                $url .= "cur=" . NGS()->args()->cur . '&';
+                $url .= "prd=" . NGS()->args()->prt . '&';
             }
             if (isset(NGS()->args()->srt)) {
                 $url .= "srt=" . NGS()->args()->srt . '&';
@@ -66,17 +73,6 @@ use NGS;
                 $where[] = $selectedFilterPartnerId;
             }
 
-            //currency
-            $selectedFilterCurrencyId = 0;
-            if (isset(NGS()->args()->cur)) {
-                $selectedFilterCurrencyId = intval(NGS()->args()->cur);
-            }
-            $this->addParam('selectedFilterCurrencyId', $selectedFilterCurrencyId);
-            if ($selectedFilterCurrencyId > 0) {
-                $where[] = 'currency_id';
-                $where[] = '=';
-                $where[] = $selectedFilterCurrencyId;
-            }
 
             //pageing
             $selectedFilterPage = 1;
@@ -111,7 +107,7 @@ use NGS;
         }
 
         public function getTemplate() {
-            return NGS()->getTemplateDir() . "/main/payment/list.tpl";
+            return NGS()->getTemplateDir() . "/main/purchase/list.tpl";
         }
 
         public function getRequestGroup() {
@@ -119,7 +115,7 @@ use NGS;
         }
 
         public function getSortByFields() {
-            return ['date' => 'Date', 'amount' => 'Amount'];
+            return ['order_date' => 'Date'];
         }
 
     }

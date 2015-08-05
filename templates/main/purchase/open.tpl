@@ -1,4 +1,4 @@
-<div class="container sale--open--container">
+<div class="container purchase--open--container">
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>
@@ -9,63 +9,63 @@
             <span style="color:green">{$ns.success_message}</span>
         </div>
     {/if}
-    {if isset($ns.saleOrder)}
+    {if isset($ns.purchaseOrder)}
         <div>
-            id: {$ns.saleOrder->getId()}
+            id: {$ns.purchaseOrder->getId()}
         </div>
         <div>
-            Date: {$ns.saleOrder->getOrderDate()}
+            Date: {$ns.purchaseOrder->getOrderDate()}
         </div>
         <div>
-            Partner: {$ns.saleOrder->getPartnerDto()->getName()}
+            Partner: {$ns.purchaseOrder->getPartnerDto()->getName()}
         </div>
         <div>
-            Note : {$ns.saleOrder->getNote()}
+            Note : {$ns.purchaseOrder->getNote()}
         </div>
-        {if $saleOrder->getCancelled() == 0}
-            <form action="{SITE_PATH}/dyn/main/do_cancel_sale_order">
-                <input type="hidden" name="id" value="{$ns.saleOrder->getId()}"/>
+        {if $purchaseOrder->getCancelled() == 0}
+            <form action="{SITE_PATH}/dyn/main/do_cancel_purchase_order">
+                <input type="hidden" name="id" value="{$ns.purchaseOrder->getId()}"/>
                 <div class="form-group">
                     <label class="label">Note</label>
                     <textarea class="text" name="note"></textarea>
                 </div>
-                <a class="button blue" id="cancelSaleOrderButton" href="javascript:void(0);">Cancel</a>
+                <a class="button blue" id="cancelPurchaseOrderButton" href="javascript:void(0);">Cancel</a>
             </form>
         {else}
             Cancelled
         {/if}
-        <form id="saleOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main/do_save_sale_order_lines">
+        <form id="purchaseOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main/do_save_purchase_order_lines">
             <h2 class="title">Order Lines</h2>
-            <div class="table_striped" id="saleOrderLinesContainer">
-                <div class="table_header_group">                    
+            <div class="table_striped" id="purchaseOrderLinesContainer">
+                <div class="table_header_group">                  
                     <span class="table-cell"> Product </span>
                     <span class="table-cell"> Quantity </span>
                     <span class="table-cell"> Unit Price </span>
                     <span class="table-cell"> Currency </span>
                 </div> 
-                {if $ns.saleOrder->getSaleOrderLinesDtos()|@count > 0}
-                    {assign saleOrderLines $ns.saleOrder->getSaleOrderLinesDtos()}
-                    {foreach from=$saleOrderLines item=saleOrderLine}
-                        <div class="saleOrderLine table-row">
+                {if $ns.purchaseOrder->getPurchaseOrderLinesDtos()|@count > 0}
+                    {assign purchaseOrderLines $ns.purchaseOrder->getPurchaseOrderLinesDtos()}
+                    {foreach from=$purchaseOrderLines item=purchaseOrderLine}
+                        <div class="purchaseOrderLine table-row">
                             <div class="table-cell">
-                                <select class="saleOrderLinesSelectProduct">
+                                <select class="purchaseOrderLinesSelectProduct">
                                     {foreach from=$ns.products item=p}
-                                        <option value="{$p->getId()}" {if $p->getId() == $saleOrderLine->getProductId()}selected{/if}>{$p->getName()}</option>
+                                        <option value="{$p->getId()}" {if $p->getId() == $purchaseOrderLine->getProductId()}selected{/if}>{$p->getName()}</option>
                                     {/foreach}
                                 </select>
                             </div>
                             <div class="table-cell">
-                                <input class="text" type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity" value="{$saleOrderLine->getQuantity()}"/>
+                                <input class="text" type="number" step="0.1"  min="0.1" class="purchaseOrderLinesSelectQuantity" value="{$purchaseOrderLine->getQuantity()}"/>
                             </div>
                             <div class="table-cell">
-                                <input class="text" type="number" step="0.01" min="0.01" class="saleOrderLinesSelectUnitPrice" value="{$saleOrderLine->getUnitPrice()}"/>
+                                <input class="text" type="number" step="0.01" min="0.01" class="purchaseOrderLinesSelectUnitPrice" value="{$purchaseOrderLine->getUnitPrice()}"/>
                             </div>
                             <div class="table-cell">
                             </div>
                             <div class="table-cell">
-                                <select class="saleOrderLinesSelectCurrency">               
+                                <select class="purchaseOrderLinesSelectCurrency">               
                                     {foreach from=$ns.currencies item=c}
-                                        <option value="{$c->getId()}"  {if $c->getId() == $saleOrderLine->getCurrencyId()}selected{/if}>
+                                        <option value="{$c->getId()}"  {if $c->getId() == $purchaseOrderLine->getCurrencyId()}selected{/if}>
                                             {$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})
                                         </option>
                                     {/foreach}
@@ -76,14 +76,14 @@
                     {/foreach}
                 {/if}
             </div>
-            <input type="hidden" value="{$ns.saleOrder->getId()}" name="sale_order_id"/>
+            <input type="hidden" value="{$ns.purchaseOrder->getId()}" name="purchase_order_id"/>
         </form>
 
-        {*                           ADD NEW SALE OREDER LINE                                 *}
-        <div class="table_striped add_new_sale_order_line">
+        {*                           ADD NEW PURCHASE OREDER LINE                                 *}
+        <div class="table_striped add_new_purchase_order_line">
             <div class="table-row">
                 <div class="table-cell">
-                    <select id="saleOrderLineProductId">                       
+                    <select id="purchaseOrderLineProductId">                       
                         <option value="0">Select...</option>
                         {foreach from=$ns.products item=p}
                             <option value="{$p->getId()}">{$p->getName()}</option>
@@ -91,13 +91,13 @@
                     </select>
                 </div>
                 <div class="table-cell">
-                    <input class="text" type="number" step="0.1"  min="0.1" id="saleOrderLineQuantity"/>
+                    <input class="text" type="number" step="0.1"  min="0.1" id="purchaseOrderLineQuantity"/>
                 </div>
                 <div class="table-cell">
-                    <input class="text" type="number" step="0.01"  min="0.01" id="saleOrderLineUnitPrice"/>
+                    <input class="text" type="number" step="0.01"  min="0.01" id="purchaseOrderLineUnitPrice"/>
                 </div>
                 <div class="table-cell">
-                    <select id="saleOrderLineCurrencyId">               
+                    <select id="purchaseOrderLineCurrencyId">               
                         <option value="0">Select...</option>
                         {foreach from=$ns.currencies item=c}
                             <option value="{$c->getId()}">{$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})</option>
@@ -105,11 +105,11 @@
                     </select>
                 </div>
                 <div class="table-cell">
-                    <a class="button blue" href="javascript:void(0);" id="addSaleOrderLineButton">Add</a>
+                    <a class="button blue" href="javascript:void(0);" id="addPurchaseOrderLineButton">Add</a>
                 </div>
             </div>
             <div>
-                <span id="saleOrderLineErrorMessage" style="color:red"></span>
+                <span id="purchaseOrderLineErrorMessage" style="color:red"></span>
             </div>
         </div>
 
@@ -119,24 +119,24 @@
 </div>
 
 
-<div class="table-row" id="saleOrderLineTemplate" style="display:none">
+<div class="table-row" id="purchaseOrderLineTemplate" style="display:none">
     <div class="table-cell">
-        <select class="saleOrderLinesSelectProduct">
+        <select class="purchaseOrderLinesSelectProduct">
             {foreach from=$ns.products item=p}
                 <option value="{$p->getId()}">{$p->getName()}</option>
             {/foreach}
         </select>
     </div>
     <div class="table-cell">
-        <input  type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text"/>
+        <input  type="number" step="0.1"  min="0.1" class="purchaseOrderLinesSelectQuantity text"/>
     </div>
     <div class="table-cell">
-        <input  type="number" step="0.01" min="0.01" class="saleOrderLinesSelectUnitPrice text"/>
+        <input  type="number" step="0.01" min="0.01" class="purchaseOrderLinesSelectUnitPrice text"/>
     </div>
     <div class="table-cell">
     </div>
     <div class="table-cell">
-        <select class="saleOrderLinesSelectCurrency">               
+        <select class="purchaseOrderLinesSelectCurrency">               
             {foreach from=$ns.currencies item=c}
                 <option value="{$c->getId()}">{$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})</option>
             {/foreach}

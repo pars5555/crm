@@ -2,10 +2,8 @@
 
 namespace crm\actions {
 
-use crm\security\RequestGroups;
-use ngs\framework\AbstractAction;
-
-
+    use crm\security\RequestGroups;
+    use ngs\framework\AbstractAction;
 
     abstract class BaseAction extends AbstractAction {
 
