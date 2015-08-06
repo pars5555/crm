@@ -9,7 +9,7 @@
  * @version 2.0.0
  */
 
-namespace crm\loads\main\payment {
+namespace crm\loads\main\billing {
 
 use crm\loads\NgsLoad;
 use crm\managers\CurrencyManager;
@@ -25,10 +25,10 @@ use NGS;
             $this->initSuccessMessages();
             $limit = 100;
             list($where, $offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
-            $payments = PaymentTransactionManager::getInstance()->getPaymentListFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
-            $this->addParam('payments', $payments);
+            $billing = PaymentTransactionManager::getInstance()->getPaymentListFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            $this->addParam('billings', $billing);
             $count = PaymentTransactionManager::getInstance()->getLastSelectAdvanceRowsCount();
-            if (count($payments) == 0 && $count > 0) {
+            if (count($billing) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }
             $pagesCount = intval($count / $limit);
@@ -38,7 +38,7 @@ use NGS;
         }
 
         private function redirectIncludedParamsExeptPaging() {
-            $url = "payment/list?";
+            $url = "billing/list?";
             if (isset(NGS()->args()->prt)) {
                 $url .= "prt=" . NGS()->args()->prt . '&';
             }
@@ -82,12 +82,13 @@ use NGS;
                 $where[] = '=';
                 $where[] = $selectedFilterCurrencyId;
             }
-            //load only payment transation (not billling)
+
+            //load only billing transation (not payment)
             if (!empty($where)) {
                 $where[] = 'AND';
             }
             $where[] = 'amount';
-            $where[] = '>';
+            $where[] = '<';
             $where[] = 0;
 
             //pageing
@@ -123,7 +124,7 @@ use NGS;
         }
 
         public function getTemplate() {
-            return NGS()->getTemplateDir() . "/main/payment/list.tpl";
+            return NGS()->getTemplateDir() . "/main/billing/list.tpl";
         }
 
         public function getRequestGroup() {

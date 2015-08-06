@@ -23,7 +23,9 @@
         </div> 
         {foreach from=$ns.purchaseOrders item=purchaseOrder}
             <div class="table-row" {if $purchaseOrder->getCancelled() == 1}style="background: red"{/if}>
-                <span class="table-cell">{$purchaseOrder->getId()} </span>
+                <a class="table-cell view_item" href="{SITE_PATH}/purchase/{$purchaseOrder->getId()}">
+                    <span class="table-cell">{$purchaseOrder->getId()} </span>
+                </a>
                 <span class="table-cell"> {$purchaseOrder->getPartnerDto()->getName()} </span>
                 <span class="table-cell"> {$purchaseOrder->getOrderDate()} </span>
 

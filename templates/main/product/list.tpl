@@ -23,7 +23,9 @@
         </div> 
         {foreach from=$ns.products item=product}
             <div class="table-row">
-                <span class="table-cell">{$product->getId()} </span>
+                <a class="table-cell view_item" href="{SITE_PATH}/product/{$product->getId()}">
+                    <span class="table-cell">{$product->getId()} </span>
+                </a>
                 <span class="table-cell"> {$product->getName()} </span>
                 <span class="table-cell"> {$product->getModel()} </span>
                 <span class="table-cell"> {$product->getManufacturerDto()->getName()} </span>

@@ -120,6 +120,40 @@
         }
 
     ],
+    "billing": [
+        {
+            "action": "loads.main.main",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.billing.list"
+                }
+            }
+        },
+        {
+            "action": "loads.main.main",
+            "route": "create",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.billing.create"
+                }
+            }
+
+        },       
+        {
+            "action": "loads.main.main",
+            "route": "[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.billing.open"
+                }
+            }
+        }
+
+    ],
     "product": [
         {
             "action": "loads.main.main",

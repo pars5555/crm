@@ -26,7 +26,9 @@
         </div> 
         {foreach from=$ns.partners item=partner}
             <div class="table-row">
-                <span class="table-cell">{$partner->getId()} </span>
+                <a class="table-cell view_item" href="{SITE_PATH}/partner/{$partner->getId()}">
+                    <span class="table-cell">{$partner->getId()} </span>
+                </a>
                 <span class="table-cell">{$partner->getName()} </span>
                 <span class="table-cell"> {$partner->getEmail()} </span>
                 <span class="table-cell"> {$partner->getAddress()} </span>
