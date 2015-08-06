@@ -22,7 +22,7 @@
             <span class="table-cell"> View </span>
         </div> 
         {foreach from=$ns.payments item=payment}
-            <div class="table-row" href="{SITE_PATH}/payment/{$payment->getId()}">
+            <div class="table-row" {if $payment->getCancelled() == 1}style="background: red"{/if} href="{SITE_PATH}/payment/{$payment->getId()}">
                 <span class="table-cell">{$payment->getId()} </span>
                 <span class="table-cell"> {$payment->getDate()} </span>
                 <span class="table-cell"> {$payment->getPartnerDto()->getName()} </span>

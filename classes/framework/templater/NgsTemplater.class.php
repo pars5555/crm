@@ -147,6 +147,9 @@ namespace ngs\framework\templater {
         if (isset($arr["msg"])) {
           $jsonArr["msg"] = $arr["msg"];
         }
+        if (isset($arr["params"])) {
+          $jsonArr["params"] = $arr["params"];
+        }
       } else {
         if (isset($arr["_params_"])) {
           $jsonArr = array_merge($jsonArr, $arr["_params_"]);
@@ -185,6 +188,7 @@ namespace ngs\framework\templater {
       }
       $jsString .= '<script type="text/javascript">';
       $jsString .= "NGS.setInitialLoad('" . NGS()->getRoutesEngine()->getContentLoad() . "', '" . json_encode($this->params) . "');";
+      $jsString .= 'NGS.setModule("' .NGS()->getModuleName() . '");';
       $jsString .= 'NGS.setTmst("' . time() . '");';
       $jsString .= 'var NGS_URL = "' . HTTP_HOST . '";';
       $jsString .= 'var NGS_PATH = "//' . HTTP_HOST . '";';

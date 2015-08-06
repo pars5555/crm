@@ -35,6 +35,10 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function getPartnerPurchaseOrders($partnerId) {
+            return $this->getPurchaseOrdersFull(['partner_id', '=', $partnerId]);
+        }
+
         public function getPartnersPurchaseOrders($partnerIds) {
             $rows = $this->getPurchaseOrdersFull(['partner_id', 'in', '(' . implode(',', $partnerIds) . ')']);
             $ret = array();

@@ -22,7 +22,7 @@
             <span class="table-cell"> View </span>
         </div> 
         {foreach from=$ns.saleOrders item=saleOrder}
-            <div class="table-row">
+            <div class="table-row" {if $saleOrder->getCancelled() == 1}style="background: red"{/if}>
                 <span class="table-cell">{$saleOrder->getId()} </span>
                 <span class="table-cell"> {$saleOrder->getPartnerDto()->getName()} </span>
                 <span class="table-cell"> {$saleOrder->getOrderDate()} </span>
@@ -50,6 +50,6 @@
         {/foreach}
     </div>
 
-    <a class="button blue" href="{SITE_PATH}/sale/create">create</a>
+    <a href="{SITE_PATH}/sale/create"><img src="{SITE_PATH}/img/new_order.png"/></a>
 
 </div>

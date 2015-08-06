@@ -91,8 +91,12 @@ namespace crm\managers {
             return $this->insertDto($dto);
         }
 
+        public function getPartnerTransactions($partnerId) {
+            return $this->selectAdvance('*', ['partner_id', '=', $partnerId]);
+        }
+
         public function getPartnersTransactions($partnerIds) {
-            $rows = $this->selectAdvance('*', ['partner_id', 'in', '('.implode(',', $partnerIds).')']);
+            $rows = $this->selectAdvance('*', ['partner_id', 'in', '(' . implode(',', $partnerIds) . ')']);
             $ret = array();
             foreach ($partnerIds as $partnerId) {
                 $ret[$partnerId] = [];
@@ -102,7 +106,7 @@ namespace crm\managers {
             }
             return $ret;
         }
-        
+
         public function getNonCancelledPaymentOrdersByCurrency($currencyId) {
             return $this->mapper->getNonCancelledPaymentOrdersByCurrency($currencyId);
         }

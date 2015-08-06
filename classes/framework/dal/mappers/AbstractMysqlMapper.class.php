@@ -30,10 +30,10 @@ namespace ngs\framework\dal\mappers {
 				$usePdo = false;
 			}
 			if ($usePdo) {
-				$host = NGS()->getNgsConfig()->DB->mysql->host;
-				$user = NGS()->getNgsConfig()->DB->mysql->user;
-				$pass = NGS()->getNgsConfig()->DB->mysql->pass;
-				$name = NGS()->getNgsConfig()->DB->mysql->name;
+				$host = NGS()->getConfig()->DB->mysql->host;
+				$user = NGS()->getConfig()->DB->mysql->user;
+				$pass = NGS()->getConfig()->DB->mysql->pass;
+				$name = NGS()->getConfig()->DB->mysql->name;
 				$this->dbms = \ngs\framework\dal\connectors\MysqlPDO::getInstance($host, $user, $pass, $name);
 			}
 		}

@@ -1,6 +1,7 @@
 NGS.AbstractLoad = NGS.Class({
 	_package : "",
 	_name : "",
+	_action: "",
 	params : {},
 	_args : {},
 	permalink : null,
@@ -25,8 +26,7 @@ NGS.AbstractLoad = NGS.Class({
       "load" : this
     };
     document.dispatchEvent(NGS.events.onAfterLoad);
-		var load = this.getPackage() + "." + this.getName();
-		var laodsArr = NGS.getNestedLoadByParent(load);
+		var laodsArr = NGS.getNestedLoadByParent(this.getAction());
 		if (laodsArr == null) {
 			return;
 		}
@@ -88,6 +88,27 @@ NGS.AbstractLoad = NGS.Class({
 	getOwnContainer : function() {
 		return "";
 	},
+	
+	/**
+	 * Abstract function, Child classes should be override this function,
+	 * and should return the name of the server load, formated with framework's URL nameing convention
+	 * @return The name of the server load, formated with framework's URL nameing convention
+	 * @see
+	 */
+	setAction : function(action) {
+		this._action = action;
+	},
+
+	/**
+	 * Returns the server side package of the load, if there are included packages, "_" delimiter should be used
+	 *
+	 * @return  The server side package of the load
+	 * @see
+	 */
+	getAction : function() {
+		return this._action;
+	},
+
 
 	/**
 	 * Abstract function, Child classes should be override this function,

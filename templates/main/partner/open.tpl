@@ -22,6 +22,33 @@
         <div>
             address: {$ns.partner->getAddress()}
         </div>
-       
+
     {/if}
+
+    <div>
+        Sale Orders : <a class="table-cell link" href="{SITE_PATH}/sale/list?prt={$ns.partner->getId()}"> {$ns.partnerSaleOrders|@count}</a>
+    </div>
+
+    <div>
+        Purchase Orders : <a class="table-cell link" href="{SITE_PATH}/purchase/list?prt={$ns.partner->getId()}">{$ns.partnerPurchaseOrders|@count}</a>
+    </div>
+    <div>
+        Transactions: <a class="table-cell link" href="{SITE_PATH}/payment/list?prt={$ns.partner->getId()}">{$ns.partnerTransactions|@count}</a>
+    </div>
+    <div>
+        {if !empty($partnerDept)}
+            {foreach from=$partnerDept key=currencyId item=amount}
+                <span style="white-space-collapse: discard;">
+                    {assign currencyDto $ns.currencies[$currencyId]}
+                    {if $currencyDto->getSymbolPosition() == 'left'}
+                        {$currencyDto->getTemplateChar()}
+                    {/if}
+                    {$amount}
+                    {if $currencyDto->getSymbolPosition() == 'right'}
+                        {$currencyDto->getTemplateChar()}
+                    {/if}
+                </span>
+            {/foreach}
+        {/if}
+    </div>
 </div>

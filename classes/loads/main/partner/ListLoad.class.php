@@ -12,6 +12,7 @@
 namespace crm\loads\main\partner {
 
     use crm\loads\NgsLoad;
+    use crm\managers\CalculationManager;
     use crm\managers\CurrencyManager;
     use crm\managers\PartnerManager;
     use crm\managers\PaymentTransactionManager;
@@ -34,11 +35,11 @@ namespace crm\loads\main\partner {
             $partnersPurchaseOrdersMappedByPartnerId = PurchaseOrderManager::getInstance()->getPartnersPurchaseOrders($partnerIds);
             $partnersTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersTransactions($partnerIds);
 
-            $partnerDept = $this->calculatePartnerDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersTransactionsMappedByPartnerId);
+            $partnersDept = CalculationManager::getInstance()->calculatePartnersDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersTransactionsMappedByPartnerId);
             $this->addParam('partnersSaleOrdersMappedByPartnerId', $partnersSaleOrdersMappedByPartnerId);
             $this->addParam('partnersPurchaseOrdersMappedByPartnerId', $partnersPurchaseOrdersMappedByPartnerId);
             $this->addParam('partnersTransactionsMappedByPartnerId', $partnersTransactionsMappedByPartnerId);
-            $this->addParam('partnerDept', $partnerDept);
+            $this->addParam('partnersDept', $partnersDept);
 
             $this->addParam('partners', $partners);
             $count = PartnerManager::getInstance()->getLastSelectAdvanceRowsCount();
@@ -50,61 +51,6 @@ namespace crm\loads\main\partner {
 
             $currencyManager = CurrencyManager::getInstance();
             $this->addParam('currencies', $currencyManager->mapDtosById($currencyManager->selectAdvance('*', ['active', '=', 1], ['name'])));
-        }
-
-        private function calculatePartnerDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersTransactionsMappedByPartnerId) {
-            $partnersDept = [];
-            foreach ($partnersSaleOrdersMappedByPartnerId as $partnerId => $saleOrders) {
-                foreach ($saleOrders as $saleOrder) {
-                    if ($saleOrder->getCancelled() == 1) {
-                        continue;
-                    }
-                    $totalAmount = $saleOrder->getTotalAmount();
-                    foreach ($totalAmount as $currencyId => $amount) {
-                        if (!array_key_exists($partnerId, $partnersDept)) {
-                            $partnersDept[$partnerId] = [];
-                        }
-                        if (!array_key_exists($currencyId, $partnersDept[$partnerId])) {
-                            $partnersDept[$partnerId][$currencyId] = 0;
-                        }
-                        $partnersDept[$partnerId][$currencyId] += $amount;
-                    }
-                }
-            }
-            foreach ($partnersPurchaseOrdersMappedByPartnerId as $partnerId => $purchaseOrders) {
-                foreach ($purchaseOrders as $purchaseOrder) {
-                    if ($purchaseOrder->getCancelled() == 1) {
-                        continue;
-                    }
-                    $totalAmount = $purchaseOrder->getTotalAmount();
-                    foreach ($totalAmount as $currencyId => $amount) {
-                        if (!array_key_exists($partnerId, $partnersDept)) {
-                            $partnersDept[$partnerId] = [];
-                        }
-                        if (!array_key_exists($currencyId, $partnersDept[$partnerId])) {
-                            $partnersDept[$partnerId][$currencyId] = 0;
-                        }
-                        $partnersDept[$partnerId][$currencyId] += $amount;
-                    }
-                }
-            }
-            foreach ($partnersTransactionsMappedByPartnerId as $partnerId => $transactions) {
-                foreach ($transactions as $transaction) {
-                    if ($transaction->getCancelled() == 1) {
-                        continue;
-                    }
-                    $currencyId = $transaction->getCurrencyId();
-                    $unitPrice = floatval($transaction->getAmount());
-                    if (!array_key_exists($partnerId, $partnersDept)) {
-                        $partnersDept[$partnerId] = [];
-                    }
-                    if (!array_key_exists($currencyId, $partnersDept[$partnerId])) {
-                        $partnersDept[$partnerId][$currencyId] = 0;
-                    }
-                    $partnersDept[$partnerId][$currencyId] += $unitPrice;
-                }
-            }
-            return $partnersDept;
         }
 
         private function redirectIncludedParamsExeptPaging() {

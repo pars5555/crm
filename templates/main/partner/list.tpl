@@ -31,8 +31,8 @@
                 <span class="table-cell"> {$partner->getEmail()} </span>
                 <span class="table-cell"> {$partner->getAddress()} </span>
                 <span  class="table-cell"> 
-                    {if isset($partnerDept[$partner->getId()])}
-                        {foreach from=$partnerDept[$partner->getId()] key=currencyId item=amount}
+                    {if isset($partnersDept[$partner->getId()])}
+                        {foreach from=$partnersDept[$partner->getId()] key=currencyId item=amount}
                             <span style="white-space-collapse: discard;">
                                 {assign currencyDto $ns.currencies[$currencyId]}
                                 {if $currencyDto->getSymbolPosition() == 'left'}
@@ -56,6 +56,5 @@
         {/foreach}
     </div>
 
-    <a class="button blue" href="{SITE_PATH}/partner/create">create</a>
-
+    <a href="{SITE_PATH}/partner/create"><img src="{SITE_PATH}/img/add.png"/></a>
 </div>

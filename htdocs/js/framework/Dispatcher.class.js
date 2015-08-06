@@ -99,8 +99,7 @@ NGS.Dispatcher = {
 	 * @see
 	 */
 	computeUrl : function() {
-		//var _package = arguments[0].replace(".", "/");
-		var _package = arguments[0].substring(arguments[0].lastIndexOf(".") + 1);
+		var _package = arguments[0].replace(".", "_");
 		var command = "";
 		switch(arguments.length) {
 		case 2:
@@ -111,7 +110,11 @@ NGS.Dispatcher = {
 		if (NGS.getConfig().dynContainer != "") {
 			dynContainer = "/" + NGS.getConfig().dynContainer + "/";
 		}
-		return this.baseUrl + dynContainer + _package + "/" + command;
+		var module = "";
+		if (NGS.getModule() != null) {
+			module = NGS.getModule() + "/";
+		}
+		return this.baseUrl + dynContainer + module + _package + "/" + command;
 	}
 };
 

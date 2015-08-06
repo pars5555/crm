@@ -1,4 +1,13 @@
 {
+    "language": [
+        {
+            "action": "actions.main.set_language",
+            "route": "[:lang]",
+            "constraints": {
+                "lang": "[a-z]+"
+            }
+        }
+    ],
     "general": [
         {
             "action": "loads.main.main",

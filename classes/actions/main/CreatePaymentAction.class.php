@@ -35,7 +35,7 @@ namespace crm\actions\main {
 
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Payment Successfully created!';
-            $this->redirect('payment/create');
+            $this->redirect('payment/'.$paymentId);
         }
 
         private function getFormData() {

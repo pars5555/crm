@@ -39,12 +39,13 @@ class NGS {
 
   public function __construct() {
     if (defined("DEFAULT_NS")) {
-      $this -> DEFAULT_NS = DEFAULT_NS;
+      $this->DEFAULT_NS = DEFAULT_NS;
     }
+    $this->setModuleName($this->DEFAULT_NS);
     if (defined("MODULES_ENABLE") && MODULES_ENABLE == true) {
-      $this -> isModuleEnable = MODULES_ENABLE;
+      $this->isModuleEnable = MODULES_ENABLE;
     }
-    $this -> registerAutoload();
+    $this->registerAutoload();
   }
 
   /**
@@ -64,15 +65,19 @@ class NGS {
   }
 
   public function isModuleEnable() {
-    return $this -> isModuleEnable;
+    return $this->isModuleEnable;
   }
 
   public function setModuleName($module) {
-    $this -> moduleName = $module;
+    $this->moduleName = $module;
   }
 
   public function getModuleName() {
-    return $this -> moduleName;
+    return $this->moduleName;
+  }
+
+  public function getDefaultModule() {
+    return $this->DEFAULT_NS;
   }
 
   /**
@@ -82,13 +87,13 @@ class NGS {
    * @return String rootDir
    */
   public function getRootDirByModule($modulePrefix = "") {
-    if ($modulePrefix == "" && $this -> getModuleName() != null) {
-      return NGS_ROOT . "/" . MODULES_DIR . "/" . $this -> getModuleName();
+    if ($modulePrefix == "" && $this->getModuleName() != null) {
+      return NGS_ROOT . "/" . MODULES_DIR . "/" . $this->getModuleName();
     }
-    if ($modulePrefix == "" || $modulePrefix == $this -> FRAMEWORK_NS || $this -> DEFAULT_NS == $modulePrefix) {
+    if ($modulePrefix == "" || $modulePrefix == $this->FRAMEWORK_NS || $this->DEFAULT_NS == $modulePrefix) {
       return NGS_ROOT;
     }
-    if (($modulePrefix == $this -> getModuleName() || is_dir(NGS_ROOT . "/" . MODULES_DIR . "/" . $modulePrefix))) {
+    if (($modulePrefix == $this->getModuleName() || is_dir(NGS_ROOT . "/" . MODULES_DIR . "/" . $modulePrefix))) {
       return NGS_ROOT . "/" . MODULES_DIR . "/" . $modulePrefix;
     }
   }
@@ -100,10 +105,10 @@ class NGS {
    * @return array config
    */
   public function getNgsConfig() {
-    if (isset($this -> ngsConfig)) {
-      return $this -> ngsConfig;
+    if (isset($this->ngsConfig)) {
+      return $this->ngsConfig;
     }
-    return $this -> ngsConfig = json_decode(file_get_contents($this -> getRootDirByModule($this -> DEFAULT_NS) . "/" . CONF_DIR . "/config_" . $this -> getShortEnvironment() . ".json"));
+    return $this->ngsConfig = json_decode(file_get_contents($this->getRootDirByModule($this->DEFAULT_NS) . "/" . CONF_DIR . "/config_" . $this->getShortEnvironment() . ".json"));
   }
 
   /**
@@ -114,18 +119,18 @@ class NGS {
    * @return array config
    */
   public function getConfig($prefix = null) {
-    if ($this -> getModuleName() == null) {
-      return $this -> getNgsConfig();
+    if ($this->getModuleName() == null) {
+      return $this->getNgsConfig();
     }
     if ($prefix == null) {
-      $_prefix = $this -> getModuleName();
+      $_prefix = $this->getModuleName();
     } else {
       $_prefix = $prefix;
     }
-    if (isset($this -> config[$_prefix])) {
-      return $this -> config[$_prefix];
+    if (isset($this->config[$_prefix])) {
+      return $this->config[$_prefix];
     }
-    return $this -> config[$_prefix] = json_decode(file_get_contents($this -> getRootDirByModule($_prefix) . "/" . CONF_DIR . "/config_" . $this -> getShortEnvironment() . ".json"));
+    return $this->config[$_prefix] = json_decode(file_get_contents($this->getRootDirByModule($_prefix) . "/" . CONF_DIR . "/config_" . $this->getShortEnvironment() . ".json"));
   }
 
   /**
@@ -136,7 +141,7 @@ class NGS {
    * @return array config
    */
   public function getArgs() {
-    return $this -> args;
+    return $this->args;
   }
 
   /**
@@ -150,58 +155,58 @@ class NGS {
     if (!is_array($args)) {
       return false;
     }
-    $this -> requestParams = null;
-    $this -> args = array_merge($this -> args, $args);
+    $this->requestParams = null;
+    $this->args = array_merge($this->args, $args);
   }
 
   public function args($trim = false) {
-    if ($this -> requestParams != null) {
-      return $this -> requestParams;
+    if ($this->requestParams != null) {
+      return $this->requestParams;
     }
-    $this -> requestParams = $this -> createObjectFromArray(array_merge((array)$this -> getArgs(), $_REQUEST), $trim);
-    return $this -> requestParams;
+    $this->requestParams = $this->createObjectFromArray(array_merge((array)$this->getArgs(), $_REQUEST), $trim);
+    return $this->requestParams;
   }
 
   public function getConfigDir($ns = "") {
     if ($ns == "") {
-      if ($this -> getModuleName() != null) {
-        $ns = $this -> getModuleName();
+      if ($this->getModuleName() != null) {
+        $ns = $this->getModuleName();
       }
     }
-    return $this -> getRootDirByModule($ns) . "/" . CONF_DIR;
+    return $this->getRootDirByModule($ns) . "/" . CONF_DIR;
   }
 
   public function getTemplateDir($ns = null) {
     if ($ns == "") {
-      if ($this -> getModuleName() != null) {
-        $ns = $this -> getModuleName();
+      if ($this->getModuleName() != null) {
+        $ns = $this->getModuleName();
       }
     }
-    return $this -> getRootDirByModule($ns) . "/" . TEMPLATES_DIR;
+    return $this->getRootDirByModule($ns) . "/" . TEMPLATES_DIR;
 
   }
 
   public function getPublicDir($ns = null) {
     if ($ns == "") {
-      if ($this -> getModuleName() != null) {
-        $ns = $this -> getModuleName();
+      if ($this->getModuleName() != null) {
+        $ns = $this->getModuleName();
       }
     }
-    return $this -> getRootDirByModule($ns) . "/" . PUBLIC_DIR;
+    return $this->getRootDirByModule($ns) . "/" . PUBLIC_DIR;
 
   }
 
   public function getClassesDir($ns = "") {
     if ($ns == "") {
-      if ($this -> getModuleName() != null) {
-        $ns = $this -> getModuleName();
+      if ($this->getModuleName() != null) {
+        $ns = $this->getModuleName();
       }
     }
-    return $this -> getRootDirByModule($ns) . "/" . CLASSES_DIR;
+    return $this->getRootDirByModule($ns) . "/" . CLASSES_DIR;
   }
 
   public function getNgsRoutesFile() {
-    return json_decode(file_get_contents($this -> getRootDirByModule($_prefix) . "/" . CONF_DIR . "/config_" . $this -> getShortEnvironment() . ".json"));
+    return json_decode(file_get_contents($this->getRootDirByModule($_prefix) . "/" . CONF_DIR . "/config_" . $this->getShortEnvironment() . ".json"));
   }
 
   /**
@@ -214,19 +219,19 @@ class NGS {
    */
   public function getSessionManager() {
 
-    if ($this -> sessionManager != null) {
-      return $this -> sessionManager;
+    if ($this->sessionManager != null) {
+      return $this->sessionManager;
     }
-    $ns = $this -> FRAMEWORK_NS . "\\framework\\session\\NgsSessionManager";
+    $ns = $this->FRAMEWORK_NS . "\\framework\\session\\NgsSessionManager";
     try {
       if (defined("USE_SESSION_MANAGER")) {
         $ns = USE_SESSION_MANAGER;
       }
-      $this -> sessionManager = new $ns();
+      $this->sessionManager = new $ns();
     } catch(Exception $e) {
       throw new DebugException("SESSION MANAGER NOT FOUND, please check in constants.php SESSION_MANAGER variable");
     }
-    return $this -> sessionManager;
+    return $this->sessionManager;
   }
 
   /**
@@ -237,19 +242,19 @@ class NGS {
    * @return Object fileUtils
    */
   public function getRoutesEngine() {
-    if ($this -> routesEngine != null) {
-      return $this -> routesEngine;
+    if ($this->routesEngine != null) {
+      return $this->routesEngine;
     }
-    $ns = $this -> FRAMEWORK_NS . "\\framework\\routes\\NgsRoutes";
+    $ns = $this->FRAMEWORK_NS . "\\framework\\routes\\NgsRoutes";
     try {
       if (defined("ROUTES_ENGINE")) {
         $ns = ROUTES_ENGINE;
       }
-      $this -> routesEngine = new $ns();
+      $this->routesEngine = new $ns();
     } catch(Exception $e) {
       throw new DebugException("ROUTES ENGINE NOT FOUND, please check in constants.php ROUTES_ENGINE variable");
     }
-    return $this -> routesEngine;
+    return $this->routesEngine;
   }
 
   /**
@@ -260,19 +265,19 @@ class NGS {
    * @return Object fileUtils
    */
   public function getModulesRoutesEngine() {
-    if ($this -> moduleRoutesEngine != null) {
-      return $this -> moduleRoutesEngine;
+    if ($this->moduleRoutesEngine != null) {
+      return $this->moduleRoutesEngine;
     }
-    $ns = $this -> FRAMEWORK_NS . "\\framework\\routes\\NgsModuleRoutes";
+    $ns = $this->FRAMEWORK_NS . "\\framework\\routes\\NgsModuleRoutes";
     try {
       if (defined("MODULES_ROUTES_ENGINE")) {
         $ns = MODULES_ROUTES_ENGINE;
       }
-      $this -> moduleRoutesEngine = new $ns();
+      $this->moduleRoutesEngine = new $ns();
     } catch(Exception $e) {
       throw new DebugException("ROUTES ENGINE NOT FOUND, please check in constants.php ROUTES_ENGINE variable");
     }
-    return $this -> moduleRoutesEngine;
+    return $this->moduleRoutesEngine;
   }
 
   /**
@@ -283,19 +288,19 @@ class NGS {
    * @return Object loadMapper
    */
   public function getLoadMapper() {
-    if ($this -> loadMapper != null) {
-      return $this -> loadMapper;
+    if ($this->loadMapper != null) {
+      return $this->loadMapper;
     }
-    $ns = $this -> FRAMEWORK_NS . "\\framework\\routes\\NgsLoadMapper";
+    $ns = $this->FRAMEWORK_NS . "\\framework\\routes\\NgsLoadMapper";
     try {
       if (defined("LOAD_MAPPER")) {
         $ns = LOAD_MAPPER;
       }
-      $this -> loadMapper = new $ns();
+      $this->loadMapper = new $ns();
     } catch(Exception $e) {
       throw new DebugException("LOAD MAPPER NOT FOUND, please check in constants.php LOAD_MAPPER variable");
     }
-    return $this -> loadMapper;
+    return $this->loadMapper;
   }
 
   /**
@@ -306,19 +311,19 @@ class NGS {
    * @return Object loadMapper
    */
   public function getTemplateEngine() {
-    if ($this -> tplEngine != null) {
-      return $this -> tplEngine;
+    if ($this->tplEngine != null) {
+      return $this->tplEngine;
     }
-    $ns = $this -> FRAMEWORK_NS . "\\framework\\templater\\NgsTemplater";
+    $ns = $this->FRAMEWORK_NS . "\\framework\\templater\\NgsTemplater";
     try {
       if (defined("TEMPLATE_ENGINE")) {
         $ns = "\\" . TEMPLATE_ENGINE;
       }
-      $this -> tplEngine = new $ns();
+      $this->tplEngine = new $ns();
     } catch(Exception $e) {
       throw new DebugException("TEMPLATE ENGINE NOT FOUND, please check in constants.php TEMPLATE_ENGINE variable");
     }
-    return $this -> tplEngine;
+    return $this->tplEngine;
   }
 
   /**
@@ -329,19 +334,19 @@ class NGS {
    * @return Object fileUtils
    */
   public function getFileUtils() {
-    if ($this -> fileUtils != null) {
-      return $this -> fileUtils;
+    if ($this->fileUtils != null) {
+      return $this->fileUtils;
     }
-    $ns = $this -> FRAMEWORK_NS . "\\framework\\util\\FileUtils";
+    $ns = $this->FRAMEWORK_NS . "\\framework\\util\\FileUtils";
     try {
       if (defined("FILE_UTILS")) {
         $ns = FILE_UTILS;
       }
-      $this -> fileUtils = new $ns();
+      $this->fileUtils = new $ns();
     } catch(Exception $e) {
       throw new DebugException("FILE UTILS NOT FOUND, please check in constants.php FILE_UTILS variable");
     }
-    return $this -> fileUtils;
+    return $this->fileUtils;
   }
 
   /**
@@ -352,19 +357,19 @@ class NGS {
    * @return Object fileUtils
    */
   public function getJsBuilder() {
-    if ($this -> jsBuilder != null) {
-      return $this -> jsBuilder;
+    if ($this->jsBuilder != null) {
+      return $this->jsBuilder;
     }
-    $ns = $this -> FRAMEWORK_NS . "\\framework\\util\\JsBuilder";
+    $ns = $this->FRAMEWORK_NS . "\\framework\\util\\JsBuilder";
     try {
       if (defined("JS_BUILDER")) {
         $ns = JS_BUILDER;
       }
-      $this -> jsBuilder = new $ns();
+      $this->jsBuilder = new $ns();
     } catch(Exception $e) {
       throw new DebugException("JS UTILS NOT FOUND, please check in constants.php JS_BUILDER variable");
     }
-    return $this -> jsBuilder;
+    return $this->jsBuilder;
   }
 
   /**
@@ -375,28 +380,28 @@ class NGS {
    * @return Object fileUtils
    */
   public function getCssBuilder() {
-    if ($this -> cssBuilder != null) {
-      return $this -> cssBuilder;
+    if ($this->cssBuilder != null) {
+      return $this->cssBuilder;
     }
-    $ns = $this -> FRAMEWORK_NS . "\\framework\\util\\CssBuilder";
+    $ns = $this->FRAMEWORK_NS . "\\framework\\util\\CssBuilder";
     try {
       if (defined("CSS_BUILDER")) {
         $ns = CSS_BUILDER;
       }
-      $this -> cssBuilder = new $ns();
+      $this->cssBuilder = new $ns();
     } catch(Exception $e) {
       throw new DebugException("CSS UTILS NOT FOUND, please check in constants.php CSS_BUILDER variable");
     }
-    return $this -> cssBuilder;
+    return $this->cssBuilder;
   }
 
   public function getFileStreamerByType($fileType) {
     switch ($fileType) {
       case 'js' :
-        return $this -> getJsBuilder();
+        return $this->getJsBuilder();
         break;
       case 'css' :
-        return $this -> getCssBuilder();
+        return $this->getCssBuilder();
         break;
       default :
         return false;
@@ -448,7 +453,7 @@ class NGS {
   }
 
   public function getNGSVersion() {
-    return $this -> NGSVERSION;
+    return $this->NGSVERSION;
   }
 
   /**
@@ -476,7 +481,7 @@ class NGS {
       $class = str_replace('\\', '/', $class);
       $ngsPrefix = substr($class, 0, strpos($class, "/"));
       $class = substr($class, strpos($class, "/") + 1);
-      $classPath = NGS() -> getRootDirByModule($ngsPrefix) . "/" . CLASSES_DIR;
+      $classPath = NGS()->getRootDirByModule($ngsPrefix) . "/" . CLASSES_DIR;
       $filePath = $classPath . '/' . $class . '.class.php';
       if (file_exists($filePath)) {
         require_once ($filePath);
@@ -503,29 +508,29 @@ class NGS {
 
   public function createObjectFromArray($arr, $trim = false) {
 
-    $stdObj = $this -> getDynObject();
+    $stdObj = $this->getDynObject();
     foreach ($arr as $key => $value) {
       $last = substr(strrchr($key, '.'), 1);
       if (!$last)
         $last = $key;
       $node = $stdObj;
       foreach (explode('.', $key) as $key2) {
-        if (!isset($node -> $key2)) {
-          $node -> $key2 = new stdclass;
+        if (!isset($node->$key2)) {
+          $node->$key2 = new stdclass;
         }
         if ($key2 == $last) {
           if (is_string($value)) {
             if ($trim == true) {
-              $node -> $key2 = trim(htmlspecialchars(strip_tags($value)));
+              $node->$key2 = trim(htmlspecialchars(strip_tags($value)));
             } else {
-              $node -> $key2 = $value;
+              $node->$key2 = $value;
             }
           } else {
-            $node -> $key2 = $value;
+            $node->$key2 = $value;
           }
 
         } else {
-          $node = $node -> $key2;
+          $node = $node->$key2;
         }
       }
     }

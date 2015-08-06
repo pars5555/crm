@@ -178,14 +178,16 @@ NGS = {
 				tmpObj[i] = parenItemObject[i];
 			}
 			_parentItem = this.Class(tmpObj, this.getDefaultNGSParentClassByType(type));
-		} else if ( typeof (parentLoad) == "string") {
+		} else if ( typeof (parentItem) == "string") {
 			_parentItem = this.getNGSItemClassByNameAndType(type, parentItem);
-		} else if ( typeof (parentLoad) == "object") {
+		} else if ( typeof (parentItem) == "object") {
 			_parentItem = this.Class(parentItem, this.getDefaultNGSParentClassByType(type));
 		} else {
 			_parentItem = this.getDefaultNGSParentClassByType(type);
 		}
+		
 		var item = this.getNGSItemPackageAndName(itemName);
+		item["item_name"] = itemName;
 		item["klass"] = NGS.Class(itemObject, _parentItem);
 		this.getContainerByType(type)[itemName] = item;
 	},
@@ -252,6 +254,7 @@ NGS = {
 		var itemObject = new item["klass"];
 		itemObject.setPackage(item["package"]);
 		itemObject.setName(item["action"]);
+		itemObject.setAction(item["item_name"]);
 		return itemObject;
 	},
 
@@ -270,7 +273,7 @@ NGS = {
 		if ( typeof (this.getContainerByType(type)[itemName]) !== "object") {
 			throw new Error(itemName + " " + type + " not found");
 		}
-		return this.getContainerByType(type)[itemName];
+		return this.getContainerByType(type)[itemName]["klass"];
 	},
 
 	/**
@@ -286,7 +289,7 @@ NGS = {
 		var action = matches[matches.length - 1];
 		var myRegExp = new RegExp('([A-Z])', 'g');
 		action = action.replace(myRegExp, "_$1").toLowerCase().replace(new RegExp('^_'), "");
-		var packges = matches.slice(0, matches.length - 1);
+		var packges = matches.slice(2, matches.length - 1);
 		var _package = "";
 		if (packges.length > 0) {
 			var deilm = "";

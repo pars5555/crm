@@ -11,20 +11,35 @@
 
 namespace crm\loads\main\partner {
 
-    use crm\loads\NgsLoad;
-    use crm\managers\PartnerManager;
-    use crm\security\RequestGroups;
-    use NGS;
+use crm\loads\NgsLoad;
+use crm\managers\CalculationManager;
+use crm\managers\CurrencyManager;
+use crm\managers\PartnerManager;
+use crm\managers\PaymentTransactionManager;
+use crm\managers\PurchaseOrderManager;
+use crm\managers\SaleOrderManager;
+use crm\security\RequestGroups;
+use NGS;
 
     class OpenLoad extends NgsLoad {
 
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
-            $partnerId = NGS()->args()->id;
+            $partnerId = intval(NGS()->args()->id);
             $partner = PartnerManager::getInstance()->selectbyPK($partnerId);
             if (isset($partner)) {
                 $this->addParam('partner', $partner);
+                $partnerSaleOrders = SaleOrderManager::getInstance()->getPartnerSaleOrders($partnerId);
+                $partnerPurchaseOrders = PurchaseOrderManager::getInstance()->getPartnerPurchaseOrders($partnerId);
+                $partnerTransactions = PaymentTransactionManager::getInstance()->getPartnerTransactions($partnerId);
+                $this->addParam('partnerSaleOrders', $partnerSaleOrders);
+                $this->addParam('partnerPurchaseOrders', $partnerPurchaseOrders);
+                $this->addParam('partnerTransactions', $partnerTransactions);
+                $dept = CalculationManager::getInstance()->calculatePartnerDeptBySalePurchaseAndPaymentTransations($partnerSaleOrders, $partnerPurchaseOrders, $partnerTransactions);
+                $this->addParam('partnerDept', $dept);
+                $currencyManager = CurrencyManager::getInstance();
+                $this->addParam('currencies', $currencyManager->mapDtosById($currencyManager->selectAdvance('*', ['active', '=', 1], ['name'])));
             }
         }
 

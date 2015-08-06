@@ -13,6 +13,7 @@ NGS.AbstractAction = NGS.Class({
 
   _name: null,
   _package: null,
+  _action: "",
   _args : {},
   /**
    * The main method, which invokes action operation, i.e ajax call to the backend
@@ -33,6 +34,26 @@ NGS.AbstractAction = NGS.Class({
   isSecure : function() {
     return false;
   },
+  
+  /**
+	 * Abstract function, Child classes should be override this function,
+	 * and should return the name of the server load, formated with framework's URL nameing convention
+	 * @return The name of the server load, formated with framework's URL nameing convention
+	 * @see
+	 */
+	setAction : function(action) {
+		this._action = action;
+	},
+
+	/**
+	 * Returns the server side package of the load, if there are included packages, "_" delimiter should be used
+	 *
+	 * @return  The server side package of the load
+	 * @see
+	 */
+	getAction : function() {
+		return this._action;
+	},
   
   /**
    * Abstract function, Child classes should be override this function,
@@ -172,7 +193,6 @@ NGS.AbstractAction = NGS.Class({
    * @see
    */
   onError : function(errorArr) {
-
   },
 
   /**

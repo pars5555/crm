@@ -54,6 +54,10 @@ namespace crm\managers {
             return $this->insertDto($dto);
         }
 
+        public function getPartnerSaleOrders($partnerId) {
+            return $this->getSaleOrdersFull(['partner_id', '=', $partnerId]);
+        }
+
         public function getPartnersSaleOrders($partnerIds) {
             $rows = $this->getSaleOrdersFull(['partner_id', 'in', '(' . implode(',', $partnerIds) . ')']);
             $ret = array();
