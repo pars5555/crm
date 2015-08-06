@@ -35,6 +35,8 @@ namespace crm\actions\main {
                         PurchaseOrderLineManager::getInstance()->createPurchaseOrderLine($purchaseOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
                     }
                 }
+            } else {
+                PurchaseOrderLineManager::getInstance()->deleteByField('purchase_order_id', $purchaseOrderId);
             }
             $_SESSION['success_message'] = 'Purchase Order lines successfully saved.';
             $this->redirect('purchase/' . $purchaseOrderId);

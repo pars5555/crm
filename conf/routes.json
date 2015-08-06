@@ -4,7 +4,7 @@
             "action": "loads.main.main",
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.general.general"
+                    "action": "loads.main.general.general"
                 }
             }
         }
@@ -15,7 +15,7 @@
             "route": "list",
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.sale.list"
+                    "action": "loads.main.sale.list"
                 }
             }
         },
@@ -24,7 +24,7 @@
             "route": "create",
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.sale.create"
+                    "action": "loads.main.sale.create"
                 }
             }
 
@@ -37,7 +37,7 @@
             },
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.sale.open"
+                    "action": "loads.main.sale.open"
                 }
             }
         }
@@ -49,7 +49,7 @@
             "route": "list",
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.purchase.list"
+                    "action": "loads.main.purchase.list"
                 }
             }
         },
@@ -58,7 +58,7 @@
             "route": "create",
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.purchase.create"
+                    "action": "loads.main.purchase.create"
                 }
             }
 
@@ -71,7 +71,7 @@
             },
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.purchase.open"
+                    "action": "loads.main.purchase.open"
                 }
             }
         }
@@ -83,7 +83,7 @@
             "route": "list",
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.payment.list"
+                    "action": "loads.main.payment.list"
                 }
             }
         },
@@ -92,7 +92,7 @@
             "route": "create",
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.payment.create"
+                    "action": "loads.main.payment.create"
                 }
             }
 
@@ -105,7 +105,7 @@
             },
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.payment.open"
+                    "action": "loads.main.payment.open"
                 }
             }
         }
@@ -117,7 +117,7 @@
             "route": "list",
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.product.list"
+                    "action": "loads.main.product.list"
                 }
             }
         },
@@ -126,7 +126,7 @@
             "route": "create",
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.product.create"
+                    "action": "loads.main.product.create"
                 }
             }
 
@@ -139,7 +139,7 @@
             },
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.product.open"
+                    "action": "loads.main.product.open"
                 }
             }
         }
@@ -151,7 +151,7 @@
             "route": "list",
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.partner.list"
+                    "action": "loads.main.partner.list"
                 }
             }
         },
@@ -160,7 +160,7 @@
             "route": "create",
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.partner.create"
+                    "action": "loads.main.partner.create"
                 }
             }
 
@@ -173,7 +173,7 @@
             },
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.partner.open"
+                    "action": "loads.main.partner.open"
                 }
             }
         }
@@ -185,9 +185,18 @@
             "action": "loads.main.main",
             "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.warehouse"
+                    "action": "loads.main.warehouse"
                 }
             }
+        }
+    ],
+    "cron": [
+        {
+            "action": "actions.cron.get_currency_rates",
+            "route": "get_rates"
+        },
+        {
+            "default": "dyn"
         }
     ],
     
@@ -195,8 +204,10 @@
         "action": "loads.main.main",
         "nestedLoad": {
                 "content": {
-                    "action": "crm.loads.main.general.general"
+                    "action": "loads.main.general.general"
                 }
             }
     }
+    
+    
 }

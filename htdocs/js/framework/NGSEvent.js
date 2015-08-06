@@ -1,7 +1,7 @@
 NGS.events = {
-  onAfterLoad : new CustomEvent("im-onAfterLoad"),
-  onBeforeLoad : new CustomEvent("im-onBeforeLoad"),
-  onPageUpdate : new CustomEvent("im-onPageUpdate"),
-  onUrlChange : new CustomEvent("im-onUrlChange"),
-  onUrlUpdate : new CustomEvent("im-onUrlUpdate")
+  onAfterLoad : new CustomEvent("ngs-onAfterLoad"),
+  onBeforeLoad : new CustomEvent("ngs-onBeforeLoad"),
+  onPageUpdate : new CustomEvent("ngs-onPageUpdate"),
+  onUrlChange : new CustomEvent("ngs-onUrlChange"),
+  onUrlUpdate : new CustomEvent("ngs-onUrlUpdate")
 };

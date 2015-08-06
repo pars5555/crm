@@ -38,12 +38,22 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function getCurrencyRate($currencyIso) {
-            $date = date('Y-m-d');
-            return $this->getCurrencyRateByDate($date, $currencyIso);
+        public function addRow($iso, $amount, $rate, $date) {
+            $dto = $this->createDto();
+            $dto->setIso($iso);
+            $dto->setAmount($amount);
+            $dto->setRate($rate);
+            $dto->setDate($date);
+            return $this->insertDto($dto);
         }
 
-        public function getCurrencyRateByDate($date, $currencyIso) {
+        public function getCurrencyRate($currencyId) {
+            $date = date('Y-m-d');
+            return $this->getCurrencyRateByDate($date, $currencyId);
+        }
+
+        public function getCurrencyRateByDate($date, $currencyId) {
+            $currencyIso = CurrencyManager::getInstance()->selectByPK($currencyId)->getIso();
             if (strtolower($currencyIso) == strtolower(SettingManager::getInstance()->getSetting('main_currency_iso'))) {
                 return 1;
             }
@@ -51,6 +61,11 @@ namespace crm\managers {
             $sqlEndDate = "'" . $date . "'";
             $sqlCurrencyIso = "'" . strtoupper($currencyIso) . "'";
             $rows = $this->selectAdvance('*', ['date', '>=', $sqlStartDate, 'AND', 'date', '<=', $sqlEndDate, 'AND', 'iso', '=', $sqlCurrencyIso], 'date', 'DESC');
+            if (!empty($rows)) {
+                $dto = $rows[0];
+                return floatval($dto->getRate()) / floatval($dto->getAmount());
+            }
+            $rows = $this->selectAdvance('*', ['iso', '=', $sqlCurrencyIso], 'date', 'DESC');
             if (!empty($rows)) {
                 $dto = $rows[0];
                 return floatval($dto->getRate()) / floatval($dto->getAmount());

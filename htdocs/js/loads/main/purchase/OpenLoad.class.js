@@ -13,8 +13,14 @@ NGS.createLoad("crm.loads.main.purchase.open", {
             $('#purchaseOrderLinesForm').trigger('submit');
         });
         this.initPurchaseOrderLineAddFunctionallity();
+        this.initPurchaseOrderLineRemoveFunctionallity();
         this.initCancelPurchaseOrder();
 
+    },
+    initPurchaseOrderLineRemoveFunctionallity: function () {
+        $('#purchaseOrderLinesContainer').on( "click", ".removePurchaseOrderLine", function() {
+            $(this).closest('.purchaseOrderLine').remove();
+        });
     },
     initCancelPurchaseOrder: function () {
         $('#cancelPurchaseOrderButton').click(function () {

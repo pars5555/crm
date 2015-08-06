@@ -21,6 +21,7 @@ namespace ngs\framework\templater {
     private $smarty = null;
     private $template = null;
     private $params = array();
+    private $permalink = null;
     private $smartyParams = array();
     public function __construct() {
     }
@@ -90,6 +91,25 @@ namespace ngs\framework\templater {
       return $this->template;
     }
 
+    /**
+     * set template
+     *
+     * @param String $template
+     *
+     */
+    public function setPermalink($permalink) {
+      $this->permalink = $permalink;
+    }
+
+    /**
+     * Return a template
+     *
+     * @return String $template|null
+     */
+    public function getPermalink() {
+      return $this->permalink;
+    }
+
     public function display() {
       if ($this->getTemplate() == null) {
         $this->diplayJSONResuls();
@@ -99,6 +119,7 @@ namespace ngs\framework\templater {
       if (NGS()->isAjaxRequest() && NGS()->isJsFrameworkEnable()) {
         $this->assignJson("html", $this->smarty->fetch($this->getTemplate()));
         $this->assignJson("nl", NGS()->getLoadMapper()->getNestedLoads());
+        $this->assignJson("pl", $this->getPermalink());
         $this->diplayJSONResuls();
         return true;
       } elseif ($this->getTemplate() != null) {
@@ -119,7 +140,7 @@ namespace ngs\framework\templater {
         $arr["status"] = "ok";
       }
       if ($arr["status"] == "error") {
-        header("HTTP/1.0 403 Forbidden");
+        header("HTTP/1.0 205 Wrong Parameter");
         if (isset($arr["code"])) {
           $jsonArr["code"] = $arr["code"];
         }

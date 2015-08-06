@@ -22,6 +22,8 @@
         if (permalink.indexOf("/") !== 0) {
           permalink = "/" + permalink;
         }
+      }else{
+      	//permalink = "/"+this.load.getName();
       }
       if (permalink == window.location.pathname) {
         return;
@@ -29,7 +31,7 @@
       history.pushState(params, "", permalink);
     }
   };
-  document.addEventListener("im-onUrlUpdate", NGS.UrlObserver.onUrlUpdateHandle);
+  document.addEventListener("ngs-onUrlUpdate", NGS.UrlObserver.onUrlUpdateHandle);
   window.onpopstate = function(e) {
     NGS.events.onUrlChange.data = {
       "load" : e

@@ -13,6 +13,7 @@ NGS.AbstractAction = NGS.Class({
 
   _name: null,
   _package: null,
+  _args : {},
   /**
    * The main method, which invokes action operation, i.e ajax call to the backend
    *
@@ -102,6 +103,16 @@ NGS.AbstractAction = NGS.Class({
   setParams : function(params) {
     this.params = params;
   },
+  
+  /**
+   * Method is used for setting action's response parameters
+   *
+   * @param  params  The http parameters of the load, which will be sent to the server side load
+   * @see
+   */
+  setArgs : function(args) {
+    this._args = args;
+  },
 
   /**
    * Method is used for setting error indicator if it was sent from the server. Intended to be used internally
@@ -121,6 +132,16 @@ NGS.AbstractAction = NGS.Class({
    */
   getParams : function() {
     return this.params;
+  },
+  
+  /**
+   * Method returns Actions's response parameters
+   *
+   * @return  http parameters of the load
+   * @see
+   */
+  getArgs : function() {
+    return this._args;
   },
 
   /**

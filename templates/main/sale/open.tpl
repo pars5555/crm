@@ -55,10 +55,10 @@
                                 </select>
                             </div>
                             <div class="table-cell">
-                                <input class="text" type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity" value="{$saleOrderLine->getQuantity()}"/>
+                                <input type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text" value="{$saleOrderLine->getQuantity()}"/>
                             </div>
                             <div class="table-cell">
-                                <input class="text" type="number" step="0.01" min="0.01" class="saleOrderLinesSelectUnitPrice" value="{$saleOrderLine->getUnitPrice()}"/>
+                                <input type="number" step="0.01" min="0.01" class="saleOrderLinesSelectUnitPrice text" value="{$saleOrderLine->getUnitPrice()}"/>
                             </div>
                             <div class="table-cell">
                             </div>
@@ -70,6 +70,9 @@
                                         </option>
                                     {/foreach}
                                 </select>
+                            </div>
+                            <div class="table-cell">
+                                <a class="button blue removeSaleOrderLine">Remove</a>
                             </div>
                             <input type="hidden" name="lines[]"/>
                         </div>
@@ -141,6 +144,9 @@
                 <option value="{$c->getId()}">{$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})</option>
             {/foreach}
         </select>
+    </div>
+    <div class="table-cell">
+        <a class="button blue removeSaleOrderLine">Remove</a>
     </div>
     <input type="hidden" name="lines[]"/>
 </div>

@@ -13,6 +13,7 @@ NGS.createLoad("crm.loads.main.sale.open", {
             $('#saleOrderLinesForm').trigger('submit');
         });
         this.initSaleOrderLineAddFunctionallity();
+        this.initSaleOrderLineRemoveFunctionallity();
         this.initCancelSaleOrder();
 
     },
@@ -22,6 +23,11 @@ NGS.createLoad("crm.loads.main.sale.open", {
             {
                 $(this).parent('form').trigger('submit');
             }
+        });
+    },
+    initSaleOrderLineRemoveFunctionallity: function () {
+        $('#saleOrderLinesContainer').on( "click", ".removeSaleOrderLine", function() {
+            $(this).closest('.saleOrderLine').remove();
         });
     },
     initSaleOrderLineAddFunctionallity: function () {

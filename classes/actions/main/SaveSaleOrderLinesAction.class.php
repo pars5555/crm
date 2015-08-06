@@ -35,6 +35,8 @@ namespace crm\actions\main {
                         SaleOrderLineManager::getInstance()->createSaleOrderLine($saleOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
                     }
                 }
+            } else {
+                SaleOrderLineManager::getInstance()->deleteByField('sale_order_id', $saleOrderId);
             }
             $_SESSION['success_message'] = 'Sale Order lines successfully saved.';
             $this->redirect('sale/' . $saleOrderId);

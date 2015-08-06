@@ -66,6 +66,15 @@ namespace crm\dal\mappers {
             return $ret;
         }
 
+        public function getTotalProfitSumInNonCancelledSaleOrders($startDate, $endDate) {
+            $sql = "SELECT SUM(total_profit) AS `profit` FROM `%s` INNER JOIN  "
+                    . " `sale_orders` ON `sale_order_id` = `sale_orders`.`id` "
+                    . "WHERE `sale_orders`.`cancelled` = 0 AND `order_date`>=:startDate AND `order_date`<=:endDate";
+            $sqlQuery = sprintf($sql, $this->getTableName());
+            $profitSum = $this->fetchField($sqlQuery, 'profit', array("startDate" => $startDate, "endDate" => $endDate));
+            return isset($profitSum) ? floatval($profitSum) : 0;
+        }
+
     }
 
 }

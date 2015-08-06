@@ -1,53 +1,56 @@
 <?php
+
 namespace ngs\framework {
-	abstract class AbstractAction extends \ngs\framework\AbstractRequest {
-		private $params = array();
 
-		public function initialize() {
-			parent::initialize();
-		}
+    abstract class AbstractAction extends AbstractRequest {
 
-		public function service() {
-			$this->service();
-		}
+        private $params = array();
 
-		/**
-		 * Return a thingie based on $paramie
-		 * @abstract
-		 * @access
-		 * @param boolean $paramie
-		 * @return integer|babyclass
-		 */
-		public function addParam($name, $value) {
-			$this->params[$name] = $value;
-		}
-		
-		/**
-		 * Return a thingie based on $paramie
-		 * @abstract
-		 * @access
-		 * @param boolean $paramie
-		 * @return integer|babyclass
-		 */
-		public function addParams($paramsArr) {
-			if(is_array($paramsArr)){
-				foreach($paramsArr as $name=>$value){
-					$this->params[$name] = $value;
-				}
-			}
-		}
+        public function initialize() {
+            parent::initialize();
+        }
 
-		/**
-		 * Return a thingie based on $paramie
-		 * @abstract
-		 * @access
-		 * @param boolean $paramie
-		 * @return integer|babyclass
-		 */
-		public function getParams() {
-			return $this->params;
-		}
+        public function service() {
+//			$this->service();
+        }
 
-	}
+        /**
+         * Return a thingie based on $paramie
+         * @abstract
+         * @access
+         * @param boolean $paramie
+         * @return integer|babyclass
+         */
+        public function addParam($name, $value) {
+            $this->params[$name] = $value;
+        }
+
+        /**
+         * Return a thingie based on $paramie
+         * @abstract
+         * @access
+         * @param boolean $paramie
+         * @return integer|babyclass
+         */
+        public function addParams($paramsArr) {
+            if (is_array($paramsArr)) {
+                foreach ($paramsArr as $name => $value) {
+                    $this->params[$name] = $value;
+                }
+            }
+        }
+
+        /**
+         * Return a thingie based on $paramie
+         * @abstract
+         * @access
+         * @param boolean $paramie
+         * @return integer|babyclass
+         */
+        public function getParams() {
+            return $this->params;
+        }
+
+    }
 
 }

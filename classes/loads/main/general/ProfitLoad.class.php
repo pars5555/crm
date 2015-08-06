@@ -12,7 +12,7 @@
 namespace crm\loads\main\general {
 
     use crm\loads\NgsLoad;
-    use crm\managers\SaleOrderManager;
+    use crm\managers\SaleOrderLineManager;
     use crm\security\RequestGroups;
     use NGS;
 
@@ -30,8 +30,8 @@ namespace crm\loads\main\general {
             $this->addParam('fromDate', $fromDate);
             $this->addParam('toDate', $toDate);
 
-            $saleOrders = SaleOrderManager::getInstance()->getSaleOrdersFull(['order_date', '>=', "'" . $fromDate . "'", 'AND', 'order_date', '<=', "'" . $toDate . "'", 'AND', 'cancelled', '=', 0]);
-            var_dump($saleOrders);exit;
+            $profit = SaleOrderLineManager::getInstance()->getTotalProfitSumInNonCancelledSaleOrders($fromDate, $toDate);
+            $this->addParam("profit", $profit);
         }
 
         public function getTemplate() {
