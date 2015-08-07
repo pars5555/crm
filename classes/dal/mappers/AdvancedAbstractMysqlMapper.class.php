@@ -53,6 +53,16 @@ namespace crm\dal\mappers {
             return $this->fetchRows($sqlQuery);
         }
 
+        public function deleteAdvance($where) {
+            $sqlQuery = sprintf("DELETE FROM `%s` %s", $this->getTableName(), $where);
+            $res = $this->dbms->prepare($sqlQuery);
+            if ($res) {
+                $res->execute();
+                return $res->rowCount();
+            }
+            return null;
+        }
+
     }
 
 }

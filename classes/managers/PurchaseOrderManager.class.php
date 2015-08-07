@@ -52,12 +52,12 @@ namespace crm\managers {
         }
 
         public function getPurchaseOrdersFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
-            $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
+            $opDtos = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
             $partnerIds = array();
             $purchaseOrderIds = array();
-            foreach ($rows as $row) {
-                $partnerIds[] = intval($row->getPartnerId());
-                $purchaseOrderIds[] = intval($row->getId());
+            foreach ($opDtos as $poDto) {
+                $partnerIds[] = intval($poDto->getPartnerId());
+                $purchaseOrderIds[] = intval($poDto->getId());
             }
             $partnerIds = array_unique($partnerIds);
             $purchaseOrderIds = array_unique($purchaseOrderIds);
@@ -92,13 +92,13 @@ namespace crm\managers {
                     }
                 }
             }
-            foreach ($rows as $row) {
-                $purchaseOrderId = intval($row->getId());
-                $row->setPartnerDto($partnerDtos[intval($row->getPartnerId())]);
-                $row->setPurchaseOrderLinesDtos($purchaseOrderLinesDtosMappedByPurchaseOrderId[$purchaseOrderId]);
-                $row->setTotalAmount($amount[$purchaseOrderId]);
+            foreach ($opDtos as $poDto) {
+                $purchaseOrderId = intval($poDto->getId());
+                $poDto->setPartnerDto($partnerDtos[intval($poDto->getPartnerId())]);
+                $poDto->setPurchaseOrderLinesDtos($purchaseOrderLinesDtosMappedByPurchaseOrderId[$purchaseOrderId]);
+                $poDto->setTotalAmount($amount[$purchaseOrderId]);
             }
-            return $rows;
+            return $opDtos;
         }
 
         public function createPurchaseOrder($partnerId, $date, $note) {

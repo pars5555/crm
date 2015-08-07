@@ -86,7 +86,12 @@ namespace crm\managers {
             return $this->mapper->selectAll();
         }
 
-        public function selectAdvance($fieldsArray = '*', $filters = null, $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
+        public function deleteAdvance($filters = null) {
+            $where = $this->getWhereSubQueryByFilters($filters);
+            return $this->mapper->deleteAdvance($where);
+        }
+
+        public function selectAdvance($fieldsArray = '*', $filters = null, $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null, $mapByIds = False) {
 
             $where = $this->getWhereSubQueryByFilters($filters);
             $fields = $fieldsArray;
@@ -106,7 +111,11 @@ namespace crm\managers {
                 $order = 'ORDER BY `' . $order . '` ' . $orderByAscDesc;
             }
             $this->lastSelectAdvanceWhere = $where;
-            return $this->mapper->selectAdvance($fields, $where, $order, $offset, $limit);
+            $ret = $this->mapper->selectAdvance($fields, $where, $order, $offset, $limit);
+            if ($mapByIds) {
+                return $this->mapDtosById($ret);
+            }
+            return $ret;
         }
 
         public function getLastSelectAdvanceRowsCount() {

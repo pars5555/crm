@@ -51,4 +51,8 @@
             {/foreach}
         {/if}
     </div>
+    <form action="{SITE_PATH}/dyn/main/do_delete_partner">
+        <input type="hidden" name="id" value="{$ns.partner->getId()}"/>
+        <a id="deletePartnerButton" href="javascript:void(0);">Delete</a>
+    </form>
 </div>
