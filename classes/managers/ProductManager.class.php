@@ -35,6 +35,19 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function safeDeleteProduct($productId) {
+            $solDtos = SaleOrderLineManager::getInstance()->selectByField('product_id', $productId);
+            if (!empty($solDtos)) {
+                return false;
+            }
+            $polDtos = PurchaseOrderLineManager::getInstance()->selectByField('product_id', $productId);
+            if (!empty($polDtos)) {
+                return false;
+            }
+            $this->deleteByPK($productId);
+            return True;
+        }
+
         public function createProduct($name, $model, $manufacturerId, $uomId) {
             $dto = $this->createDto();
             $dto->setName($name);
