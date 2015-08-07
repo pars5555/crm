@@ -31,9 +31,14 @@ namespace crm\loads\main\partner {
             $partnerManager = PartnerManager::getInstance();
             $partners = $partnerManager->selectAdvance('*', [], $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $partnerIds = $partnerManager->getDtosIdsArray($partners);
-            $partnersSaleOrdersMappedByPartnerId = SaleOrderManager::getInstance()->getPartnersSaleOrders($partnerIds);
-            $partnersPurchaseOrdersMappedByPartnerId = PurchaseOrderManager::getInstance()->getPartnersPurchaseOrders($partnerIds);
-            $partnersTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersTransactions($partnerIds);
+            $partnersSaleOrdersMappedByPartnerId = [];
+            $partnersPurchaseOrdersMappedByPartnerId = [];
+            $partnersTransactionsMappedByPartnerId = [];
+            if (!empty($partnerIds)) {
+                $partnersSaleOrdersMappedByPartnerId = SaleOrderManager::getInstance()->getPartnersSaleOrders($partnerIds);
+                $partnersPurchaseOrdersMappedByPartnerId = PurchaseOrderManager::getInstance()->getPartnersPurchaseOrders($partnerIds);
+                $partnersTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersTransactions($partnerIds);
+            }
 
             $partnersDept = CalculationManager::getInstance()->calculatePartnersDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersTransactionsMappedByPartnerId);
             $this->addParam('partnersSaleOrdersMappedByPartnerId', $partnersSaleOrdersMappedByPartnerId);
