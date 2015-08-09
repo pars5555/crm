@@ -24,7 +24,6 @@ namespace crm\loads\main\product {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $this->addParam('req', isset($_SESSION['action_request']) ? $_SESSION['action_request'] : []);
-            $this->addParam('show_create_form', isset($_SESSION['action_request']));
             unset($_SESSION['action_request']);
             $this->addParam('uoms', UomManager::getInstance()->selectAdvance('*', [], ['name']));
             $this->addParam('manufacturers', ManufacturerManager::getInstance()->selectAdvance('*', [],['name']));

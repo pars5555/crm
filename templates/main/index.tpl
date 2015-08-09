@@ -4,6 +4,8 @@
         {include file="{getTemplateDir}/main/util/header_control.tpl"}
     </head>
     <body>
+        <div id="ajaxLoader"></div>
+            
         <header class="header">
             {include file="{getTemplateDir}/main/util/header.tpl"}
         </header>

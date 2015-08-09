@@ -23,7 +23,7 @@
             Note : {$ns.purchaseOrder->getNote()}
         </div>
         {if $purchaseOrder->getCancelled() == 0}
-            <form action="{SITE_PATH}/dyn/main/do_cancel_purchase_order">
+            <form action="{SITE_PATH}/dyn/main_purchase/do_cancel_purchase_order">
                 <input type="hidden" name="id" value="{$ns.purchaseOrder->getId()}"/>
                 <div class="form-group">
                     <label class="label">Note</label>
@@ -34,7 +34,7 @@
         {else}
             Cancelled
         {/if}
-        <form id="purchaseOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main/do_save_purchase_order_lines">
+        <form id="purchaseOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main_purchase/do_save_purchase_order_lines">
             <h2 class="title">Order Lines</h2>
             <div class="table_striped" id="purchaseOrderLinesContainer">
                 <div class="table_header_group">                  

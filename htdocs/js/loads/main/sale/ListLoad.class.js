@@ -9,5 +9,12 @@ NGS.createLoad("crm.loads.main.sale.list", {
         $('#saleOrderFilters').find('input, select, checkbox').change(function () {
             $('#saleOrderFilters').trigger('submit');
         });
+        $('.deleteSaleOrder').click(function () {
+            if (confirm("Are you sure you want to delete this Sale Order?!"))
+            {
+                return true;
+            }
+            return false;
+        });
     }
 });

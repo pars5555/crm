@@ -105,7 +105,7 @@ namespace crm\managers {
                         if (!array_key_exists($currencyId, $partnersDept[$partnerId])) {
                             $partnersDept[$partnerId][$currencyId] = 0;
                         }
-                        $partnersDept[$partnerId][$currencyId] += $amount;
+                        $partnersDept[$partnerId][$currencyId] -= $amount;
                     }
                 }
             }

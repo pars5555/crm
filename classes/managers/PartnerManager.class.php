@@ -12,7 +12,7 @@
 
 namespace crm\managers {
 
-use crm\dal\mappers\PartnerMapper;
+    use crm\dal\mappers\PartnerMapper;
 
     class PartnerManager extends AdvancedAbstractManager {
 
@@ -60,6 +60,18 @@ use crm\dal\mappers\PartnerMapper;
             $dto->setAddress($address);
             $dto->setCreateDate(date('Y-m-d H:i:s'));
             return $this->insertDto($dto);
+        }
+
+        public function updatePartner($id, $name, $email, $address) {
+            $dto = $this->selectByPK($id);
+            if (isset($dto)) {
+                $dto->setName($name);
+                $dto->setEmail($email);
+                $dto->setAddress($address);
+                $dto->setCreateDate(date('Y-m-d H:i:s'));
+                return $this->updateByPk($dto);
+            }
+            return false;
         }
 
     }

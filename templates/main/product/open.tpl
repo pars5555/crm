@@ -34,7 +34,7 @@
         </div>
 
     {/if}
-    <form action="{SITE_PATH}/dyn/main/do_delete_product">
+    <form action="{SITE_PATH}/dyn/main_product/do_delete_product">
         <input type="hidden" name="id" value="{$ns.product->getId()}"/>
         <a id="deleteProductButton" href="javascript:void(0);">Delete</a>
     </form>

@@ -33,7 +33,7 @@
             {/if}
         </div>
         {if $billing->getCancelled() == 0}
-            <form action="{SITE_PATH}/dyn/main/do_cancel_payment">
+            <form action="{SITE_PATH}/dyn/main_payment/do_cancel_payment">
                 <input type="hidden" name="id" value="{$ns.billing->getId()}"/>
                 <div>
                     <label>Note</label>

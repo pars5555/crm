@@ -37,7 +37,7 @@
                 }
             }
 
-        },       
+        },
         {
             "action": "loads.main.main",
             "route": "[:id]",
@@ -71,7 +71,7 @@
                 }
             }
 
-        },       
+        },
         {
             "action": "loads.main.main",
             "route": "[:id]",
@@ -105,7 +105,7 @@
                 }
             }
 
-        },       
+        },
         {
             "action": "loads.main.main",
             "route": "[:id]",
@@ -139,7 +139,7 @@
                 }
             }
 
-        },       
+        },
         {
             "action": "loads.main.main",
             "route": "[:id]",
@@ -173,7 +173,7 @@
                 }
             }
 
-        },       
+        },
         {
             "action": "loads.main.main",
             "route": "[:id]",
@@ -183,6 +183,18 @@
             "nestedLoad": {
                 "content": {
                     "action": "loads.main.product.open"
+                }
+            }
+        },
+        {
+            "action": "loads.main.main",
+            "route": "edit/[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.product.update"
                 }
             }
         }
@@ -207,7 +219,7 @@
                 }
             }
 
-        },       
+        },
         {
             "action": "loads.main.main",
             "route": "[:id]",
@@ -219,10 +231,21 @@
                     "action": "loads.main.partner.open"
                 }
             }
+        },
+        {
+            "action": "loads.main.main",
+            "route": "edit/[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.partner.update"
+                }
+            }
         }
 
     ],
-    
     "warehouse": [
         {
             "action": "loads.main.main",
@@ -242,15 +265,14 @@
             "default": "dyn"
         }
     ],
-    
     "default": {
         "action": "loads.main.main",
         "nestedLoad": {
-                "content": {
-                    "action": "loads.main.general.general"
-                }
+            "content": {
+                "action": "loads.main.general.general"
             }
+        }
     }
-    
-    
+
+
 }

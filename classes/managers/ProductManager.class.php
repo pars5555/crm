@@ -57,6 +57,18 @@ namespace crm\managers {
             return $this->insertDto($dto);
         }
 
+        public function updateProduct($id, $name, $model, $manufacturerId, $uomId) {
+            $dto = $this->selectByPK($id);
+            if ($dto) {
+                $dto->setName($name);
+                $dto->setModel($model);
+                $dto->setManufacturerId($manufacturerId);
+                $dto->setUomId($uomId);
+                return $this->updateByPk($dto);
+            }
+            return false;
+        }
+
         public function getProductListFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
             $manufacturerIds = array();

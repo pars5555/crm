@@ -9,7 +9,7 @@
             <span style="color:green">{$ns.success_message}</span>
         </div>
     {/if}
-    <form class="createPaymentOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main/do_create_payment">
+    <form class="createPaymentOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_payment/do_create_payment">
         <div class="form-group">
             <label class="label">Payment Date</label>
             {assign date null}

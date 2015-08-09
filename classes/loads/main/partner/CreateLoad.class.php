@@ -21,7 +21,6 @@ namespace crm\loads\main\partner {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $this->addParam('req', isset($_SESSION['action_request']) ? $_SESSION['action_request'] : []);
-            $this->addParam('show_create_form', isset($_SESSION['action_request']));
             unset($_SESSION['action_request']);
         }
 

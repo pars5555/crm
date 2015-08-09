@@ -12,7 +12,7 @@
  *
  */
 
-namespace crm\actions\main {
+namespace crm\actions\main\partner {
 
 use crm\actions\BaseAction;
 use crm\managers\PartnerManager;

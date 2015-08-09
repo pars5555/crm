@@ -23,36 +23,39 @@
             address: {$ns.partner->getAddress()}
         </div>
 
+
+
+        <div>
+            Sale Orders : <a class="table-cell link" href="{SITE_PATH}/sale/list?prt={$ns.partner->getId()}"> {$ns.partnerSaleOrders|@count}</a>
+        </div>
+
+        <div>
+            Purchase Orders : <a class="table-cell link" href="{SITE_PATH}/purchase/list?prt={$ns.partner->getId()}">{$ns.partnerPurchaseOrders|@count}</a>
+        </div>
+        <div>
+            Transactions: <a class="table-cell link" href="{SITE_PATH}/payment/list?prt={$ns.partner->getId()}">{$ns.partnerTransactions|@count}</a>
+        </div>
+        <div>
+            {if !empty($partnerDept)}
+                {foreach from=$partnerDept key=currencyId item=amount}
+                    <span style="white-space-collapse: discard;">
+                        {assign currencyDto $ns.currencies[$currencyId]}
+                        {if $currencyDto->getSymbolPosition() == 'left'}
+                            {$currencyDto->getTemplateChar()}
+                        {/if}
+                        {$amount}
+                        {if $currencyDto->getSymbolPosition() == 'right'}
+                            {$currencyDto->getTemplateChar()}
+                        {/if}
+                    </span>
+                {/foreach}
+            {/if}
+        </div>
+        <form action="{SITE_PATH}/dyn/main_partner/do_delete_partner">
+            <input type="hidden" name="id" value="{$ns.partner->getId()}"/>
+            <a id="deletePartnerButton" href="javascript:void(0);">Delete</a>
+        </form>
+    {else}
+        Wrong partner!
     {/if}
-
-    <div>
-        Sale Orders : <a class="table-cell link" href="{SITE_PATH}/sale/list?prt={$ns.partner->getId()}"> {$ns.partnerSaleOrders|@count}</a>
-    </div>
-
-    <div>
-        Purchase Orders : <a class="table-cell link" href="{SITE_PATH}/purchase/list?prt={$ns.partner->getId()}">{$ns.partnerPurchaseOrders|@count}</a>
-    </div>
-    <div>
-        Transactions: <a class="table-cell link" href="{SITE_PATH}/payment/list?prt={$ns.partner->getId()}">{$ns.partnerTransactions|@count}</a>
-    </div>
-    <div>
-        {if !empty($partnerDept)}
-            {foreach from=$partnerDept key=currencyId item=amount}
-                <span style="white-space-collapse: discard;">
-                    {assign currencyDto $ns.currencies[$currencyId]}
-                    {if $currencyDto->getSymbolPosition() == 'left'}
-                        {$currencyDto->getTemplateChar()}
-                    {/if}
-                    {$amount}
-                    {if $currencyDto->getSymbolPosition() == 'right'}
-                        {$currencyDto->getTemplateChar()}
-                    {/if}
-                </span>
-            {/foreach}
-        {/if}
-    </div>
-    <form action="{SITE_PATH}/dyn/main/do_delete_partner">
-        <input type="hidden" name="id" value="{$ns.partner->getId()}"/>
-        <a id="deletePartnerButton" href="javascript:void(0);">Delete</a>
-    </form>
 </div>

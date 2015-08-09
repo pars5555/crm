@@ -9,7 +9,7 @@
             <span style="color:green">{$ns.success_message}</span>
         </div>
     {/if}
-    <form class="createProduct create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_product/do_create_product">
+    <form class="createProduct create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_product/do_update_product">
         <div class="form-group">
             <label class="label">Name</label>
             <input class="text" type="text" name="name" value="{$ns.req.name|default:''}"/>
@@ -45,6 +45,7 @@
             </select>
         </div>
 
+        <input name="id" type="hidden" value="{$ns.product->getId()}"/>
         <input class="button blue" type="submit" value="Save"/>
 
     </form>

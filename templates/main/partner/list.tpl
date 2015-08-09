@@ -54,6 +54,9 @@
                 <a class="table-cell view_item" href="{SITE_PATH}/partner/{$partner->getId()}">
                     <span class="button blue">open</span>
                 </a>
+                <a class="table-cell view_item" href="{SITE_PATH}/partner/edit/{$partner->getId()}">
+                    <span class="button blue">edit</span>
+                </a>
             </div>
         {/foreach}
     </div>

@@ -10,7 +10,7 @@
         </div>
     {/if}
 
-    <form class="createPartner create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main/do_create_partner">
+    <form class="createPartner create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_partner/do_create_partner">
         <div class="form-group">
             <label class="label">Name</label>
             <input class="text" type="text" name="name" value="{$ns.req.name|default:''}"/>

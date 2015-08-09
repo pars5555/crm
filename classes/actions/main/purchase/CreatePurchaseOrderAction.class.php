@@ -12,7 +12,7 @@
  *
  */
 
-namespace crm\actions\main {
+namespace crm\actions\main\purchase {
 
 use crm\actions\BaseAction;
 use crm\managers\PurchaseOrderManager;

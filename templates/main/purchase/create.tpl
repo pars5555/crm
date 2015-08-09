@@ -9,7 +9,7 @@
             <span style="color:green">{$ns.success_message}</span>
         </div>
     {/if}
-    <form class="createPurchaseOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main/do_create_purchase_order">
+    <form class="createPurchaseOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_purchase/do_create_purchase_order">
         <div class="form-group">
             <label class="label">Date</label>
             {assign date null}

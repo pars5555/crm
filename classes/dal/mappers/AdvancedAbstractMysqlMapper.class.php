@@ -22,7 +22,7 @@ namespace crm\dal\mappers {
 
         public function selectByField($fieldName, $fieldValue) {
             $sqlQuery = sprintf("SELECT * FROM `%s` WHERE `%s` = :value ", $this->getTableName(), $fieldName);
-            return $this->fetchRow($sqlQuery, array("value" => $fieldValue));
+            return $this->fetchRows($sqlQuery, array("value" => $fieldValue));
         }
 
         public function deleteByField($fieldName, $fieldValue) {

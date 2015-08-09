@@ -28,7 +28,7 @@ use NGS;
             $this->initSuccessMessages();
             $partnerId = intval(NGS()->args()->id);
             $partner = PartnerManager::getInstance()->selectbyPK($partnerId);
-            if (isset($partner)) {
+            if ($partner) {
                 $this->addParam('partner', $partner);
                 $partnerSaleOrders = SaleOrderManager::getInstance()->getPartnerSaleOrders($partnerId);
                 $partnerPurchaseOrders = PurchaseOrderManager::getInstance()->getPartnerPurchaseOrders($partnerId);

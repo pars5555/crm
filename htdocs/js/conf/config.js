@@ -4,5 +4,5 @@ NGS.config = {
 	initialLoad: "",
 	initialLoadParams: {},
 	dynContainer: "dyn",
-	ajaxLoader: false
+	ajaxLoader: 'ajaxLoader'
 };
