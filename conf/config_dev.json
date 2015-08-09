@@ -3,8 +3,8 @@
     "DB": {
         "mysql": {
             "host": "127.0.0.1",
-            "user": "root",
-            "pass": "",
+            "user": "crm",
+            "pass": "crm123",
             "name": "crm"
         }
         ,
