@@ -11,7 +11,7 @@
     {/if}
 
     {include file="{getTemplateDir}/main/purchase/list_filters.tpl"}
-
+ <a  href="{SITE_PATH}/purchase/create"><img src="{SITE_PATH}/img/new_order.png"/></a>
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell"> ID </span>
@@ -54,5 +54,5 @@
             </div>
         {/foreach}
     </div>
-    <a  href="{SITE_PATH}/purchase/create"><img src="{SITE_PATH}/img/new_order.png"/></a>
+   
 </div>

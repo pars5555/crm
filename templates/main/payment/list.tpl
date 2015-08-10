@@ -11,7 +11,7 @@
     {/if}
 
     {include file="{getTemplateDir}/main/payment/list_filters.tpl"}
-
+<a class="button blue" href="{SITE_PATH}/payment/create">create</a>
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell"> ID </span>
@@ -47,6 +47,6 @@
 
     </div>
 
-    <a class="button blue" href="{SITE_PATH}/payment/create">create</a>
+    
 
 </div>
