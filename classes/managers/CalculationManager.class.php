@@ -125,6 +125,16 @@ namespace crm\managers {
                     $partnersDept[$partnerId][$currencyId] += $unitPrice;
                 }
             }
+            //rounding
+            foreach ($partnersDept as $partnerId => $partnerDept) {
+                foreach ($partnerDept as $currencyId => &$dept) {
+                    $partnersDept[$partnerId][$currencyId] = round($dept, 2);
+                    //this case is for -0 only to show it as 0
+                    if ($partnersDept[$partnerId][$currencyId] == -$partnersDept[$partnerId][$currencyId]) {
+                        $partnersDept[$partnerId][$currencyId] = 0;
+                    }
+                }
+            }
             return $partnersDept;
         }
 
