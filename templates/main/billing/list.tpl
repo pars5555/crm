@@ -11,7 +11,7 @@
     {/if}
 
     {include file="{getTemplateDir}/main/billing/list_filters.tpl"}
-<a class="button blue" href="{SITE_PATH}/billing/create">create</a>
+<a  href="{SITE_PATH}/billing/create"><img src="{SITE_PATH}/img/add.png"/></a>
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell"> ID </span>
