@@ -30,7 +30,11 @@ namespace crm\actions\main\sale {
             $saleOrderManager = SaleOrderManager::getInstance();
             $saleOrderManager->deleteByPK($saleOrderId);
             $_SESSION['success_message'] = 'Sale Order Successfully deleted!';
-            $this->redirect('sale/list');
+            if (strpos($_SERVER['HTTP_REFERER'], 'sale/list') === false) {
+                $this->redirect('sale/list');
+            } else {
+                $this->redirectToReferer();
+            }
         }
 
     }

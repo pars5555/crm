@@ -1,4 +1,5 @@
 <div class="container payment--open--container">
+    <h1>Payment Order View</h1>
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>

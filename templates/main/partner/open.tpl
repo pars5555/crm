@@ -1,4 +1,5 @@
 <div class="container partner--open--container">
+    <h1>Partner View</h1>
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>
@@ -21,6 +22,9 @@
         </div>
         <div>
             address: {$ns.partner->getAddress()}
+        </div>
+        <div>
+            phone: {$ns.partner->getPhone()}
         </div>
 
 

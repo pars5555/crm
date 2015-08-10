@@ -40,7 +40,11 @@ namespace crm\actions\main\product {
                 $_SESSION['error_message'] = 'Product can not be deleted. There are Sale and/or Purchase Order(s) that contains this product.';
                 $this->redirect('product/list');
             }
-            $this->redirect('product/list');
+            if (strpos($_SERVER['HTTP_REFERER'], 'product/list') === false) {
+                $this->redirect('product/list');
+            } else {
+                $this->redirectToReferer();
+            }
         }
 
     }

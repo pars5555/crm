@@ -41,7 +41,7 @@ namespace crm\actions\main\payment {
             $note = NGS()->args()->note;
             $paymentTransactionManager->cancelPayment($paymentId, $note);
             $_SESSION['success_message'] = 'Payment Successfully cancelled!';
-            $this->redirect('payment/' . $paymentId);
+            $this->redirectToReferer();
         }
 
     }

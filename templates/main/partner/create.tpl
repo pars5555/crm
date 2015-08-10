@@ -1,4 +1,5 @@
 <div class="container partner--create--container">
+    <h1>Create Partner</h1>
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>
@@ -22,6 +23,10 @@
         <div class="form-group">
             <label class="label">Address</label>
             <input class="text" type="text" name="address" value="{$ns.req.address|default:''}"/>
+        </div>
+        <div class="form-group">
+            <label class="label">Phone</label>
+            <input class="text" type="text" name="phone" value="{$ns.req.phone|default:''}"/>
         </div>
 
         <input class="button blue" type="submit" value="Save"/>

@@ -40,7 +40,7 @@ use NGS;
             $note = NGS()->args()->note;
             $purchaseOrderManager->cancelPurchaseOrder($purchaseOrderId, $note);
             $_SESSION['success_message'] = 'Purchase Order Successfully cancelled!';
-            $this->redirect('purchase/' . $purchaseOrderId);
+            $this->redirectToReferer();
         }
 
     }

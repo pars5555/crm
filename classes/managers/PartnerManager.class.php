@@ -53,21 +53,23 @@ namespace crm\managers {
             return true;
         }
 
-        public function createPartner($name, $email, $address) {
+        public function createPartner($name, $email, $address, $phone) {
             $dto = $this->createDto();
             $dto->setName($name);
             $dto->setEmail($email);
             $dto->setAddress($address);
+            $dto->setPhone($phone);
             $dto->setCreateDate(date('Y-m-d H:i:s'));
             return $this->insertDto($dto);
         }
 
-        public function updatePartner($id, $name, $email, $address) {
+        public function updatePartner($id, $name, $email, $address, $phone) {
             $dto = $this->selectByPK($id);
             if (isset($dto)) {
                 $dto->setName($name);
                 $dto->setEmail($email);
                 $dto->setAddress($address);
+                $dto->setPhone($phone);
                 $dto->setCreateDate(date('Y-m-d H:i:s'));
                 return $this->updateByPk($dto);
             }

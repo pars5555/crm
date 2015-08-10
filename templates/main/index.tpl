@@ -10,7 +10,7 @@
             {include file="{getTemplateDir}/main/util/header.tpl"}
         </header>
         <section class="wrapper">
-            {include file="{getTemplateDir}/main/left_menu.tpl"}
+            {include file="{getTemplateDir}/main/util/left_menu.tpl"}
             <div class="content">
                 {nest ns=content}
             </div>

@@ -25,12 +25,16 @@ namespace crm\actions\main\billing {
                 $paymentId = NGS()->args()->id;
             } else {
                 $_SESSION['error_message'] = 'Billing ID is missing';
-                $this->redirect('payment/list');
+                $this->redirect('billing/list');
             }
             $paymentTransactionManager = PaymentTransactionManager::getInstance();
             $paymentTransactionManager->deleteByPK($paymentId);
             $_SESSION['success_message'] = 'Billing Successfully deleted!';
-            $this->redirect('payment/list');
+            if (strpos($_SERVER['HTTP_REFERER'], 'billing/list') === false) {
+                $this->redirect('billing/list');
+            } else {
+                $this->redirectToReferer();
+            }
         }
 
     }

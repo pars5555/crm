@@ -15,6 +15,11 @@ namespace crm\actions {
             return RequestGroups::$guestRequest;
         }
 
+        protected function redirectToReferer() {
+            header("location: " . $_SERVER['HTTP_REFERER']);
+            exit;
+        }
+
     }
 
 }

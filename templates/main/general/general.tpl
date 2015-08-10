@@ -1,4 +1,5 @@
 <div class="container general--container">
+   <h1>General</h1>
     <form id="GeneralForm" autocomplete="off" method="GET" action="{SITE_PATH}/general">
         <div class="form-group">
             <label class="label">Currency</label>

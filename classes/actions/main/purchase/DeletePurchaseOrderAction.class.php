@@ -30,7 +30,11 @@ namespace crm\actions\main\purchase {
             $purchaseOrderManager = PurchaseOrderManager::getInstance();
             $purchaseOrderManager->deleteByPK($purchaseOrderId);
             $_SESSION['success_message'] = 'Purchase Order Successfully deleted!';
-            $this->redirect('purchase/list');
+            if (strpos($_SERVER['HTTP_REFERER'], 'purchase/list') === false) {
+                $this->redirect('purchase/list');
+            } else {
+                $this->redirectToReferer();
+            }
         }
 
     }

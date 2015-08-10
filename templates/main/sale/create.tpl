@@ -1,4 +1,5 @@
 <div class="container sale--create--container">
+    <h1>Create Sale Order</h1>
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>

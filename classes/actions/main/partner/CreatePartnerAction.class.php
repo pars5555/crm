@@ -14,25 +14,25 @@
 
 namespace crm\actions\main\partner {
 
-use crm\actions\BaseAction;
-use crm\managers\PartnerManager;
-use NGS;
-use ngs\framework\exceptions\RedirectException;
+    use crm\actions\BaseAction;
+    use crm\managers\PartnerManager;
+    use NGS;
+    use ngs\framework\exceptions\RedirectException;
 
     class CreatePartnerAction extends BaseAction {
 
         public function service() {
             try {
-                list($name, $email, $address) = $this->getFormData();
+                list($name, $email, $address, $phone) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            $partnerId = PartnerManager::getInstance()->createPartner($name, $email, $address);
+            $partnerId = PartnerManager::getInstance()->createPartner($name, $email, $address, $phone);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Partner Successfully created!';
-            $this->redirect('partner/'.$partnerId);
+            $this->redirectToReferer();
         }
 
         private function getFormData() {
@@ -43,7 +43,11 @@ use ngs\framework\exceptions\RedirectException;
             if (isset(NGS()->args()->address)) {
                 $address = NGS()->args()->address;
             }
-            return array($name, $email, $address);
+            $phone = "";
+            if (isset(NGS()->args()->phone)) {
+                $phone = NGS()->args()->phone;
+            }
+            return array($name, $email, $address,$phone);
         }
 
         private function validateFormData() {

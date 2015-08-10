@@ -23,13 +23,13 @@ namespace crm\actions\main\partner {
 
         public function service() {
             try {
-                list($id, $name, $email, $address) = $this->getFormData();
+                list($id, $name, $email, $address, $phone) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            PartnerManager::getInstance()->updatePartner($id, $name, $email, $address);
+            PartnerManager::getInstance()->updatePartner($id, $name, $email, $address, $phone);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Partner Successfully updated!';
             $this->redirect('partner/' . $id);
@@ -44,7 +44,11 @@ namespace crm\actions\main\partner {
             if (isset(NGS()->args()->address)) {
                 $address = NGS()->args()->address;
             }
-            return array($id, $name, $email, $address);
+            $phone = "";
+            if (isset(NGS()->args()->phone)) {
+                $phone = NGS()->args()->phone;
+            }
+            return array($id, $name, $email, $address, $phone);
         }
 
         private function validateFormData() {

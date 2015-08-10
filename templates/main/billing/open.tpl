@@ -1,4 +1,5 @@
 <div class="container billing--open--container">
+    <h1>Billing Order View</h1>
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>

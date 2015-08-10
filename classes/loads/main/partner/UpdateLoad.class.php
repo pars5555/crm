@@ -25,7 +25,7 @@ namespace crm\loads\main\partner {
             $partner = PartnerManager::getInstance()->selectByPK($id);
             if (isset($partner)) {
                 if (!isset($_SESSION['action_request'])) {
-                    $_SESSION['action_request'] = ['name' =>$partner->getName(), 'email' =>$partner->getEmail(), 'address' =>$partner->getAddress()];
+                    $_SESSION['action_request'] = ['name' =>$partner->getName(), 'email' =>$partner->getEmail(), 'address' =>$partner->getAddress(), 'phone' =>$partner->getPhone()];
                 }
                 $this->addParam("partner", $partner);
                 $this->addParam('req', $_SESSION['action_request']);
