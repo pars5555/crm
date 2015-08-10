@@ -11,7 +11,7 @@
     {/if}
 
     {include file="{getTemplateDir}/main/payment/list_filters.tpl"}
-<a  href="{SITE_PATH}/payment/create"><img src="{SITE_PATH}/img/add.png"/></a>
+    <a  href="{SITE_PATH}/payment/create"><img src="{SITE_PATH}/img/add.png"/></a>
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell"> ID </span>
@@ -41,12 +41,17 @@
                 <a class="table-cell view_item" href="{SITE_PATH}/payment/{$payment->getId()}">
                     <span class="button blue">open</span>
                 </a>
+                {if $payment->getCancelled() == 1}
+                    <a class="table-cell view_item deletePayment"  href="{SITE_PATH}/dyn/main_payment/do_delete_payment?id={$payment->getId()}">
+                        <span class="button blue">delete</span>
+                    </a>
+                {/if}
             </div>
         {/foreach}
 
 
     </div>
 
-    
+
 
 </div>

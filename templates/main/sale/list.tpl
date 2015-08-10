@@ -11,7 +11,7 @@
     {/if}
 
     {include file="{getTemplateDir}/main/sale/list_filters.tpl"}
-<a href="{SITE_PATH}/sale/create"><img src="{SITE_PATH}/img/new_order.png"/></a>
+    <a href="{SITE_PATH}/sale/create"><img src="{SITE_PATH}/img/new_order.png"/></a>
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell"> ID </span>
@@ -48,13 +48,15 @@
                 <a class="table-cell view_item" href="{SITE_PATH}/sale/{$saleOrder->getId()}">
                     <span class="button blue">open</span>
                 </a>
-                <a class="table-cell view_item deleteSaleOrder"  href="{SITE_PATH}/dyn/main_sale/do_delete_sale_order?id={$saleOrder->getId()}">
-                    <span class="button blue">delete</span>
-                </a>
+                {if $saleOrder->getCancelled() == 1}
+                    <a class="table-cell view_item deleteSaleOrder"  href="{SITE_PATH}/dyn/main_sale/do_delete_sale_order?id={$saleOrder->getId()}">
+                        <span class="button blue">delete</span>
+                    </a>
+                {/if}
             </div>
         {/foreach}
     </div>
 
-    
+
 
 </div>

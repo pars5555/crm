@@ -9,7 +9,7 @@
             <span style="color:green">{$ns.success_message}</span>
         </div>
     {/if}
-    <form class="createBillingOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_payment/do_create_billing">
+    <form class="createBillingOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_billing/do_create_billing">
         <div class="form-group">
             <label class="label">Billing Date</label>
             {assign date null}

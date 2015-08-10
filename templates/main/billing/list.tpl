@@ -11,7 +11,7 @@
     {/if}
 
     {include file="{getTemplateDir}/main/billing/list_filters.tpl"}
-<a  href="{SITE_PATH}/billing/create"><img src="{SITE_PATH}/img/add.png"/></a>
+    <a  href="{SITE_PATH}/billing/create"><img src="{SITE_PATH}/img/add.png"/></a>
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell"> ID </span>
@@ -41,12 +41,17 @@
                 <a class="table-cell view_item" href="{SITE_PATH}/billing/{$billing->getId()}">
                     <span class="button blue">open</span>
                 </a>
+                {if $billing->getCancelled() == 1}
+                    <a class="table-cell view_item deleteBilling"  href="{SITE_PATH}/dyn/main_billing/do_delete_billing?id={$billing->getId()}">
+                        <span class="button blue">delete</span>
+                    </a>
+                {/if}
             </div>
         {/foreach}
 
 
     </div>
 
-    
+
 
 </div>

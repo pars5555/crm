@@ -12,7 +12,7 @@
  *
  */
 
-namespace crm\actions\main\payment {
+namespace crm\actions\main\billing {
 
     use crm\actions\BaseAction;
     use crm\managers\PaymentTransactionManager;
