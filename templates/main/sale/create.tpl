@@ -31,6 +31,7 @@
                 {else}
                     {assign selectedPartnerId null}
                 {/if}
+                <option value="0" >Select Partner...</option>
                 {foreach from=$ns.partners item=p}
                     <option value="{$p->getId()}" {if isset($selectedPartnerId) && $selectedPartnerId == $p->getId()}selected{/if}>{$p->getName()}</option>
                 {/foreach}
