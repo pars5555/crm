@@ -32,6 +32,7 @@
                 {else}
                     {assign selectedPartnerId null}
                 {/if}
+                <option value="0">Select Partner...</option>
                 {foreach from=$ns.partners item=p}
                     <option value="{$p->getId()}" {if isset($selectedPartnerId) && $selectedPartnerId == $p->getId()}selected{/if}>{$p->getName()}</option>
                 {/foreach}
@@ -44,7 +45,7 @@
                     {assign selectedPaymentMethodId $ns.req.billingMethodId}
                 {else}
                     {assign selectedPaymentMethodId $ns.defaultPaymentMethodId}
-                {/if}
+                {/if}                
                 {foreach from=$ns.billing_methods item=pm}
                     <option {if $pm->getId() == $selectedPaymentMethodId}selected{/if}
                                                                          value="{$pm->getId()}">{$pm->getName()}</option>

@@ -29,7 +29,8 @@ use NGS;
             $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
             $paymentTransactionManager = PaymentTransactionManager::getInstance();
             $nonCancelledPaymentOrdersByCurrency = $paymentTransactionManager->getNonCancelledPaymentOrdersByCurrency($selectCurrencyId);
-            $this->addParam("amount", $nonCancelledPaymentOrdersByCurrency);
+            $cashboxAmount = -$nonCancelledPaymentOrdersByCurrency;
+            $this->addParam("amount", $cashboxAmount);
         }
 
         public function getDefaultLoads() {
