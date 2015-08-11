@@ -44,7 +44,7 @@
             </form>
         {else}
             <a class="table-cell view_item"  href="{SITE_PATH}/dyn/main_billing/do_restore_billing?id={$ns.billing->getId()}">
-                <span class="button blue">Undo Cancel</span>
+                <span class="button blue">Restore</span>
             </a>
         {/if}
     {/if}

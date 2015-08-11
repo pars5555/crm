@@ -34,7 +34,7 @@
             </form>
         {else}
             <a class="table-cell view_item"  href="{SITE_PATH}/dyn/main_sale/do_restore_sale_order?id={$ns.saleOrder->getId()}">
-                <span class="button blue">Undo Cancel</span>
+                <span class="button blue">Restore</span>
             </a>
         {/if}
         <form id="saleOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main_sale/do_save_sale_order_lines">
