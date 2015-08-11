@@ -136,22 +136,8 @@ namespace crm\managers {
                     }
                     $partnersDept[$partnerId][$currencyId] += $unitPrice;
                 }
-            }foreach ($partnersPaymentTransactionsMappedByPartnerId as $partnerId => $transactions) {
-                foreach ($transactions as $transaction) {
-                    if ($transaction->getCancelled() == 1) {
-                        continue;
-                    }
-                    $currencyId = $transaction->getCurrencyId();
-                    $unitPrice = floatval($transaction->getAmount());
-                    if (!array_key_exists($partnerId, $partnersDept)) {
-                        $partnersDept[$partnerId] = [];
-                    }
-                    if (!array_key_exists($currencyId, $partnersDept[$partnerId])) {
-                        $partnersDept[$partnerId][$currencyId] = 0;
-                    }
-                    $partnersDept[$partnerId][$currencyId] += $unitPrice;
-                }
             }
+            
             foreach ($partnersBillingTransactionsMappedByPartnerId as $partnerId => $transactions) {
                 foreach ($transactions as $transaction) {
                     if ($transaction->getCancelled() == 1) {
