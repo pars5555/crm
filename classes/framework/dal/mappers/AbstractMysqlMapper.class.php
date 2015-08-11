@@ -309,7 +309,7 @@ namespace ngs\framework\dal\mappers {
 		 */
 		protected function fetchField($sqlQuery, $fieldName, $params=array()) {
 			// Execute query.
-			$res = $this->dbms->prepare($sqlQuery);
+			$res = $this->dbms->prepare($sqlQuery);                        
 			$results = $res->execute($params);
 			if ($results) {
 				return $res->fetchObject()->$fieldName;
