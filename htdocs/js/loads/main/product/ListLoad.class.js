@@ -6,8 +6,8 @@ NGS.createLoad("crm.loads.main.product.list", {
 
     },
     afterLoad: function () {
-        $('#paymentFilters').find('input, select, checkbox').change(function () {
-            $('#paymentFilters').trigger('submit');
+        $('#productFilters').find('input, select, checkbox').change(function () {
+            $('#productFilters').trigger('submit');
         });
     }
 });

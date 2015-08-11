@@ -88,7 +88,7 @@ namespace crm\loads\main\product {
         }
 
         public function getSortByFields() {
-            return ['date' => 'Date', 'amount' => 'Amount'];
+            return ['name' => 'Name', 'model' => 'Model'];
         }
 
     }
