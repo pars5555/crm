@@ -18,7 +18,8 @@
             <span class="table-cell"> ID </span>
             <span class="table-cell"> Partner </span>
             <span class="table-cell"> Date</span>
-            <span class="table-cell"> Total Amount</span>
+            <span class="table-cell"> Total Amount </span>
+            <span class="table-cell"> Total Profit </span>
             <span class="table-cell"> Note </span>
             <span class="table-cell"> View </span>
         </div> 
@@ -45,6 +46,7 @@
                         </span>
                     {/foreach}
                 </span>
+                <span class="table-cell"> {$saleOrder->getTotalProfit()} </span>
                 <span class="table-cell"> {$saleOrder->getNote()} </span>
                 <a class="table-cell view_item" href="{SITE_PATH}/sale/{$saleOrder->getId()}">
                     <span class="button blue">open</span>

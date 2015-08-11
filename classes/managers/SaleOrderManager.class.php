@@ -96,19 +96,24 @@ namespace crm\managers {
             if (!empty($saleOrderIds)) {
                 $saleOrderLinesDtos = SaleOrderLineManager::getInstance()->getSaleOrderLinesFull(['sale_order_id', 'in', '(' . implode(',', $saleOrderIds) . ')']);
                 $amount = [];
+                $profits = [];
                 foreach ($saleOrderLinesDtos as $saleOrderLine) {
                     $saleOrderId = intval($saleOrderLine->getSaleOrderId());
                     $currencyId = intval($saleOrderLine->getCurrencyId());
                     $unitPrice = floatval($saleOrderLine->getUnitPrice());
                     $quantity = floatval($saleOrderLine->getQuantity());
+                    $profit = floatval($saleOrderLine->getTotalProfit());
                     if (!array_key_exists($saleOrderId, $amount)) {
                         $amount[$saleOrderId] = [];
                     }
                     if (!array_key_exists($currencyId, $amount[$saleOrderId])) {
                         $amount[$saleOrderId][$currencyId] = 0;
                     }
-
                     $amount[$saleOrderId][$currencyId] += $unitPrice * $quantity;
+                    if (!array_key_exists($saleOrderId, $profits)) {
+                        $profits[$saleOrderId] = 0;
+                    }
+                    $profits[$saleOrderId] += $profit;
                 }
             }
             if (!empty($saleOrderIds)) {
@@ -127,6 +132,7 @@ namespace crm\managers {
                 $row->setPartnerDto($partnerDtos[intval($row->getPartnerId())]);
                 $row->setSaleOrderLinesDtos($saleOrderLinesDtosMappedBySaleOrderId[$saleOrderId]);
                 $row->setTotalAmount($amount[$saleOrderId]);
+                $row->setTotalProfit($profits[$saleOrderId]);
             }
             return $rows;
         }
