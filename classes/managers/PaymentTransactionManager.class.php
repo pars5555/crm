@@ -102,8 +102,11 @@ namespace crm\managers {
             return $this->insertDto($dto);
         }
 
-        public function getPartnerTransactions($partnerId) {
-            return $this->selectAdvance('*', ['partner_id', '=', $partnerId]);
+        public function getPartnerPaymentTransactions($partnerId) {
+            return $this->selectAdvance('*', ['partner_id', '=', $partnerId, 'AND', 'amount', '>', 0]);
+        }
+        public function getPartnerBillingTransactions($partnerId) {
+            return $this->selectAdvance('*', ['partner_id', '=', $partnerId, 'AND', 'amount', '<', 0]);
         }
 
         public function getPartnersPaymentTransactions($partnerIds) {

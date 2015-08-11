@@ -37,7 +37,10 @@
             Purchase Orders : <a class="table-cell link" href="{SITE_PATH}/purchase/list?prt={$ns.partner->getId()}">{$ns.partnerPurchaseOrders|@count}</a>
         </div>
         <div>
-            Transactions: <a class="table-cell link" href="{SITE_PATH}/payment/list?prt={$ns.partner->getId()}">{$ns.partnerTransactions|@count}</a>
+            Payment Transactions: <a class="table-cell link" href="{SITE_PATH}/payment/list?prt={$ns.partner->getId()}">{$ns.partnerPaymentTransactions|@count}</a>
+        </div>
+        <div>
+            Billing Transactions: <a class="table-cell link" href="{SITE_PATH}/billing/list?prt={$ns.partner->getId()}">{$ns.partnerBillingTransactions|@count}</a>
         </div>
         <div>
             {if !empty($partnerDept)}

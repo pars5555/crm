@@ -33,7 +33,7 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function calculatePartnerDeptBySalePurchaseAndPaymentTransations($partnersSaleOrders, $partnersPurchaseOrders, $partnersTransactions) {
+        public function calculatePartnerDeptBySalePurchaseAndPaymentTransations($partnersSaleOrders, $partnersPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions) {
             $partnerDept = [];
             foreach ($partnersSaleOrders as $saleOrder) {
                 if ($saleOrder->getCancelled() == 1) {
@@ -59,7 +59,7 @@ namespace crm\managers {
                     $partnerDept[$currencyId] += $amount;
                 }
             }
-            foreach ($partnersTransactions as $transaction) {
+            foreach ($partnerPaymentTransactions as $transaction) {
                 if ($transaction->getCancelled() == 1) {
                     continue;
                 }
@@ -69,6 +69,17 @@ namespace crm\managers {
                     $partnerDept[$currencyId] = 0;
                 }
                 $partnerDept[$currencyId] += $unitPrice;
+            }
+            foreach ($partnerBillingTransactions as $transaction) {
+                if ($transaction->getCancelled() == 1) {
+                    continue;
+                }
+                $currencyId = $transaction->getCurrencyId();
+                $unitPrice = floatval($transaction->getAmount());
+                if (!array_key_exists($currencyId, $partnerDept)) {
+                    $partnerDept[$currencyId] = 0;
+                }
+                $partnerDept[$currencyId] -= $unitPrice;
             }
             return $partnerDept;
         }
