@@ -34,7 +34,7 @@
             Quantity in warehouse: {$ns.productQuantity}
         </div>
     {/if}
-    <a class="table-cell view_item deleteProductButton"  href="{SITE_PATH}/dyn/main_payment/do_delete_productt?id={$product->getId()}">
+    <a class="table-cell view_item deleteProductButton"  href="{SITE_PATH}/dyn/main_product/do_delete_product?id={$product->getId()}">
         <span class="button blue">delete</span>
     </a>
 </div>
