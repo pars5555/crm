@@ -135,6 +135,9 @@ namespace crm\managers {
                     if (!array_key_exists($saleOrderId, $amount)) {
                         $amount[$saleOrderId] = [];
                     }
+                    if (!array_key_exists($saleOrderId, $profits)) {
+                        $amount[$saleOrderId] = 0;
+                    }
                 }
             }
             foreach ($rows as $row) {
