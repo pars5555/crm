@@ -40,6 +40,19 @@
         },
         {
             "action": "loads.main.main",
+            "route": "edit/[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.sale.update"
+                }
+            }
+
+        },
+        {
+            "action": "loads.main.main",
             "route": "[:id]",
             "constraints": {
                 "id": "[0-9]+"
@@ -68,6 +81,19 @@
             "nestedLoad": {
                 "content": {
                     "action": "loads.main.purchase.create"
+                }
+            }
+
+        },
+        {
+            "action": "loads.main.main",
+            "route": "edit/[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.purchase.update"
                 }
             }
 

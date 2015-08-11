@@ -45,7 +45,7 @@ namespace crm\managers {
             }
             return false;
         }
-       
+
         public function restoreSaleOrder($id) {
             $saleOrderDto = $this->selectByPK($id);
             if (isset($saleOrderDto)) {
@@ -63,6 +63,16 @@ namespace crm\managers {
             $dto->setOrderDate($date);
             $dto->setNote($note);
             return $this->insertDto($dto);
+        }
+
+        public function updateSaleOrder($id, $partnerId, $date, $note) {
+            $dto = $this->selectByPK($id);
+            if ($dto) {
+                $dto->setPartnerId($partnerId);
+                $dto->setOrderDate($date);
+                $dto->setNote($note);
+                return $this->updateByPk($dto);
+            }
         }
 
         public function getPartnerSaleOrders($partnerId) {

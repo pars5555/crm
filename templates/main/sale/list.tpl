@@ -51,6 +51,9 @@
                 <a class="table-cell view_item" href="{SITE_PATH}/sale/{$saleOrder->getId()}">
                     <span class="button blue">open</span>
                 </a>
+                <a class="table-cell view_item" href="{SITE_PATH}/sale/edit/{$saleOrder->getId()}">
+                    <span class="button blue">edit</span>
+                </a>
                 {if $saleOrder->getCancelled() == 1}
                     <a class="table-cell view_item deleteSaleOrder"  href="{SITE_PATH}/dyn/main_sale/do_delete_sale_order?id={$saleOrder->getId()}">
                         <span class="button blue">delete</span>

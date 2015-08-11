@@ -32,7 +32,7 @@ namespace crm\actions\main\product {
             ProductManager::getInstance()->updateProduct($id, $name, $model, $manufacturerId, $uomId);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Product Successfully updated!';
-            $this->redirect('product/edit/' . $id);
+            $this->redirect('product/' . $id);
         }
 
         private function getFormData() {

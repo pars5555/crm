@@ -111,7 +111,7 @@ namespace crm\managers {
             }
             return false;
         }
-        
+
         public function restorePurchaseOrder($id) {
             $purchaseOrderDto = $this->selectByPK($id);
             if (isset($purchaseOrderDto)) {
@@ -129,6 +129,16 @@ namespace crm\managers {
             $dto->setOrderDate($date);
             $dto->setNote($note);
             return $this->insertDto($dto);
+        }
+
+        public function updatePurchaseOrder($id, $partnerId, $date, $note) {
+            $dto = $this->selectByPK($id);
+            if ($dto) {
+                $dto->setPartnerId($partnerId);
+                $dto->setOrderDate($date);
+                $dto->setNote($note);
+                return $this->updateByPk($dto);
+            }
         }
 
         private function mapPurchaseOrderLinesByPurchaseOrderId($purchaseOrderLinesDtos) {
