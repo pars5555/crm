@@ -38,7 +38,7 @@ namespace crm\actions\main\billing {
                 $this->redirect('billing/list');
             }
             $note = NGS()->args()->note;
-            $paymentTransactionManager->cancelBilling($billingId, $note);
+            $paymentTransactionManager->cancelPayment($billingId, $note);
             $_SESSION['success_message'] = 'Billing Successfully cancelled!';
             $this->redirectToReferer();
         }
