@@ -111,6 +111,17 @@ namespace crm\managers {
             }
             return false;
         }
+        
+        public function restorePurchaseOrder($id) {
+            $purchaseOrderDto = $this->selectByPK($id);
+            if (isset($purchaseOrderDto)) {
+                $purchaseOrderDto->setCancelled(0);
+                $purchaseOrderDto->setCancelNote("");
+                $this->updateByPk($purchaseOrderDto);
+                return true;
+            }
+            return false;
+        }
 
         public function createPurchaseOrder($partnerId, $date, $note) {
             $dto = $this->createDto();

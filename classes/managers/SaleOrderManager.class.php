@@ -45,6 +45,17 @@ namespace crm\managers {
             }
             return false;
         }
+       
+        public function restoreSaleOrder($id) {
+            $saleOrderDto = $this->selectByPK($id);
+            if (isset($saleOrderDto)) {
+                $saleOrderDto->setCancelled(0);
+                $saleOrderDto->setCancelNote("");
+                $this->updateByPk($saleOrderDto);
+                return true;
+            }
+            return false;
+        }
 
         public function createSaleOrder($partnerId, $date, $note) {
             $dto = $this->createDto();

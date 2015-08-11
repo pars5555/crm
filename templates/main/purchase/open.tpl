@@ -33,7 +33,9 @@
                 <a class="button blue" id="cancelPurchaseOrderButton" href="javascript:void(0);">Cancel</a>
             </form>
         {else}
-            Cancelled
+            <a class="table-cell view_item"  href="{SITE_PATH}/dyn/main_purchase/do_restore_purchase_order?id={$ns.purchaseOrder->getId()}">
+                <span class="button blue">Undo Cancel</span>
+            </a>
         {/if}
         <form id="purchaseOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main_purchase/do_save_purchase_order_lines">
             <h2 class="title">Order Lines</h2>

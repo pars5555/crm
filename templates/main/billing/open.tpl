@@ -43,7 +43,9 @@
                 <a id="cancelBillingButton" href="javascript:void(0);">Cancel</a>
             </form>
         {else}
-            Cancelled
+            <a class="table-cell view_item"  href="{SITE_PATH}/dyn/main_billing/do_restore_billing?id={$ns.billing->getId()}">
+                <span class="button blue">Undo Cancel</span>
+            </a>
         {/if}
     {/if}
 </div>

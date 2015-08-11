@@ -43,7 +43,9 @@
                 <a id="cancelPaymentButton" href="javascript:void(0);">Cancel</a>
             </form>
         {else}
-            Cancelled
+            <a class="table-cell view_item"  href="{SITE_PATH}/dyn/main_payment/do_restore_payment?id={$ns.payment->getId()}">
+                <span class="button blue">Undo Cancel</span>
+            </a>
         {/if}
     {/if}
 </div>

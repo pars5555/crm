@@ -69,6 +69,17 @@ namespace crm\managers {
             }
             return false;
         }
+        
+        public function undoCancelPayment($id) {
+            $paymentDto = $this->selectByPK($id);
+            if (isset($paymentDto)) {
+                $paymentDto->setCancelled(0);
+                $paymentDto->setCancelNote("");
+                $this->updateByPk($paymentDto);
+                return true;
+            }
+            return false;
+        }
 
         public function createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date, $note) {
             $partnerManager = PartnerManager::getInstance();
