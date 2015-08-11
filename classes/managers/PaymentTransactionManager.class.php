@@ -106,8 +106,20 @@ namespace crm\managers {
             return $this->selectAdvance('*', ['partner_id', '=', $partnerId]);
         }
 
-        public function getPartnersTransactions($partnerIds) {
-            $rows = $this->selectAdvance('*', ['partner_id', 'in', '(' . implode(',', $partnerIds) . ')']);
+        public function getPartnersPaymentTransactions($partnerIds) {
+            $rows = $this->selectAdvance('*', ['partner_id', 'in', '(' . implode(',', $partnerIds) . ')', 'and', 'amount', '>', '0']);
+            $ret = array();
+            foreach ($partnerIds as $partnerId) {
+                $ret[$partnerId] = [];
+            }
+            foreach ($rows as $row) {
+                $ret [intval($row->getPartnerId())][] = $row;
+            }
+            return $ret;
+        }
+        
+        public function getPartnersBillingTransactions($partnerIds) {
+            $rows = $this->selectAdvance('*', ['partner_id', 'in', '(' . implode(',', $partnerIds) . ')', 'and', 'amount', '<', '0']);
             $ret = array();
             foreach ($partnerIds as $partnerId) {
                 $ret[$partnerId] = [];

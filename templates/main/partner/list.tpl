@@ -23,6 +23,7 @@
             <span class="table-cell"> Sale Orders</span>
             <span class="table-cell"> Purchase Orders</span>
             <span class="table-cell"> Payments Transactions </span>
+            <span class="table-cell"> Billing Transactions </span>
             <span class="table-cell"> View </span>
         </div> 
         {foreach from=$ns.partners item=partner}
@@ -51,7 +52,8 @@
                 </span>
                 <a class="table-cell link" href="{SITE_PATH}/sale/list?prt={$partner->getId()}"> {$ns.partnersSaleOrdersMappedByPartnerId[$partner->getId()]|@count} </a>
                 <a class="table-cell link" href="{SITE_PATH}/purchase/list?prt={$partner->getId()}"> {$ns.partnersPurchaseOrdersMappedByPartnerId[$partner->getId()]|@count} </a>
-                <a class="table-cell link" href="{SITE_PATH}/payment/list?prt={$partner->getId()}"> {$ns.partnersTransactionsMappedByPartnerId[$partner->getId()]|@count} </a>
+                <a class="table-cell link" href="{SITE_PATH}/payment/list?prt={$partner->getId()}"> {$ns.partnersPaymentTransactionsMappedByPartnerId[$partner->getId()]|@count} </a>
+                <a class="table-cell link" href="{SITE_PATH}/billing/list?prt={$partner->getId()}"> {$ns.partnersBillingTransactionsMappedByPartnerId[$partner->getId()]|@count} </a>
                 <a class="table-cell view_item" href="{SITE_PATH}/partner/{$partner->getId()}">
                     <span class="button blue">open</span>
                 </a>

@@ -37,13 +37,15 @@ namespace crm\loads\main\partner {
             if (!empty($partnerIds)) {
                 $partnersSaleOrdersMappedByPartnerId = SaleOrderManager::getInstance()->getPartnersSaleOrders($partnerIds);
                 $partnersPurchaseOrdersMappedByPartnerId = PurchaseOrderManager::getInstance()->getPartnersPurchaseOrders($partnerIds);
-                $partnersTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersTransactions($partnerIds);
+                $partnersPaymentTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersPaymentTransactions($partnerIds);
+                $partnersBillingTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersBillingTransactions($partnerIds);
             }
 
             $partnersDept = CalculationManager::getInstance()->calculatePartnersDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersTransactionsMappedByPartnerId);
             $this->addParam('partnersSaleOrdersMappedByPartnerId', $partnersSaleOrdersMappedByPartnerId);
             $this->addParam('partnersPurchaseOrdersMappedByPartnerId', $partnersPurchaseOrdersMappedByPartnerId);
-            $this->addParam('partnersTransactionsMappedByPartnerId', $partnersTransactionsMappedByPartnerId);
+            $this->addParam('partnersPaymentTransactionsMappedByPartnerId', $partnersPaymentTransactionsMappedByPartnerId);
+            $this->addParam('partnersBillingTransactionsMappedByPartnerId', $partnersBillingTransactionsMappedByPartnerId);
             $this->addParam('partnersDept', $partnersDept);
 
             $this->addParam('partners', $partners);
