@@ -18,6 +18,40 @@
             }
         }
     ],
+    "manufacturer": [
+        {
+            "action": "loads.main.main",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.manufacturer.list"
+                }
+            }
+        },
+        {
+            "action": "loads.main.main",
+            "route": "create",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.manufacturer.create"
+                }
+            }
+
+        },
+        {
+            "action": "loads.main.main",
+            "route": "edit/[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.manufacturer.update"
+                }
+            }
+
+        }
+    ],
     "sale": [
         {
             "action": "loads.main.main",

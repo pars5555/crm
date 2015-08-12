@@ -33,6 +33,9 @@
                 {$payment->getCurrencyDto()->getTemplateChar()}
             {/if}
         </div>
+        <div>
+            Note : {$ns.payment->getNote()}
+        </div>
         {if $payment->getCancelled() == 0}
             <form action="{SITE_PATH}/dyn/main_payment/do_cancel_payment">
                 <input type="hidden" name="id" value="{$ns.payment->getId()}"/>

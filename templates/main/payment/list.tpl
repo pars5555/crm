@@ -20,6 +20,7 @@
             <span class="table-cell"> Partner </span>
             <span class="table-cell"> Payment Method </span>
             <span class="table-cell"> Amount </span>
+            <span class="table-cell"> Note </span>
             <span class="table-cell"> View </span>
         </div> 
         {foreach from=$ns.payments item=payment}
@@ -39,6 +40,7 @@
                         {$payment->getCurrencyDto()->getTemplateChar()}
                     {/if}
                 </span>
+                <span class="table-cell"> {$payment->getNote()} </span>
                 <a class="table-cell view_item" href="{SITE_PATH}/payment/{$payment->getId()}">
                     <span class="button blue">open</span>
                 </a>

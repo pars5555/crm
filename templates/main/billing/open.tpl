@@ -33,6 +33,9 @@
                 {$billing->getCurrencyDto()->getTemplateChar()}
             {/if}
         </div>
+        <div>
+            Note : {$ns.billing->getNote()}
+        </div>
         {if $billing->getCancelled() == 0}
             <form action="{SITE_PATH}/dyn/main_billing/do_cancel_billing">
                 <input type="hidden" name="id" value="{$ns.billing->getId()}"/>

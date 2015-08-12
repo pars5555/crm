@@ -35,6 +35,23 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function createManufacturer($name, $link) {
+            $dto = $this->createDto();
+            $dto->setName($name);
+            $dto->setLink($link);
+            return $this->insertDto($dto);
+        }
+
+        public function updateManufacturer($id, $name, $link) {
+            $dto = $this->selectByPK($id);
+            if ($dto) {
+                $dto->setName($name);
+                $dto->setLink($link);
+                return $this->updateByPk($dto);
+            }
+            return false;
+        }
+
     }
 
 }

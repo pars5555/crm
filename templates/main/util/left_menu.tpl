@@ -15,6 +15,7 @@
             <li><a href="{SITE_PATH}/billing/list">Billing Order<img src="{SITE_PATH}/img/left.png"/></a></li>
             <li><a href="{SITE_PATH}/warehouse">Warehouse</a></li>
             <li><a href="{SITE_PATH}/product/list">Products</a></li>
+            <li><a href="{SITE_PATH}/manufacturer/list">Manufacturers</a></li>
         </ul>
     </div>
 </div>
