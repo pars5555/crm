@@ -124,6 +124,19 @@
         },
         {
             "action": "loads.main.main",
+            "route": "edit/[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.payment.update"
+                }
+            }
+
+        },
+        {
+            "action": "loads.main.main",
             "route": "create",
             "nestedLoad": {
                 "content": {
@@ -162,6 +175,19 @@
             "nestedLoad": {
                 "content": {
                     "action": "loads.main.billing.create"
+                }
+            }
+
+        },
+        {
+            "action": "loads.main.main",
+            "route": "edit/[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.billing.update"
                 }
             }
 

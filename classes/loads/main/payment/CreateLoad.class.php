@@ -25,7 +25,6 @@ namespace crm\loads\main\payment {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $this->addParam('req', isset($_SESSION['action_request']) ? $_SESSION['action_request'] : []);
-            $this->addParam('show_create_form', isset($_SESSION['action_request']));
             unset($_SESSION['action_request']);
             $this->addParam('payment_methods', PaymentMethodManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
             $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));

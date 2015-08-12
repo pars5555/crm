@@ -25,7 +25,6 @@ namespace crm\loads\main\billing {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $this->addParam('req', isset($_SESSION['action_request']) ? $_SESSION['action_request'] : []);
-            $this->addParam('show_create_form', isset($_SESSION['action_request']));
             unset($_SESSION['action_request']);
             $this->addParam('billing_methods', PaymentMethodManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
             $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));

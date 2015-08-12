@@ -42,6 +42,9 @@
                 <a class="table-cell view_item" href="{SITE_PATH}/billing/{$billing->getId()}">
                     <span class="button blue">open</span>
                 </a>
+                     <a class="table-cell view_item" href="{SITE_PATH}/billing/edit/{$billing->getId()}">
+                    <span class="button blue">edit</span>
+                </a>
                 {if $billing->getCancelled() == 1}
                     <a class="table-cell view_item deleteBilling"  href="{SITE_PATH}/dyn/main_billing/do_delete_billing?id={$billing->getId()}">
                         <span class="button blue">delete</span>

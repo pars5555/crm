@@ -42,6 +42,9 @@
                 <a class="table-cell view_item" href="{SITE_PATH}/payment/{$payment->getId()}">
                     <span class="button blue">open</span>
                 </a>
+                <a class="table-cell view_item" href="{SITE_PATH}/payment/edit/{$payment->getId()}">
+                    <span class="button blue">edit</span>
+                </a>
                 {if $payment->getCancelled() == 1}
                     <a class="table-cell view_item deletePayment"  href="{SITE_PATH}/dyn/main_payment/do_delete_payment?id={$payment->getId()}">
                         <span class="button blue">delete</span>

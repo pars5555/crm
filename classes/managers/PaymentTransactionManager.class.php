@@ -69,7 +69,7 @@ namespace crm\managers {
             }
             return false;
         }
-        
+
         public function undoCancelPayment($id) {
             $paymentDto = $this->selectByPK($id);
             if (isset($paymentDto)) {
@@ -102,9 +102,34 @@ namespace crm\managers {
             return $this->insertDto($dto);
         }
 
+        public function updatePaymentOrder($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $note) {
+            $partnerManager = PartnerManager::getInstance();
+            $partner = $partnerManager->selectByPK($partnerId);
+            if (empty($partner)) {
+                throw new NgsErrorException("Partner does not exists with given id: " . $partnerId);
+            }
+            $paymentMethodManager = PaymentMethodManager::getInstance();
+            $paymentMethod = $paymentMethodManager->selectByPK($paymentMethodId);
+            if (empty($paymentMethod)) {
+                throw new NgsErrorException("PaymentMethod does not exists with given id: " . $paymentMethodId);
+            }
+            $dto = $this->selectByPK($id);
+            if ($dto) {
+                $dto->setPartnerId($partnerId);
+                $dto->setPaymentMethodId($paymentMethodId);
+                $dto->setCurrencyId($currencyId);
+                $dto->setAmount($amount);
+                $dto->setDate($date);
+                $dto->setNote($note);
+                return $this->updateByPk($dto);
+            }
+            return false;
+        }
+
         public function getPartnerPaymentTransactions($partnerId) {
             return $this->selectAdvance('*', ['partner_id', '=', $partnerId, 'AND', 'amount', '>', 0]);
         }
+
         public function getPartnerBillingTransactions($partnerId) {
             return $this->selectAdvance('*', ['partner_id', '=', $partnerId, 'AND', 'amount', '<', 0]);
         }
@@ -120,7 +145,7 @@ namespace crm\managers {
             }
             return $ret;
         }
-        
+
         public function getPartnersBillingTransactions($partnerIds) {
             $rows = $this->selectAdvance('*', ['partner_id', 'in', '(' . implode(',', $partnerIds) . ')', 'and', 'amount', '<', '0']);
             $ret = array();
