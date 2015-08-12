@@ -64,22 +64,22 @@ namespace crm\managers {
                     continue;
                 }
                 $currencyId = $transaction->getCurrencyId();
-                $aoumt = floatval($transaction->getAmount());
+                $amount = floatval($transaction->getAmount());
                 if (!array_key_exists($currencyId, $partnerDept)) {
                     $partnerDept[$currencyId] = 0;
                 }
-                $partnerDept[$currencyId] += $aoumt;
+                $partnerDept[$currencyId] += $amount;
             }
             foreach ($partnerBillingTransactions as $transaction) {
                 if ($transaction->getCancelled() == 1) {
                     continue;
                 }
                 $currencyId = $transaction->getCurrencyId();
-                $aoumt = floatval($transaction->getAmount());
+                $amount = floatval($transaction->getAmount());
                 if (!array_key_exists($currencyId, $partnerDept)) {
                     $partnerDept[$currencyId] = 0;
                 }
-                $partnerDept[$currencyId] += $aoumt;
+                $partnerDept[$currencyId] += $amount;
             }
             return $partnerDept;
         }
