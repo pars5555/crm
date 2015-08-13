@@ -85,7 +85,8 @@
                 "output_file": "ngs_actions_main.js",
                 "compress": false,
                 "files": [
-                    "actions/main/CheckProductCountToAddSaleOrderLineAction.class.js"
+                    "actions/main/CheckProductCountToAddSaleOrderLineAction.class.js",
+                    "actions/main/getProductCountAction.class.js"
                     
                     ]
             }

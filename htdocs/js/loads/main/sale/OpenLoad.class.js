@@ -26,13 +26,18 @@ NGS.createLoad("crm.loads.main.sale.open", {
         });
     },
     initSaleOrderLineRemoveFunctionallity: function () {
-        $('#saleOrderLinesContainer').on( "click", ".removeSaleOrderLine", function() {
+        $('#saleOrderLinesContainer').on("click", ".removeSaleOrderLine", function () {
             $(this).closest('.saleOrderLine').remove();
         });
     },
     initSaleOrderLineAddFunctionallity: function () {
+        $('#saleOrderLineProductId').change(function () {
+            var product_id = $('#saleOrderLineProductId').val();
+            NGS.action('crm.actions.main.sale.get_product_count', {product_id: product_id});
+        });
+
         $('#addSaleOrderLineButton').click(function () {
-            
+
             var product_id = $('#saleOrderLineProductId').val();
             var quantity = $('#saleOrderLineQuantity').val();
             var unit_price = $('#saleOrderLineUnitPrice').val();
@@ -61,8 +66,9 @@ NGS.createLoad("crm.loads.main.sale.open", {
                 $("#saleOrderLineCurrencyId").css("display", "none").fadeIn(1000);
                 return;
             }
-            NGS.action('crm.actions.main.check_product_count_to_add_sale_order_line', {product_id:product_id,quantity:quantity});
-            
+            NGS.action('crm.actions.main.sale.check_product_count_to_add_sale_order_line', {product_id: product_id, quantity: quantity});
+
+
         });
     },
     calculateSaleOrderLinesData: function () {

@@ -69,7 +69,7 @@ NGS.AjaxLoader = {
 			if (xmlhttp.readyState == 4) {
 				if (xmlhttp.status == 200) {
 					options.onComplete(xmlhttp.responseText);
-				} else if (xmlhttp.status == 400) {
+				} else {
 					options.onError(xmlhttp.responseText);
 				}
 				NGS.hideAjaxLoader();

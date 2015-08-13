@@ -1,4 +1,4 @@
-NGS.createAction("crm.actions.main.check_product_count_to_add_sale_order_line", {
+NGS.createAction("crm.actions.main.sale.check_product_count_to_add_sale_order_line", {
     onError: function (res) {
         $('#saleOrderLineErrorMessage').text(res.msg);
     },
