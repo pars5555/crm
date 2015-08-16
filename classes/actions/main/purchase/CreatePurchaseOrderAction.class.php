@@ -23,13 +23,13 @@ use ngs\framework\exceptions\RedirectException;
 
         public function service() {
             try {
-                list($partnerId,  $date, $note) = $this->getFormData();
+                list($partnerId,  $date, $paymentDeadline, $note) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            $purchaseOrderId = PurchaseOrderManager::getInstance()->createPurchaseOrder($partnerId, $date, $note);
+            $purchaseOrderId = PurchaseOrderManager::getInstance()->createPurchaseOrder($partnerId, $date,$paymentDeadline,  $note);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Purchase Order Successfully created!';
             $this->redirect('purchase/'.$purchaseOrderId);
@@ -47,8 +47,12 @@ use ngs\framework\exceptions\RedirectException;
             $hour = intval(NGS()->args()->purchaseOrderTimeHour);
             $minute = intval(NGS()->args()->purchaseOrderTimeMinute);
             $partnerId = intval(NGS()->args()->partnerId);           
+            $paymentDeadlineYear = intval(NGS()->args()->paymentDeadlineDateYear);
+            $paymentDeadlineMonth = intval(NGS()->args()->paymentDeadlineDateMonth);
+            $paymentDeadlineDay = intval(NGS()->args()->paymentDeadlineDateDay);
             $date = "$year-$month-$day $hour:$minute";
-            return array($partnerId, $date, $note);
+            $paymentDeadlineDate = "$paymentDeadlineYear-$paymentDeadlineMonth-$paymentDeadlineDay";
+            return array($partnerId, $date, $paymentDeadlineDate, $note);
         }
 
         private function validateFormData() {
@@ -69,6 +73,15 @@ use ngs\framework\exceptions\RedirectException;
             }
             if (!isset(NGS()->args()->partnerId) || !is_numeric(NGS()->args()->partnerId) || NGS()->args()->partnerId <= 0) {
                 throw new RedirectException('purchase/create', "Invalid Partner.");
+            }
+            if (empty(NGS()->args()->paymentDeadlineDateYear)) {
+                throw new RedirectException('purchase/create', "Invalid Payment Date.");
+            }
+            if (empty(NGS()->args()->paymentDeadlineDateMonth)) {
+                throw new RedirectException('purchase/create', "Invalid Payment Date.");
+            }
+            if (empty(NGS()->args()->paymentDeadlineDateDay)) {
+                throw new RedirectException('purchase/create', "Invalid Payment Date.");
             }
         
         }

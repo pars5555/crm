@@ -23,16 +23,16 @@ namespace crm\actions\main\sale {
 
         public function service() {
             try {
-                list($partnerId,  $date, $note) = $this->getFormData();
+                list($partnerId, $date, $billingDeadlineDate, $note) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            $saleOrderId = SaleOrderManager::getInstance()->createSaleOrder($partnerId, $date, $note);
+            $saleOrderId = SaleOrderManager::getInstance()->createSaleOrder($partnerId, $date, $billingDeadlineDate, $note);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Sale Order Successfully created!';
-            $this->redirect('sale/'.$saleOrderId);
+            $this->redirect('sale/' . $saleOrderId);
         }
 
         private function getFormData() {
@@ -46,9 +46,13 @@ namespace crm\actions\main\sale {
             $day = intval(NGS()->args()->saleOrderDateDay);
             $hour = intval(NGS()->args()->saleOrderTimeHour);
             $minute = intval(NGS()->args()->saleOrderTimeMinute);
-            $partnerId = intval(NGS()->args()->partnerId);           
+            $partnerId = intval(NGS()->args()->partnerId);
+            $billingDeadlineYear = intval(NGS()->args()->billingDeadlineDateYear);
+            $billingDeadlineMonth = intval(NGS()->args()->billingDeadlineDateMonth);
+            $billingDeadlineDay = intval(NGS()->args()->billingDeadlineDateDay);
             $date = "$year-$month-$day $hour:$minute";
-            return array($partnerId, $date, $note);
+            $billingDeadlineDate = "$billingDeadlineYear-$billingDeadlineMonth-$billingDeadlineDay";
+            return array($partnerId, $date, $billingDeadlineDate, $note);
         }
 
         private function validateFormData() {
@@ -70,7 +74,15 @@ namespace crm\actions\main\sale {
             if (!isset(NGS()->args()->partnerId) || !is_numeric(NGS()->args()->partnerId) || NGS()->args()->partnerId <= 0) {
                 throw new RedirectException('sale/create', "Invalid Partner.");
             }
-        
+            if (empty(NGS()->args()->billingDeadlineDateYear)) {
+                throw new RedirectException('sale/create', "Invalid Payment Date.");
+            }
+            if (empty(NGS()->args()->billingDeadlineDateMonth)) {
+                throw new RedirectException('sale/create', "Invalid Payment Date.");
+            }
+            if (empty(NGS()->args()->billingDeadlineDateDay)) {
+                throw new RedirectException('sale/create', "Invalid Payment Date.");
+            }
         }
 
     }

@@ -40,13 +40,23 @@
                 </select>
             </div>
             <div class="form-group">
-                <label class="label">Note</label>
-                <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
+                <label class="label">Date</label>
+                {assign date null}
+                {if !empty($ns.req.paymentDeadlineDateYear) && !empty($ns.req.paymentDeadlineDateMonth) && !empty($ns.req.paymentDeadlineDateDay)}
+                    {assign date "`$ns.req.paymentDeadlineDateYear`-`$ns.req.paymentDeadlineDateMonth`-`$ns.req.paymentDeadlineDateDay`"}
+                {/if}
+                {html_select_date prefix='paymentDeadlineDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
             </div>
-            <input class="button blue" type="submit" value="Save"/>
-            <input type="hidden" name="id" value="{$ns.purchaseOrder->getId()}"/>
-        </form>
-    {else}
-        Wrong Purchase Order!
-    {/if}
+    </div>
+
+    <div class="form-group">
+        <label class="label">Note</label>
+        <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
+    </div>
+    <input class="button blue" type="submit" value="Save"/>
+    <input type="hidden" name="id" value="{$ns.purchaseOrder->getId()}"/>
+</form>
+{else}
+    Wrong Purchase Order!
+{/if}
 </div>

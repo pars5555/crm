@@ -57,19 +57,21 @@ namespace crm\managers {
             return false;
         }
 
-        public function createSaleOrder($partnerId, $date, $note) {
+        public function createSaleOrder($partnerId, $date, $billingDeadlineDate, $note) {
             $dto = $this->createDto();
             $dto->setPartnerId($partnerId);
             $dto->setOrderDate($date);
+            $dto->setBillingDeadline($billingDeadlineDate);
             $dto->setNote($note);
             return $this->insertDto($dto);
         }
 
-        public function updateSaleOrder($id, $partnerId, $date, $note) {
+        public function updateSaleOrder($id, $partnerId, $date, $billingDeadlineDate, $note) {
             $dto = $this->selectByPK($id);
             if ($dto) {
                 $dto->setPartnerId($partnerId);
                 $dto->setOrderDate($date);
+                $dto->setBillingDeadline($billingDeadlineDate);
                 $dto->setNote($note);
                 return $this->updateByPk($dto);
             }

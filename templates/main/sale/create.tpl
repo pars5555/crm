@@ -39,9 +39,18 @@
             </select>
         </div>
         <div class="form-group">
-            <label class="label">Note</label>
-            <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
+            <label class="label">Date</label>
+            {assign date null}
+            {if !empty($ns.req.billingDeadlineDateYear) && !empty($ns.req.billingDeadlineDateMonth) && !empty($ns.req.billingDeadlineDateDay)}
+                {assign date "`$ns.req.billingDeadlineDateYear`-`$ns.req.billingDeadlineDateMonth`-`$ns.req.billingDeadlineDateDay`"}
+            {/if}
+            {html_select_date prefix='billingDeadlineDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
         </div>
-        <input class="button blue" type="submit" value="Save"/>
-    </form>
+</div>
+<div class="form-group">
+    <label class="label">Note</label>
+    <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
+</div>
+<input class="button blue" type="submit" value="Save"/>
+</form>
 </div>

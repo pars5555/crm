@@ -38,6 +38,14 @@
                 {/foreach}
             </select>
         </div>
+            <div class="form-group">
+            <label class="label">Date</label>
+            {assign date null}
+            {if !empty($ns.req.paymentDeadlineDateYear) && !empty($ns.req.paymentDeadlineDateMonth) && !empty($ns.req.paymentDeadlineDateDay)}
+                {assign date "`$ns.req.paymentDeadlineDateYear`-`$ns.req.paymentDeadlineDateMonth`-`$ns.req.paymentDeadlineDateDay`"}
+            {/if}
+            {html_select_date prefix='paymentDeadlineDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
+        </div>
         <div class="form-group">
             <label class="label">Note</label>
             <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
