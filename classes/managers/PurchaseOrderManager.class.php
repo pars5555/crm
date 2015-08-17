@@ -101,6 +101,19 @@ namespace crm\managers {
             return $opDtos;
         }
 
+        public function setPaid($id, $paid) {
+            $purchaseOrderDto = $this->selectByPK($id);
+            if (isset($purchaseOrderDto)) {
+                $purchaseOrderDto->setPaid($paid);
+                if ($paid == 1) {
+                    $purchaseOrderDto->setPaidAt(date('Y-m-d H:i:s'));
+                }
+                $this->updateByPk($purchaseOrderDto);
+                return true;
+            }
+            return false;
+        }
+
         public function cancelPurchaseOrder($id, $note) {
             $purchaseOrderDto = $this->selectByPK($id);
             if (isset($purchaseOrderDto)) {

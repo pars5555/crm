@@ -45,6 +45,19 @@ namespace crm\managers {
             }
             return false;
         }
+        
+        public function setBilled($id, $billed) {
+            $saleOrderDto = $this->selectByPK($id);
+            if (isset($saleOrderDto)) {
+                $saleOrderDto->setBilled($billed);
+                if ($billed == 1) {
+                    $saleOrderDto->setBilledAt(date('Y-m-d H:i:s'));
+                }
+                $this->updateByPk($saleOrderDto);
+                return true;
+            }
+            return false;
+        }
 
         public function restoreSaleOrder($id) {
             $saleOrderDto = $this->selectByPK($id);

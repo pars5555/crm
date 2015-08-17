@@ -9,7 +9,7 @@
                 "files": [
                     "lib/jquery.js",
                     "lib/jquery-ui.js"
-                    ]
+                ]
             },
             {
                 "output_file": "ngs_framework.js",
@@ -62,7 +62,7 @@
                     "loads/main/purchase/OpenLoad.class.js",
                     "loads/main/purchase/ListLoad.class.js",
                     "loads/main/purchase/CreateLoad.class.js",
-                    "loads/main/purchase/UpdateLoad.class.js",                    
+                    "loads/main/purchase/UpdateLoad.class.js",
                     "loads/main/manufacturer/ListLoad.class.js",
                     "loads/main/manufacturer/CreateLoad.class.js",
                     "loads/main/manufacturer/UpdateLoad.class.js",
@@ -86,9 +86,11 @@
                 "compress": false,
                 "files": [
                     "actions/main/CheckProductCountToAddSaleOrderLineAction.class.js",
-                    "actions/main/getProductCountAction.class.js"
-                    
-                    ]
+                    "actions/main/GetProductCountAction.class.js",
+                    "actions/main/purchase/SetPaidAction.class.js",
+                    "actions/main/sale/SetBilledAction.class.js"
+
+                ]
             }
         ]
     }

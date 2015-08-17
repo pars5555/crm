@@ -15,7 +15,15 @@ NGS.createLoad("crm.loads.main.sale.open", {
         this.initSaleOrderLineAddFunctionallity();
         this.initSaleOrderLineRemoveFunctionallity();
         this.initCancelSaleOrder();
+        this.initBilledFunctionality();
 
+    },
+    initBilledFunctionality: function () {
+        $('#billedCheckbox').change(function () {
+            var checked = $(this).is(':checked');
+            var id = $('#sale_order_id').val();
+            NGS.action('crm.actions.main.sale.set_billed', {'id': id, 'billed': checked ? 1 : 0});
+        });
     },
     initCancelSaleOrder: function () {
         $('#cancelSaleOrderButton').click(function () {

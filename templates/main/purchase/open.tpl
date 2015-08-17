@@ -23,9 +23,9 @@
         <div>
             Note : {$ns.purchaseOrder->getNote()}
         </div>
-        {if $purchaseOrder->getCancelled() == 0}
+        {if $ns.purchaseOrder->getCancelled() == 0}
             <form action="{SITE_PATH}/dyn/main_purchase/do_cancel_purchase_order">
-                <input type="hidden" name="id" value="{$ns.purchaseOrder->getId()}"/>
+                <input type="hidden" name="id" id="purchase_order_id" value="{$ns.purchaseOrder->getId()}"/>
                 <div class="form-group">
                     <label class="label">Note</label>
                     <textarea class="text" name="note"></textarea>
@@ -37,6 +37,7 @@
                 <span class="button blue">Restore</span>
             </a>
         {/if}
+        <input type="checkbox" id="paidCheckbox" {if $ns.purchaseOrder->getPaid()==1}checked{/if}/>
         <form id="purchaseOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main_purchase/do_save_purchase_order_lines">
             <h2 class="title">Order Lines</h2>
             <div class="table_striped" id="purchaseOrderLinesContainer">

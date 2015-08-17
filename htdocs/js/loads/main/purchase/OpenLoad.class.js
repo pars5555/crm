@@ -15,10 +15,18 @@ NGS.createLoad("crm.loads.main.purchase.open", {
         this.initPurchaseOrderLineAddFunctionallity();
         this.initPurchaseOrderLineRemoveFunctionallity();
         this.initCancelPurchaseOrder();
+        this.initPaidFunctionality();
 
     },
+    initPaidFunctionality: function () {
+        $('#paidCheckbox').change(function () {
+            var checked = $(this).is(':checked');
+            var id = $('#purchase_order_id').val();
+            NGS.action('crm.actions.main.purchase.set_paid', {'id': id, 'paid': checked ? 1 : 0});
+        });
+    },
     initPurchaseOrderLineRemoveFunctionallity: function () {
-        $('#purchaseOrderLinesContainer').on( "click", ".removePurchaseOrderLine", function() {
+        $('#purchaseOrderLinesContainer').on("click", ".removePurchaseOrderLine", function () {
             $(this).closest('.purchaseOrderLine').remove();
         });
     },

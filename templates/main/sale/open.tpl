@@ -23,9 +23,9 @@
         <div>
             Note : {$ns.saleOrder->getNote()}
         </div>
-        {if $saleOrder->getCancelled() == 0}
+        {if $ns.saleOrder->getCancelled() == 0}
             <form action="{SITE_PATH}/dyn/main_sale/do_cancel_sale_order">
-                <input type="hidden" name="id" value="{$ns.saleOrder->getId()}"/>
+                <input type="hidden" name="id" id="sale_order_id" value="{$ns.saleOrder->getId()}"/>
                 <div class="form-group">
                     <label class="label">Note</label>
                     <textarea class="text" name="note"></textarea>
@@ -37,6 +37,7 @@
                 <span class="button blue">Restore</span>
             </a>
         {/if}
+        <input type="checkbox" id="billedCheckbox" {if $ns.saleOrder->getBilled()==1}checked{/if}/>
         <form id="saleOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main_sale/do_save_sale_order_lines">
             <h2 class="title">Order Lines</h2>
             <div class="table_striped" id="saleOrderLinesContainer">
