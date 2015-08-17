@@ -37,6 +37,7 @@
                 <span class="button blue">Restore</span>
             </a>
         {/if}
+        <label class="label" for="paidCheckbox">Paid</label>
         <input type="checkbox" id="paidCheckbox" {if $ns.purchaseOrder->getPaid()==1}checked{/if}/>
         <form id="purchaseOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main_purchase/do_save_purchase_order_lines">
             <h2 class="title">Order Lines</h2>

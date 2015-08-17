@@ -37,6 +37,7 @@
                 <span class="button blue">Restore</span>
             </a>
         {/if}
+        <label class="label" for="billedCheckbox">Billed</label>
         <input type="checkbox" id="billedCheckbox" {if $ns.saleOrder->getBilled()==1}checked{/if}/>
         <form id="saleOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main_sale/do_save_sale_order_lines">
             <h2 class="title">Order Lines</h2>
