@@ -11,30 +11,62 @@
         </div>
     {/if}
     {if isset($ns.product)}
-        <div>
-            id: {$ns.product->getId()}
-        </div>
-        <div>
-            Name: {$ns.product->getName()}
-        </div>
-        <div>
-            Model: {$ns.product->getModel()}
-        </div>
-        <div>
-            Uom: {$ns.product->getUomDto()->getName()}
-        </div>
-        <div>
-            {if $ns.product->getManufacturerDto()}
-                Manufacturer: {$ns.product->getManufacturerDto()->getName()}
-            {else}
-                None
-            {/if}
-        </div>
-        <div>
-            Quantity in warehouse: {$ns.productQuantity}
+        <div class="table_striped table_striped_simple">
+            <div class="table-row">
+                <span class="table-cell">
+                    id :
+                </span>
+                <span class="table-cell">
+                    {$ns.product->getId()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Name :
+                </span>
+                <span class="table-cell">
+                    {$ns.product->getName()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Model :
+                </span>
+                <span class="table-cell">
+                    {$ns.product->getModel()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Uom :
+                </span>
+                <span class="table-cell">
+                    {$ns.product->getUomDto()->getName()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Manufacturer : 
+                </span>
+                <span class="table-cell">
+                    {if $ns.product->getManufacturerDto()}
+                        {$ns.product->getManufacturerDto()->getName()}
+                    {else}
+                        <span class="text_red">None</span>
+                    {/if}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Quantity in warehouse :
+                </span>
+                <span class="table-cell">
+                    {$ns.productQuantity}
+                </span>
+            </div>
         </div>
     {/if}
-    <a class="table-cell view_item deleteProductButton"  href="{SITE_PATH}/dyn/main_product/do_delete_product?id={$product->getId()}">
-        <span class="button blue">delete</span>
+    <a class="button blue deleteProductButton"  href="{SITE_PATH}/dyn/main_product/do_delete_product?id={$product->getId()}">
+        <span>delete</span>
     </a>
 </div>

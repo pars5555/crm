@@ -10,44 +10,76 @@
             <span style="color:green">{$ns.success_message}</span>
         </div>
     {/if}
+
     {if isset($ns.billing)}
-        <div>
-            id: {$ns.billing->getId()}
-        </div>
-        <div>
-            date: {$ns.billing->getDate()}
-        </div>
-        <div>
-            billing method: {$ns.lm->getPhrase($ns.billing->getPaymentMethodDto()->getTranslationId())}
-        </div>
-        <div>
-            Partner : {$ns.billing->getPartnerDto()->getName()}
-        </div>
-        <div>
-            Amount : 
-            {if $billing->getCurrencyDto()->getSymbolPosition() == 'left'}
-                {$billing->getCurrencyDto()->getTemplateChar()}
-            {/if}
-            {-$billing->getAmount()}
-            {if $billing->getCurrencyDto()->getSymbolPosition() == 'right'}
-                {$billing->getCurrencyDto()->getTemplateChar()}
-            {/if}
-        </div>
-        <div>
-            Note : {$ns.billing->getNote()}
+        <div class="table_striped table_striped_simple">
+            <div class="table-row">
+                <span class="table-cell">
+                    id :
+                </span>
+                <span class="table-cell">
+                    {$ns.billing->getId()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    date :
+                </span>
+                <span class="table-cell">
+                    {$ns.billing->getDate()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    billing method :
+                </span>
+                <span class="table-cell">
+                    {$ns.lm->getPhrase($ns.billing->getPaymentMethodDto()->getTranslationId())}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Partner :
+                </span>
+                <span class="table-cell">
+                    {$ns.billing->getPartnerDto()->getName()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Amount : 
+                </span>
+                <span class="table-cell">
+                    {if $billing->getCurrencyDto()->getSymbolPosition() == 'left'}
+                        {$billing->getCurrencyDto()->getTemplateChar()}
+                    {/if}
+                    {-$billing->getAmount()}
+                    {if $billing->getCurrencyDto()->getSymbolPosition() == 'right'}
+                        {$billing->getCurrencyDto()->getTemplateChar()}
+                    {/if}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Note :
+                </span>
+                <span class="table-cell">
+                    {$ns.billing->getNote()}
+                </span>
+            </div>
         </div>
         {if $billing->getCancelled() == 0}
             <form action="{SITE_PATH}/dyn/main_billing/do_cancel_billing">
                 <input type="hidden" name="id" value="{$ns.billing->getId()}"/>
-                <div>
-                    <label>Note</label>
-                    <textarea  name="note"></textarea>
+                <div class="form-group">
+                    <label class="label">Note :</label>
+                    <textarea class="text" name="note"></textarea>
                 </div>
-                <a id="cancelBillingButton" href="javascript:void(0);">Cancel</a>
+                <a class="button blue" id="cancelBillingButton" href="javascript:void(0);">Cancel</a>
             </form>
         {else}
-            <a class="table-cell view_item"  href="{SITE_PATH}/dyn/main_billing/do_restore_billing?id={$ns.billing->getId()}">
-                <span class="button blue">Restore</span>
+            <a class="button blue"  href="{SITE_PATH}/dyn/main_billing/do_restore_billing?id={$ns.billing->getId()}">
+                <span>Restore</span>
             </a>
         {/if}
     {/if}

@@ -25,11 +25,12 @@
             <span class="table-cell"> Payments Transactions </span>
             <span class="table-cell"> Billing Transactions </span>
             <span class="table-cell"> View </span>
+            <span class="table-cell"> Edit </span>
         </div> 
         {foreach from=$ns.partners item=partner}
             <div class="table-row">
-                <a class="table-cell view_item" href="{SITE_PATH}/partner/{$partner->getId()}">
-                    <span class="table-cell">{$partner->getId()} </span>
+                <a class="table-cell" href="{SITE_PATH}/partner/{$partner->getId()}">
+                    <span>{$partner->getId()} </span>
                 </a>
                 <span class="table-cell">{$partner->getName()} </span>
                 <span class="table-cell"> {$partner->getEmail()} </span>
@@ -55,10 +56,14 @@
                 <a class="table-cell link" href="{SITE_PATH}/payment/list?prt={$partner->getId()}"> {$ns.partnersPaymentTransactionsMappedByPartnerId[$partner->getId()]|@count} </a>
                 <a class="table-cell link" href="{SITE_PATH}/billing/list?prt={$partner->getId()}"> {$ns.partnersBillingTransactionsMappedByPartnerId[$partner->getId()]|@count} </a>
                 <a class="table-cell view_item" href="{SITE_PATH}/partner/{$partner->getId()}">
-                    <span class="button blue">open</span>
+                    <span class="button_icon" title="View">
+                        <i class="fa fa-eye"></i>
+                    </span>
                 </a>
                 <a class="table-cell view_item" href="{SITE_PATH}/partner/edit/{$partner->getId()}">
-                    <span class="button blue">edit</span>
+                    <span class="button_icon" title="Edit">
+                        <i class="fa fa-pencil"></i>
+                    </span>
                 </a>
             </div>
         {/foreach}

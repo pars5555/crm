@@ -11,17 +11,39 @@
         </div>
     {/if}
     {if isset($ns.purchaseOrder)}
-        <div>
-            id: {$ns.purchaseOrder->getId()}
-        </div>
-        <div>
-            Date: {$ns.purchaseOrder->getOrderDate()}
-        </div>
-        <div>
-            Partner: {$ns.purchaseOrder->getPartnerDto()->getName()}
-        </div>
-        <div>
-            Note : {$ns.purchaseOrder->getNote()}
+        <div class="table_striped table_striped_simple">
+            <div class="table-row">
+                <span class="table-cell">
+                    id :
+                </span>
+                <span class="table-cell">
+                    {$ns.purchaseOrder->getId()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Date :
+                </span>
+                <span class="table-cell">
+                    {$ns.purchaseOrder->getOrderDate()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Partner :
+                </span>
+                <span class="table-cell">
+                    {$ns.purchaseOrder->getPartnerDto()->getName()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Note :
+                </span>
+                <span class="table-cell">
+                    {$ns.purchaseOrder->getNote()}
+                </span>
+            </div>
         </div>
         {if $ns.purchaseOrder->getCancelled() == 0}
             <form action="{SITE_PATH}/dyn/main_purchase/do_cancel_purchase_order">
@@ -33,12 +55,17 @@
                 <a class="button blue" id="cancelPurchaseOrderButton" href="javascript:void(0);">Cancel</a>
             </form>
         {else}
-            <a class="table-cell view_item"  href="{SITE_PATH}/dyn/main_purchase/do_restore_purchase_order?id={$ns.purchaseOrder->getId()}">
+            <a class="table-cell"  href="{SITE_PATH}/dyn/main_purchase/do_restore_purchase_order?id={$ns.purchaseOrder->getId()}">
                 <span class="button blue">Restore</span>
             </a>
         {/if}
-        <label class="label" for="paidCheckbox">Paid</label>
-        <input type="checkbox" id="paidCheckbox" {if $ns.purchaseOrder->getPaid()==1}checked{/if}/>
+        <div class="checkbox_container">
+            <div class="checkbox f_checkbox">
+                <input type="checkbox" id="paidCheckbox" {if $ns.purchaseOrder->getPaid()==1}checked{/if}/>
+            </div>
+            <label class="checkbox_label f_checkbox_label label">Paid</label>
+        </div> 
+
         <form id="purchaseOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main_purchase/do_save_purchase_order_lines">
             <h2 class="title">Order Lines</h2>
             <div class="table_striped" id="purchaseOrderLinesContainer">
@@ -47,6 +74,7 @@
                     <span class="table-cell"> Quantity </span>
                     <span class="table-cell"> Unit Price </span>
                     <span class="table-cell"> Currency </span>
+                    <span class="table-cell"> Delete </span>
                 </div> 
                 {if $ns.purchaseOrder->getPurchaseOrderLinesDtos()|@count > 0}
                     {assign purchaseOrderLines $ns.purchaseOrder->getPurchaseOrderLinesDtos()}
@@ -66,8 +94,6 @@
                                 <input type="number" step="0.01" min="0.01" class="purchaseOrderLinesSelectUnitPrice text" value="{$purchaseOrderLine->getUnitPrice()}"/>
                             </div>
                             <div class="table-cell">
-                            </div>
-                            <div class="table-cell">
                                 <select class="purchaseOrderLinesSelectCurrency">               
                                     {foreach from=$ns.currencies item=c}
                                         <option value="{$c->getId()}"  {if $c->getId() == $purchaseOrderLine->getCurrencyId()}selected{/if}>
@@ -77,7 +103,9 @@
                                 </select>
                             </div>
                             <div class="table-cell">
-                                <a class="button blue removePurchaseOrderLine">Remove</a>
+                                <a class="button_icon removePurchaseOrderLine" title="delete">
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
                             </div>
                             <input type="hidden" name="lines[]"/>
                         </div>
@@ -113,7 +141,9 @@
                     </select>
                 </div>
                 <div class="table-cell">
-                    <a class="button blue" href="javascript:void(0);" id="addPurchaseOrderLineButton">Add</a>
+                    <a class="button_icon" href="javascript:void(0);" id="addPurchaseOrderLineButton" title="Add">
+                        <i class="fa fa-plus-circle"></i>
+                    </a>
                 </div>
             </div>
             <div>
@@ -151,7 +181,9 @@
         </select>
     </div>
     <div class="table-cell">
-        <a class="button blue removePurchaseOrderLine">Remove</a>
+        <a class="button_icon removePurchaseOrderLine" title="delete">
+            <i class="fa fa-trash-o"></i>
+        </a>
     </div>
     <input type="hidden" name="lines[]"/>
 </div>

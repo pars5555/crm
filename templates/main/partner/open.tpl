@@ -1,5 +1,6 @@
 <div class="container partner--open--container">
     <h1>Partner View</h1>
+
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>
@@ -10,57 +11,104 @@
             <span style="color:green">{$ns.success_message}</span>
         </div>
     {/if}
+
     {if isset($ns.partner)}
-        <div>
-            id: {$ns.partner->getId()}
-        </div>
-        <div>
-            name: {$ns.partner->getName()}
-        </div>
-        <div>
-            email: {$ns.partner->getEmail()}
-        </div>
-        <div>
-            address: {$ns.partner->getAddress()}
-        </div>
-        <div>
-            phone: {$ns.partner->getPhone()}
-        </div>
-
-
-
-        <div>
-            Sale Orders : <a class="table-cell link" href="{SITE_PATH}/sale/list?prt={$ns.partner->getId()}"> {$ns.partnerSaleOrders|@count}</a>
-        </div>
-
-        <div>
-            Purchase Orders : <a class="table-cell link" href="{SITE_PATH}/purchase/list?prt={$ns.partner->getId()}">{$ns.partnerPurchaseOrders|@count}</a>
-        </div>
-        <div>
-            Payment Transactions: <a class="table-cell link" href="{SITE_PATH}/payment/list?prt={$ns.partner->getId()}">{$ns.partnerPaymentTransactions|@count}</a>
-        </div>
-        <div>
-            Billing Transactions: <a class="table-cell link" href="{SITE_PATH}/billing/list?prt={$ns.partner->getId()}">{$ns.partnerBillingTransactions|@count}</a>
-        </div>
-        <div>
+        <div class="table_striped table_striped_simple">
+            <div class="table-row">
+                <span class="table-cell">
+                    id :
+                </span>
+                <span class="table-cell">
+                    {$ns.partner->getId()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    name :
+                </span>
+                <span class="table-cell">
+                    {$ns.partner->getName()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    email :
+                </span>
+                <span class="table-cell">
+                    {$ns.partner->getEmail()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    address :
+                </span>
+                <span class="table-cell">
+                    {$ns.partner->getAddress()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    phone :
+                </span>
+                <span class="table-cell">
+                    {$ns.partner->getPhone()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Sale Orders :
+                </span>
+                <a class="table-cell link" href="{SITE_PATH}/sale/list?prt={$ns.partner->getId()}">
+                    {$ns.partnerSaleOrders|@count}
+                </a>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Purchase Orders :
+                </span>
+                <a class="table-cell link" href="{SITE_PATH}/purchase/list?prt={$ns.partner->getId()}">
+                    {$ns.partnerPurchaseOrders|@count}
+                </a>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Payment Transactions:
+                </span>
+                <a class="table-cell link" href="{SITE_PATH}/payment/list?prt={$ns.partner->getId()}">
+                    {$ns.partnerPaymentTransactions|@count}
+                </a>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Billing Transactions:
+                </span>
+                <a class="table-cell link" href="{SITE_PATH}/billing/list?prt={$ns.partner->getId()}">
+                    {$ns.partnerBillingTransactions|@count}
+                </a>
+            </div>
             {if !empty($partnerDept)}
-                {foreach from=$partnerDept key=currencyId item=amount}
-                    <span style="white-space-collapse: discard;">
-                        {assign currencyDto $ns.currencies[$currencyId]}
-                        {if $currencyDto->getSymbolPosition() == 'left'}
-                            {$currencyDto->getTemplateChar()}
-                        {/if}
-                        {$amount}
-                        {if $currencyDto->getSymbolPosition() == 'right'}
-                            {$currencyDto->getTemplateChar()}
-                        {/if}
-                    </span>
-                {/foreach}
+                <div class="table-row" style="white-space-collapse: discard;">
+                    {foreach from=$partnerDept key=currencyId item=amount}
+                        <span class="table-cell">
+                            Amount
+                        </span>
+                        <span class="table-cell">
+                            {assign currencyDto $ns.currencies[$currencyId]}
+                            {if $currencyDto->getSymbolPosition() == 'left'}
+                                {$currencyDto->getTemplateChar()}
+                            {/if}
+                            {$amount}
+                            {if $currencyDto->getSymbolPosition() == 'right'}
+                                {$currencyDto->getTemplateChar()}
+                            {/if}
+                        </span>
+                    {/foreach}
+                </div>
             {/if}
         </div>
         <form action="{SITE_PATH}/dyn/main_partner/do_delete_partner">
             <input type="hidden" name="id" value="{$ns.partner->getId()}"/>
-            <a id="deletePartnerButton" href="javascript:void(0);">Delete</a>
+            <a class="button blue" id="deletePartnerButton" href="javascript:void(0);">Delete</a>
         </form>
     {else}
         Wrong partner!
