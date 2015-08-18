@@ -22,11 +22,13 @@
             <span class="table-cell"> Amount </span>
             <span class="table-cell"> Note </span>
             <span class="table-cell"> View </span>
+            <span class="table-cell"> Edit </span>
+            <span class="table-cell"> Delete </span>
         </div> 
         {foreach from=$ns.payments item=payment}
             <div class="table-row" {if $payment->getCancelled() == 1}style="background: red"{/if} href="{SITE_PATH}/payment/{$payment->getId()}">
-                <a class="table-cell view_item" href="{SITE_PATH}/payment/{$payment->getId()}">
-                    <span class="table-cell">{$payment->getId()} </span>
+                <a class="table-cell" href="{SITE_PATH}/payment/{$payment->getId()}">
+                    <span>{$payment->getId()} </span>
                 </a>
                 <span class="table-cell"> {$payment->getDate()} </span>
                 <span class="table-cell"> {$payment->getPartnerDto()->getName()} </span>
@@ -42,14 +44,23 @@
                 </span>
                 <span class="table-cell"> {$payment->getNote()} </span>
                 <a class="table-cell view_item" href="{SITE_PATH}/payment/{$payment->getId()}">
-                    <span class="button blue">open</span>
+                    <span class="button_icon" title="View">
+                        <i class="fa fa-eye"></i>
+                    </span>
                 </a>
                 <a class="table-cell view_item" href="{SITE_PATH}/payment/edit/{$payment->getId()}">
-                    <span class="button blue">edit</span>
+                    <span class="button_icon" title="Edit">
+                        <i class="fa fa-pencil"></i>
+                    </span>
                 </a>
                 {if $payment->getCancelled() == 1}
                     <a class="table-cell view_item deletePayment"  href="{SITE_PATH}/dyn/main_payment/do_delete_payment?id={$payment->getId()}">
-                        <span class="button blue">delete</span>
+                        <span class="button_icon" title="delete">
+                            <i class="fa fa-trash-o"></i>
+                        </span>
+                    </a>
+                {else}
+                    <a class="table-cell" href="javascript:void(0);">
                     </a>
                 {/if}
             </div>

@@ -17,15 +17,17 @@
             <span class="table-cell"> ID </span>
             <span class="table-cell"> Name</span>
             <span class="table-cell"> Link </span>
-            <span class="table-cell"> View </span>
+            <span class="table-cell"> Edit </span>
         </div> 
         {foreach from=$ns.manufacturers item=manufacturer}
             <div class="table-row">
                 <span class="table-cell">{$manufacturer->getId()} </span>
                 <span class="table-cell">{$manufacturer->getName()} </span>
                 <span class="table-cell"> {$manufacturer->getLink()} </span>
-                <a class="table-cell view_item" href="{SITE_PATH}/manufacturer/edit/{$manufacturer->getId()}">
-                    <span class="button blue">edit</span>
+                <a class="table-cell" href="{SITE_PATH}/manufacturer/edit/{$manufacturer->getId()}">
+                    <span class="button_icon" title="Edit">
+                        <i class="fa fa-pencil"></i>
+                    </span>
                 </a>
             </div>
         {/foreach}

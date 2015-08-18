@@ -10,44 +10,76 @@
             <span style="color:green">{$ns.success_message}</span>
         </div>
     {/if}
+
     {if isset($ns.payment)}
-        <div>
-            id: {$ns.payment->getId()}
-        </div>
-        <div>
-            date: {$ns.payment->getDate()}
-        </div>
-        <div>
-            payment method: {$ns.lm->getPhrase($ns.payment->getPaymentMethodDto()->getTranslationId())}
-        </div>
-        <div>
-            Partner : {$ns.payment->getPartnerDto()->getName()}
-        </div>
-        <div>
-            Amount : 
-            {if $payment->getCurrencyDto()->getSymbolPosition() == 'left'}
-                {$payment->getCurrencyDto()->getTemplateChar()}
-            {/if}
-            {$payment->getAmount()}
-            {if $payment->getCurrencyDto()->getSymbolPosition() == 'right'}
-                {$payment->getCurrencyDto()->getTemplateChar()}
-            {/if}
-        </div>
-        <div>
-            Note : {$ns.payment->getNote()}
+        <div class="table_striped table_striped_simple">
+            <div class="table-row">
+                <span class="table-cell">
+                    id :
+                </span>
+                <span class="table-cell">
+                    {$ns.payment->getId()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    date :
+                </span>
+                <span class="table-cell">
+                    {$ns.payment->getDate()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    payment method :
+                </span>
+                <span class="table-cell">
+                    {$ns.lm->getPhrase($ns.payment->getPaymentMethodDto()->getTranslationId())}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Partner :
+                </span>
+                <span class="table-cell">
+                    {$ns.payment->getPartnerDto()->getName()}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Amount : 
+                </span>
+                <span class="table-cell">
+                    {if $payment->getCurrencyDto()->getSymbolPosition() == 'left'}
+                        {$payment->getCurrencyDto()->getTemplateChar()}
+                    {/if}
+                    {$payment->getAmount()}
+                    {if $payment->getCurrencyDto()->getSymbolPosition() == 'right'}
+                        {$payment->getCurrencyDto()->getTemplateChar()}
+                    {/if}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Note :
+                </span>
+                <span class="table-cell">
+                    {$ns.payment->getNote()}
+                </span>
+            </div>
         </div>
         {if $payment->getCancelled() == 0}
             <form action="{SITE_PATH}/dyn/main_payment/do_cancel_payment">
                 <input type="hidden" name="id" value="{$ns.payment->getId()}"/>
-                <div>
-                    <label>Note</label>
-                    <textarea  name="note"></textarea>
+                <div class="form-group">
+                    <label class="label">Note</label>
+                    <textarea class="text" name="note"></textarea>
                 </div>
-                <a id="cancelPaymentButton" href="javascript:void(0);">Cancel</a>
+                <a class="button blue" id="cancelPaymentButton" href="javascript:void(0);">Cancel</a>
             </form>
         {else}
-            <a class="table-cell view_item"  href="{SITE_PATH}/dyn/main_payment/do_restore_payment?id={$ns.payment->getId()}">
-                <span class="button blue">Restore</span>
+            <a class="button blue" href="{SITE_PATH}/dyn/main_payment/do_restore_payment?id={$ns.payment->getId()}">
+                <span>Restore</span>
             </a>
         {/if}
     {/if}

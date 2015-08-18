@@ -22,11 +22,13 @@
             <span class="table-cell"> Amount </span>
             <span class="table-cell"> Note </span>
             <span class="table-cell"> View </span>
+            <span class="table-cell"> Edit </span>
+            <span class="table-cell"> Delete </span>
         </div> 
         {foreach from=$ns.billings item=billing}
             <div class="table-row" {if $billing->getCancelled() == 1}style="background: red"{/if} href="{SITE_PATH}/billing/{$billing->getId()}">
-                <a class="table-cell view_item" href="{SITE_PATH}/billing/{$billing->getId()}">
-                    <span class="table-cell">{$billing->getId()} </span>
+                <a class="table-cell" href="{SITE_PATH}/billing/{$billing->getId()}">
+                    <span>{$billing->getId()} </span>
                 </a>
                 <span class="table-cell"> {$billing->getDate()} </span>
                 <span class="table-cell"> {$billing->getPartnerDto()->getName()} </span>
@@ -41,15 +43,24 @@
                     {/if}
                 </span>
                 <span class="table-cell"> {$billing->getNote()} </span>
-                <a class="table-cell view_item" href="{SITE_PATH}/billing/{$billing->getId()}">
-                    <span class="button blue">open</span>
+                <a class="table-cell" href="{SITE_PATH}/billing/{$billing->getId()}">
+                    <span class="button_icon" title="View">
+                        <i class="fa fa-eye"></i>
+                    </span>
                 </a>
-                     <a class="table-cell view_item" href="{SITE_PATH}/billing/edit/{$billing->getId()}">
-                    <span class="button blue">edit</span>
+                <a class="table-cell" href="{SITE_PATH}/billing/edit/{$billing->getId()}">
+                    <span class="button_icon" title="Edit">
+                        <i class="fa fa-pencil"></i>
+                    </span>
                 </a>
                 {if $billing->getCancelled() == 1}
-                    <a class="table-cell view_item deleteBilling"  href="{SITE_PATH}/dyn/main_billing/do_delete_billing?id={$billing->getId()}">
-                        <span class="button blue">delete</span>
+                    <a class="table-cell deleteBilling"  href="{SITE_PATH}/dyn/main_billing/do_delete_billing?id={$billing->getId()}">
+                        <span class="button_icon" title="delete">
+                            <i class="fa fa-trash-o"></i>
+                        </span>
+                    </a>
+                {else}
+                    <a class="table-cell" href="javascript:void(0);">
                     </a>
                 {/if}
             </div>

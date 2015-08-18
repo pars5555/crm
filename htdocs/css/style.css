@@ -9,7 +9,7 @@
 }
 
 body{
-    font-size: 15px;
+    font-size: 13px;
     color:#333;
     font-family:OpenSans,sans-serif;
 }
@@ -280,6 +280,7 @@ select::-ms-expand{
     background: url("../../img/arrow_down.png") no-repeat scroll right 7px center / 25px auto #f3f3f3;
 }
 
+.select_wrapper .text_autocomplete,
 .select_wrapper select{
     width: 100%;
     background-color: transparent;
@@ -292,7 +293,26 @@ select::-ms-expand{
     overflow:hidden;
     min-height: 36px;
     cursor: pointer;
+    box-sizing: border-box;
 }
+
+.select_wrapper .text_autocomplete{
+    background-color: inherit;
+    position: absolute;
+    width: calc(100% - 37px);
+}
+
+/* Webkit */
+.select_wrapper .text_autocomplete::-webkit-input-placeholder { opacity: 1; }
+
+/* Firefox 4-18 */
+.select_wrapper .text_autocomplete:-moz-placeholder { opacity: 1; }
+
+/* Firefox 19+ */
+.select_wrapper .text_autocomplete::-moz-placeholder { opacity: 1; }
+
+/* IE10+ */
+.select_wrapper .text_autocomplete:-ms-input-placeholder { opacity: 1; }
 
 .select_wrapper select option{
     padding:5px;
@@ -421,6 +441,26 @@ select::-ms-expand{
     font-size:15px;
 }
 
+.button_icon{
+    font-size:20px;
+}
+
+.button_icon .fa-eye{
+    color:#105FA6;
+}
+
+.button_icon .fa-pencil{
+    color:#ffc000;
+}
+
+.button_icon .fa-trash-o{
+    color:#cc0000;
+}
+
+.button_icon .fa-plus-circle{
+    color:#46AF04;
+}
+
 .overlay{
     width:100%;
     height:100%;
@@ -465,12 +505,14 @@ select::-ms-expand{
     border-collapse:collapse;
     text-align:center;  
     border:1px solid #63b4fb;
+    word-break: break-all;
 }
 .table_striped .table_header_group .table-cell{
     color:#63B4FB;
-    font-size: 20px;    
+    font-size: 17px;    
     border:1px solid #63B4FB;
     font-weight: 600;
+    word-break: normal;
 }
 .table_striped .table-row{
     display:table-row;
@@ -481,12 +523,21 @@ select::-ms-expand{
 .table_striped .table-cell{
     display:table-cell;
     vertical-align: middle;  
-    padding:10px 5px;  
+    padding:10px;  
 }
 .table_row_group{
     display:table-row-group;
 }
 
+.table_striped.table_striped_simple{
+    width:auto;
+    margin:20px 0;
+    text-align: left;
+}
+
+.table_striped.table_striped_simple .table-row .table-cell:first-child {
+    text-align: right;
+}
 
 /*************************** Pop Up Container **************************/
 

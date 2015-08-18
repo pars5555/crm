@@ -15,8 +15,10 @@
                 <span class="table-cell">{$product->getModel()} </span>
                 <span class="table-cell">{$product->getUomDto()->getName()} </span>
                 <span class="table-cell">{$ns.productsQuantity[$product->getId()]|default:'0'}</span>
-                <a class="table-cell view_item" href="{SITE_PATH}/product/{$product->getId()}">
-                    <span class="button blue">open</span>
+                <a class="table-cell" href="{SITE_PATH}/product/{$product->getId()}">
+                    <span class="button_icon" title="View">
+                        <i class="fa fa-eye"></i>
+                    </span>
                 </a>
             </div>
         {/foreach}

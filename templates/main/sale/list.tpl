@@ -22,11 +22,13 @@
             <span class="table-cell"> Total Profit </span>
             <span class="table-cell"> Note </span>
             <span class="table-cell"> View </span>
+            <span class="table-cell"> Edit </span>
+            <span class="table-cell"> Delete </span>
         </div> 
         {foreach from=$ns.saleOrders item=saleOrder}
             <div class="table-row" {if $saleOrder->getCancelled() == 1}style="background: red"{/if}>
-                <a class="table-cell view_item" href="{SITE_PATH}/sale/{$saleOrder->getId()}">
-                    <span class="table-cell">{$saleOrder->getId()} </span>
+                <a class="table-cell" href="{SITE_PATH}/sale/{$saleOrder->getId()}">
+                    <span>{$saleOrder->getId()} </span>
                 </a>
                 <span class="table-cell"> {$saleOrder->getPartnerDto()->getName()} </span>
                 <span class="table-cell"> {$saleOrder->getOrderDate()} </span>
@@ -49,14 +51,23 @@
                 <span class="table-cell"> {$saleOrder->getTotalProfit()} </span>
                 <span class="table-cell"> {$saleOrder->getNote()} </span>
                 <a class="table-cell view_item" href="{SITE_PATH}/sale/{$saleOrder->getId()}">
-                    <span class="button blue">open</span>
+                    <span class="button_icon" title="View">
+                        <i class="fa fa-eye"></i>
+                    </span>
                 </a>
                 <a class="table-cell view_item" href="{SITE_PATH}/sale/edit/{$saleOrder->getId()}">
-                    <span class="button blue">edit</span>
+                    <span class="button_icon" title="Edit">
+                        <i class="fa fa-pencil"></i>
+                    </span>
                 </a>
                 {if $saleOrder->getCancelled() == 1}
                     <a class="table-cell view_item deleteSaleOrder"  href="{SITE_PATH}/dyn/main_sale/do_delete_sale_order?id={$saleOrder->getId()}">
-                        <span class="button blue">delete</span>
+                        <span class="button_icon" title="delete">
+                            <i class="fa fa-trash-o"></i>
+                        </span>
+                    </a>
+                {else}
+                    <a class="table-cell" href="javascript:void(0);">
                     </a>
                 {/if}
             </div>

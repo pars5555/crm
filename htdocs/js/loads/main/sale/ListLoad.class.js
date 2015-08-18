@@ -6,7 +6,7 @@ NGS.createLoad("crm.loads.main.sale.list", {
 
     },
     afterLoad: function () {
-        $('#saleOrderFilters').find('input, select, checkbox').change(function () {
+        $('#saleOrderFilters').find('input, select, checkbox').not(".text_autocomplete").change(function () {
             $('#saleOrderFilters').trigger('submit');
         });
         $('.deleteSaleOrder').click(function () {
