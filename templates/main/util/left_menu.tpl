@@ -9,10 +9,10 @@
         <ul>
             <li><a href="{SITE_PATH}/general">General</a></li>
             <li><a href="{SITE_PATH}/partner/list">Partners</a></li>
-            <li><a href="{SITE_PATH}/sale/list">Sale Orders</a></li>
-            <li><a href="{SITE_PATH}/purchase/list">Purchase Orders</a></li>
-            <li><a href="{SITE_PATH}/payment/list">Payment Order</a></li>
-            <li><a href="{SITE_PATH}/billing/list">Billing Order</a></li>
+            <li><a href="{SITE_PATH}/sale/list?srt=order_date&ascdesc=DESC">Sale Orders</a></li>
+            <li><a href="{SITE_PATH}/purchase/list?srt=order_date&ascdesc=DESC">Purchase Orders</a></li>
+            <li><a href="{SITE_PATH}/payment/list?srt=date&ascdesc=DESC">Payment Order</a></li>
+            <li><a href="{SITE_PATH}/billing/list?srt=date&ascdesc=DESC">Billing Order</a></li>
             <li><a href="{SITE_PATH}/warehouse">Warehouse</a></li>
             <li><a href="{SITE_PATH}/product/list">Products</a></li>
             <li><a href="{SITE_PATH}/manufacturer/list">Manufacturers</a></li>

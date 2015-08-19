@@ -23,13 +23,13 @@ namespace crm\actions\main\purchase {
 
         public function service() {
             try {
-                list($id, $partnerId, $date, $paymentDeadlineDate, $note) = $this->getFormData();
+                list($id, $partnerId, $date, $paymentDeadlineDate, $isExpense, $note) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            PurchaseOrderManager::getInstance()->updatePurchaseOrder($id, $partnerId, $date, $paymentDeadlineDate, $note);
+            PurchaseOrderManager::getInstance()->updatePurchaseOrder($id, $partnerId, $date, $paymentDeadlineDate, $isExpense, $note);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Purchase Order Successfully updated!';
             $this->redirect('purchase/' . $id);
@@ -42,6 +42,10 @@ namespace crm\actions\main\purchase {
             if (isset(NGS()->args()->note)) {
                 $note = NGS()->args()->note;
             }
+            $isExpense = 0;
+            if (isset(NGS()->args()->isExpense)) {
+                $isExpense = 1;
+            }
             $year = intval(NGS()->args()->purchaseOrderDateYear);
             $month = intval(NGS()->args()->purchaseOrderDateMonth);
             $day = intval(NGS()->args()->purchaseOrderDateDay);
@@ -53,7 +57,7 @@ namespace crm\actions\main\purchase {
             $paymentDeadlineDay = intval(NGS()->args()->paymentDeadlineDateDay);
             $date = "$year-$month-$day $hour:$minute";
             $paymentDeadlineDate = "$paymentDeadlineYear-$paymentDeadlineMonth-$paymentDeadlineDay";
-            return array($id, $partnerId, $date, $paymentDeadlineDate, $note);
+            return array($id, $partnerId, $date, $paymentDeadlineDate, $isExpense, $note);
         }
 
         private function validateFormData() {

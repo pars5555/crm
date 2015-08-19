@@ -59,6 +59,7 @@
                 <span class="button blue">Restore</span>
             </a>
         {/if}
+	<label class="label" for="paidCheckbox">Paid</label>
         <div class="checkbox_container">
             <div class="checkbox f_checkbox">
                 <input type="checkbox" id="paidCheckbox" {if $ns.purchaseOrder->getPaid()==1}checked{/if}/>

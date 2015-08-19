@@ -73,6 +73,15 @@ namespace crm\dal\mappers {
             }
             return $ret;
         }
+        
+        public function getAllNonCancelledExpensePurchaseOrders($startDate, $endDate) {
+            $sql = "SELECT * FROM `%s` INNER JOIN  "
+                    . " `purchase_orders` ON `purchase_order_id` = `purchase_orders`.`id` "
+                    . "WHERE `purchase_orders`.`cancelled` = 0 AND `purchase_orders`.`is_expense` = 1 AND "
+                    . "`order_date`>='%s' AND `order_date`<=DATE_ADD('%s' ,INTERVAL 1 DAY)";
+            $sqlQuery = sprintf($sql, $this->getTableName(), $startDate, $endDate);
+            return $this->fetchRows($sqlQuery);
+        }
 
     }
 

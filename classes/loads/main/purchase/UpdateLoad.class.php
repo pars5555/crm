@@ -11,14 +11,14 @@
 
 namespace crm\loads\main\purchase {
 
-use crm\loads\NgsLoad;
-use crm\managers\PartnerManager;
-use crm\managers\PaymentMethodManager;
-use crm\managers\PurchaseOrderManager;
-use crm\managers\SettingManager;
-use crm\security\RequestGroups;
-use DateTime;
-use NGS;
+    use crm\loads\NgsLoad;
+    use crm\managers\PartnerManager;
+    use crm\managers\PaymentMethodManager;
+    use crm\managers\PurchaseOrderManager;
+    use crm\managers\SettingManager;
+    use crm\security\RequestGroups;
+    use DateTime;
+    use NGS;
 
     class UpdateLoad extends NgsLoad {
 
@@ -42,7 +42,10 @@ use NGS;
                         'paymentDeadlineDateYear' => $paymentDeadlineDateYear,
                         'paymentDeadlineDateMonth' => $paymentDeadlineDateMonth,
                         'paymentDeadlineDateDay' => $paymentDeadlineDateDay,
-                        'partnerId' => $purchaseOrder->getPartnerId(), 'note' => $purchaseOrder->getNote()];
+                        'partnerId' => $purchaseOrder->getPartnerId(),
+                        'note' => $purchaseOrder->getNote(),
+                        'isExpense' => $purchaseOrder->getIsExpense()
+                    ];
                 }
                 $this->addParam("purchaseOrder", $purchaseOrder);
                 $this->addParam('req', $_SESSION['action_request']);
