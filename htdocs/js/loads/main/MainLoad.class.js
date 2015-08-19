@@ -14,12 +14,12 @@ NGS.createLoad("crm.loads.main.main", {
     },
     checkbox: function () {
         $("input[type='checkbox']").each(function(){
-            if ($(this).is(":checed"))
+            if ($(this).is(":checked"))
             {
-                $(this).parent('.f_checkbox').addClass('checked')
+                $(this).parent('.f_checkbox').addClass('checked');
             }else
             {
-                $(this).parent('.f_checkbox').removeClass('checked')
+                $(this).parent('.f_checkbox').removeClass('checked');
                 
             }
         });
