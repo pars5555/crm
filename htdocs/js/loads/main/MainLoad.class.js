@@ -13,6 +13,16 @@ NGS.createLoad("crm.loads.main.main", {
         $("select").not("[data-no-wrap=true]").wrap("<div class='select_wrapper' />");
     },
     checkbox: function () {
+        $("input[type='checkbox']").each(function(){
+            if ($(this).is(":checed"))
+            {
+                $(this).parent('.f_checkbox').addClass('checked')
+            }else
+            {
+                $(this).parent('.f_checkbox').removeClass('checked')
+                
+            }
+        });
         $(".f_checkbox_label").on("click", function () {
             $(this).siblings(".f_checkbox").trigger("click");
         });
