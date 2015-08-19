@@ -81,7 +81,7 @@ namespace crm\managers {
         public function getTotalProfitSumInNonCancelledSaleOrders($startDate, $endDate) {
             return $this->mapper->getTotalProfitSumInNonCancelledSaleOrders($startDate, $endDate);
         }
-
+       
     }
 
 }

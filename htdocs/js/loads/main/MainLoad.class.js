@@ -13,18 +13,24 @@ NGS.createLoad("crm.loads.main.main", {
         $("select").not("[data-no-wrap=true]").wrap("<div class='select_wrapper' />");
     },
     checkbox: function () {
+        $("input[type='checkbox']").each(function(){
+            if ($(this).is(":checked"))
+            {
+                $(this).parent('.f_checkbox').addClass('checked');
+            }else
+            {
+                $(this).parent('.f_checkbox').removeClass('checked');
+                
+            }
+        });
         $(".f_checkbox_label").on("click", function () {
             $(this).siblings(".f_checkbox").trigger("click");
         });
         $(".f_checkbox").on("click", function () {
             $(this).toggleClass("checked");
             var checkbox = $(this).find("input[type='checkbox']");
-            if ($(this).hasClass("checked")) {
-                checkbox.prop("checked", true);
-            }
-            else {
-                checkbox.prop("checked", false);
-            }
+            checkbox.prop("checked", $(this).hasClass("checked"));
+            checkbox.trigger('change');
         });
     }
 

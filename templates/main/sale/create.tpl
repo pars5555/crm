@@ -40,7 +40,7 @@
         </div>
         <div class="form-group">
             <label class="label">Date</label>
-            {assign date null}
+            {assign date "+1 month"|date_format:'%Y-%m-%d'}
             {if !empty($ns.req.billingDeadlineDateYear) && !empty($ns.req.billingDeadlineDateMonth) && !empty($ns.req.billingDeadlineDateDay)}
                 {assign date "`$ns.req.billingDeadlineDateYear`-`$ns.req.billingDeadlineDateMonth`-`$ns.req.billingDeadlineDateDay`"}
             {/if}
