@@ -33,7 +33,7 @@
                 </a>
                 <span class="table-cell"> {$saleOrder->getPartnerDto()->getName()} </span>
                 <span class="table-cell"> {$saleOrder->getOrderDate()} </span>
-                <span class="table-cell" style="{if $smarty.now|date_format:"%Y-%m-%d">=$saleOrder->getBillingDeadline() && $saleOrder->getBilled()=0}color:red{/if}"> {$saleOrder->getBillingDeadline()} </span>
+                <span class="table-cell" style="{if $smarty.now|date_format:"%Y-%m-%d">=$saleOrder->getBillingDeadline() && $saleOrder->getBilled()==0}color:red{/if}"> {$saleOrder->getBillingDeadline()} </span>
 
                 {assign totalAmount $saleOrder->getTotalAmount()}
                 <span class="table-cell">
