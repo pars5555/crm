@@ -54,7 +54,7 @@ namespace crm\loads\main\partner {
             if (count($partners) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }
-            $pagesCount = intval($count / $limit);
+            $pagesCount = ceil($count / $limit);
             $this->addParam('pagesCount', $pagesCount);
 
             $currencyManager = CurrencyManager::getInstance();

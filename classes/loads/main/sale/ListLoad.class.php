@@ -38,7 +38,7 @@ namespace crm\loads\main\sale {
             if (count($saleOrders) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }
-            $pagesCount = intval($count / $limit);
+            $pagesCount = ceil($count / $limit);
             $this->addParam('pagesCount', $pagesCount);
 
             $currencyManager = CurrencyManager::getInstance();
