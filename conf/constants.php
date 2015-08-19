@@ -18,17 +18,20 @@
 */
 date_default_timezone_set("Asia/Yerevan");
 if(php_sapi_name() == "cli"){
-	$args = substr($argv[1], strpos($argv[1], "?")+1);
-	$uri = substr($argv[1], 0, strpos($argv[1], "?"));
-	$_SERVER["REQUEST_URI"] = $uri;
-	if(isset($args)){
-		$queryArgsArr = explode("&", $args);
-		foreach ($queryArgsArr as $value) {
-			$_arg = explode("=", $value);
-			$_REQUEST[$_arg[0]] = $_arg[1];
-			$_GET[$_arg[0]] = $_arg[1];
+	$uri = $argv[1];
+	if (strpos($argv[1], "?") !== false) {
+		$args = substr($argv[1], strpos($argv[1], "?") + 1);
+		$uri = substr($argv[1], 0, strpos($argv[1], "?"));
+		if (isset($args)) {
+			$queryArgsArr = explode("&", $args);
+			foreach ($queryArgsArr as $value) {
+				$_arg = explode("=", $value);
+				$_REQUEST[$_arg[0]] = $_arg[1];
+				$_GET[$_arg[0]] = $_arg[1];
+			}
 		}
 	}
+	$_SERVER["REQUEST_URI"] = $uri;
 	if(isset($argv[2])){
 		$_SERVER["ENVIRONMENT"] = $argv[2];
 	}
