@@ -32,7 +32,7 @@
                 </a>
                 <span class="table-cell"> {$purchaseOrder->getPartnerDto()->getName()} </span>
                 <span class="table-cell"> {$purchaseOrder->getOrderDate()} </span>
-                <span class="table-cell" style="{if $smarty.now|date_format:"%Y-%m-%d">=$purchaseOrder->getPaymentDeadline()  && $saleOrder->getPaid()=0}color:red{/if}"> {$purchaseOrder->getPaymentDeadline()} </span>
+                <span class="table-cell" style="{if $smarty.now|date_format:"%Y-%m-%d">=$purchaseOrder->getPaymentDeadline()  && $purchaseOrder->getPaid()=0}color:red{/if}"> {$purchaseOrder->getPaymentDeadline()} </span>
                 {assign totalAmount $purchaseOrder->getTotalAmount()}
                 <span class="table-cell">
                     {foreach from=$totalAmount key=currencyId item=amount}
