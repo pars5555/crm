@@ -63,6 +63,12 @@
 	
         <div class="checkbox_container">
             <div class="checkbox f_checkbox">
+                <input type="checkbox" id="nonProfitCheckbox" {if $ns.saleOrder->getNonProfit()==1}checked{/if}/>
+            </div>
+            <label class="checkbox_label f_checkbox_label label">Non Profit</label>
+        </div> 
+        <div class="checkbox_container">
+            <div class="checkbox f_checkbox">
                 <input type="checkbox" id="billedCheckbox" {if $ns.saleOrder->getBilled()==1}checked{/if}/>
             </div>
             <label class="checkbox_label f_checkbox_label label">Billed</label>

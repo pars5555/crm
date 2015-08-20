@@ -3,8 +3,3 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . index.php [L]
 
-
-Authtype Basic
-AuthName "Login"
-AuthUserFile /var/www/crm/htdocs/.htpasswd
-Require valid-user

@@ -16,7 +16,15 @@ NGS.createLoad("crm.loads.main.sale.open", {
         this.initSaleOrderLineRemoveFunctionallity();
         this.initCancelSaleOrder();
         this.initBilledFunctionality();
+        this.initNonProfitFunctionality();
 
+    },
+    initNonProfitFunctionality: function () {
+        $('#nonProfitCheckbox').change(function () {
+            var checked = $(this).is(':checked');
+            var id = $('#sale_order_id').val();
+            NGS.action('crm.actions.main.sale.set_non_profit', {'id': id, 'non_profit': checked ? 1 : 0});
+        });
     },
     initBilledFunctionality: function () {
         $('#billedCheckbox').change(function () {
