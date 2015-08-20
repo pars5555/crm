@@ -59,6 +59,8 @@
                 <span class="button blue">Restore</span>
             </a>
         {/if}
+         <a class="button blue" href="{$SITE_PATH}/dyn/main_payment/do_redirect?partnerId={$ns.purchaseOrder->getPartnerId()}&note=Payment for Purchase Order No-{$ns.purchaseOrder->getId()}">Pay</a>
+	
         <div class="checkbox_container">
             <div class="checkbox f_checkbox">
                 <input type="checkbox" id="paidCheckbox" {if $ns.purchaseOrder->getPaid()==1}checked{/if}/>
