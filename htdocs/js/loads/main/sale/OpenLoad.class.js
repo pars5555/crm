@@ -18,7 +18,7 @@ NGS.createLoad("crm.loads.main.sale.open", {
         this.initBilledFunctionality();
         this.calculateTotal();
         this.initNonProfitFunctionality();
-        $('#saleOrderLinesForm').on('change','input, select, checkbox', function () {
+        $('#saleOrderLinesForm').on('change', 'input, select, checkbox', function () {
             this.calculateTotal();
         }.bind(this));
         $("#saleOrderLineProductId").chosen();
@@ -32,16 +32,20 @@ NGS.createLoad("crm.loads.main.sale.open", {
             var selectedCurrencyOption = $('option:selected', currencySelectBox);
             var position = selectedCurrencyOption.attr('position');
             var iso = selectedCurrencyOption.attr('iso');
-            var symbol= selectedCurrencyOption.attr('symbol');
+            var symbol = selectedCurrencyOption.attr('symbol');
             var total = qty * unitPrice;
             if (!grandTotal[iso])
             {
                 grandTotal[iso] = 0;
             }
             grandTotal[iso] += total;
-            $(this).find('.saleOrderLinesTotal').text((position==='left'?symbol:'') + total.toFixed(2) + (position==='right'?symbol:''));
+            $(this).find('.saleOrderLinesTotal').text((position === 'left' ? symbol : '') + total.toFixed(2) + (position === 'right' ? symbol : ''));
         });
-        console.log(grandTotal);        
+        totalHtml = "";
+        $.each(grandTotal, function (index, val) {
+            totalHtml += '<div>' + index + ': ' + val + '</div>';
+        });
+        $('#saleOrderTotalAmount').html(totalHtml);
     },
     initNonProfitFunctionality: function () {
         $('#nonProfitCheckbox').change(function () {

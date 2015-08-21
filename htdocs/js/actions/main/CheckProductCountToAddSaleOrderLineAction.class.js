@@ -11,6 +11,7 @@ NGS.createAction("crm.actions.main.sale.check_product_count_to_add_sale_order_li
         var currency_id = $('#saleOrderLineCurrencyId').val();
 
         $('#saleOrderLineProductId').val('0');
+        $('#saleOrderLineProductId').trigger('chosen:updated');
         $('#saleOrderLineQuantity').val('');
         $('#saleOrderLineUnitPrice').val('');
         $('#saleOrderLineCurrencyId').val('0');
@@ -25,6 +26,7 @@ NGS.createAction("crm.actions.main.sale.check_product_count_to_add_sale_order_li
         solRow.find(".saleOrderLinesSelectCurrency").val(currency_id);
         
         solRow.appendTo("#saleOrderLinesContainer");
+        
         //to update total calculation
         solRow.find(".saleOrderLinesSelectQuantity").trigger('change');
     }

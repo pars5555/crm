@@ -165,7 +165,7 @@
         </div>
 
         <a class="button blue" href="javascript:void(0);" id="submitForm">Save</a>
-
+        <div id="saleOrderTotalAmount"></div>
     {/if}
 </div>
 
