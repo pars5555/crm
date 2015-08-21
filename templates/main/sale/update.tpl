@@ -27,7 +27,7 @@
             </div>
             <div class="form-group">
                 <label class="label">Partner</label>
-                <select name="partnerId">
+                <select name="partnerId" data-no-wrap="true">
                     {if isset($ns.req.partnerId)}
                         {assign selectedPartnerId $ns.req.partnerId}
                     {else}

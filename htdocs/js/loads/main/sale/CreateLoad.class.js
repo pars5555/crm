@@ -6,6 +6,6 @@ NGS.createLoad("crm.loads.main.sale.create", {
 
     },
     afterLoad: function () {
-      
+        $("select[name='partnerId']").chosen();
     }
 });

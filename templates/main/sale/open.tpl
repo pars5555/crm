@@ -60,7 +60,7 @@
             </a>
         {/if}
         <a class="button blue" href="{$SITE_PATH}/dyn/main_billing/do_redirect?partnerId={$ns.saleOrder->getPartnerId()}&note=Billing for Sale Order No-{$ns.saleOrder->getId()}">Bill</a>
-	    <div class="checkbox_container">
+        <div class="checkbox_container">
             <div class="checkbox f_checkbox">
                 <input type="checkbox" id="nonProfitCheckbox" {if $ns.saleOrder->getNonProfit()==1}checked{/if}/>
             </div>
@@ -89,14 +89,14 @@
                     {foreach from=$saleOrderLines item=saleOrderLine}
                         <div class="saleOrderLine table-row">
                             <div class="table-cell">
-                                <select class="saleOrderLinesSelectProduct">
+                                <select class="saleOrderLinesSelectProduct" disabled>
                                     {foreach from=$ns.products item=p}
                                         <option value="{$p->getId()}" {if $p->getId() == $saleOrderLine->getProductId()}selected{/if}>{$p->getName()}</option>
                                     {/foreach}
                                 </select>
                             </div>
                             <div class="table-cell">
-                                <input type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text" value="{$saleOrderLine->getQuantity()}"/>
+                                <input type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text" value="{$saleOrderLine->getQuantity()}" disabled/>
                             </div>
                             <div class="table-cell">
                                 <input type="number" step="0.01" min="0.01" class="saleOrderLinesSelectUnitPrice text" value="{$saleOrderLine->getUnitPrice()}"/>
@@ -130,7 +130,7 @@
         <div class="table_striped add_new_sale_order_line">
             <div class="table-row">
                 <div class="table-cell">
-                    <select id="saleOrderLineProductId">                       
+                    <select id="saleOrderLineProductId" data-no-wrap="true">                       
                         <option value="0">Select...</option>
                         {foreach from=$ns.products item=p}
                             <option value="{$p->getId()}">{$p->getName()}</option>
@@ -172,14 +172,14 @@
 
 <div class="table-row" id="saleOrderLineTemplate" style="display:none">
     <div class="table-cell">
-        <select class="saleOrderLinesSelectProduct">
+        <select class="saleOrderLinesSelectProduct" disabled>
             {foreach from=$ns.products item=p}
                 <option value="{$p->getId()}">{$p->getName()}</option>
             {/foreach}
         </select>
     </div>
     <div class="table-cell">
-        <input  type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text"/>
+        <input  type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text" disabled/>
     </div>
     <div class="table-cell">
         <input  type="number" step="0.01" min="0.01" class="saleOrderLinesSelectUnitPrice text"/>

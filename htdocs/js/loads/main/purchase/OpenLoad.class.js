@@ -16,7 +16,8 @@ NGS.createLoad("crm.loads.main.purchase.open", {
         this.initPurchaseOrderLineRemoveFunctionallity();
         this.initCancelPurchaseOrder();
         this.initPaidFunctionality();
-
+        $("#purchaseOrderLineProductId").chosen();
+        $("#purchaseOrderLinesForm .purchaseOrderLinesSelectProduct").chosen();
     },
     initPaidFunctionality: function () {
         $('#paidCheckbox').change(function () {
@@ -47,8 +48,6 @@ NGS.createLoad("crm.loads.main.purchase.open", {
             var currency_id = $('#purchaseOrderLineCurrencyId').val();
             if (product_id == 0)
             {
-                $('#purchaseOrderLineProductId').focus();
-                $("#purchaseOrderLineProductId").css("display", "none").fadeIn(1000);
                 return;
             }
             if (!(quantity > 0))
@@ -66,13 +65,13 @@ NGS.createLoad("crm.loads.main.purchase.open", {
             if (currency_id == 0)
             {
                 $('#purchaseOrderLineCurrencyId').focus();
-                $("#purchaseOrderLineCurrencyId").css("display", "none").fadeIn(1000);
                 return;
             }
             var polRow = $('#purchaseOrderLineTemplate').clone();
 
 
             $('#purchaseOrderLineProductId').val('0');
+            $('#purchaseOrderLineProductId').trigger('chosen:updated');
             $('#purchaseOrderLineQuantity').val('');
             $('#purchaseOrderLineUnitPrice').val('');
             $('#purchaseOrderLineCurrencyId').val('0');
@@ -87,7 +86,7 @@ NGS.createLoad("crm.loads.main.purchase.open", {
             polRow.find(".purchaseOrderLinesSelectCurrency").val(currency_id);
 
             polRow.appendTo("#purchaseOrderLinesContainer");
-
+            $(".purchaseOrderLinesSelectProduct").chosen();
         });
     },
     calculatePurchaseOrderLinesData: function () {

@@ -40,7 +40,7 @@ namespace crm\actions\main\sale {
             $id = intval(NGS()->args()->id);
             $note = "";
             if (isset(NGS()->args()->note)) {
-                $note = intval(NGS()->args()->note);
+                $note = NGS()->args()->note;
             }
             $year = intval(NGS()->args()->saleOrderDateYear);
             $month = intval(NGS()->args()->saleOrderDateMonth);

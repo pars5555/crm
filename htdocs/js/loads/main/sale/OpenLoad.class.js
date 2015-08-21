@@ -21,6 +21,7 @@ NGS.createLoad("crm.loads.main.sale.open", {
         $('#saleOrderLinesForm').on('change','input, select, checkbox', function () {
             this.calculateTotal();
         }.bind(this));
+        $("#saleOrderLineProductId").chosen();
     },
     calculateTotal: function () {
         var grandTotal = {};
@@ -83,8 +84,6 @@ NGS.createLoad("crm.loads.main.sale.open", {
             var currency_id = $('#saleOrderLineCurrencyId').val();
             if (product_id == 0)
             {
-                $('#saleOrderLineProductId').focus();
-                $("#saleOrderLineProductId").css("display", "none").fadeIn(1000);
                 return;
             }
             if (!(quantity > 0))
@@ -102,7 +101,6 @@ NGS.createLoad("crm.loads.main.sale.open", {
             if (currency_id == 0)
             {
                 $('#saleOrderLineCurrencyId').focus();
-                $("#saleOrderLineCurrencyId").css("display", "none").fadeIn(1000);
                 return;
             }
             NGS.action('crm.actions.main.sale.check_product_count_to_add_sale_order_line', {product_id: product_id, quantity: quantity});

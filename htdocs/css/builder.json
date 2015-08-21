@@ -13,7 +13,8 @@
                     "left_panel.css",
                     "fonts.css",
                     "font-awesome.css",
-                    "jquery-ui.css"
+                    "jquery-ui.css",
+                    "chosen.min.css"
                 ]
             }
         ]

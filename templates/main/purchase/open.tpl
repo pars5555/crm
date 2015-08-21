@@ -83,7 +83,7 @@
                     {foreach from=$purchaseOrderLines item=purchaseOrderLine}
                         <div class="purchaseOrderLine table-row">
                             <div class="table-cell">
-                                <select class="purchaseOrderLinesSelectProduct">
+                                <select class="purchaseOrderLinesSelectProduct" data-no-wrap="true">
                                     {foreach from=$ns.products item=p}
                                         <option value="{$p->getId()}" {if $p->getId() == $purchaseOrderLine->getProductId()}selected{/if}>{$p->getName()}</option>
                                     {/foreach}
@@ -121,7 +121,7 @@
         <div class="table_striped add_new_purchase_order_line">
             <div class="table-row">
                 <div class="table-cell">
-                    <select id="purchaseOrderLineProductId">                       
+                    <select id="purchaseOrderLineProductId" data-no-wrap="true">                       
                         <option value="0">Select...</option>
                         {foreach from=$ns.products item=p}
                             <option value="{$p->getId()}">{$p->getName()}</option>
@@ -161,7 +161,7 @@
 
 <div class="table-row" id="purchaseOrderLineTemplate" style="display:none">
     <div class="table-cell">
-        <select class="purchaseOrderLinesSelectProduct">
+        <select class="purchaseOrderLinesSelectProduct"  data-no-wrap="true">
             {foreach from=$ns.products item=p}
                 <option value="{$p->getId()}">{$p->getName()}</option>
             {/foreach}
