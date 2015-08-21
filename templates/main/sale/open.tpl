@@ -59,7 +59,7 @@
                 <span class="button blue">Restore</span>
             </a>
         {/if}
-	
+
         <div class="checkbox_container">
             <div class="checkbox f_checkbox">
                 <input type="checkbox" id="billedCheckbox" {if $ns.saleOrder->getBilled()==1}checked{/if}/>
@@ -75,6 +75,7 @@
                     <span class="table-cell"> Quantity </span>
                     <span class="table-cell"> Unit Price </span>
                     <span class="table-cell"> Currency </span>
+                    <span class="table-cell"> Total </span>
                     <span class="table-cell"> Delete </span>
                 </div> 
                 {if $ns.saleOrder->getSaleOrderLinesDtos()|@count > 0}
@@ -97,11 +98,14 @@
                             <div class="table-cell">
                                 <select class="saleOrderLinesSelectCurrency">               
                                     {foreach from=$ns.currencies item=c}
-                                        <option value="{$c->getId()}"  {if $c->getId() == $saleOrderLine->getCurrencyId()}selected{/if}>
+                                        <option value="{$c->getId()}" iso="{$c->getIso()}" symbol="{$c->getTemplateChar()}" position="{$c->getSymbolPosition()}" {if $c->getId() == $saleOrderLine->getCurrencyId()}selected{/if}>
                                             {$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})
                                         </option>
                                     {/foreach}
                                 </select>
+                            </div>
+                            <div class="table-cell">
+                                <span class="saleOrderLinesTotal"></span>
                             </div>
                             <div class="table-cell">
                                 <a class="button_icon removeSaleOrderLine" title="delete">
@@ -141,7 +145,7 @@
                             <option value="{$c->getId()}">{$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})</option>
                         {/foreach}
                     </select>
-                </div>
+                </div>              
                 <div class="table-cell">
                     <a class="button_icon" href="javascript:void(0);" id="addSaleOrderLineButton" title="Add">
                         <i class="fa fa-plus-circle"></i>
@@ -173,15 +177,17 @@
     </div>
     <div class="table-cell">
         <input  type="number" step="0.01" min="0.01" class="saleOrderLinesSelectUnitPrice text"/>
-    </div>
-    <div class="table-cell">
-    </div>
+    </div>    
     <div class="table-cell">
         <select class="saleOrderLinesSelectCurrency">               
             {foreach from=$ns.currencies item=c}
-                <option value="{$c->getId()}">{$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})</option>
-            {/foreach}
+                <option value="{$c->getId()}" iso="{$c->getIso()}" symbol="{$c->getTemplateChar()}" position="{$c->getSymbolPosition()}" >
+                    {$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})</option>
+                {/foreach}
         </select>
+    </div>
+    <div class="table-cell">
+        <span class="saleOrderLinesTotal"></span>
     </div>
     <div class="table-cell">
         <a class="button_icon removeSaleOrderLine" title="delete">

@@ -9,18 +9,20 @@
             <span class="table-cell"> View </span>
         </div> 
         {foreach from=$ns.products item=product}
-            <div class="table-row"> 
-                <span class="table-cell">{$product->getId()} </span> 
-                <span class="table-cell">{$product->getName()} </span>
-                <span class="table-cell">{$product->getModel()} </span>
-                <span class="table-cell">{$product->getUomDto()->getName()} </span>
-                <span class="table-cell">{$ns.productsQuantity[$product->getId()]|default:'0'}</span>
-                <a class="table-cell" href="{SITE_PATH}/product/{$product->getId()}">
-                    <span class="button_icon" title="View">
-                        <i class="fa fa-eye"></i>
-                    </span>
-                </a>
-            </div>
+            {if isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0}
+                <div class="table-row"> 
+                    <span class="table-cell">{$product->getId()} </span> 
+                    <span class="table-cell">{$product->getName()} </span>
+                    <span class="table-cell">{$product->getModel()} </span>
+                    <span class="table-cell">{$product->getUomDto()->getName()} </span>
+                    <span class="table-cell">{$ns.productsQuantity[$product->getId()]|default:'0'}</span>
+                    <a class="table-cell" href="{SITE_PATH}/product/{$product->getId()}">
+                        <span class="button_icon" title="View">
+                            <i class="fa fa-eye"></i>
+                        </span>
+                    </a>
+                </div>
+            {/if}
         {/foreach}
     </div>
 </div>

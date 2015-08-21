@@ -16,7 +16,30 @@ NGS.createLoad("crm.loads.main.sale.open", {
         this.initSaleOrderLineRemoveFunctionallity();
         this.initCancelSaleOrder();
         this.initBilledFunctionality();
-
+        this.calculateTotal();
+        $('#saleOrderLinesForm').on('change','input, select, checkbox', function () {
+            this.calculateTotal();
+        }.bind(this));
+    },
+    calculateTotal: function () {
+        var grandTotal = {};
+        $('.saleOrderLine').each(function () {
+            var qty = $(this).find('.saleOrderLinesSelectQuantity').val();
+            var unitPrice = $(this).find('.saleOrderLinesSelectUnitPrice').val();
+            var currencySelectBox = $(this).find('.saleOrderLinesSelectCurrency');
+            var selectedCurrencyOption = $('option:selected', currencySelectBox);
+            var position = selectedCurrencyOption.attr('position');
+            var iso = selectedCurrencyOption.attr('iso');
+            var symbol= selectedCurrencyOption.attr('symbol');
+            var total = qty * unitPrice;
+            if (!grandTotal[iso])
+            {
+                grandTotal[iso] = 0;
+            }
+            grandTotal[iso] += total;
+            $(this).find('.saleOrderLinesTotal').text((position==='left'?symbol:'') + total.toFixed(2) + (position==='right'?symbol:''));
+        });
+        console.log(grandTotal);
     },
     initBilledFunctionality: function () {
         $('#billedCheckbox').change(function () {
