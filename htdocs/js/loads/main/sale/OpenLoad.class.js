@@ -17,6 +17,7 @@ NGS.createLoad("crm.loads.main.sale.open", {
         this.initCancelSaleOrder();
         this.initBilledFunctionality();
         this.calculateTotal();
+        this.initNonProfitFunctionality();
         $('#saleOrderLinesForm').on('change','input, select, checkbox', function () {
             this.calculateTotal();
         }.bind(this));
@@ -39,7 +40,14 @@ NGS.createLoad("crm.loads.main.sale.open", {
             grandTotal[iso] += total;
             $(this).find('.saleOrderLinesTotal').text((position==='left'?symbol:'') + total.toFixed(2) + (position==='right'?symbol:''));
         });
-        console.log(grandTotal);
+        console.log(grandTotal);        
+    },
+    initNonProfitFunctionality: function () {
+        $('#nonProfitCheckbox').change(function () {
+            var checked = $(this).is(':checked');
+            var id = $('#sale_order_id').val();
+            NGS.action('crm.actions.main.sale.set_non_profit', {'id': id, 'non_profit': checked ? 1 : 0});
+        });
     },
     initBilledFunctionality: function () {
         $('#billedCheckbox').change(function () {

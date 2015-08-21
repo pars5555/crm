@@ -59,7 +59,13 @@
                 <span class="button blue">Restore</span>
             </a>
         {/if}
-
+        <a class="button blue" href="{$SITE_PATH}/dyn/main_billing/do_redirect?partnerId={$ns.saleOrder->getPartnerId()}&note=Billing for Sale Order No-{$ns.saleOrder->getId()}">Bill</a>
+	    <div class="checkbox_container">
+            <div class="checkbox f_checkbox">
+                <input type="checkbox" id="nonProfitCheckbox" {if $ns.saleOrder->getNonProfit()==1}checked{/if}/>
+            </div>
+            <label class="checkbox_label f_checkbox_label label">Non Profit</label>
+        </div> 
         <div class="checkbox_container">
             <div class="checkbox f_checkbox">
                 <input type="checkbox" id="billedCheckbox" {if $ns.saleOrder->getBilled()==1}checked{/if}/>

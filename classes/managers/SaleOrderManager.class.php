@@ -58,6 +58,22 @@ namespace crm\managers {
             }
             return false;
         }
+        
+        public function setNonProfit($id, $nonProfit) {
+            $saleOrderDto = $this->selectByPK($id);
+            if (isset($saleOrderDto)) {
+                $saleOrderDto->setNonProfit($nonProfit);
+                if ($nonProfit == 1) {
+                    $solDtos = SaleOrderLineManager::getInstance()->selectByField('sale_order_id', $id);
+                    foreach ($solDtos as $solDto) {
+                        SaleOrderLineManager::getInstance()->updateField($solDto->getId(), 'total_profit', 0);
+                    } 
+                }
+                $this->updateByPk($saleOrderDto);
+                return true;
+            }
+            return false;
+        }
 
         public function restoreSaleOrder($id) {
             $saleOrderDto = $this->selectByPK($id);

@@ -44,10 +44,15 @@ namespace crm\managers {
             $dto->setCurrencyId($currencyId);
             $productUnitCostInBaseCurrency = floatval(ProductManager::getInstance()->calculateProductCost($productId));
             $dto->setUnitCost($productUnitCostInBaseCurrency);
-            $orderDate = SaleOrderManager::getInstance()->selectByPK($saleOrderId)->getOrderDate();
-            $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
-            $profit = $quantity * ($unitPrice * $rate - $productUnitCostInBaseCurrency);
-            $dto->setTotalProfit($profit);
+            $saleOrderDto = SaleOrderManager::getInstance()->selectByPK($saleOrderId);
+            if ($saleOrderDto->getNonProfit() == 0) {
+                $orderDate = $saleOrderDto->getOrderDate();
+                $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
+                $profit = $quantity * ($unitPrice * $rate - $productUnitCostInBaseCurrency);
+                $dto->setTotalProfit($profit);
+            } else {
+                $dto->setTotalProfit(0);
+            }
             return $this->insertDto($dto);
         }
 
@@ -77,11 +82,11 @@ namespace crm\managers {
         public function getAllProductCountInNonCancelledSaleOrders() {
             return $this->mapper->getAllProductCountInNonCancelledSaleOrders();
         }
-        
+
         public function getTotalProfitSumInNonCancelledSaleOrders($startDate, $endDate) {
             return $this->mapper->getTotalProfitSumInNonCancelledSaleOrders($startDate, $endDate);
         }
-       
+
     }
 
 }
