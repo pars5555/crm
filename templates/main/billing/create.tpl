@@ -1,5 +1,5 @@
 <div class="container billing--create--container">
-  <h1>Create Billing Order</h1>
+    <h1>Create Billing Order</h1>
     {if isset($ns.error_message)}
         <div>
             <span style="color:red">{$ns.error_message}</span>
@@ -76,5 +76,11 @@
         </div>
         <input class="button blue" type="submit" value="Save"/>
 
+        <div class="form-group">
+            <label class="label">Dept</label>
+            <div id="partnerDeptContainer"></div>
+            <label class="label">Dept After Billing</label>
+            <div id="partnerDeptAfterBillingContainer"></div>
+        </div>
     </form>
 </div>

@@ -56,7 +56,7 @@ namespace crm\managers {
                     if (!array_key_exists($currencyId, $partnerDept)) {
                         $partnerDept[$currencyId] = 0;
                     }
-                    $partnerDept[$currencyId] += $amount;
+                    $partnerDept[$currencyId] -= $amount;
                 }
             }
             foreach ($partnerPaymentTransactions as $transaction) {
@@ -79,7 +79,7 @@ namespace crm\managers {
                 if (!array_key_exists($currencyId, $partnerDept)) {
                     $partnerDept[$currencyId] = 0;
                 }
-                $partnerDept[$currencyId] += $amount;
+                $partnerDept[$currencyId] -= $amount;
             }
             return $partnerDept;
         }

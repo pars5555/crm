@@ -76,6 +76,15 @@ namespace crm\managers {
             return false;
         }
 
+        public function calculatePartnerDeptBySalePurchaseAndPaymentTransations($id) {
+            $partnerSaleOrders = SaleOrderManager::getInstance()->getPartnerSaleOrders($id);
+            $partnerPurchaseOrders = PurchaseOrderManager::getInstance()->getPartnerPurchaseOrders($id);
+            $partnerPaymentTransactions = PaymentTransactionManager::getInstance()->getPartnerPaymentTransactions($id);
+            $partnerBillingTransactions = PaymentTransactionManager::getInstance()->getPartnerBillingTransactions($id);
+            return CalculationManager::getInstance()->calculatePartnerDeptBySalePurchaseAndPaymentTransations(
+                            $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions);
+        }
+
     }
 
 }
