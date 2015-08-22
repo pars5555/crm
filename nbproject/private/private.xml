@@ -3,12 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/crm/htdocs/css/builder.json</file>
-            <file>file:/C:/xampp/htdocs/crm/htdocs/js/loads/main/sale/OpenLoad.class.js</file>
-            <file>file:/C:/xampp/htdocs/crm/htdocs/css/main.css</file>
-            <file>file:/C:/xampp/htdocs/crm/templates/main/sale/open.tpl</file>
-            <file>file:/C:/xampp/htdocs/crm/htdocs/js/loads/main/MainLoad.class.js</file>
-            <file>file:/C:/xampp/htdocs/crm/htdocs/css/style.css</file>
+            <file>file:/D:/xampp/htdocs/crm/htdocs/js/actions/main/partner/GetPartnerDeptAction.class.js</file>
+            <file>file:/D:/xampp/htdocs/crm/classes/loads/main/partner/OpenLoad.class.php</file>
+            <file>file:/D:/xampp/htdocs/crm/htdocs/js/loads/main/billing/CreateLoad.class.js</file>
+            <file>file:/D:/xampp/htdocs/crm/classes/managers/CalculationManager.class.php</file>
+            <file>file:/D:/xampp/htdocs/crm/classes/managers/PartnerManager.class.php</file>
+            <file>file:/D:/xampp/htdocs/crm/classes/actions/main/partner/GetPartnerDeptAction.class.php</file>
         </group>
     </open-files>
 </project-private>

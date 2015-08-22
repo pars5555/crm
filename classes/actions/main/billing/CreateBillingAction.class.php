@@ -82,7 +82,7 @@ namespace crm\actions\main\billing {
             if (!isset(NGS()->args()->currencyId) || !is_numeric(NGS()->args()->currencyId) || NGS()->args()->currencyId <= 0) {
                 throw new RedirectException('billing/create', "Invalid Currency.");
             }
-            if (!isset(NGS()->args()->amount) || !is_numeric(NGS()->args()->amount)) {
+            if (!isset(NGS()->args()->amount) || !is_numeric(NGS()->args()->amount) || NGS()->args()->amount <= 0) {
                 throw new RedirectException('billing/create', "Invalid Amount.");
             }
         }

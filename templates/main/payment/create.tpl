@@ -68,7 +68,7 @@
         </div>
         <div class="form-group">
             <label class="label">Amount</label>
-            <input class="text" type="number" step="0.01" name="amount" value="{$ns.req.amount|default:''}"/>
+            <input class="text" type="number" step="0.01" min="0.01" name="amount" value="{$ns.req.amount|default:''}"/>
         </div>
         <div class="form-group">
             <label class="label">Note</label>
