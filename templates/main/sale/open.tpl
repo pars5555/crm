@@ -38,6 +38,14 @@
             </div>
             <div class="table-row">
                 <span class="table-cell">
+                    Profit:
+                </span>
+                <span class="table-cell"> 
+                    {$ns.saleOrder->getTotalProfit()} 
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
                     Note :
                 </span>
                 <span class="table-cell">

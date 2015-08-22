@@ -36,6 +36,8 @@ namespace crm\managers {
         }
 
         public function createSaleOrderLine($saleOrderId, $productId, $quantity, $unitPrice, $currencyId) {
+            $unitPrice = floatval($unitPrice);
+            $quantity = floatval($quantity);
             $dto = $this->createDto();
             $dto->setSaleOrderId($saleOrderId);
             $dto->setProductId($productId);
