@@ -46,15 +46,17 @@ namespace crm\managers {
             return $dtos;
         }
 
-        public function mapDtosById($dtos) {
+        public static function mapDtosById($dtos) {
             $mappedDtos = array();
             foreach ($dtos as $dto) {
                 $mappedDtos[$dto->getId()] = $dto;
             }
             return $mappedDtos;
         }
+       
+       
 
-        public function getDtosIdsArray($dtos) {
+        public static function getDtosIdsArray($dtos) {
             $idsArray = array();
             foreach ($dtos as $dto) {
                 $idsArray[] = $dto->getId();

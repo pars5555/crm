@@ -64,7 +64,7 @@ namespace crm\managers {
             $orderDate = PurchaseOrderManager::getInstance()->selectByPK($purchaseOrderId)->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
-            
+
             return $this->insertDto($dto);
         }
 
@@ -76,8 +76,33 @@ namespace crm\managers {
             return $this->mapper->getNonCancelledProductPurchaseOrders($productId);
         }
 
+        public function getNonCancelledProductsPurchaseOrders($productIds) {
+            $dtos = $this->mapper->getNonCancelledProductsPurchaseOrders($productIds);
+            $ret = [];
+            foreach ($dtos as $dto) {
+                $ret [$dto->getProductId()][] = $dto;
+            }
+            return $ret;
+        }
+        
+        public function getProductsPurchaseOrders($productIds) {
+            $dtos = $this->mapper->getNonCancelledProductsPurchaseOrders($productIds);
+            $ret = [];
+            foreach ($dtos as $dto) {
+                $ret [$dto->getProductId()][] = $dto->getPurchaseOrderId();
+            }
+            foreach ($ret as &$r) {
+                $r = array_unique($r);
+            }
+            return $ret;
+        }
+
         public function getAllProductCountInNonCancelledPurchaseOrders() {
             return $this->mapper->getAllProductCountInNonCancelledPurchaseOrders();
+        }
+
+        public function getAllNonCancelledExpensePurchaseOrders($startDate, $endDate) {
+            return $this->mapper->getAllNonCancelledExpensePurchaseOrders($startDate, $endDate);
         }
 
     }

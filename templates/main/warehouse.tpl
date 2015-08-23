@@ -6,21 +6,33 @@
             <span class="table-cell">Model</span>
             <span class="table-cell">Uom</span>
             <span class="table-cell">Quantity</span>
+            <span class="table-cell">Price</span>
+            <span class="table-cell">Purchase Orders</span>
             <span class="table-cell"> View </span>
         </div> 
         {foreach from=$ns.products item=product}
-            <div class="table-row"> 
-                <span class="table-cell">{$product->getId()} </span> 
-                <span class="table-cell">{$product->getName()} </span>
-                <span class="table-cell">{$product->getModel()} </span>
-                <span class="table-cell">{$product->getUomDto()->getName()} </span>
-                <span class="table-cell">{$ns.productsQuantity[$product->getId()]|default:'0'}</span>
-                <a class="table-cell" href="{SITE_PATH}/product/{$product->getId()}">
-                    <span class="button_icon" title="View">
-                        <i class="fa fa-eye"></i>
+            {if isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0}
+                <div class="table-row"> 
+                    <span class="table-cell">{$product->getId()} </span> 
+                    <span class="table-cell">{$product->getName()} </span>
+                    <span class="table-cell">{$product->getModel()} </span>
+                    <span class="table-cell">{$product->getUomDto()->getName()} </span>
+                    <span class="table-cell">{$ns.productsQuantity[$product->getId()]|default:'0'}</span>
+                    <span class="table-cell">{$ns.productsPrice[$product->getId()]|default:'NaN'}</span>
+                    <span class="table-cell">
+                        {foreach from=$ns.productsPurchaseOrder[$product->getId()] item=productPurchaseOrdersIds}
+                            {foreach from=$productPurchaseOrdersIds item=productPurchaseOrderId}
+                                <a href="{$SITE_PATH}/purchase/{$productPurchaseOrderId}">{$productPurchaseOrderId}</a>
+                            {/foreach}
+                        {/foreach}
                     </span>
-                </a>
-            </div>
+                    <a class="table-cell" href="{SITE_PATH}/product/{$product->getId()}">
+                        <span class="button_icon" title="View">
+                            <i class="fa fa-eye"></i>
+                        </span>
+                    </a>
+                </div>
+            {/if}
         {/foreach}
     </div>
 </div>

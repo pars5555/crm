@@ -58,6 +58,15 @@ namespace crm\dal\mappers {
             $sqlQuery = sprintf($sql, $this->getTableName());
             return $this->fetchRows($sqlQuery, array("id" => $productId));
         }
+        
+        public function getNonCancelledProductsPurchaseOrders($productIds) {
+            $productIdsExploded = implode(',', $productIds);
+            $sql = "SELECT * FROM `%s` INNER JOIN  "
+                    . " `purchase_orders` ON `purchase_order_id` = `purchase_orders`.`id` "
+                    . "WHERE `purchase_orders`.`cancelled` = 0 AND product_id IN (%s) ORDER BY `order_date` ASC";
+            $sqlQuery = sprintf($sql, $this->getTableName(), $productIdsExploded);
+            return $this->fetchRows($sqlQuery);
+        }
 
         public function getAllProductCountInNonCancelledPurchaseOrders() {
             $sql = "SELECT product_id, SUM(quantity) AS `product_qty` FROM `%s` INNER JOIN  "
@@ -72,6 +81,15 @@ namespace crm\dal\mappers {
                 $ret [$product_id] = $qty;
             }
             return $ret;
+        }
+        
+        public function getAllNonCancelledExpensePurchaseOrders($startDate, $endDate) {
+            $sql = "SELECT * FROM `%s` INNER JOIN  "
+                    . " `purchase_orders` ON `purchase_order_id` = `purchase_orders`.`id` "
+                    . "WHERE `purchase_orders`.`cancelled` = 0 AND `purchase_orders`.`is_expense` = 1 AND "
+                    . "`order_date`>='%s' AND `order_date`<=DATE_ADD('%s' ,INTERVAL 1 DAY)";
+            $sqlQuery = sprintf($sql, $this->getTableName(), $startDate, $endDate);
+            return $this->fetchRows($sqlQuery);
         }
 
     }
