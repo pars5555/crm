@@ -2,10 +2,10 @@
     <h1>Purchase Order View</h1>
     
     {if isset($ns.error_message)}
-        {include file="$TEMPLATE_DIR/main/message.tpl" type="error" content="{$ns.error_message}"} 
+        {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        {include file="$TEMPLATE_DIR/main/message.tpl" type="success" content="{$ns.success_message}"} 
+        {include file="{getTemplateDir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
 
     {if isset($ns.purchaseOrder)}
