@@ -80,7 +80,7 @@
                     {foreach from=$saleOrderLines item=saleOrderLine}
                         <div class="saleOrderLine table-row">
                             <div class="table-cell">
-                                <select class="saleOrderLinesSelectProduct">
+                                <select class="saleOrderLinesSelectProduct" data-autocomplete="true">
                                     {foreach from=$ns.products item=p}
                                         <option value="{$p->getId()}" {if $p->getId() == $saleOrderLine->getProductId()}selected{/if}>{$p->getName()}</option>
                                     {/foreach}
@@ -118,7 +118,7 @@
         <div class="table_striped add_new_sale_order_line">
             <div class="table-row">
                 <div class="table-cell">
-                    <select id="saleOrderLineProductId">                       
+                    <select id="saleOrderLineProductId" data-autocomplete="true">                       
                         <option value="0">Select...</option>
                         {foreach from=$ns.products item=p}
                             <option value="{$p->getId()}">{$p->getName()}</option>
@@ -160,7 +160,7 @@
 
 <div class="table-row" id="saleOrderLineTemplate" style="display:none">
     <div class="table-cell">
-        <select class="saleOrderLinesSelectProduct">
+        <select class="saleOrderLinesSelectProduct" data-autocomplete="true">
             {foreach from=$ns.products item=p}
                 <option value="{$p->getId()}">{$p->getName()}</option>
             {/foreach}
