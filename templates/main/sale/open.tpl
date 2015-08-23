@@ -1,5 +1,5 @@
 <div class="container sale--open--container">
-    <h1>Sale Orders View</h1>
+    <h1 class="main_title">Sale Orders View</h1>
 
     {if isset($ns.error_message)}
         {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
