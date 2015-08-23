@@ -1,15 +1,13 @@
 <div class="container purchase--open--container">
     <h1>Purchase Order View</h1>
+    
     {if isset($ns.error_message)}
-        <div>
-            <span style="color:red">{$ns.error_message}</span>
-        </div>
+        {include file="$TEMPLATE_DIR/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        <div>
-            <span style="color:green">{$ns.success_message}</span>
-        </div>
+        {include file="$TEMPLATE_DIR/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
+
     {if isset($ns.purchaseOrder)}
         <div class="table_striped table_striped_simple">
             <div class="table-row">

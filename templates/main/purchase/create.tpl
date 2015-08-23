@@ -1,15 +1,13 @@
 <div class="container purchase--create--container">
     <h1>Create Purchase Order</h1>
+    
     {if isset($ns.error_message)}
-        <div>
-            <span style="color:red">{$ns.error_message}</span>
-        </div>
+        {include file="$TEMPLATE_DIR/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        <div>
-            <span style="color:green">{$ns.success_message}</span>
-        </div>
+        {include file="$TEMPLATE_DIR/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
+
     <form class="createPurchaseOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_purchase/do_create_purchase_order">
         <div class="form-group">
             <label class="label">Date</label>
@@ -26,7 +24,7 @@
         </div>
         <div class="form-group">
             <label class="label">Partner</label>
-            <select name="partnerId">
+            <select name="partnerId" data-autocomplete="true">
                 {if isset($ns.req.partnerId)}
                     {assign selectedPartnerId $ns.req.partnerId}
                 {else}

@@ -1,15 +1,13 @@
 <div class="container billing--create--container">
-  <h1>Create Billing Order</h1>
+    <h1>Create Billing Order</h1>
+    
     {if isset($ns.error_message)}
-        <div>
-            <span style="color:red">{$ns.error_message}</span>
-        </div>
+        {include file="$TEMPLATE_DIR/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        <div>
-            <span style="color:green">{$ns.success_message}</span>
-        </div>
+        {include file="$TEMPLATE_DIR/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
+
     <form class="createBillingOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_billing/do_create_billing">
         <div class="form-group">
             <label class="label">Billing Date</label>
@@ -26,7 +24,7 @@
         </div>
         <div class="form-group">
             <label class="label">Partner</label>
-            <select name="partnerId">
+            <select name="partnerId" data-autocomplete="true">
                 {if isset($ns.req.partnerId)}
                     {assign selectedPartnerId $ns.req.partnerId}
                 {else}

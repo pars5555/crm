@@ -7,10 +7,14 @@ NGS.createLoad("crm.loads.main.main", {
     },
     afterLoad: function () {
         this.wrapSelect();
+        this.autocompleteSelect();
         this.checkbox();
     },
+    autocompleteSelect: function () {
+        $("select[data-autocomplete=true]").chosen();
+    },
     wrapSelect: function () {
-        $("select").not("[data-no-wrap=true]").wrap("<div class='select_wrapper' />");
+        $("select").not("[data-no-wrap=true]").not("[data-autocomplete=true]").wrap("<div class='select_wrapper' />");
     },
     checkbox: function () {
         $(".f_checkbox_label").on("click", function () {

@@ -8,7 +8,8 @@
                 "compress": false,
                 "files": [
                     "lib/jquery.js",
-                    "lib/jquery-ui.js"
+                    "lib/jquery-ui.js",
+                    "lib/chosen/chosen.jquery.min.js"
                 ]
             },
             {

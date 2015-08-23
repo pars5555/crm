@@ -1,7 +1,7 @@
 <form class="filters--form" id="purchaseOrderFilters" autocomplete="off" action="{SITE_PATH}/purchase/list" method="GET">
     <div class="form-group">
         <label class="label">Partner</label>
-        <select name="prt">
+        <select name="prt" data-autocomplete="true">
             <option value="0" {if $ns.selectedFilterPartnerId == 0}selected{/if}>All</option>
             {foreach from=$ns.partners item=p}
                 <option value="{$p->getId()}" {if $ns.selectedFilterPartnerId == $p->getId()}selected{/if}>{$p->getName()}</option>
