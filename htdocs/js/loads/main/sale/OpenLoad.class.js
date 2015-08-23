@@ -16,7 +16,42 @@ NGS.createLoad("crm.loads.main.sale.open", {
         this.initSaleOrderLineRemoveFunctionallity();
         this.initCancelSaleOrder();
         this.initBilledFunctionality();
-
+        this.calculateTotal();
+        this.initNonProfitFunctionality();
+        $('#saleOrderLinesForm').on('change', 'input, select, checkbox', function () {
+            this.calculateTotal();
+        }.bind(this));
+    },
+    calculateTotal: function () {
+        var grandTotal = {};
+        $('.saleOrderLine').each(function () {
+            var qty = $(this).find('.saleOrderLinesSelectQuantity').val();
+            var unitPrice = $(this).find('.saleOrderLinesSelectUnitPrice').val();
+            var currencySelectBox = $(this).find('.saleOrderLinesSelectCurrency');
+            var selectedCurrencyOption = $('option:selected', currencySelectBox);
+            var position = selectedCurrencyOption.attr('position');
+            var iso = selectedCurrencyOption.attr('iso');
+            var symbol = selectedCurrencyOption.attr('symbol');
+            var total = qty * unitPrice;
+            if (!grandTotal[iso])
+            {
+                grandTotal[iso] = 0;
+            }
+            grandTotal[iso] += total;
+            $(this).find('.saleOrderLinesTotal').text((position === 'left' ? symbol : '') + total.toFixed(2) + (position === 'right' ? symbol : ''));
+        });
+        totalHtml = "";
+        $.each(grandTotal, function (index, val) {
+            totalHtml += '<div>' + index + ':' + val + '</div>';
+        });
+        $('#saleOrderTotalAmount').html(totalHtml);
+    },
+    initNonProfitFunctionality: function () {
+        $('#nonProfitCheckbox').change(function () {
+            var checked = $(this).is(':checked');
+            var id = $('#sale_order_id').val();
+            NGS.action('crm.actions.main.sale.set_non_profit', {'id': id, 'non_profit': checked ? 1 : 0});
+        });
     },
     initBilledFunctionality: function () {
         $('#billedCheckbox').change(function () {
@@ -52,8 +87,6 @@ NGS.createLoad("crm.loads.main.sale.open", {
             var currency_id = $('#saleOrderLineCurrencyId').val();
             if (product_id == 0)
             {
-                $('#saleOrderLineProductId').focus();
-                $("#saleOrderLineProductId").css("display", "none").fadeIn(1000);
                 return;
             }
             if (!(quantity > 0))
@@ -71,7 +104,6 @@ NGS.createLoad("crm.loads.main.sale.open", {
             if (currency_id == 0)
             {
                 $('#saleOrderLineCurrencyId').focus();
-                $("#saleOrderLineCurrencyId").css("display", "none").fadeIn(1000);
                 return;
             }
             NGS.action('crm.actions.main.sale.check_product_count_to_add_sale_order_line', {product_id: product_id, quantity: quantity});

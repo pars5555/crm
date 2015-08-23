@@ -80,14 +80,14 @@
                     {foreach from=$saleOrderLines item=saleOrderLine}
                         <div class="saleOrderLine table-row">
                             <div class="table-cell">
-                                <select class="saleOrderLinesSelectProduct" data-autocomplete="true">
+                                <select class="saleOrderLinesSelectProduct" disabled>
                                     {foreach from=$ns.products item=p}
                                         <option value="{$p->getId()}" {if $p->getId() == $saleOrderLine->getProductId()}selected{/if}>{$p->getName()}</option>
                                     {/foreach}
                                 </select>
                             </div>
                             <div class="table-cell">
-                                <input type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text" value="{$saleOrderLine->getQuantity()}"/>
+                                <input type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text" value="{$saleOrderLine->getQuantity()}" disabled/>
                             </div>
                             <div class="table-cell">
                                 <input type="number" step="0.01" min="0.01" class="saleOrderLinesSelectUnitPrice text" value="{$saleOrderLine->getUnitPrice()}"/>
@@ -160,14 +160,14 @@
 
 <div class="table-row" id="saleOrderLineTemplate" style="display:none">
     <div class="table-cell">
-        <select class="saleOrderLinesSelectProduct" data-autocomplete="true">
+        <select class="saleOrderLinesSelectProduct" disabled>
             {foreach from=$ns.products item=p}
                 <option value="{$p->getId()}">{$p->getName()}</option>
             {/foreach}
         </select>
     </div>
     <div class="table-cell">
-        <input  type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text"/>
+        <input  type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text" disabled/>
     </div>
     <div class="table-cell">
         <input  type="number" step="0.01" min="0.01" class="saleOrderLinesSelectUnitPrice text"/>

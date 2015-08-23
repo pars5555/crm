@@ -157,7 +157,7 @@
 
 <div class="table-row" id="purchaseOrderLineTemplate" style="display:none">
     <div class="table-cell">
-        <select class="purchaseOrderLinesSelectProduct" data-autocomplete="true">
+        <select class="purchaseOrderLinesSelectProduct">
             {foreach from=$ns.products item=p}
                 <option value="{$p->getId()}">{$p->getName()}</option>
             {/foreach}
@@ -168,8 +168,6 @@
     </div>
     <div class="table-cell">
         <input  type="number" step="0.01" min="0.01" class="purchaseOrderLinesSelectUnitPrice text"/>
-    </div>
-    <div class="table-cell">
     </div>
     <div class="table-cell">
         <select class="purchaseOrderLinesSelectCurrency">               
