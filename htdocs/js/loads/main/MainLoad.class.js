@@ -17,6 +17,16 @@ NGS.createLoad("crm.loads.main.main", {
         $("select").not("[data-no-wrap=true]").not("[data-autocomplete=true]").wrap("<div class='select_wrapper' />");
     },
     checkbox: function () {
+        $("input[type='checkbox']").each(function(){
+            if ($(this).is(":checked"))
+            {
+                $(this).parent('.f_checkbox').addClass('checked');
+            }else
+            {
+                $(this).parent('.f_checkbox').removeClass('checked');
+                
+            }
+        });
         $(".f_checkbox_label").on("click", function () {
             $(this).siblings(".f_checkbox").trigger("click");
         });
