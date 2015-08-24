@@ -43,8 +43,8 @@ namespace crm\loads\main\purchase {
                         'paymentDeadlineDateMonth' => $paymentDeadlineDateMonth,
                         'paymentDeadlineDateDay' => $paymentDeadlineDateDay,
                         'partnerId' => $purchaseOrder->getPartnerId(),
-                        'note' => $purchaseOrder->getNote(),
-                        'isExpense' => $purchaseOrder->getIsExpense()
+                        'note' => $purchaseOrder->getNote()
+                        
                     ];
                 }
                 $this->addParam("purchaseOrder", $purchaseOrder);

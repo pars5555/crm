@@ -85,6 +85,15 @@ namespace crm\dal\mappers {
             return isset($profitSum) ? floatval($profitSum) : 0;
         }
 
+        public function getAllNonCancelledExpenseSaleOrders($startDate, $endDate) {
+            $sql = "SELECT * FROM `%s` INNER JOIN  "
+                    . " `sale_orders` ON `sale_order_id` = `sale_orders`.`id` "
+                    . "WHERE `sale_orders`.`cancelled` = 0 AND `sale_orders`.`is_expense` = 1 AND "
+                    . "`order_date`>='%s' AND `order_date`<=DATE_ADD('%s' ,INTERVAL 1 DAY)";
+            $sqlQuery = sprintf($sql, $this->getTableName(), $startDate, $endDate);
+            return $this->fetchRows($sqlQuery);
+        }
+
     }
 
 }

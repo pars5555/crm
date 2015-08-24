@@ -42,7 +42,10 @@ use NGS;
                         'billingDeadlineDateYear' => $billingDeadlineDateYear,
                         'billingDeadlineDateMonth' => $billingDeadlineDateMonth,
                         'billingDeadlineDateDay' => $billingDeadlineDateDay,
-                        'partnerId' => $saleOrder->getPartnerId(), 'note' => $saleOrder->getNote()];
+                        'partnerId' => $saleOrder->getPartnerId(),
+                        'note' => $saleOrder->getNote(),
+                        'isExpense' => $saleOrder->getIsExpense()
+                            ];
                 }
                 $this->addParam("saleOrder", $saleOrder);
                 $this->addParam('req', $_SESSION['action_request']);

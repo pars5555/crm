@@ -23,13 +23,13 @@ namespace crm\actions\main\sale {
 
         public function service() {
             try {
-                list($partnerId, $date, $billingDeadlineDate, $note) = $this->getFormData();
+                list($partnerId, $date, $billingDeadlineDate,$isExpense, $note) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            $saleOrderId = SaleOrderManager::getInstance()->createSaleOrder($partnerId, $date, $billingDeadlineDate, $note);
+            $saleOrderId = SaleOrderManager::getInstance()->createSaleOrder($partnerId, $date, $billingDeadlineDate,$isExpense, $note);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Sale Order Successfully created!';
             $this->redirect('sale/' . $saleOrderId);
@@ -40,6 +40,10 @@ namespace crm\actions\main\sale {
             $note = "";
             if (isset(NGS()->args()->note)) {
                 $note = NGS()->args()->note;
+            }
+            $isExpense = 0;
+            if (isset(NGS()->args()->isExpense)) {
+                $isExpense = 1;
             }
             $year = intval(NGS()->args()->saleOrderDateYear);
             $month = intval(NGS()->args()->saleOrderDateMonth);
@@ -52,7 +56,7 @@ namespace crm\actions\main\sale {
             $billingDeadlineDay = intval(NGS()->args()->billingDeadlineDateDay);
             $date = "$year-$month-$day $hour:$minute";
             $billingDeadlineDate = "$billingDeadlineYear-$billingDeadlineMonth-$billingDeadlineDay";
-            return array($partnerId, $date, $billingDeadlineDate, $note);
+            return array($partnerId, $date, $billingDeadlineDate,$isExpense, $note);
         }
 
         private function validateFormData() {

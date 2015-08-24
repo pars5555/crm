@@ -45,7 +45,7 @@ namespace crm\managers {
             }
             return false;
         }
-
+        
         public function setBilled($id, $billed) {
             $saleOrderDto = $this->selectByPK($id);
             if (isset($saleOrderDto)) {
@@ -58,7 +58,7 @@ namespace crm\managers {
             }
             return false;
         }
-
+        
         public function setNonProfit($id, $nonProfit) {
             $nonProfit = intval($nonProfit);
             $saleOrderDto = $this->selectByPK($id);
@@ -69,7 +69,7 @@ namespace crm\managers {
                     $solDtos = SaleOrderLineManager::getInstance()->selectByField('sale_order_id', $id);
                     foreach ($solDtos as $solDto) {
                         SaleOrderLineManager::getInstance()->updateField($solDto->getId(), 'total_profit', 0);
-                    }
+                    } 
                 } else {
                     $this->recalculateProfit($id);
                 }
@@ -103,21 +103,23 @@ namespace crm\managers {
             return false;
         }
 
-        public function createSaleOrder($partnerId, $date, $billingDeadlineDate, $note) {
+        public function createSaleOrder($partnerId, $date, $billingDeadlineDate, $isExpense, $note) {
             $dto = $this->createDto();
             $dto->setPartnerId($partnerId);
             $dto->setOrderDate($date);
             $dto->setBillingDeadline($billingDeadlineDate);
+            $dto->setIsExpense($isExpense);
             $dto->setNote($note);
             return $this->insertDto($dto);
         }
 
-        public function updateSaleOrder($id, $partnerId, $date, $billingDeadlineDate, $note) {
+        public function updateSaleOrder($id, $partnerId, $date, $billingDeadlineDate, $isExpense, $note) {
             $dto = $this->selectByPK($id);
             if ($dto) {
                 $dto->setPartnerId($partnerId);
                 $dto->setOrderDate($date);
                 $dto->setBillingDeadline($billingDeadlineDate);
+                $dto->setIsExpense($isExpense);
                 $dto->setNote($note);
                 return $this->updateByPk($dto);
             }

@@ -101,9 +101,7 @@ namespace crm\managers {
             return $this->mapper->getAllProductCountInNonCancelledPurchaseOrders();
         }
 
-        public function getAllNonCancelledExpensePurchaseOrders($startDate, $endDate) {
-            return $this->mapper->getAllNonCancelledExpensePurchaseOrders($startDate, $endDate);
-        }
+        
 
     }
 

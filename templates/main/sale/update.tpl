@@ -1,6 +1,6 @@
 <div class="container sale--create--container">
     <h1 class="main_title">Edit Sale Order</h1>
-    
+
     {if isset($ns.error_message)}
         {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
@@ -45,6 +45,16 @@
                 {/if}
                 {html_select_date prefix='billingDeadlineDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
             </div>
+            <div class="form-group">
+                {if isset($ns.req.isExpense)}
+                    {assign selectedIsExpense $ns.req.isExpense}
+                {else}
+                    {assign selectedIsExpense 0}
+                {/if}
+                <label class="label" for="isExpenseCheckbox">Is Expense</label>
+                <input type="checkbox" name="isExpense" id="isExpenseCheckbox" value="1" {if $selectedIsExpense == 1}checked{/if}/>
+            </div>
+
             <div class="form-group">
                 <label class="label">Note</label>
                 <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>

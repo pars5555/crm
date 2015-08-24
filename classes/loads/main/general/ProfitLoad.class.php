@@ -12,7 +12,6 @@
 namespace crm\loads\main\general {
 
     use crm\loads\NgsLoad;
-    use crm\managers\PurchaseOrderLineManager;
     use crm\managers\SaleOrderLineManager;
     use crm\security\RequestGroups;
     use NGS;
@@ -25,7 +24,7 @@ namespace crm\loads\main\general {
             $this->addParam('endDate', $endDate);
 
             $profit = SaleOrderLineManager::getInstance()->getTotalProfitSumInNonCancelledSaleOrders($startDate, $endDate);
-            $expenseRowDtos = PurchaseOrderLineManager::getInstance()->getAllNonCancelledExpensePurchaseOrders($startDate, $endDate);
+            $expenseRowDtos = SaleOrderLineManager::getInstance()->getAllNonCancelledExpenseSaleOrders($startDate, $endDate);
             $expensesInMainCurrency = $this->calculateTotalExpense($expenseRowDtos);
             $profitIncludedExpensed = $profit - $expensesInMainCurrency;
             $this->addParam("profit", $profitIncludedExpensed);
@@ -33,9 +32,9 @@ namespace crm\loads\main\general {
 
         private function calculateTotalExpense($expenseRowDtos) {
             $total = 0;
-            foreach ($expenseRowDtos as $po) {
-                $currencyRate = $po->getCurrencyRate();
-                $totalInMainCurrency = floatval($po->getQuantity()) * floatval($po->getUnitPrice()) * floatval($currencyRate);
+            foreach ($expenseRowDtos as $so) {
+                $currencyRate = $so->getCurrencyRate();
+                $totalInMainCurrency = floatval($so->getQuantity()) * floatval($so->getUnitPrice()) * floatval($currencyRate);
                 $total += $totalInMainCurrency;
             }
             return $total;
