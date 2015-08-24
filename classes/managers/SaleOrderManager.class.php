@@ -45,7 +45,7 @@ namespace crm\managers {
             }
             return false;
         }
-        
+
         public function setBilled($id, $billed) {
             $saleOrderDto = $this->selectByPK($id);
             if (isset($saleOrderDto)) {
@@ -58,21 +58,38 @@ namespace crm\managers {
             }
             return false;
         }
-        
+
         public function setNonProfit($id, $nonProfit) {
+            $nonProfit = intval($nonProfit);
             $saleOrderDto = $this->selectByPK($id);
             if (isset($saleOrderDto)) {
                 $saleOrderDto->setNonProfit($nonProfit);
+                $this->updateByPk($saleOrderDto);
                 if ($nonProfit == 1) {
                     $solDtos = SaleOrderLineManager::getInstance()->selectByField('sale_order_id', $id);
                     foreach ($solDtos as $solDto) {
                         SaleOrderLineManager::getInstance()->updateField($solDto->getId(), 'total_profit', 0);
-                    } 
+                    }
+                } else {
+                    $this->recalculateProfit($id);
                 }
-                $this->updateByPk($saleOrderDto);
                 return true;
             }
             return false;
+        }
+
+        private function recalculateProfit($soId) {
+            $soDtos = $this->getSaleOrdersFull(['id', '=', $soId]);
+            if (!empty($soDtos)) {
+                $soDto = $soDtos[0];
+            } else {
+                return False;
+            }
+            $saleOrderLinesDtos = $soDto->getSaleOrderLinesDtos();
+            SaleOrderLineManager::getInstance()->deleteByField('sale_order_id', $soId);
+            foreach ($saleOrderLinesDtos as $saleOrderLinesDto) {
+                SaleOrderLineManager::getInstance()->createSaleOrderLine($soId, $saleOrderLinesDto->getProductId(), $saleOrderLinesDto->getQuantity(), $saleOrderLinesDto->getUnitPrice(), $saleOrderLinesDto->getCurrencyId());
+            }
         }
 
         public function restoreSaleOrder($id) {
