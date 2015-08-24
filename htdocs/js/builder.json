@@ -89,7 +89,9 @@
                     "actions/main/CheckProductCountToAddSaleOrderLineAction.class.js",
                     "actions/main/GetProductCountAction.class.js",
                     "actions/main/purchase/SetPaidAction.class.js",
-                    "actions/main/sale/SetBilledAction.class.js"
+                    "actions/main/sale/SetBilledAction.class.js",
+                    "actions/main/sale/SetNonProfitAction.class.js",
+                    "actions/main/partner/GetPartnerDeptAction.class.js"
 
                 ]
             }
