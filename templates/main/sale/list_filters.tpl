@@ -8,6 +8,14 @@
             {/foreach}
         </select>
     </div>
+    <div class="form-group">
+        <label class="label">Billed</label>
+        <select name="billed">
+            <option value="-1" {if $ns.selectedFilterBilled == -1}selected{/if}>All</option>
+            <option value="1" {if $ns.selectedFilterBilled === 1}selected{/if}>Yes</option>
+            <option value="0" {if $ns.selectedFilterBilled === 0}selected{/if}>No</option>
+        </select>
+    </div>
     {if $ns.pagesCount>0}
         <div class="form-group">
             <label class="label">Page</label>

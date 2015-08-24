@@ -85,7 +85,7 @@ NGS.createLoad("crm.loads.main.purchase.open", {
             polRow.find(".purchaseOrderLinesSelectCurrency").val(currency_id);
 
             polRow.appendTo("#purchaseOrderLinesContainer");
-            $(".purchaseOrderLinesSelectProduct").chosen();
+            $(".purchaseOrderLine .purchaseOrderLinesSelectProduct").chosen();
         });
     },
     calculatePurchaseOrderLinesData: function () {

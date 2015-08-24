@@ -24,8 +24,9 @@ NGS.createAction("crm.actions.main.sale.check_product_count_to_add_sale_order_li
         solRow.find(".saleOrderLinesSelectQuantity").val(quantity);
         solRow.find(".saleOrderLinesSelectUnitPrice").val(unit_price);
         solRow.find(".saleOrderLinesSelectCurrency").val(currency_id);
-
+        
         solRow.appendTo("#saleOrderLinesContainer");
+        
         //to update total calculation
         solRow.find(".saleOrderLinesSelectQuantity").trigger('change');
     }

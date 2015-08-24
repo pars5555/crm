@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
                 <label class="label">Partner</label>
-                <select name="partnerId" data-autocomplete="true">
+                <select name="partnerId" data-autocomplete="true" data-no-wrap="true">
                     {if isset($ns.req.partnerId)}
                         {assign selectedPartnerId $ns.req.partnerId}
                     {else}

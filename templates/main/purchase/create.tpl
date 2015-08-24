@@ -38,11 +38,17 @@
         </div>
             <div class="form-group">
             <label class="label">Date</label>
-            {assign date null}
+            {assign date "+1 month"|date_format:'%Y-%m-%d'}
+           
             {if !empty($ns.req.paymentDeadlineDateYear) && !empty($ns.req.paymentDeadlineDateMonth) && !empty($ns.req.paymentDeadlineDateDay)}
                 {assign date "`$ns.req.paymentDeadlineDateYear`-`$ns.req.paymentDeadlineDateMonth`-`$ns.req.paymentDeadlineDateDay`"}
             {/if}
             {html_select_date prefix='paymentDeadlineDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
+        </div>
+        </div>
+            <div class="form-group">
+                <label class="label" for="isExpenseCheckbox">Is Expense</label>
+                <input type="checkbox" name="isExpense" id="isExpenseCheckbox" value="1" {if isset($ns.req.isExpense) && $ns.req.isExpense == 1}checked{/if}/>
         </div>
         <div class="form-group">
             <label class="label">Note</label>

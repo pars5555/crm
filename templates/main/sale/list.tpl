@@ -15,6 +15,7 @@
             <span class="table-cell"> ID </span>
             <span class="table-cell"> Partner </span>
             <span class="table-cell"> Date</span>
+            <span class="table-cell"> Billing Deadline </span>
             <span class="table-cell"> Total Amount </span>
             <span class="table-cell"> Total Profit </span>
             <span class="table-cell"> Note </span>
@@ -29,6 +30,7 @@
                 </a>
                 <span class="table-cell"> {$saleOrder->getPartnerDto()->getName()} </span>
                 <span class="table-cell"> {$saleOrder->getOrderDate()} </span>
+                <span class="table-cell" style="{if $smarty.now|date_format:"%Y-%m-%d">=$saleOrder->getBillingDeadline() && $saleOrder->getBilled()==0}color:red{/if}"> {$saleOrder->getBillingDeadline()} </span>
 
                 {assign totalAmount $saleOrder->getTotalAmount()}
                 <span class="table-cell">

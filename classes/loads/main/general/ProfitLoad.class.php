@@ -12,6 +12,7 @@
 namespace crm\loads\main\general {
 
     use crm\loads\NgsLoad;
+    use crm\managers\PurchaseOrderLineManager;
     use crm\managers\SaleOrderLineManager;
     use crm\security\RequestGroups;
     use NGS;
@@ -19,19 +20,43 @@ namespace crm\loads\main\general {
     class ProfitLoad extends NgsLoad {
 
         public function load() {
-            $fromDate = date('Y-01-01');
-            if (isset(NGS()->args()->startDate)) {
-                $fromDate = NGS()->args()->startDate;
-            }
-            $toDate = date('Y-m-d');
-            if (isset(NGS()->args()->toDate)) {
-                $toDate = NGS()->args()->toDate;
-            }
-            $this->addParam('fromDate', $fromDate);
-            $this->addParam('toDate', $toDate);
+            list($startDate, $endDate) = $this->getFormData();
+            $this->addParam('startDate', $startDate);
+            $this->addParam('endDate', $endDate);
 
-            $profit = SaleOrderLineManager::getInstance()->getTotalProfitSumInNonCancelledSaleOrders($fromDate, $toDate);
-            $this->addParam("profit", $profit);
+            $profit = SaleOrderLineManager::getInstance()->getTotalProfitSumInNonCancelledSaleOrders($startDate, $endDate);
+            $expenseRowDtos = PurchaseOrderLineManager::getInstance()->getAllNonCancelledExpensePurchaseOrders($startDate, $endDate);
+            $expensesInMainCurrency = $this->calculateTotalExpense($expenseRowDtos);
+            $profitIncludedExpensed = $profit - $expensesInMainCurrency;
+            $this->addParam("profit", $profitIncludedExpensed);
+        }
+
+        private function calculateTotalExpense($expenseRowDtos) {
+            $total = 0;
+            foreach ($expenseRowDtos as $po) {
+                $currencyRate = $po->getCurrencyRate();
+                $totalInMainCurrency = floatval($po->getQuantity()) * floatval($po->getUnitPrice()) * floatval($currencyRate);
+                $total += $totalInMainCurrency;
+            }
+            return $total;
+        }
+
+        private function getFormData() {
+            $startDate = date('Y-01-01');
+            if (isset(NGS()->args()->startDateYear) && isset(NGS()->args()->startDateMonth) && isset(NGS()->args()->startDateDay)) {
+                $startYear = intval(NGS()->args()->startDateYear);
+                $startmonth = intval(NGS()->args()->startDateMonth);
+                $startday = intval(NGS()->args()->startDateDay);
+                $startDate = "$startYear-$startmonth-$startday";
+            }
+            $endDate = date('Y-m-d');
+            if (isset(NGS()->args()->endDateYear) && isset(NGS()->args()->endDateMonth) && isset(NGS()->args()->endDateDay)) {
+                $endYear = intval(NGS()->args()->endDateYear);
+                $endmonth = intval(NGS()->args()->endDateMonth);
+                $endDay = intval(NGS()->args()->endDateDay);
+                $endDate = "$endYear-$endmonth-$endDay";
+            }
+            return array($startDate, $endDate);
         }
 
         public function getTemplate() {

@@ -57,6 +57,8 @@
                 <span class="button blue">Restore</span>
             </a>
         {/if}
+         <a class="button blue" href="{$SITE_PATH}/dyn/main_payment/do_redirect?partnerId={$ns.purchaseOrder->getPartnerId()}&note=Payment for Purchase Order No-{$ns.purchaseOrder->getId()}">Pay</a>
+	
         <div class="checkbox_container">
             <div class="checkbox f_checkbox">
                 <input type="checkbox" id="paidCheckbox" {if $ns.purchaseOrder->getPaid()==1}checked{/if}/>
@@ -79,7 +81,7 @@
                     {foreach from=$purchaseOrderLines item=purchaseOrderLine}
                         <div class="purchaseOrderLine table-row">
                             <div class="table-cell">
-                                <select class="purchaseOrderLinesSelectProduct" data-autocomplete="true">
+                                <select class="purchaseOrderLinesSelectProduct" data-autocomplete="true" data-no-wrap="true">
                                     {foreach from=$ns.products item=p}
                                         <option value="{$p->getId()}" {if $p->getId() == $purchaseOrderLine->getProductId()}selected{/if}>{$p->getName()}</option>
                                     {/foreach}
@@ -117,7 +119,7 @@
         <div class="table_striped add_new_purchase_order_line">
             <div class="table-row">
                 <div class="table-cell">
-                    <select id="purchaseOrderLineProductId" data-autocomplete="true">                       
+                    <select id="purchaseOrderLineProductId" data-autocomplete="true" data-no-wrap="true">                       
                         <option value="0">Select...</option>
                         {foreach from=$ns.products item=p}
                             <option value="{$p->getId()}">{$p->getName()}</option>
@@ -157,7 +159,7 @@
 
 <div class="table-row" id="purchaseOrderLineTemplate" style="display:none">
     <div class="table-cell">
-        <select class="purchaseOrderLinesSelectProduct">
+        <select class="purchaseOrderLinesSelectProduct"  data-no-wrap="true">
             {foreach from=$ns.products item=p}
                 <option value="{$p->getId()}">{$p->getName()}</option>
             {/foreach}

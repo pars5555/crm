@@ -23,13 +23,13 @@ use ngs\framework\exceptions\RedirectException;
 
         public function service() {
             try {
-                list($partnerId,  $date, $paymentDeadline, $note) = $this->getFormData();
+                list($partnerId,  $date, $paymentDeadline,$isExpense, $note) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            $purchaseOrderId = PurchaseOrderManager::getInstance()->createPurchaseOrder($partnerId, $date,$paymentDeadline,  $note);
+            $purchaseOrderId = PurchaseOrderManager::getInstance()->createPurchaseOrder($partnerId, $date,$paymentDeadline,$isExpense,  $note);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Purchase Order Successfully created!';
             $this->redirect('purchase/'.$purchaseOrderId);
@@ -40,6 +40,10 @@ use ngs\framework\exceptions\RedirectException;
             $note = "";
             if (isset(NGS()->args()->note)) {
                 $note = NGS()->args()->note;
+            }
+            $isExpense = 0;
+            if (isset(NGS()->args()->isExpense)) {
+                $isExpense = 1;
             }
             $year = intval(NGS()->args()->purchaseOrderDateYear);
             $month = intval(NGS()->args()->purchaseOrderDateMonth);
@@ -52,7 +56,7 @@ use ngs\framework\exceptions\RedirectException;
             $paymentDeadlineDay = intval(NGS()->args()->paymentDeadlineDateDay);
             $date = "$year-$month-$day $hour:$minute";
             $paymentDeadlineDate = "$paymentDeadlineYear-$paymentDeadlineMonth-$paymentDeadlineDay";
-            return array($partnerId, $date, $paymentDeadlineDate, $note);
+            return array($partnerId, $date, $paymentDeadlineDate,$isExpense, $note);
         }
 
         private function validateFormData() {

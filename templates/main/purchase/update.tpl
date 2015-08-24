@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
                 <label class="label">Partner</label>
-                <select name="partnerId" data-autocomplete="true">
+                <select name="partnerId" data-autocomplete="true" data-no-wrap="true">
                     {if isset($ns.req.partnerId)}
                         {assign selectedPartnerId $ns.req.partnerId}
                     {else}
@@ -44,6 +44,15 @@
                     {assign date "`$ns.req.paymentDeadlineDateYear`-`$ns.req.paymentDeadlineDateMonth`-`$ns.req.paymentDeadlineDateDay`"}
                 {/if}
                 {html_select_date prefix='paymentDeadlineDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
+            </div>
+            <div class="form-group">
+                {if isset($ns.req.isExpense)}
+                    {assign selectedIsExpense $ns.req.isExpense}
+                {else}
+                    {assign selectedIsExpense 0}
+                {/if}
+                <label class="label" for="isExpenseCheckbox">Is Expense</label>
+                <input type="checkbox" name="isExpense" id="isExpenseCheckbox" value="1" {if $selectedIsExpense == 1}checked{/if}/>
             </div>
     </div>
 

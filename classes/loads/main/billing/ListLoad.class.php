@@ -31,7 +31,7 @@ use NGS;
             if (count($billing) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }
-            $pagesCount = intval($count / $limit);
+            $pagesCount = ceil($count / $limit);
             $this->addParam('pagesCount', $pagesCount);
             $this->addParam('partners', PartnerManager::getInstance()->selectAdvance('*', [], ['name']));
             $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));

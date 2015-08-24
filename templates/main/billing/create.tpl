@@ -60,13 +60,14 @@
                 {/if}
                 {foreach from=$ns.currencies item=c}
                     <option {if $c->getId() == $selectedCurrencyId}selected{/if}
+                                                                   iso="{$c->getIso()}" symbol="{$c->getTemplateChar()}" position="{$c->getSymbolPosition()}" 
                                                                    value="{$c->getId()}">{$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})</option>
                 {/foreach}
             </select>
         </div>
         <div class="form-group">
             <label class="label">Amount</label>
-            <input class="text" type="number" step="0.01" name="amount" value="{$ns.req.amount|default:''}"/>
+            <input class="text" type="number" step="0.01" name="amount" min="0.01" value="{$ns.req.amount|default:''}"/>
         </div>
         <div class="form-group">
             <label class="label">Note</label>
@@ -74,5 +75,12 @@
         </div>
         <input class="button blue" type="submit" value="Save"/>
 
+        <div class="form-group">
+            <label class="label">Dept</label>
+            <div id="partnerDeptContainer"></div>
+            <label class="label">Dept After Billing</label>
+            <div id="partnerDeptAfterBillingContainer"></div>
+            <input type="hidden" id="partnerDeptHidden"/>
+        </div>
     </form>
 </div>

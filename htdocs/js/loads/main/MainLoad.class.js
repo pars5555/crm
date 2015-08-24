@@ -23,12 +23,8 @@ NGS.createLoad("crm.loads.main.main", {
         $(".f_checkbox").on("click", function () {
             $(this).toggleClass("checked");
             var checkbox = $(this).find("input[type='checkbox']");
-            if ($(this).hasClass("checked")) {
-                checkbox.prop("checked", true);
-            }
-            else {
-                checkbox.prop("checked", false);
-            }
+            checkbox.prop("checked", $(this).hasClass("checked"));
+            checkbox.trigger('change');
         });
     }
 

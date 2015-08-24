@@ -24,7 +24,7 @@
         </div>
         <div class="form-group">
             <label class="label">Partner</label>
-            <select name="partnerId" data-autocomplete="true">
+            <select name="partnerId" data-autocomplete="true" data-no-wrap="true">
                 {if isset($ns.req.partnerId)}
                     {assign selectedPartnerId $ns.req.partnerId}
                 {else}
@@ -38,7 +38,7 @@
         </div>
         <div class="form-group">
             <label class="label">Date</label>
-            {assign date null}
+            {assign date "+1 month"|date_format:'%Y-%m-%d'}
             {if !empty($ns.req.billingDeadlineDateYear) && !empty($ns.req.billingDeadlineDateMonth) && !empty($ns.req.billingDeadlineDateDay)}
                 {assign date "`$ns.req.billingDeadlineDateYear`-`$ns.req.billingDeadlineDateMonth`-`$ns.req.billingDeadlineDateDay`"}
             {/if}

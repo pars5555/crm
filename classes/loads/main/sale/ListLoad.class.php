@@ -38,9 +38,9 @@ namespace crm\loads\main\sale {
             if (count($saleOrders) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }
-            $pagesCount = intval($count / $limit);
+            $pagesCount = ceil($count / $limit);
             $this->addParam('pagesCount', $pagesCount);
-            
+
             $currencyManager = CurrencyManager::getInstance();
             $this->addParam('currencies', $currencyManager->mapDtosById($currencyManager->selectAdvance('*', ['active', '=', 1])));
         }
@@ -73,7 +73,20 @@ namespace crm\loads\main\sale {
                 $where[] = $selectedFilterPartnerId;
             }
 
-           
+            $selectedFilterBilled = -1;
+            if (isset(NGS()->args()->billed)) {
+                $selectedFilterBilled = intval(NGS()->args()->billed);
+            }
+            $this->addParam('selectedFilterBilled', $selectedFilterBilled);
+            if ($selectedFilterBilled === 0 || $selectedFilterBilled === 1) {
+                if (!empty($where)) {
+                    $where[] = 'AND';
+                }
+                $where[] = 'billed';
+                $where[] = '=';
+                $where[] = "'" . $selectedFilterBilled . "'";
+            }
+
             //pageing
             $selectedFilterPage = 1;
             if (isset(NGS()->args()->pg)) {
@@ -115,7 +128,7 @@ namespace crm\loads\main\sale {
         }
 
         public function getSortByFields() {
-            return ['order_date' => 'Date'];
+            return ['order_date' => 'Date', 'billing_deadline' => 'Billing Deadline'];
         }
 
     }

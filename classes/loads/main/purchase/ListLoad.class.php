@@ -38,7 +38,7 @@ namespace crm\loads\main\purchase {
             if (count($purchaseOrders) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }
-            $pagesCount = intval($count / $limit);
+            $pagesCount = ceil($count / $limit);
             $this->addParam('pagesCount', $pagesCount);
 
             $currencyManager = CurrencyManager::getInstance();
@@ -73,7 +73,19 @@ namespace crm\loads\main\purchase {
                 $where[] = $selectedFilterPartnerId;
             }
 
-
+            $selectedFilterPaid = -1;
+            if (isset(NGS()->args()->paid)) {
+                $selectedFilterPaid = intval(NGS()->args()->paid);
+            }
+            $this->addParam('selectedFilterPaid', $selectedFilterPaid);
+            if ($selectedFilterPaid === 0 || $selectedFilterPaid === 1) {
+                if (!empty($where)) {
+                    $where[] = 'AND';
+                }
+                $where[] = 'paid';
+                $where[] = '=';
+                $where[] = "'" . $selectedFilterPaid . "'";
+            }
             //pageing
             $selectedFilterPage = 1;
             if (isset(NGS()->args()->pg)) {
@@ -115,7 +127,7 @@ namespace crm\loads\main\purchase {
         }
 
         public function getSortByFields() {
-            return ['order_date' => 'Date'];
+            return ['order_date' => 'Date', 'payment_deadline' => 'Payment Deadline'];
         }
 
     }
