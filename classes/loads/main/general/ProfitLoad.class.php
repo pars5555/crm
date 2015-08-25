@@ -32,9 +32,9 @@ namespace crm\loads\main\general {
 
         private function calculateTotalExpense($expenseRowDtos) {
             $total = 0;
-            foreach ($expenseRowDtos as $so) {
-                $currencyRate = $so->getCurrencyRate();
-                $totalInMainCurrency = floatval($so->getQuantity()) * floatval($so->getUnitPrice()) * floatval($currencyRate);
+            foreach ($expenseRowDtos as $sol) {
+                $currencyRate = $sol->getCurrencyRate();
+                $totalInMainCurrency = floatval($sol->getQuantity()) * floatval($sol->getUnitPrice()) * floatval($currencyRate);
                 $total += $totalInMainCurrency;
             }
             return $total;
