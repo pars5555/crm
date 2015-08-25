@@ -81,7 +81,7 @@ namespace crm\managers {
             return false;
         }
 
-        public function createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date, $note) {
+        public function createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense, $note) {
             $partnerManager = PartnerManager::getInstance();
             $partner = $partnerManager->selectByPK($partnerId);
             if (empty($partner)) {
@@ -96,13 +96,16 @@ namespace crm\managers {
             $dto->setPartnerId($partnerId);
             $dto->setPaymentMethodId($paymentMethodId);
             $dto->setCurrencyId($currencyId);
+            $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($date, $currencyId);
+            $dto->setCurrencyRate($rate);
             $dto->setAmount($amount);
             $dto->setDate($date);
             $dto->setNote($note);
+            $dto->setIsExpense($isExpense);
             return $this->insertDto($dto);
         }
 
-        public function updatePaymentOrder($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $note) {
+        public function updatePaymentOrder($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense, $note) {
             $partnerManager = PartnerManager::getInstance();
             $partner = $partnerManager->selectByPK($partnerId);
             if (empty($partner)) {
@@ -118,9 +121,12 @@ namespace crm\managers {
                 $dto->setPartnerId($partnerId);
                 $dto->setPaymentMethodId($paymentMethodId);
                 $dto->setCurrencyId($currencyId);
+                $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($date, $currencyId);
+                $dto->setCurrencyRate($rate);
                 $dto->setAmount($amount);
                 $dto->setDate($date);
                 $dto->setNote($note);
+                $dto->setIsExpense($isExpense);
                 return $this->updateByPk($dto);
             }
             return false;
@@ -160,6 +166,10 @@ namespace crm\managers {
 
         public function getNonCancelledPaymentOrdersByCurrency($currencyId) {
             return $this->mapper->getNonCancelledPaymentOrdersByCurrency($currencyId);
+        }
+
+        public function getAllNonCancelledExpensePayments($startDate, $endDate) {
+            return $this->mapper->getAllNonCancelledExpensePayments($startDate, $endDate);
         }
 
     }

@@ -11,10 +11,11 @@
 
 namespace crm\loads\main\general {
 
-    use crm\loads\NgsLoad;
-    use crm\managers\SaleOrderLineManager;
-    use crm\security\RequestGroups;
-    use NGS;
+use crm\loads\NgsLoad;
+use crm\managers\PaymentTransactionManager;
+use crm\managers\SaleOrderLineManager;
+use crm\security\RequestGroups;
+use NGS;
 
     class ProfitLoad extends NgsLoad {
 
@@ -24,17 +25,23 @@ namespace crm\loads\main\general {
             $this->addParam('endDate', $endDate);
 
             $profit = SaleOrderLineManager::getInstance()->getTotalProfitSumInNonCancelledSaleOrders($startDate, $endDate);
-            $expenseRowDtos = SaleOrderLineManager::getInstance()->getAllNonCancelledExpenseSaleOrders($startDate, $endDate);
-            $expensesInMainCurrency = $this->calculateTotalExpense($expenseRowDtos);
+            $expenseSaleOrderLineRowDtos = SaleOrderLineManager::getInstance()->getAllNonCancelledExpenseSaleOrders($startDate, $endDate);
+            $expensePaymentDtos = PaymentTransactionManager::getInstance()->getAllNonCancelledExpensePayments($startDate, $endDate);
+            $expensesInMainCurrency = $this->calculateTotalExpense($expenseSaleOrderLineRowDtos, $expensePaymentDtos);
             $profitIncludedExpensed = $profit - $expensesInMainCurrency;
             $this->addParam("profit", $profitIncludedExpensed);
         }
 
-        private function calculateTotalExpense($expenseRowDtos) {
+        private function calculateTotalExpense($expenseSaleOrderLineRowDtos, $expensePaymentDtos) {
             $total = 0;
-            foreach ($expenseRowDtos as $sol) {
+            foreach ($expenseSaleOrderLineRowDtos as $sol) {
                 $currencyRate = $sol->getCurrencyRate();
                 $totalInMainCurrency = floatval($sol->getQuantity()) * floatval($sol->getUnitPrice()) * floatval($currencyRate);
+                $total += $totalInMainCurrency;
+            }
+            foreach ($expensePaymentDtos as $expensePayment) {
+                $currencyRate = $expensePayment->getCurrencyRate();
+                $totalInMainCurrency = floatval($expensePayment->getAmount()) * floatval($currencyRate);
                 $total += $totalInMainCurrency;
             }
             return $total;

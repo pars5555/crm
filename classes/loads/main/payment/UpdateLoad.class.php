@@ -11,14 +11,14 @@
 
 namespace crm\loads\main\payment {
 
-use crm\loads\NgsLoad;
-use crm\managers\CurrencyManager;
-use crm\managers\PartnerManager;
-use crm\managers\PaymentMethodManager;
-use crm\managers\PaymentTransactionManager;
-use crm\managers\SettingManager;
-use crm\security\RequestGroups;
-use NGS;
+    use crm\loads\NgsLoad;
+    use crm\managers\CurrencyManager;
+    use crm\managers\PartnerManager;
+    use crm\managers\PaymentMethodManager;
+    use crm\managers\PaymentTransactionManager;
+    use crm\managers\SettingManager;
+    use crm\security\RequestGroups;
+    use NGS;
 
     class UpdateLoad extends NgsLoad {
 
@@ -29,9 +29,15 @@ use NGS;
             $paymentOrder = PaymentTransactionManager::getInstance()->selectByPK($id);
             if ($paymentOrder) {
                 if (!isset($_SESSION['action_request'])) {
-                    $_SESSION['action_request'] = ['date' => $paymentOrder->getDate(), 'partnerId' => $paymentOrder->getPartnerId(), 
-                        'billingMethodId' => $paymentOrder->getPaymentMethodId(), 'currencyId' => $paymentOrder->getCurrencyId(), 
-                        'note' => $paymentOrder->getNote(), 'amount' => $paymentOrder->getAmount()];
+                    $_SESSION['action_request'] = [
+                        'date' => $paymentOrder->getDate(),
+                        'partnerId' => $paymentOrder->getPartnerId(),
+                        'billingMethodId' => $paymentOrder->getPaymentMethodId(),
+                        'currencyId' => $paymentOrder->getCurrencyId(),
+                        'note' => $paymentOrder->getNote(),
+                        'amount' => $paymentOrder->getAmount(),
+                        'isExpense' => $paymentOrder->getIsExpense()
+                    ];
                 }
                 $this->addParam("paymentOrder", $paymentOrder);
                 $this->addParam('req', $_SESSION['action_request']);

@@ -49,6 +49,14 @@ namespace crm\dal\mappers {
             $qty = $this->fetchField($sqlQuery, 'amount', array("id" => $currencyId));
             return isset($qty) ? floatval($qty) : 0;
         }
+        
+        public function getAllNonCancelledExpensePayments($startDate, $endDate) {
+            $sql = "SELECT * FROM `%s` "
+                    . "WHERE `cancelled` = 0 AND `is_expense` = 1 AND "
+                    . "`date`>='%s' AND `date`<=DATE_ADD('%s' ,INTERVAL 1 DAY)";
+            $sqlQuery = sprintf($sql, $this->getTableName(), $startDate, $endDate);
+            return $this->fetchRows($sqlQuery);
+        }
     }
 
 }

@@ -23,13 +23,13 @@ namespace crm\actions\main\payment {
 
         public function service() {
             try {
-                list($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $note) = $this->getFormData();
+                list($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date,$isExpense, $note) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            PaymentTransactionManager::getInstance()->updatePaymentOrder($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $note);
+            PaymentTransactionManager::getInstance()->updatePaymentOrder($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense,$note);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Payment Successfully updated!';
             $this->redirect('payment/' . $id);
@@ -40,6 +40,10 @@ namespace crm\actions\main\payment {
             $note = "";
             if (isset(NGS()->args()->note)) {
                 $note = NGS()->args()->note;
+            }
+            $isExpense = 0;
+            if (isset(NGS()->args()->isExpense)) {
+                $isExpense = 1;
             }
             $id = intval(NGS()->args()->id);
             $year = intval(NGS()->args()->paymentDateYear);
@@ -52,7 +56,7 @@ namespace crm\actions\main\payment {
             $currencyId = intval(NGS()->args()->currencyId);
             $amount = floatval(NGS()->args()->amount);
             $date = "$year-$month-$day $hour:$minute";
-            return array($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $note);
+            return array($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense,$note);
         }
 
         private function validateFormData() {
