@@ -1,6 +1,6 @@
 <div class="container sale--list--container">
     <h1 class="main_title">Sale Orders</h1>
-    
+
     {if isset($ns.error_message)}
         {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
@@ -17,7 +17,9 @@
             <span class="table-cell"> Date</span>
             <span class="table-cell"> Billing Deadline </span>
             <span class="table-cell"> Total Amount </span>
-            <span class="table-cell"> Total Profit </span>
+            {if $ns.showprofit == 1}
+                <span class="table-cell"> Total Profit </span>
+            {/if}
             <span class="table-cell"> Note </span>
             <span class="table-cell"> View </span>
             <span class="table-cell"> Edit </span>
@@ -47,7 +49,9 @@
                         </span>
                     {/foreach}
                 </span>
-                <span class="table-cell"> {$saleOrder->getTotalProfit()} </span>
+                {if $ns.showprofit == 1}
+                    <span class="table-cell"> {$saleOrder->getTotalProfit()} </span>
+                {/if}
                 <span class="table-cell"> {$saleOrder->getNote()} </span>
                 <a class="table-cell view_item" href="{SITE_PATH}/sale/{$saleOrder->getId()}">
                     <span class="button_icon" title="View">

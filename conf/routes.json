@@ -8,6 +8,12 @@
             }
         }
     ],
+    "profit": [
+        {
+            "action": "actions.main.set_profit_visibility",
+            "route": "visibility"
+        }
+    ],
     "general": [
         {
             "action": "loads.main.main",

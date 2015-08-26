@@ -34,14 +34,16 @@
                     {$ns.saleOrder->getPartnerDto()->getName()}
                 </span>
             </div>
-            <div class="table-row">
-                <span class="table-cell">
-                    Profit:
-                </span>
-                <span class="table-cell"> 
-                    {$ns.saleOrder->getTotalProfit()} 
-                </span>
-            </div>
+            {if $ns.showprofit == 1}
+                <div class="table-row">
+                    <span class="table-cell">
+                        Profit:
+                    </span>
+                    <span class="table-cell"> 
+                        {$ns.saleOrder->getTotalProfit()} 
+                    </span>
+                </div>
+            {/if}
             <div class="table-row">
                 <span class="table-cell">
                     Note :

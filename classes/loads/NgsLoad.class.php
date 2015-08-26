@@ -15,8 +15,8 @@
 
 namespace crm\loads {
 
-use crm\managers\TranslationManager;
-use ngs\framework\AbstractLoad;
+    use crm\managers\TranslationManager;
+    use ngs\framework\AbstractLoad;
 
     /**
      * General parent for a ngs demo loads
@@ -29,7 +29,11 @@ use ngs\framework\AbstractLoad;
          * @return
          */
         public function __construct() {
-            
+            if (isset($_COOKIE['showprofit']) && $_COOKIE['showprofit'] == 1) {
+                $this->addParam('showprofit', 1);
+            } else {
+                $this->addParam('showprofit', 0);
+            }
         }
 
         //! A constructor.
