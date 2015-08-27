@@ -8,6 +8,7 @@
             <span class="table-cell">Quantity</span>
             <span class="table-cell">Price</span>
             <span class="table-cell">Purchase Orders</span>
+            <span class="table-cell">Sale Orders</span>
             <span class="table-cell"> View </span>
         </div> 
         {foreach from=$ns.products item=product}
@@ -19,12 +20,25 @@
                     <span class="table-cell">{$product->getUomDto()->getName()} </span>
                     <span class="table-cell">{$ns.productsQuantity[$product->getId()]|default:'0'}</span>
                     <span class="table-cell">{$ns.productsPrice[$product->getId()]|default:'NaN'}</span>
-                    <span class="table-cell">
+                    <span class="table-cell tooltipster">
+                        {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
+                        <p style="display: none">
                         {foreach from=$ns.productsPurchaseOrder[$product->getId()] item=productPurchaseOrdersIds}
                             {foreach from=$productPurchaseOrdersIds item=productPurchaseOrderId}
-                                <a href="{$SITE_PATH}/purchase/{$productPurchaseOrderId}">{$productPurchaseOrderId}</a>
+                                <a href="{$SITE_PATH}/purchase/{$productPurchaseOrderId}">&#8470; {$productPurchaseOrderId}</a> , 
                             {/foreach}
                         {/foreach}
+                        </p>
+                    </span>
+                    <span class="table-cell tooltipster">
+                        {$ns.productsSaleOrder[$product->getId()]|@count} Sale order(s)
+                        <p style="display: none">
+                        {foreach from=$ns.productsSaleOrder[$product->getId()] item=productSaleOrdersIds}
+                            {foreach from=$productSaleOrdersIds item=productSaleOrdersId}
+                                <a href="{$SITE_PATH}/sale/{$productSaleOrdersId}">&#8470; {$productSaleOrdersId}</a> , 
+                            {/foreach}
+                        {/foreach}
+                        </p>
                     </span>
                     <a class="table-cell" href="{SITE_PATH}/product/{$product->getId()}">
                         <span class="button_icon" title="View">

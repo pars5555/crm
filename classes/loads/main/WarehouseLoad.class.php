@@ -11,12 +11,13 @@
 
 namespace crm\loads\main {
 
-use crm\loads\NgsLoad;
-use crm\managers\ProductManager;
-use crm\managers\PurchaseOrderLineManager;
-use crm\managers\WarehouseManager;
-use crm\security\RequestGroups;
-use NGS;
+    use crm\loads\NgsLoad;
+    use crm\managers\ProductManager;
+    use crm\managers\PurchaseOrderLineManager;
+    use crm\managers\SaleOrderLineManager;
+    use crm\managers\WarehouseManager;
+    use crm\security\RequestGroups;
+    use NGS;
 
     class WarehouseLoad extends NgsLoad {
 
@@ -26,10 +27,12 @@ use NGS;
             $productIds = ProductManager::getDtosIdsArray($products);
             $productsPrice = ProductManager::getInstance()->calculateProductsCost($productIds);
             $productsPurchaseOrder = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
+            $productsSaleOrder = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
             $this->addParam('products', $products);
             $this->addParam('productsQuantity', $productsQuantity);
             $this->addParam('productsPrice', $productsPrice);
             $this->addParam('productsPurchaseOrder', $productsPurchaseOrder);
+            $this->addParam('productsSaleOrder', $productsSaleOrder);
         }
 
         public function getTemplate() {

@@ -1,4 +1,4 @@
-NGS.createLoad("crm.loads.main.product.list", {
+NGS.createLoad("crm.loads.main.warehouse", {
     getContainer: function () {
         return "initialLoad";
     },
@@ -6,18 +6,14 @@ NGS.createLoad("crm.loads.main.product.list", {
 
     },
     afterLoad: function () {
-        $('#productFilters').find('input, select, checkbox').change(function () {
-            $('#productFilters').trigger('submit');
-        });
-
         $('.tooltipster').each(function () {
             var content = $(this).find('p').html();
             $(this).tooltipster({
                 content: $(content),
                 animation: 'fade',
                 trigger: 'hover',
-                contentAsHTML: true,
-                interactive: true,
+                contentAsHTML:true,
+                interactive:true,
                 theme: 'tooltipster-shadow'
             });
         });

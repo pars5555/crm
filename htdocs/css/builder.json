@@ -14,6 +14,11 @@
                     "fonts.css",
                     "font-awesome.css",
                     "jquery-ui.css",
+                    "tooltipster/tooltipster.css",
+                    "tooltipster/themes/tooltipster-light.css",
+                    "tooltipster/themes/tooltipster-noir.css",
+                    "tooltipster/themes/tooltipster-punk.css",
+                    "tooltipster/themes/tooltipster-shadow.css",
                     "chosen.min.css"
                 ]
             }

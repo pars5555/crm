@@ -84,7 +84,7 @@ namespace crm\managers {
             }
             return $ret;
         }
-        
+
         public function getProductsPurchaseOrders($productIds) {
             $dtos = $this->mapper->getNonCancelledProductsPurchaseOrders($productIds);
             $ret = [];
@@ -94,14 +94,17 @@ namespace crm\managers {
             foreach ($ret as &$r) {
                 $r = array_unique($r);
             }
+            foreach ($productIds as $productId) {
+                if (!array_key_exists($productId, $ret)) {
+                    $ret[$productId] = [];
+                }
+            }
             return $ret;
         }
 
         public function getAllProductCountInNonCancelledPurchaseOrders() {
             return $this->mapper->getAllProductCountInNonCancelledPurchaseOrders();
         }
-
-        
 
     }
 

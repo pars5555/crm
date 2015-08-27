@@ -103,6 +103,33 @@ namespace crm\managers {
         public function getAllNonCancelledExpenseSaleOrders($startDate, $endDate) {
             return $this->mapper->getAllNonCancelledExpenseSaleOrders($startDate, $endDate);
         }
+        
+         public function getProductsSaleOrders($productIds) {
+            $dtos = $this->mapper->getNonCancelledProductsSaleOrders($productIds);
+            $ret = [];
+            foreach ($dtos as $dto) {
+                $ret [$dto->getProductId()][] = $dto->getSaleOrderId();
+            }
+            foreach ($ret as &$r) {
+                $r = array_unique($r);
+            }
+            foreach ($productIds as $productId) {
+                if (!array_key_exists($productId, $ret))
+                {
+                    $ret[$productId] = [];
+                }
+            }
+            return $ret;
+        }
+        
+        public function getNonCancelledProductsSaleOrders($productIds) {
+            $dtos = $this->mapper->getNonCancelledProductsSaleOrders($productIds);
+            $ret = [];
+            foreach ($dtos as $dto) {
+                $ret [$dto->getProductId()][] = $dto;
+            }
+            return $ret;
+        }
 
     }
 

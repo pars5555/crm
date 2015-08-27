@@ -9,7 +9,8 @@
                 "files": [
                     "lib/jquery.js",
                     "lib/jquery-ui.js",
-                    "lib/chosen/chosen.jquery.min.js"
+                    "lib/chosen/chosen.jquery.min.js",
+                    "lib/jquery.tooltipster.min.js"
                 ]
             },
             {
@@ -68,7 +69,8 @@
                     "loads/main/manufacturer/CreateLoad.class.js",
                     "loads/main/manufacturer/UpdateLoad.class.js",
                     "loads/main/general/GeneralLoad.class.js",
-                    "loads/main/general/ProfitLoad.class.js"
+                    "loads/main/general/ProfitLoad.class.js",
+                    "loads/main/WarehouseLoad.class.js"
                 ]
             },
             {

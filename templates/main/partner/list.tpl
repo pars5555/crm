@@ -15,7 +15,7 @@
             <span class="table-cell"> ID </span>
             <span class="table-cell"> Name</span>
             <span class="table-cell"> Email </span>
-            <span class="table-cell"> Address </span>
+            <span class="table-cell"> Tel. </span>
             <span class="table-cell"> Dept </span>
             <span class="table-cell"> Sale Orders</span>
             <span class="table-cell"> Purchase Orders</span>
@@ -31,7 +31,7 @@
                 </a>
                 <span class="table-cell">{$partner->getName()} </span>
                 <span class="table-cell"> {$partner->getEmail()} </span>
-                <span class="table-cell"> {$partner->getAddress()} </span>
+                <span class="table-cell " style="white-space: nowrap"> {$partner->getPhone()|replace:',':'</br>'} </span>
                 <span  class="table-cell"> 
                     {if isset($partnersDept[$partner->getId()])}
                         {foreach from=$partnersDept[$partner->getId()] key=currencyId item=amount}

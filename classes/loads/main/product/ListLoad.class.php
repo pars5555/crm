@@ -11,10 +11,12 @@
 
 namespace crm\loads\main\product {
 
-    use crm\loads\NgsLoad;
-    use crm\managers\ProductManager;
-    use crm\security\RequestGroups;
-    use NGS;
+use crm\loads\NgsLoad;
+use crm\managers\ProductManager;
+use crm\managers\PurchaseOrderLineManager;
+use crm\managers\SaleOrderLineManager;
+use crm\security\RequestGroups;
+use NGS;
 
     class ListLoad extends NgsLoad {
 
@@ -24,6 +26,12 @@ namespace crm\loads\main\product {
             $limit = 100;
             list($offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
             $products = ProductManager::getInstance()->getProductListFull([], $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            $productIds = ProductManager::getDtosIdsArray($products);
+            $productsPurchaseOrder = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
+            $productsSaleOrder = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
+            
+            $this->addParam('productsPurchaseOrder', $productsPurchaseOrder);
+            $this->addParam('productsSaleOrder', $productsSaleOrder);
             $this->addParam('products', $products);
             $count = ProductManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($products) == 0 && $count > 0) {
