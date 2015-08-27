@@ -45,8 +45,8 @@
                     {$ns.productsSaleOrder[$product->getId()]|@count} Sale order(s)
                     <p style="display: none">
                         {foreach from=$ns.productsSaleOrder[$product->getId()] item=productSaleOrders}
-                            <a href="{$SITE_PATH}/sale/{$productSaleOrders->getSaleOrderId()}">
-                                &#8470; {$productSaleOrders->getSaleOrderId()} ({$productSaleOrders->getOrderDate()})
+                            <a href="{$SITE_PATH}/sale/{$productSaleOrders->getId()}">
+                                &#8470; {$productSaleOrders->getId()} ({$productSaleOrders->getOrderDate()})
                             </a> <br>
                         {/foreach}
                     </p>
