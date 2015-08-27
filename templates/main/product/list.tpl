@@ -31,23 +31,23 @@
                 <span class="table-cell"> {$product->getModel()} </span>
                 <span class="table-cell"> {$product->getManufacturerDto()->getName()} </span>
                 <span class="table-cell"> {$product->getUomDto()->getName()} </span>
-                <span class="table-cell tooltipster">
+                <span class="table-cell {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}tooltipster{/if}">
                     {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
                     <p style="display: none">
-                        {foreach from=$ns.productsPurchaseOrder[$product->getId()] item=productPurchaseOrdersIds}
-                            {foreach from=$productPurchaseOrdersIds item=productPurchaseOrderId}
-                                <a href="{$SITE_PATH}/purchase/{$productPurchaseOrderId}">&#8470; {$productPurchaseOrderId}</a> , 
-                            {/foreach}
+                        {foreach from=$ns.productsPurchaseOrder[$product->getId()] item=productPurchaseOrders}
+                            <a href="{$SITE_PATH}/purchase/{$productPurchaseOrders->getId()}">
+                                &#8470; {$productPurchaseOrders->getId()} ({$productPurchaseOrders->getOrderDate()})
+                            </a> <br>
                         {/foreach}
                     </p>
                 </span>
-                <span class="table-cell tooltipster">
+                <span class="table-cell {if $ns.productsSaleOrder[$product->getId()]|@count>0}tooltipster{/if}">
                     {$ns.productsSaleOrder[$product->getId()]|@count} Sale order(s)
                     <p style="display: none">
-                        {foreach from=$ns.productsSaleOrder[$product->getId()] item=productSaleOrdersIds}
-                            {foreach from=$productSaleOrdersIds item=productSaleOrdersId}
-                                <a href="{$SITE_PATH}/sale/{$productSaleOrdersId}">&#8470; {$productSaleOrdersId}</a> , 
-                            {/foreach}
+                        {foreach from=$ns.productsSaleOrder[$product->getId()] item=productSaleOrders}
+                            <a href="{$SITE_PATH}/sale/{$productSaleOrders->getSaleOrderId()}">
+                                &#8470; {$productSaleOrders->getSaleOrderId()} ({$productSaleOrders->getOrderDate()})
+                            </a> <br>
                         {/foreach}
                     </p>
                 </span>

@@ -103,25 +103,36 @@ namespace crm\managers {
         public function getAllNonCancelledExpenseSaleOrders($startDate, $endDate) {
             return $this->mapper->getAllNonCancelledExpenseSaleOrders($startDate, $endDate);
         }
-        
-         public function getProductsSaleOrders($productIds) {
-            $dtos = $this->mapper->getNonCancelledProductsSaleOrders($productIds);
-            $ret = [];
-            foreach ($dtos as $dto) {
-                $ret [$dto->getProductId()][] = $dto->getSaleOrderId();
+
+        public function getProductsSaleOrders($productIds) {
+            $soLines = $this->mapper->getNonCancelledProductsSaleOrders($productIds);
+            $soIdsMappedByProductId = [];
+            $allSaleOrdersIds = [];
+            foreach ($soLines as $sol) {
+                $soIdsMappedByProductId [$sol->getProductId()][] = $sol->getSaleOrderId();
+                $allSaleOrdersIds[] = intval($sol->getSaleOrderId());
             }
-            foreach ($ret as &$r) {
+            $allSaleOrdersIds = array_unique($allSaleOrdersIds);
+            $idsSql = '(' . implode(',', $allSaleOrdersIds) . ')';
+            $sos = SaleOrderManager::getInstance()->selectAdvance('*', ['id', 'IN', $idsSql], null, null, null, null, true);
+
+
+            foreach ($soIdsMappedByProductId as &$r) {
                 $r = array_unique($r);
             }
+            $ret = [];
             foreach ($productIds as $productId) {
-                if (!array_key_exists($productId, $ret))
-                {
-                    $ret[$productId] = [];
+                if (!array_key_exists($productId, $soIdsMappedByProductId)) {
+                    $soIdsMappedByProductId[$productId] = [];
+                }
+                $ret[$productId] = [];
+                foreach ($soIdsMappedByProductId[$productId] as $soId) {
+                    $ret[$productId][] = $sos[$soId];
                 }
             }
             return $ret;
         }
-        
+
         public function getNonCancelledProductsSaleOrders($productIds) {
             $dtos = $this->mapper->getNonCancelledProductsSaleOrders($productIds);
             $ret = [];

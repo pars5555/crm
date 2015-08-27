@@ -86,17 +86,29 @@ namespace crm\managers {
         }
 
         public function getProductsPurchaseOrders($productIds) {
-            $dtos = $this->mapper->getNonCancelledProductsPurchaseOrders($productIds);
-            $ret = [];
-            foreach ($dtos as $dto) {
-                $ret [$dto->getProductId()][] = $dto->getPurchaseOrderId();
+            $poLines = $this->mapper->getNonCancelledProductsPurchaseOrders($productIds);
+            $poIdsMappedByProductId = [];
+            $allPurchaseOrdersIds = [];
+            foreach ($poLines as $po) {
+                $poIdsMappedByProductId [$po->getProductId()][] = $po->getPurchaseOrderId();
+                $allPurchaseOrdersIds[] = intval($po->getPurchaseOrderId());
             }
-            foreach ($ret as &$r) {
+            $allPurchaseOrdersIds = array_unique($allPurchaseOrdersIds);
+            $idsSql = '(' . implode(',', $allPurchaseOrdersIds) . ')';
+            $pos = PurchaseOrderManager::getInstance()->selectAdvance('*', ['id', 'IN', $idsSql], null,  null, null, null, true);
+
+
+            foreach ($poIdsMappedByProductId as &$r) {
                 $r = array_unique($r);
             }
+            $ret = [];
             foreach ($productIds as $productId) {
-                if (!array_key_exists($productId, $ret)) {
-                    $ret[$productId] = [];
+                if (!array_key_exists($productId, $poIdsMappedByProductId)) {
+                    $poIdsMappedByProductId[$productId] = [];
+                }
+                $ret[$productId] = [];
+                foreach ($poIdsMappedByProductId[$productId] as $poId) {
+                    $ret[$productId][] = $pos[$poId];
                 }
             }
             return $ret;

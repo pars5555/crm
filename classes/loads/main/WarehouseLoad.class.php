@@ -26,13 +26,13 @@ namespace crm\loads\main {
             $products = ProductManager::getInstance()->getProductListFull([], 'name', 'ASC');
             $productIds = ProductManager::getDtosIdsArray($products);
             $productsPrice = ProductManager::getInstance()->calculateProductsCost($productIds);
-            $productsPurchaseOrder = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
-            $productsSaleOrder = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
+            $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
+            $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
             $this->addParam('products', $products);
             $this->addParam('productsQuantity', $productsQuantity);
             $this->addParam('productsPrice', $productsPrice);
-            $this->addParam('productsPurchaseOrder', $productsPurchaseOrder);
-            $this->addParam('productsSaleOrder', $productsSaleOrder);
+            $this->addParam('productsPurchaseOrder', $productsPurchaseOrders);
+            $this->addParam('productsSaleOrder', $productsSaleOrders);
         }
 
         public function getTemplate() {
