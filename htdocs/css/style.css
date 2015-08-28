@@ -449,6 +449,14 @@ select::-ms-expand{
     color:#105FA6;
 }
 
+.button_icon .fa-check{
+    color:#46AF04;
+}
+
+.button_icon .fa-times{
+    color:#cc0000;
+}
+
 .button_icon .fa-pencil{
     color:#ffc000;
 }

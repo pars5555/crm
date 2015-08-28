@@ -1,6 +1,6 @@
 <div class="container payment--list--container">
     <h1 class="main_title">Payment Orders</h1>
-    
+
     {if isset($ns.error_message)}
         {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
@@ -18,6 +18,7 @@
             <span class="table-cell"> Payment Method </span>
             <span class="table-cell"> Amount </span>
             <span class="table-cell"> Note </span>
+            <span class="table-cell"> Paid </span>
             <span class="table-cell"> View </span>
             <span class="table-cell"> Edit </span>
             <span class="table-cell"> Delete </span>
@@ -40,6 +41,17 @@
                     {/if}
                 </span>
                 <span class="table-cell"> {$payment->getNote()} </span>
+
+
+
+                <span class=" table-cell view_item button_icon">
+                    {if $payment->getPaid() == 1}
+                        <i class="fa fa-check"></i>
+                    {else}
+                        <i class="fa fa-times"></i>
+                    {/if}
+                </span>
+
                 <a class="table-cell view_item" href="{SITE_PATH}/payment/{$payment->getId()}">
                     <span class="button_icon" title="View">
                         <i class="fa fa-eye"></i>

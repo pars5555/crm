@@ -68,10 +68,21 @@
             <label class="label">Amount</label>
             <input class="text" type="number" step="0.01" name="amount" value="{$ns.req.amount|default:''}"/>
         </div>
-        <div class="form-group">
+        <div class="checkbox_container">
+            <div class="checkbox f_checkbox">
+                <input type="checkbox" name="isExpense" id="isExpenseCheckbox" value="1" {if isset($ns.req.isExpense) && $ns.req.isExpense == 1}checked{/if}/>
+            </div>
             <label class="label" for="isExpenseCheckbox">Is Expense</label>
-            <input type="checkbox" name="isExpense" id="isExpenseCheckbox" value="1" {if isset($ns.req.isExpense) && $ns.req.isExpense == 1}checked{/if}/>
         </div>
+
+        <div class="checkbox_container">
+            <div class="checkbox f_checkbox">
+                <input type="checkbox" name="paid" id="paidCheckbox" value="1" {if !isset($ns.req.paid) || $ns.req.paid == 1}checked{/if}/>
+            </div>
+            <label class="checkbox_label label" for="paidCheckbox">Paid</label>
+        </div>
+
+
         <div class="form-group">
             <label class="label">Note</label>
             <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>

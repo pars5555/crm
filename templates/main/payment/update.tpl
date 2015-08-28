@@ -69,23 +69,41 @@
                 <label class="label">Amount</label>
                 <input class="text" type="number" step="0.01" name="amount" value="{$ns.req.amount|default:''}"/>
             </div>
-            <div class="form-group">
+            <div class="checkbox_container">
                 {if isset($ns.req.isExpense)}
                     {assign selectedIsExpense $ns.req.isExpense}
                 {else}
                     {assign selectedIsExpense 0}
                 {/if}
-                <label class="label" for="isExpenseCheckbox">Is Expense</label>
-                <input type="checkbox" name="isExpense" id="isExpenseCheckbox" value="1" {if $selectedIsExpense == 1}checked{/if}/>
+                <div class="checkbox f_checkbox">
+                    <input type="checkbox" name="isExpense" id="isExpenseCheckbox" value="1" {if $selectedIsExpense == 1}checked{/if}/>
+                </div>
+                <label class="checkbox_label label" for="isExpenseCheckbox">Is Expense</label>
             </div>
-            <div class="form-group">
-                <label class="label">Note</label>
-                <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
+
+
+            <div class="checkbox_container">
+                {if isset($ns.req.paid)}
+                    {assign selectedPaid $ns.req.paid}
+                {else}
+                    {assign selectedPaid 0}
+                {/if}
+                <div class="checkbox f_checkbox">
+                    <input type="checkbox" name="paid" id="paidCheckbox" value="1" {if $selectedPaid == 1}checked{/if}/>
+                </div>
+                <label class="checkbox_label label" for="paidCheckbox">Paid</label>
             </div>
-            <input class="button blue" type="submit" value="Save"/>
-            <input type="hidden" name="id" value="{$ns.paymentOrder->getId()}"/>
-        </form>
-    {else}
-        Wrong Payment Order!
-    {/if}
+    </div>
+
+
+    <div class="form-group">
+        <label class="label">Note</label>
+        <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
+    </div>
+    <input class="button blue" type="submit" value="Save"/>
+    <input type="hidden" name="id" value="{$ns.paymentOrder->getId()}"/>
+</form>
+{else}
+    Wrong Payment Order!
+{/if}
 </div>

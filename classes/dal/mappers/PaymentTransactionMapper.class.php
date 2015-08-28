@@ -44,7 +44,7 @@ namespace crm\dal\mappers {
 
         
         public function getNonCancelledPaymentOrdersByCurrency($currencyId) {
-            $sql = "SELECT SUM(amount) AS amount FROM `%s` WHERE `cancelled` = 0 AND currency_id=:id";
+            $sql = "SELECT SUM(amount) AS amount FROM `%s` WHERE `cancelled` = 0 AND `paid` = 1 AND currency_id=:id";
             $sqlQuery = sprintf($sql, $this->getTableName());
             $qty = $this->fetchField($sqlQuery, 'amount', array("id" => $currencyId));
             return isset($qty) ? floatval($qty) : 0;

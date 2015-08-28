@@ -36,7 +36,8 @@ namespace crm\loads\main\payment {
                         'currencyId' => $paymentOrder->getCurrencyId(),
                         'note' => $paymentOrder->getNote(),
                         'amount' => $paymentOrder->getAmount(),
-                        'isExpense' => $paymentOrder->getIsExpense()
+                        'isExpense' => $paymentOrder->getIsExpense(),
+                        'paid' => $paymentOrder->getPaid()
                     ];
                 }
                 $this->addParam("paymentOrder", $paymentOrder);
