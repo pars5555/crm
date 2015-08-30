@@ -465,6 +465,10 @@ select::-ms-expand{
     color:#cc0000;
 }
 
+.button_icon .fa-plus{
+    color:#46AF04;
+}
+
 .button_icon .fa-plus-circle{
     color:#46AF04;
 }
