@@ -7,6 +7,8 @@
             <span class="table-cell"> Serial Number </span>
             <span class="table-cell"> PO Warranty Months </span>
             <span class="table-cell"> SO Warranty Months </span>
+            <span class="table-cell"> PO Date</span>
+            <span class="table-cell"> SO Date</span>
         </div> 
         {foreach from=$ns.searial_numbers item=polSolSnDtoPair key=sn}
             <div class="table-row" >
@@ -21,6 +23,16 @@
                 <span class="table-cell">
                     {if isset($polSolSnDtoPair[1])}
                         {$polSolSnDtoPair[1]->getWarrantyMonths()}
+                    {/if}
+                </span>
+                <span class="table-cell">
+                    {if isset($purchaseOrdersDateMappedBySN[$sn])}
+                        {$purchaseOrdersDateMappedBySN[$sn]}
+                    {/if}
+                </span>
+                <span class="table-cell">
+                    {if isset($saleOrdersDateMappedBySN[$sn])}
+                        {$saleOrdersDateMappedBySN[$sn]}
                     {/if}
                 </span>
             </div> 
