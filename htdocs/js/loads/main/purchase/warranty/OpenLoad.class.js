@@ -30,7 +30,7 @@ NGS.createLoad("crm.loads.main.purchase.warranty.open", {
                 snInput.focus();
                 return;
             }
-            if (warrantyMonths == '' || !(parseInt(warrantyMonths) > 0))
+            if (warrantyMonths == '' || !(parseInt(warrantyMonths) >= 0))
             {
                 warrantyInput.focus();
                 return;

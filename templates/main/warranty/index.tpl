@@ -1,7 +1,7 @@
 <div class="container warranty--container">
     <div>
         <input class="text" type="text" id="searchSerialNumber"/>
-        <a class="button blue">Search</a>
+        <a class="button blue" id="searchButton">Search</a>
     </div>
     
     

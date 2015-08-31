@@ -6,5 +6,9 @@ NGS.createLoad("crm.loads.main.warranty.index", {
 
     },
     afterLoad: function () {
+        $('#searchButton').click(function () {
+            var search = $('#searchSerialNumber').val();
+            NGS.load('crm.loads.main.warranty.content', {search: search});
+        });
     }
 });

@@ -13,7 +13,9 @@ namespace crm\loads\main\warranty {
 
     use crm\loads\NgsLoad;
     use crm\managers\PurchaseOrderLineSerialNumberManager;
+    use crm\managers\SaleOrderLineManager;
     use crm\managers\SaleOrderLineSerialNumberManager;
+    use crm\managers\SaleOrderManager;
     use crm\security\RequestGroups;
     use NGS;
 
@@ -26,10 +28,10 @@ namespace crm\loads\main\warranty {
                 $searchWhereFilter = ['serial_number', 'like', "'%$searchText%'"];
             }
             $sol_searial_numbers = SaleOrderLineSerialNumberManager::getInstance()->selectAdvance('*', $searchWhereFilter, null, null, 0, 1000);
-            $solSearialNumbersMappedBySN = $this->mapBySerialNumbers($sol_searial_numbers);
+            $saleOrdersMappedBySN = $this->getSaleOrders($sol_searial_numbers);
             $pol_searial_numbers = PurchaseOrderLineSerialNumberManager::getInstance()->selectAdvance('*', $searchWhereFilter, null, null, 0, 1000);
-            $polSearialNumbersMappedBySN = $this->mapBySerialNumbers($pol_searial_numbers);
-            $combinePolAndSolSerialNumbers = $this->combinePolAndSolSerialNumbers($solSearialNumbersMappedBySN, $polSearialNumbersMappedBySN);
+            $purchaseOrdersMappedBySN = $this->getPurchaseOrders($pol_searial_numbers);
+            $combinePolAndSolSerialNumbers = $this->combinePolAndSolSerialNumbers($sol_searial_numbers, $pol_searial_numbers);
             $this->addParam('searial_numbers', $combinePolAndSolSerialNumbers);
         }
 
@@ -57,8 +59,10 @@ namespace crm\loads\main\warranty {
             return $search;
         }
 
-        private function combinePolAndSolSerialNumbers($solSearialNumbersMappedBySN, $polSearialNumbersMappedBySN) {
+        private function combinePolAndSolSerialNumbers($sol_searial_numbers, $pol_searial_numbers) {
             $ret = [];
+            $solSearialNumbersMappedBySN = $this->mapBySerialNumbers($sol_searial_numbers);
+            $polSearialNumbersMappedBySN = $this->mapBySerialNumbers($pol_searial_numbers);
             foreach ($polSearialNumbersMappedBySN as $sn => $polSearialNumberDto) {
                 $ret[$sn] = [$polSearialNumberDto];
                 if (array_key_exists($sn, $solSearialNumbersMappedBySN)) {
@@ -73,6 +77,30 @@ namespace crm\loads\main\warranty {
             return $ret;
         }
 
+        private function mapByOrderId($solDtos) {
+            $ret = [];
+            foreach ($solDtos as $solDto) {
+                $ret[$solDto->getId()][] = $solDto->getOrderId();
+            }
+            return $ret;
+        }
+
+        private function getSaleOrders($sol_searial_numbers) {
+            $snMappedBySolIds = [];
+            foreach ($sol_searial_numbers as $sol_searial_number) {
+                $snMappedBySolIds[$sol_searial_number->getLineId()] = $sol_searial_number->getSerialNumberId();
+            }
+            $solDtos = SaleOrderLineManager::getInstance()->selectByPKs(array_keys($snMappedBySolIds));
+            $solIdsMappedBySoId = $this->mapByOrderId($solDtos);
+            $soDtosMappedByID = SaleOrderManager::getInstance()->selectByPKs(array_unique(array_values($solIdsMappedBySoId)), true);
+            $ret = [];
+            foreach ($solIdsMappedBySoId as $solId => $soId) {
+                $ret[$snMappedBySolIds[$solId]] = $soDtosMappedByID[$soId]->getOrderDate();
+            }
+            return $ret;
+        }
+
+       
     }
 
 }

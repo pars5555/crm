@@ -1,6 +1,6 @@
 NGS.createLoad("crm.loads.main.warranty.content", {
     getContainer: function () {
-        return "initialLoad";
+        return "searchSerialNumberContainer";
     },
     onError: function (params) {
 

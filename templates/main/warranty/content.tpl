@@ -8,7 +8,7 @@
             <span class="table-cell"> PO Warranty Months </span>
             <span class="table-cell"> SO Warranty Months </span>
         </div> 
-        {foreach from=$searial_numbers item=polSolSnDtoPair key=sn}
+        {foreach from=$ns.searial_numbers item=polSolSnDtoPair key=sn}
             <div class="table-row" >
                 <span class="table-cell">
                     {$sn}
