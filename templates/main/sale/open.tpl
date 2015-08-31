@@ -68,6 +68,7 @@
             </a>
         {/if}
         <a class="button blue" href="{$SITE_PATH}/dyn/main_billing/do_redirect?partnerId={$ns.saleOrder->getPartnerId()}&note=Billing for Sale Order No-{$ns.saleOrder->getId()}">Bill</a>
+        <a class="button blue" href="{$SITE_PATH}/sale/warranty/{$ns.saleOrder->getId()}">Warranty</a>
         <div class="checkbox_container">
             <div class="checkbox f_checkbox">
                 <input type="checkbox" id="nonProfitCheckbox" {if $ns.saleOrder->getNonProfit()==1}checked{/if}/>
