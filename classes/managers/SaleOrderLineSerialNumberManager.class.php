@@ -12,9 +12,9 @@
 
 namespace crm\managers {
 
-    use crm\dal\mappers\PurchaseOrderLineSerialNumberMapper;
+    use crm\dal\mappers\SaleOrderLineSerialNumberMapper;
 
-    class PurchaseOrderLineSerialNumberManager extends AdvancedAbstractManager {
+    class SaleOrderLineSerialNumberManager extends AdvancedAbstractManager {
 
         /**
          * @var $instance
@@ -30,12 +30,12 @@ namespace crm\managers {
          */
         public static function getInstance() {
             if (self::$instance == null) {
-                self::$instance = new PurchaseOrderLineSerialNumberManager(PurchaseOrderLineSerialNumberMapper::getInstance());
+                self::$instance = new SaleOrderLineSerialNumberManager(SaleOrderLineSerialNumberMapper::getInstance());
             }
             return self::$instance;
         }
 
-        public function setPurchaseOrderListSerialNumbers($polId, $serialNumbers, $warrantyMonths) {
+        public function setSaleOrderListSerialNumbers($polId, $serialNumbers, $warrantyMonths) {
             $this->deleteByField("line_id", $polId);
             foreach ($serialNumbers as $key => $serialNumber) {
                 $dto = $this->createDto();

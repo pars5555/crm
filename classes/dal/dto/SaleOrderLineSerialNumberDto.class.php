@@ -18,7 +18,7 @@ namespace crm\dal\dto {
 
     use \ngs\framework\dal\dto\AbstractDto;
 
-    class PurchaseOrderLineSerialNumberDto extends AbstractDto {
+    class SaleOrderLineSerialNumberDto extends AbstractDto {
 
         // constructs class instance
         public function __construct() {

@@ -21,6 +21,7 @@
                 <span class="table-cell"> Total Profit </span>
             {/if}
             <span class="table-cell"> Note </span>
+            <span class="table-cell"> Warranty </span>
             <span class="table-cell"> View </span>
             <span class="table-cell"> Edit </span>
             <span class="table-cell"> Delete </span>
@@ -53,6 +54,13 @@
                     <span class="table-cell"> {$saleOrder->getTotalProfit()} </span>
                 {/if}
                 <span class="table-cell"> {$saleOrder->getNote()} </span>
+                
+                <a class="table-cell view_item" href="{SITE_PATH}/sale/warranty/{$saleOrder->getId()}">
+                    <span class="button_icon" title="Warranty">
+                        <i class="fa fa-file-text-o"></i>
+                    </span>
+                </a>
+                
                 <a class="table-cell view_item" href="{SITE_PATH}/sale/{$saleOrder->getId()}">
                     <span class="button_icon" title="View">
                         <i class="fa fa-eye"></i>

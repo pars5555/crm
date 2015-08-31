@@ -57,6 +57,7 @@
                     "loads/main/sale/ListLoad.class.js",
                     "loads/main/sale/CreateLoad.class.js",
                     "loads/main/sale/UpdateLoad.class.js",
+                    "loads/main/sale/warranty/OpenLoad.class.js",
                     "loads/main/billing/OpenLoad.class.js",
                     "loads/main/billing/ListLoad.class.js",
                     "loads/main/billing/CreateLoad.class.js",

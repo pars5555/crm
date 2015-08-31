@@ -12,24 +12,24 @@
  *
  */
 
-namespace crm\actions\main\purchase\warranty {
+namespace crm\actions\main\sale\warranty {
 
     use crm\actions\BaseAction;
-    use crm\managers\PurchaseOrderLineSerialNumberManager;
+    use crm\managers\SaleOrderLineSerialNumberManager;
     use NGS;
 
-    class SavePurchaseOrderLinesSerialNumbersAction extends BaseAction {
+    class SaveSaleOrderLinesSerialNumbersAction extends BaseAction {
 
         public function service() {
-            if (!isset(NGS()->args()->purchase_order_id)) {
-                $_SESSION['error_message'] = 'Purchase Order ID is missing';
-                $this->redirect('purchase/list');
+            if (!isset(NGS()->args()->sale_order_id)) {
+                $_SESSION['error_message'] = 'Sale Order ID is missing';
+                $this->redirect('sale/list');
             }
-            $purchaseOrderId = intval(NGS()->args()->purchase_order_id);
+            $saleOrderId = intval(NGS()->args()->sale_order_id);
 
             if (!isset(NGS()->args()->pols_serial_numbers)) {
                 $_SESSION['error_message'] = 'Serial Numbers parameter is missing';
-                $this->redirect('purchase/warranty/' . $purchaseOrderId);
+                $this->redirect('sale/warranty/' . $saleOrderId);
             }
             $pols_serial_numbers_json = NGS()->args()->pols_serial_numbers;
             $pols_serial_numbers = json_decode($pols_serial_numbers_json);
@@ -37,11 +37,11 @@ namespace crm\actions\main\purchase\warranty {
                 $pol_id = $obj->pol_id;
                 $serial_numbers = $obj->serial_numbers;
                 $warranty_months = $obj->warranty_months;
-                PurchaseOrderLineSerialNumberManager::getInstance()->setPurchaseOrderListSerialNumbers($pol_id, $serial_numbers, $warranty_months);
+                SaleOrderLineSerialNumberManager::getInstance()->setSaleOrderListSerialNumbers($pol_id, $serial_numbers, $warranty_months);
             }
 
             $_SESSION['success_message'] = 'Serial Numbers successfully saved.';
-            $this->redirect('purchase/warranty/' . $purchaseOrderId);
+            $this->redirect('sale/warranty/' . $saleOrderId);
         }
 
     }

@@ -1,4 +1,4 @@
-NGS.createLoad("crm.loads.main.purchase.warranty.open", {
+NGS.createLoad("crm.loads.main.sale.warranty.open", {
     getContainer: function () {
         return "initialLoad";
     },
@@ -7,17 +7,17 @@ NGS.createLoad("crm.loads.main.purchase.warranty.open", {
     },
     afterLoad: function () {
         $('#submitForm').click(function () {
-            this.calculatePurchaseOrderLinesData();
-            $('#purchaseOrderLinesForm').trigger('submit');
+            this.calculateSaleOrderLinesData();
+            $('#saleOrderLinesForm').trigger('submit');
         }.bind(this));
 
         this.initAddRemovePolSnLine();
     },
     initAddRemovePolSnLine: function () {
-        $('#purchaseOrderLinesContainer').on("click", ".f_delete_polsn", function () {
+        $('#saleOrderLinesContainer').on("click", ".f_delete_polsn", function () {
             $(this).parent().parent().remove();
         });
-        $('#purchaseOrderLinesContainer').on("click", ".f_add_polsn", function () {
+        $('#saleOrderLinesContainer').on("click", ".f_add_polsn", function () {
             var snInput = $(this).parents('.snWarrantyNewLines').find('.sn');
             var warrantyInput = $(this).parents('.snWarrantyNewLines').find('.warranty');
             var serialNumber = snInput.val();
@@ -39,17 +39,17 @@ NGS.createLoad("crm.loads.main.purchase.warranty.open", {
             warrantyInput.val('');
             snInput.focus();
 
-            var polSnRow = $('#purchaseOrderLineSerialNumberRowTemplate').clone();
+            var polSnRow = $('#saleOrderLineSerialNumberRowTemplate').clone();
             polSnRow.css({'display': 'table-row'});
             polSnRow.removeAttr('id');
             polSnRow.find('.sn').val(serialNumber);
             polSnRow.find('.warranty').val(warrantyMonths);
-            polSnRow.appendTo("#purchaseOrderLineSerialNumbersConteiner_" + pol_id);
+            polSnRow.appendTo("#saleOrderLineSerialNumbersConteiner_" + pol_id);
         });
     },
-    calculatePurchaseOrderLinesData: function () {
+    calculateSaleOrderLinesData: function () {
         var ret = [];
-        $('.purchaseOrderLineSerialNumbers').each(function () {
+        $('.saleOrderLineSerialNumbers').each(function () {
             var pol_id = $(this).attr('pol_id');
             var pol_serial_numbers = [];
             $(this).find(".sn").each(function () {

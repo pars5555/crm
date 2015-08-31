@@ -71,6 +71,18 @@
     "sale": [
         {
             "action": "loads.main.main",
+            "route": "warranty/[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.sale.warranty.open"
+                }
+            }
+        },
+        {
+            "action": "loads.main.main",
             "route": "list",
             "nestedLoad": {
                 "content": {
