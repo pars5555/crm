@@ -58,6 +58,7 @@
             </a>
         {/if}
          <a class="button blue" href="{$SITE_PATH}/dyn/main_payment/do_redirect?partnerId={$ns.purchaseOrder->getPartnerId()}&note=Payment for Purchase Order No-{$ns.purchaseOrder->getId()}">Pay</a>
+         <a class="button blue" href="{$SITE_PATH}/purchase/warranty/{$ns.purchaseOrder->getId()}">Warranty</a>
 	
         <div class="checkbox_container">
             <div class="checkbox f_checkbox">

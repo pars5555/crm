@@ -52,7 +52,7 @@
             </div>
         </div>
         <h2 class="title">Order Lines</h2>
-        <form id="purchaseOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main_purchase/do_save_purchase_order_lines_serial_numbers">
+        <form id="purchaseOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main_purchase_warranty/do_save_purchase_order_lines_serial_numbers">
             <div class="table_striped" id="purchaseOrderLinesContainer">
                 <div class="table_header_group">                  
                     <span class="table-cell"> Product </span>
@@ -77,35 +77,38 @@
                                 {$purchaseOrderLine->getCurrencyDto()->getTemplateChar()}
                             </div>
                         </div>
-                        {if array_key_exists($purchaseOrderLine->getId(), $polSerialNumbersDtos)} 
-                            {foreach from=$polSerialNumbersDtos[$purchaseOrderLine->getId()] item=purchaseOrderLineSerialNumber}
-                                <div class="purchaseOrderLineSerialNumbers table-row" pol_id="{$purchaseOrderLine->getId()}">
-                                    <div class="table-cell">           
-                                        <input class="text" type="text" value="{$purchaseOrderLineSerialNumber->getSerialNumber()}"/>
+                        <div class="purchaseOrderLineSerialNumbers" id="purchaseOrderLineSerialNumbersConteiner_{$purchaseOrderLine->getId()}" pol_id="{$purchaseOrderLine->getId()}">
+                            {if array_key_exists($purchaseOrderLine->getId(), $polSerialNumbersDtos)} 
+                                {foreach from=$polSerialNumbersDtos[$purchaseOrderLine->getId()] item=purchaseOrderLineSerialNumber}
+                                    <div class="table-row">
+                                        <div class="table-cell">           
+                                            <input class="text" type="text" value="{$purchaseOrderLineSerialNumber->getSerialNumber()}"/>
+                                        </div>
+                                        <div class="table-cell">           
+                                            <a href="javascript:void(0);" class="button_icon f_delete_polsn" title="delete">
+                                                <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        </div>
                                     </div>
-                                    <div class="table-cell">           
-                                        <a href="javascript:void(0);" class="button_icon f_delete_polsn" title="delete">
-                                            <i class="fa fa-trash-o"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            {/foreach}
-                            <div class="table-row" id="purchaseOrderLineSerialNumber">
-                                <div class="table-cell">           
-                                    <input class="text" type="text" value=""/>
-                                </div>
-                                <div class="table-cell">           
-                                    <a href="javascript:void(0);" class="button_icon f_add_polsn" title="delete">
-                                        <i class="fa fa-plus"></i>
-                                    </a>
-                                </div>
+                                {/foreach}
+                            {/if}
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell">           
+                                <input class="text" type="text" value=""/>
                             </div>
-                        {/if}
+                            <div class="table-cell">           
+                                <a href="javascript:void(0);" class="button_icon f_add_polsn" title="delete" pol_id="{$purchaseOrderLine->getId()}">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                            </div>
+                        </div>
                     {/foreach}
 
                 {/if}
             </div>
-            <input type="hidden" value="{$ns.purchaseOrder->getId()}" name="purchase_order_id"/>
+            <input type="hidden" id="pols_serial_numbers" name="pols_serial_numbers"/>            
+            <input type="hidden" value="{$ns.purchaseOrder->getId()}" name="purchase_order_id"/>            
             <a class="button blue" href="javascript:void(0);" id="submitForm">Save</a>
         </form>
 

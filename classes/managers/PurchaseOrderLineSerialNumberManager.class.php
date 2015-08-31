@@ -35,6 +35,17 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function setPurchaseOrderListSerialNumbers($polId, $serialNumbers) {
+            $this->deleteByField("line_id", $polId);
+            foreach ($serialNumbers as $serialNumber) {
+                $dto = $this->createDto();
+                $dto->setLineId($polId);
+                $dto->setSerialNumber($serialNumber);
+                $this->insertDto($dto);
+            }
+            return true;
+        }
+
     }
 
 }

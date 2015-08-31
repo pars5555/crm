@@ -1,4 +1,14 @@
 {
+    "warranty": [
+        {
+            "action": "loads.main.main",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.warranty.index"
+                }
+            }
+        }
+    ],
     "language": [
         {
             "action": "actions.main.set_language",
