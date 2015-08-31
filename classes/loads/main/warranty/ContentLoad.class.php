@@ -95,13 +95,13 @@ namespace crm\loads\main\warranty {
                 $snMappedBySolIds[$sol_searial_number->getLineId()][] = $sol_searial_number->getSerialNumber();
             }
             $solDtos = SaleOrderLineManager::getInstance()->selectByPKs(array_keys($snMappedBySolIds));
-            $solIdsMappedBySoId = $this->getSoIdsMappedBySolIds($solDtos);
-            $soDtosMappedByID = SaleOrderManager::getInstance()->selectByPKs(array_unique(array_values($solIdsMappedBySoId)), true);
+            $soIdsMappedBySolId = $this->getSoIdsMappedBySolIds($solDtos);
+            $soDtos = SaleOrderManager::getInstance()->getSaleOrdersFull($where = ['id', 'in', '(' . implode(',', array_unique(array_values($soIdsMappedBySolId))), ')']);
+            $soDtosMappedByID = SaleOrderManager::mapDtosById($soDtos);
             $ret = [];
-            foreach ($solIdsMappedBySoId as $solId => $soId) {
+            foreach ($soIdsMappedBySolId as $solId => $soId) {
                 foreach ($snMappedBySolIds[$solId] as $sn) {
-                    $ret[$sn] = $soDtosMappedByID[$soId]->getOrderDate();
-                    
+                    $ret[$sn] = [$soDtosMappedByID[$soId]->getOrderDate(), $soDtosMappedByID[$soId]->getPartnerDto()->getName()];
                 }
             }
             return $ret;
@@ -122,12 +122,12 @@ namespace crm\loads\main\warranty {
             }
             $polDtos = PurchaseOrderLineManager::getInstance()->selectByPKs(array_keys($snMappedByPolIds));
             $poIdsMappedByPolId = $this->getPoIdsMappedByPolIds($polDtos);
-            $poDtosMappedByID = PurchaseOrderManager::getInstance()->selectByPKs(array_unique(array_values($poIdsMappedByPolId)), true);
+            $poDtos = PurchaseOrderManager::getInstance()->getPurchaseOrdersFull($where = ['id', 'in', '(' . implode(',', array_unique(array_values($poIdsMappedByPolId))), ')']);
+            $poDtosMappedByID = SaleOrderManager::mapDtosById($poDtos);
             $ret = [];
             foreach ($poIdsMappedByPolId as $polId => $poId) {
                 foreach ($snMappedByPolIds[$polId] as $sn) {
-                    $ret[$sn] = $poDtosMappedByID[$poId]->getOrderDate();
-                    
+                    $ret[$sn] = [$poDtosMappedByID[$poId]->getOrderDate(), $poDtosMappedByID[$poId]->getPartnerDto()->getName()];
                 }
             }
             return $ret;
