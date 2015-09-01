@@ -6,8 +6,6 @@ NGS.createLoad("crm.loads.main.general.general", {
 
     },
     afterLoad: function () {
-        $('#GeneralForm').find('select').change(function () {
-            $('#GeneralForm').trigger('submit');
-        });
+        
     }
 });

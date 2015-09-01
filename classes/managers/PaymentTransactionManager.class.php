@@ -166,8 +166,8 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function getNonCancelledPaymentOrdersByCurrency($currencyId) {
-            return $this->mapper->getNonCancelledPaymentOrdersByCurrency($currencyId);
+        public function getNonCancelledPaymentOrdersByCurrency($date, $currencyId) {
+            return $this->mapper->getNonCancelledPaymentOrdersByCurrency($date,$currencyId);
         }
 
         public function getAllNonCancelledExpensePayments($startDate, $endDate) {

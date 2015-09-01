@@ -11,32 +11,22 @@
 
 namespace crm\loads\main\general {
 
-use crm\loads\NgsLoad;
-use crm\managers\CurrencyManager;
-use crm\managers\PaymentTransactionManager;
-use crm\managers\SettingManager;
-use crm\security\RequestGroups;
-use NGS;
+    use crm\loads\NgsLoad;
+    use crm\security\RequestGroups;
+    use NGS;
 
     class GeneralLoad extends NgsLoad {
 
         public function load() {
-            $selectCurrencyId = SettingManager::getInstance()->getSetting('default_currency_id');
-            if (isset(NGS()->args()->cur)) {
-                $selectCurrencyId = intval(NGS()->args()->cur);
-            }
-            $this->addParam('selectedCurrencyId', $selectCurrencyId);
-            $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
-            $paymentTransactionManager = PaymentTransactionManager::getInstance();
-            $nonCancelledPaymentOrdersByCurrency = $paymentTransactionManager->getNonCancelledPaymentOrdersByCurrency($selectCurrencyId);
-            $cashboxAmount = -$nonCancelledPaymentOrdersByCurrency;
-            $this->addParam("amount", $cashboxAmount);
+            
         }
 
         public function getDefaultLoads() {
             $loads = array();
             $loads["profitCalculation"]["action"] = "crm.loads.main.general.profit";
             $loads["profitCalculation"]["args"] = array();
+            $loads["cashboxCalculation"]["action"] = "crm.loads.main.general.cashbox";
+            $loads["cashboxCalculation"]["args"] = array();
             return $loads;
         }
 

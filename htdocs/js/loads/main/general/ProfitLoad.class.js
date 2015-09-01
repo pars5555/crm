@@ -6,7 +6,7 @@ NGS.createLoad("crm.loads.main.general.profit", {
 
     },
     afterLoad: function () {
-        $("select").not("[data-no-wrap=true]").wrap("<div class='select_wrapper' />");
+        $('#profitCalculationContainer select').not("[data-no-wrap=true]").wrap("<div class='select_wrapper' />");
         var thisInstance = this;
         $('#profitCalculationContainer select').change(function () {
             var params = thisInstance.getFromAndToDateParams();
