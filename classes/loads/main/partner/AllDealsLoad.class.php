@@ -29,33 +29,62 @@ namespace crm\loads\main\partner {
             $partnerId = intval(NGS()->args()->id);
             $partner = PartnerManager::getInstance()->selectbyPK($partnerId);
             if ($partner) {
+                $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1],null, null, null, null, true));
                 $this->addParam('partner', $partner);
-                $partnerSaleOrders = SaleOrderManager::getInstance()->getPartnerSaleOrders($partnerId);
-                $partnerPurchaseOrders = PurchaseOrderManager::getInstance()->getPartnerPurchaseOrders($partnerId);
-                $partnerPaymentTransactions = PaymentTransactionManager::getInstance()->getPartnerPaymentTransactions($partnerId);
-                $partnerBillingTransactions = PaymentTransactionManager::getInstance()->getPartnerBillingTransactions($partnerId);
+                $partnerSaleOrders = SaleOrderManager::mapDtosById(SaleOrderManager::getInstance()->getPartnerSaleOrders($partnerId));
+                $partnerPurchaseOrders = PurchaseOrderManager::mapDtosById(PurchaseOrderManager::getInstance()->getPartnerPurchaseOrders($partnerId));
+                $partnerPaymentTransactions = PaymentTransactionManager::mapDtosById(PaymentTransactionManager::getInstance()->getPartnerPaymentTransactions($partnerId));
+                $partnerBillingTransactions = PaymentTransactionManager::mapDtosById(PaymentTransactionManager::getInstance()->getPartnerBillingTransactions($partnerId));
+                $sales = $this->mapByIdAndGivenField('sale_', 'order_date', $partnerSaleOrders);
+                $purchases = $this->mapByIdAndGivenField('purchase_', 'order_date', $partnerPurchaseOrders);
+                $paments = $this->mapByIdAndGivenField('payment_', 'date', $partnerPaymentTransactions);
+                $billings = $this->mapByIdAndGivenField('billing_', 'date', $partnerBillingTransactions);
+                $allDeals = $this->mergeAllDeals($sales, $purchases, $paments, $billings,$partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions);
+                $this->addParam('allDeals', $allDeals);
                 $this->addParam('partnerSaleOrders', $partnerSaleOrders);
                 $this->addParam('partnerPurchaseOrders', $partnerPurchaseOrders);
                 $this->addParam('partnerPaymentTransactions', $partnerPaymentTransactions);
                 $this->addParam('partnerBillingTransactions', $partnerBillingTransactions);
             }
         }
-        
-        private function mergeAllDeals($partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions)
-        {
+
+        private function mergeAllDeals($sale, $purchase, $payment, $billing, $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions) {
+            $allDeals = array_merge($sale, $purchase, $payment, $billing);
+            arsort($allDeals);
             $ret = [];
-            
+            foreach ($allDeals as $key => $date) {
+                $id = intval(substr($key, strpos($key, "_") + 1));
+                $type = substr($key, 0, strpos($key, "_"));
+                switch ($type) {
+                    case 'sale':
+                        $ret [] = [$type, $partnerSaleOrders[$id]];
+                        break;
+                    case 'purchase':
+                        $ret [] = [$type, $partnerPurchaseOrders[$id]];
+                        break;
+                    case 'payment':
+                        $ret [] = [$type, $partnerPaymentTransactions[$id]];
+                        break;
+                    case 'billing':
+                        $ret [] = [$type, $partnerBillingTransactions[$id]];
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return $ret;
         }
-        private function mapByIdAndDate($partnerTransactions)
-        {
+
+        private function mapByIdAndGivenField($keyPrefix, $fieldName, $partnerTransactions) {
             $ret = [];
             foreach ($partnerTransactions as $partnerTransaction) {
-                $ret [] = $partnerTransaction->getDate();
+                $ret [$keyPrefix . $partnerTransaction->getId()] = $partnerTransaction->$fieldName;
             }
+            return $ret;
         }
 
         public function getTemplate() {
-            return NGS()->getTemplateDir() . "/main/partner/open.tpl";
+            return NGS()->getTemplateDir() . "/main/partner/all_deals.tpl";
         }
 
         public function getRequestGroup() {
