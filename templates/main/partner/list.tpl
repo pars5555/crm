@@ -21,6 +21,7 @@
             <span class="table-cell"> Purchase Orders</span>
             <span class="table-cell"> Payments Transactions </span>
             <span class="table-cell"> Billing Transactions </span>
+            <span class="table-cell"> All Deals </span>
             <span class="table-cell"> View </span>
             <span class="table-cell"> Edit </span>
         </div> 
@@ -52,6 +53,11 @@
                 <a class="table-cell link" href="{SITE_PATH}/purchase/list?prt={$partner->getId()}"> {$ns.partnersPurchaseOrdersMappedByPartnerId[$partner->getId()]|@count} </a>
                 <a class="table-cell link" href="{SITE_PATH}/payment/list?prt={$partner->getId()}"> {$ns.partnersPaymentTransactionsMappedByPartnerId[$partner->getId()]|@count} </a>
                 <a class="table-cell link" href="{SITE_PATH}/billing/list?prt={$partner->getId()}"> {$ns.partnersBillingTransactionsMappedByPartnerId[$partner->getId()]|@count} </a>
+                <a class="table-cell view_item" href="{SITE_PATH}/partner/all/{$partner->getId()}">
+                    <span class="button_icon" title="View">
+                        <i class="fa fa-calendar"></i>
+                    </span>
+                </a>
                 <a class="table-cell view_item" href="{SITE_PATH}/partner/{$partner->getId()}">
                     <span class="button_icon" title="View">
                         <i class="fa fa-eye"></i>

@@ -33,7 +33,7 @@
                                 {if $currencyDto->getSymbolPosition() == 'left'}
                                     {$currencyDto->getTemplateChar()}
                                 {/if}
-                                {$amount}
+                                {$amount|number_format:2}
                                 {if $currencyDto->getSymbolPosition() == 'right'}
                                     {$currencyDto->getTemplateChar()}
                                 {/if}
@@ -41,7 +41,17 @@
                         {/foreach}
 
                     {else}
-                        <span>{$deal[1]->getAmount()} </span>
+                        <span class="price">
+                                {assign currencyDto $ns.currencies[$deal[1]->getCurrencyId()]}
+                                {if $currencyDto->getSymbolPosition() == 'left'}
+                                    {$currencyDto->getTemplateChar()}
+                                {/if}
+                                {$deal[1]->getAmount()|number_format:2}
+                                {if $currencyDto->getSymbolPosition() == 'right'}
+                                    {$currencyDto->getTemplateChar()}
+                                {/if}
+                            </span>
+                        <span> </span>
                     {/if}
                 </span>
 

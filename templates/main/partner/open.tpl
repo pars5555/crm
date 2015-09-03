@@ -82,6 +82,14 @@
                     {$ns.partnerBillingTransactions|@count}
                 </a>
             </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    All Deals:
+                </span>
+                <a class="table-cell link" href="{SITE_PATH}/partner/all/{$ns.partner->getId()}">
+                    <i class="fa fa-calendar"></i>
+                </a>
+            </div>
             {if !empty($partnerDept)}
                 <div class="table-row" style="white-space-collapse: discard;">
                     {foreach from=$partnerDept key=currencyId item=amount}
