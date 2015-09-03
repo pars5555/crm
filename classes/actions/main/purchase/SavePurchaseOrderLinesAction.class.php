@@ -16,6 +16,7 @@ namespace crm\actions\main\purchase {
 
     use crm\actions\BaseAction;
     use crm\managers\PurchaseOrderLineManager;
+    use crm\managers\PurchaseOrderLineSerialNumberManager;
     use NGS;
 
     class SavePurchaseOrderLinesAction extends BaseAction {
@@ -33,9 +34,8 @@ namespace crm\actions\main\purchase {
                     foreach ($jsonLinesArray as $jsonLine) {
                         $line = json_decode($jsonLine);
                         $newLineId = PurchaseOrderLineManager::getInstance()->createPurchaseOrderLine($purchaseOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
-                        if (isset($line->line_id))
-                        {
-                            \crm\managers\PurchaseOrderLineSerialNumberManager::getInstance()->replaceLineId($line->line_id, $newLineId);
+                        if (isset($line->line_id)) {
+                            PurchaseOrderLineSerialNumberManager::getInstance()->replaceLineId($line->line_id, $newLineId);
                         }
                     }
                 }

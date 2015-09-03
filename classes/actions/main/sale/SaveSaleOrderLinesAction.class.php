@@ -16,6 +16,7 @@ namespace crm\actions\main\sale {
 
     use crm\actions\BaseAction;
     use crm\managers\SaleOrderLineManager;
+    use crm\managers\SaleOrderLineSerialNumberManager;
     use NGS;
 
     class SaveSaleOrderLinesAction extends BaseAction {
@@ -33,6 +34,9 @@ namespace crm\actions\main\sale {
                     foreach ($jsonLinesArray as $jsonLine) {
                         $line = json_decode($jsonLine);
                         SaleOrderLineManager::getInstance()->createSaleOrderLine($saleOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
+                        if (isset($line->line_id)) {
+                            SaleOrderLineSerialNumberManager::getInstance()->replaceLineId($line->line_id, $newLineId);
+                        }
                     }
                 }
             } else {
