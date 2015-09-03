@@ -96,7 +96,7 @@
                 {if $ns.saleOrder->getSaleOrderLinesDtos()|@count > 0}
                     {assign saleOrderLines $ns.saleOrder->getSaleOrderLinesDtos()}
                     {foreach from=$saleOrderLines item=saleOrderLine}
-                        <div class="saleOrderLine table-row" line_id="{$saleOrderLine->getId()}">
+                        <div class="saleOrderLine table-row" line_id="{$saleOrderLine->getId()}" >
                             <div class="table-cell">
                                 <select class="saleOrderLinesSelectProduct" disabled>
                                     {foreach from=$ns.products item=p}
