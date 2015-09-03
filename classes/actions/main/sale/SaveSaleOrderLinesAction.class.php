@@ -33,7 +33,7 @@ namespace crm\actions\main\sale {
                 if (!empty($jsonLinesArray)) {
                     foreach ($jsonLinesArray as $jsonLine) {
                         $line = json_decode($jsonLine);
-                        SaleOrderLineManager::getInstance()->createSaleOrderLine($saleOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
+                        $newLineId = SaleOrderLineManager::getInstance()->createSaleOrderLine($saleOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
                         if (isset($line->line_id)) {
                             SaleOrderLineSerialNumberManager::getInstance()->replaceLineId($line->line_id, $newLineId);
                         }
