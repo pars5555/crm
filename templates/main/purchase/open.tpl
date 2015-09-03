@@ -80,7 +80,7 @@
                 {if $ns.purchaseOrder->getPurchaseOrderLinesDtos()|@count > 0}
                     {assign purchaseOrderLines $ns.purchaseOrder->getPurchaseOrderLinesDtos()}
                     {foreach from=$purchaseOrderLines item=purchaseOrderLine}
-                        <div class="purchaseOrderLine table-row">
+                        <div class="purchaseOrderLine table-row" line_id="{$purchaseOrderLine->getId()}">
                             <div class="table-cell">
                                 <select class="purchaseOrderLinesSelectProduct" data-autocomplete="true" data-no-wrap="true">
                                     {foreach from=$ns.products item=p}

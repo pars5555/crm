@@ -32,7 +32,11 @@ namespace crm\actions\main\purchase {
                 if (!empty($jsonLinesArray)) {
                     foreach ($jsonLinesArray as $jsonLine) {
                         $line = json_decode($jsonLine);
-                        PurchaseOrderLineManager::getInstance()->createPurchaseOrderLine($purchaseOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
+                        $newLineId = PurchaseOrderLineManager::getInstance()->createPurchaseOrderLine($purchaseOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
+                        if (isset($line->line_id))
+                        {
+                            \crm\managers\PurchaseOrderLineSerialNumberManager::getInstance()->replaceLineId($line->line_id, $newLineId);
+                        }
                     }
                 }
             } else {

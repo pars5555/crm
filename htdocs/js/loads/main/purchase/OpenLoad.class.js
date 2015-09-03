@@ -95,6 +95,9 @@ NGS.createLoad("crm.loads.main.purchase.open", {
             var unit_price = $(this).find(".purchaseOrderLinesSelectUnitPrice").val();
             var currency_id = $(this).find(".purchaseOrderLinesSelectCurrency").val();
             var data = {product_id: product_id, quantity: quantity, unit_price: unit_price, currency_id: currency_id};
+            if (this.hasAttribute("line_id")) {
+                data.line_id = $(this).attr("line_id");
+            }
             var jsonData = JSON.stringify(data);
             $(this).find("input[type='hidden']").val(jsonData);
 
