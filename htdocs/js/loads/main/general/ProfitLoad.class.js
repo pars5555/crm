@@ -16,7 +16,6 @@ NGS.createLoad("crm.loads.main.general.profit", {
 
     },
     initChart: function () {
-        google.load("visualization", "1", {packages: ["corechart"]});
         google.setOnLoadCallback(function () {
             var data = google.visualization.arrayToDataTable([
                 ['Task', 'Hours per Day'],
