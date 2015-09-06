@@ -10,7 +10,7 @@
                     "lib/jquery.js",
                     "lib/jquery-ui.js",
                     "lib/chosen/chosen.jquery.min.js",
-                    "lib/jSignature.js",
+                    "lib/jSignature.min.js",
                     "lib/jquery.tooltipster.min.js"
                 ]
             },

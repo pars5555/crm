@@ -21,8 +21,24 @@ NGS.createLoad("crm.loads.main.billing.create", {
         $('#partnerDeptHidden').on('change', function () {
             this.calculationPartnerDept();
         }.bind(this));
-        
-        
+
+        this.initSignature();
+    },
+    initSignature: function () {
+        $("#signatureContainer").jSignature();
+        try {
+            var signatureData = $.parseJSON($("#signatureContainer").find('span').text());
+            $("#signatureContainer").jSignature('setData', signatureData, 'native');
+        } catch (e) {
+        }
+        $(".clearSignature").click(function () {
+            $("#signatureContainer").jSignature('reset');
+        });
+        $('.createBillingOrder').submit(function () {
+            var signatureData = $("#signatureContainer").jSignature('getData', 'native');
+            $("#signature").val(JSON.stringify(signatureData));
+            return true;
+        });
     },
     calculationPartnerDept: function () {
         var dept = $.parseJSON($('#partnerDeptHidden').val());
@@ -47,11 +63,11 @@ NGS.createLoad("crm.loads.main.billing.create", {
             var position = amountSymbolPositionArray[2];
             if (currencyIso == iso)
             {
-                amount -= !isNaN(parseFloat(userInputAmunt))?parseFloat(userInputAmunt):0;
+                amount -= !isNaN(parseFloat(userInputAmunt)) ? parseFloat(userInputAmunt) : 0;
             }
             deptHtml += (position === 'left' ? symbol : '') + amount.toFixed(2) + (position === 'right' ? symbol : '') + '</br>';
         });
         $('#partnerDeptContainer').html(deptHtml);
-        
+
     }
 });

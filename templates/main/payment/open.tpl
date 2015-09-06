@@ -1,6 +1,6 @@
 <div class="container payment--open--container">
     <h1 class="main_title">Payment Order View</h1>
-    
+
     {if isset($ns.error_message)}
         {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
@@ -47,13 +47,21 @@
                     Amount : 
                 </span>
                 <span class="table-cell">
-                    {if $payment->getCurrencyDto()->getSymbolPosition() == 'left'}
-                        {$payment->getCurrencyDto()->getTemplateChar()}
+                    {if $ns.payment->getCurrencyDto()->getSymbolPosition() == 'left'}
+                        {$ns.payment->getCurrencyDto()->getTemplateChar()}
                     {/if}
-                    {$payment->getAmount()}
-                    {if $payment->getCurrencyDto()->getSymbolPosition() == 'right'}
-                        {$payment->getCurrencyDto()->getTemplateChar()}
+                    {$ns.payment->getAmount()}
+                    {if $ns.payment->getCurrencyDto()->getSymbolPosition() == 'right'}
+                        {$ns.payment->getCurrencyDto()->getTemplateChar()}
                     {/if}
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
+                    Signature:
+                </span>
+                <span class="table-cell">
+                    <img id="signature" style="width: 200px"/>
                 </span>
             </div>
             <div class="table-row">
@@ -83,4 +91,8 @@
             </a>
         {/if}
     {/if}
+</div>
+
+<div id="signatureContainer" style="width: 500px;color:#0f60a7;visibility: hidden">
+    <span class="hidden">{$ns.payment->getSignature()}</span>
 </div>

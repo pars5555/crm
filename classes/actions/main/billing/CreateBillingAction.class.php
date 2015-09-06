@@ -23,7 +23,7 @@ namespace crm\actions\main\billing {
 
         public function service() {
             try {
-                list($partnerId, $billingMethodId, $currencyId, $amount, $date, $note) = $this->getFormData();
+                list($partnerId, $billingMethodId, $currencyId, $amount, $date, $note,$signature) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
@@ -31,7 +31,7 @@ namespace crm\actions\main\billing {
             }
 
             $paymentTransactionManager = PaymentTransactionManager::getInstance();
-            $billingId = $paymentTransactionManager->createPaymentOrder($partnerId, $billingMethodId, $currencyId, -$amount, $date, $note);
+            $billingId = $paymentTransactionManager->createPaymentOrder($partnerId, $billingMethodId, $currencyId, -$amount, $date, $note, $signature);
 
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Billing Successfully created!';
@@ -53,8 +53,9 @@ namespace crm\actions\main\billing {
             $billingMethodId = intval(NGS()->args()->billingMethodId);
             $currencyId = intval(NGS()->args()->currencyId);
             $amount = floatval(NGS()->args()->amount);
+            $signature= NGS()->args()->signature;
             $date = "$year-$month-$day $hour:$minute";
-            return array($partnerId, $billingMethodId, $currencyId, $amount, $date, $note);
+            return array($partnerId, $billingMethodId, $currencyId, $amount, $date, $note,$signature);
         }
 
         private function validateFormData() {

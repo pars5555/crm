@@ -81,7 +81,7 @@ namespace crm\managers {
             return false;
         }
 
-        public function createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date, $note, $paid = true, $isExpense = false) {
+        public function createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date, $note, $signature = '[]', $paid = true, $isExpense = false) {
             $partnerManager = PartnerManager::getInstance();
             $partner = $partnerManager->selectByPK($partnerId);
             if (empty($partner)) {
@@ -103,10 +103,11 @@ namespace crm\managers {
             $dto->setNote($note);
             $dto->setIsExpense($isExpense);
             $dto->setPaid($paid);
+            $dto->setSignature($signature);
             return $this->insertDto($dto);
         }
 
-        public function updatePaymentOrder($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $note, $paid = true, $isExpense = false) {
+        public function updatePaymentOrder($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $note, $signature = "[]", $paid = true, $isExpense = false) {
             $partnerManager = PartnerManager::getInstance();
             $partner = $partnerManager->selectByPK($partnerId);
             if (empty($partner)) {
@@ -129,6 +130,7 @@ namespace crm\managers {
                 $dto->setNote($note);
                 $dto->setIsExpense($isExpense);
                 $dto->setPaid($paid);
+                $dto->setSignature($signature);
                 return $this->updateByPk($dto);
             }
             return false;

@@ -35,6 +35,7 @@ namespace crm\loads\main\payment {
                         'billingMethodId' => $paymentOrder->getPaymentMethodId(),
                         'currencyId' => $paymentOrder->getCurrencyId(),
                         'note' => $paymentOrder->getNote(),
+                        'signature' => $paymentOrder->getSignature(),
                         'amount' => $paymentOrder->getAmount(),
                         'isExpense' => $paymentOrder->getIsExpense(),
                         'paid' => $paymentOrder->getPaid()

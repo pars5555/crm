@@ -1,6 +1,6 @@
 <div class="container billing--create--container">
     <h1>Create Billing Order</h1>
-    
+
     {if isset($ns.error_message)}
         {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
@@ -74,7 +74,7 @@
             <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
         </div>
         <input class="button blue" type="submit" value="Save"/>
-
+        <input type="hidden" name="signature" id="signature"/>
         <div class="form-group">
             <label class="label">Dept</label>
             <div id="partnerDeptContainer"></div>
@@ -83,4 +83,8 @@
             <input type="hidden" id="partnerDeptHidden"/>
         </div>
     </form>
+    <div id="signatureContainer" style="width: 500px;border: 1px solid gray;color:#0f60a7">
+        <span class="hidden">{$ns.req.signature}</span>
+    </div>
+    <a class="button clearSignature" >Clear</a>
 </div>

@@ -1,6 +1,6 @@
 <div class="container billing--open--container">
     <h1 class="main_title">Billing Order View</h1>
-    
+
     {if isset($ns.error_message)}
         {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
@@ -58,6 +58,14 @@
             </div>
             <div class="table-row">
                 <span class="table-cell">
+                    Signature:
+                </span>
+                <span class="table-cell">
+                    <img id="signature" style="width: 200px"/>
+                </span>
+            </div>
+            <div class="table-row">
+                <span class="table-cell">
                     Note :
                 </span>
                 <span class="table-cell">
@@ -75,9 +83,13 @@
                 <a class="button blue" id="cancelBillingButton" href="javascript:void(0);">Cancel</a>
             </form>
         {else}
-            <a class="button blue"  href="{SITE_PATH}/dyn/main_billing/do_restore_billing?id={$ns.billing->getId()}">
+            <a class="button blue"  href="{$SITE_PATH}/dyn/main_billing/do_restore_billing?id={$ns.billing->getId()}">
                 <span>Restore</span>
             </a>
         {/if}
     {/if}
+</div>
+
+<div id="signatureContainer" style="width: 500px;color:#0f60a7;visibility: hidden">
+    <span class="hidden">{$ns.billing->getSignature()}</span>
 </div>

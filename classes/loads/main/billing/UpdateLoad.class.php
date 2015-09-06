@@ -29,7 +29,14 @@ namespace crm\loads\main\billing {
             $billingOrder = PaymentTransactionManager::getInstance()->selectByPK($id);
             if ($billingOrder) {
                 if (!isset($_SESSION['action_request'])) {
-                    $_SESSION['action_request'] = ['date' => $billingOrder->getDate(), 'partnerId' => $billingOrder->getPartnerId(), 'paymentMethodId' => $billingOrder->getPaymentMethodId(), 'currencyId' => $billingOrder->getCurrencyId(), 'note' => $billingOrder->getNote(), 'amount' => -$billingOrder->getAmount()];
+                    $_SESSION['action_request'] = [
+                        'date' => $billingOrder->getDate(),
+                        'partnerId' => $billingOrder->getPartnerId(),
+                        'paymentMethodId' => $billingOrder->getPaymentMethodId(),
+                        'currencyId' => $billingOrder->getCurrencyId(),
+                        'note' => $billingOrder->getNote(),
+                        'signature' => $billingOrder->getSignature(),
+                        'amount' => -$billingOrder->getAmount()];
                 }
                 $this->addParam("billingOrder", $billingOrder);
                 $this->addParam('req', $_SESSION['action_request']);

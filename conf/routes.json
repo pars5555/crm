@@ -1,4 +1,14 @@
 {
+    "backup": [
+        {
+            "action": "loads.main.main",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.backup.backup"
+                }
+            }
+        }
+    ],
     "warranty": [
         {
             "action": "loads.main.main",

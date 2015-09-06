@@ -16,7 +16,8 @@
             <li><a href="{SITE_PATH}/warehouse">Warehouse</a></li>
             <li><a href="{SITE_PATH}/product/list">Products</a></li>
             <li><a href="{SITE_PATH}/manufacturer/list">Manufacturers</a></li>
-            <li><a href="{SITE_PATH}/warranty">warranty</a></li>
+            <li><a href="{SITE_PATH}/warranty">Warranty</a></li>
+            <li><a href="{SITE_PATH}/backup">Backup/Restore</a></li>
         </ul>
     </div>
 </div>

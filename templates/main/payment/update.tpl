@@ -93,17 +93,21 @@
                 </div>
                 <label class="checkbox_label label" for="paidCheckbox">Paid</label>
             </div>
-    </div>
 
 
-    <div class="form-group">
-        <label class="label">Note</label>
-        <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
-    </div>
-    <input class="button blue" type="submit" value="Save"/>
-    <input type="hidden" name="id" value="{$ns.paymentOrder->getId()}"/>
-</form>
-{else}
-    Wrong Payment Order!
-{/if}
+            <div class="form-group">
+                <label class="label">Note</label>
+                <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
+            </div>
+            <input class="button blue" type="submit" value="Save"/>
+            <input type="hidden" name="id" value="{$ns.paymentOrder->getId()}"/>
+            <input type="hidden" name="signature" id="signature"/>
+        </form>
+        <div id="signatureContainer" style="width: 500px;border: 1px solid gray;color:#0f60a7">
+            <span class="hidden">{$ns.req.signature}</span>
+        </div>
+        <a class="button clearSignature" >Clear</a>
+    {else}
+        Wrong Payment Order!
+    {/if}
 </div>
