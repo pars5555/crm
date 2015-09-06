@@ -6,6 +6,11 @@ NGS.createLoad("crm.loads.main.payment.create", {
 
     },
     afterLoad: function () {
-      
+        $("#signatureContainer").jSignature();
+        $('.createPaymentOrder').submit(function () {
+            var signatureData = $("#signatureContainer").jSignature('getData', 'native');
+            $("#signature").val(JSON.stringify(signatureData));
+            return true;
+        });
     }
 });

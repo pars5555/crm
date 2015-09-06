@@ -88,6 +88,7 @@
             <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
         </div>
         <input class="button blue" type="submit" value="Save"/>
-
+        <input type="hidden" name="signature" id="signature"/>
     </form>
+        <div id="signatureContainer" style="width: 500px;border: 1px solid gray"></div>
 </div>
