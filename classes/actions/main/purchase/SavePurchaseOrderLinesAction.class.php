@@ -43,7 +43,7 @@ namespace crm\actions\main\purchase {
                 PurchaseOrderLineManager::getInstance()->deleteByField('purchase_order_id', $purchaseOrderId);
             }
             $_SESSION['success_message'] = 'Purchase Order lines successfully saved.';
-            $this->redirect('purchase/' . $purchaseOrderId);
+            $this->redirect('purchase/warranty/' . $purchaseOrderId);
         }
 
     }

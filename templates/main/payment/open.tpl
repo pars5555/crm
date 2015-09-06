@@ -78,6 +78,9 @@
             <a class="button blue" href="{SITE_PATH}/dyn/main_payment/do_restore_payment?id={$ns.payment->getId()}">
                 <span>Restore</span>
             </a>
+            <a class="button blue" href="{SITE_PATH}/dyn/main_payment/do_delete_payment?id={$ns.payment->getId()}">
+                <span>Delete</span>
+            </a>
         {/if}
     {/if}
 </div>

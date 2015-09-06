@@ -457,6 +457,10 @@ select::-ms-expand{
     color:#cc0000;
 }
 
+.button_icon .fa-exclamation-triangle{
+    color:#ff6600;
+}
+
 .button_icon .fa-pencil{
     color:#ffc000;
 }

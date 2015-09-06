@@ -43,7 +43,7 @@ namespace crm\actions\main\sale {
                 SaleOrderLineManager::getInstance()->deleteByField('sale_order_id', $saleOrderId);
             }
             $_SESSION['success_message'] = 'Sale Order lines successfully saved.';
-            $this->redirect('sale/' . $saleOrderId);
+            $this->redirect('sale/warranty/' . $saleOrderId);
         }
 
     }

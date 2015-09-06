@@ -29,7 +29,7 @@ namespace crm\actions\main\payment {
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            PaymentTransactionManager::getInstance()->updatePaymentOrder($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense,$paid, $note);
+            PaymentTransactionManager::getInstance()->updatePaymentOrder($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $note,$paid,$isExpense);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Payment Successfully updated!';
             $this->redirect('payment/' . $id);

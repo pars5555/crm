@@ -18,6 +18,7 @@
             <span class="table-cell"> Payment Method </span>
             <span class="table-cell"> Amount </span>
             <span class="table-cell"> Note </span>
+            <span class="table-cell"> Expense </span>
             <span class="table-cell"> Paid </span>
             <span class="table-cell"> View </span>
             <span class="table-cell"> Edit </span>
@@ -44,6 +45,12 @@
 
 
 
+                <span class=" table-cell view_item button_icon">
+                    {if $payment->getIsExpense() == 1}
+                        <i class="fa fa-exclamation-triangle"></i>
+                    {else}
+                    {/if}
+                </span>
                 <span class=" table-cell view_item button_icon">
                     {if $payment->getPaid() == 1}
                         <i class="fa fa-check"></i>

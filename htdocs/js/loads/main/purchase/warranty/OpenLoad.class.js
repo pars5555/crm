@@ -7,8 +7,9 @@ NGS.createLoad("crm.loads.main.purchase.warranty.open", {
     },
     afterLoad: function () {
         $('#submitForm').click(function () {
-            this.calculatePurchaseOrderLinesData();
-            $('#purchaseOrderLinesForm').trigger('submit');
+            if (this.calculatePurchaseOrderLinesData()) {
+                $('#purchaseOrderLinesForm').trigger('submit');
+            }
         }.bind(this));
 
         this.initAddRemovePolSnLine();
@@ -47,7 +48,24 @@ NGS.createLoad("crm.loads.main.purchase.warranty.open", {
             polSnRow.appendTo("#purchaseOrderLineSerialNumbersConteiner_" + pol_id);
         });
     },
+    checkNonAddedRowsThatContainsDate: function ()
+    {
+        var ret = true;
+        $('.snWarrantyNewLines').find('.sn').each(function () {
+            if ($(this).val().trim() != '')
+            {
+                ret = false;
+                $(this).focus();
+                return false;
+            }
+        });
+        return ret;
+    },
     calculatePurchaseOrderLinesData: function () {
+        if (this.checkNonAddedRowsThatContainsDate() === false)
+        {
+            return false;
+        }
         var ret = [];
         $('.purchaseOrderLineSerialNumbers').each(function () {
             var pol_id = $(this).attr('pol_id');
@@ -62,6 +80,7 @@ NGS.createLoad("crm.loads.main.purchase.warranty.open", {
             ret.push({'pol_id': pol_id, serial_numbers: pol_serial_numbers, warranty_months: pol_warranty_months});
         });
         $('#pols_serial_numbers').val(JSON.stringify(ret));
+        return true;
 
     }
 });

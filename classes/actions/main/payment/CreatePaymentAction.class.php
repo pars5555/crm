@@ -23,7 +23,7 @@ namespace crm\actions\main\payment {
 
         public function service() {
             try {
-                list($partnerId, $paymentMethodId, $currencyId, $amount, $date,$isExpense,$paid,  $note) = $this->getFormData();
+                list($partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense, $paid, $note) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
@@ -31,11 +31,11 @@ namespace crm\actions\main\payment {
             }
 
             $paymentTransactionManager = PaymentTransactionManager::getInstance();
-            $paymentId = $paymentTransactionManager->createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense,$paid,$note);
+            $paymentId = $paymentTransactionManager->createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date, $note, $paid,$isExpense);
 
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Payment Successfully created!';
-            $this->redirect('payment/'.$paymentId);
+            $this->redirect('payment/' . $paymentId);
         }
 
         private function getFormData() {
@@ -62,7 +62,7 @@ namespace crm\actions\main\payment {
             $currencyId = intval(NGS()->args()->currencyId);
             $amount = floatval(NGS()->args()->amount);
             $date = "$year-$month-$day $hour:$minute";
-            return array($partnerId, $paymentMethodId, $currencyId, $amount, $date,$isExpense, $paid, $note);
+            return array($partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense, $paid, $note);
         }
 
         private function validateFormData() {

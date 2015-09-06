@@ -24,6 +24,9 @@
                         <span>{$deal[1]->getDate()} </span>
                     {/if}
                 </a>
+                <a class="table-cell">
+                        <span>{$deal[1]->getNote()} </span>
+                </a>
                 <span class="table-cell">
                     {if $deal[0] == 'sale' || $deal[0] == 'purchase'}
                         {assign totalAmount $deal[1]->getTotalAmount()}

@@ -1,4 +1,5 @@
 <div class="container general--container" >
+    <script type="text/javascript" src="//google.com/jsapi"></script>
     <h1 class="main_title">General</h1>
     <div id="cashboxCalculationContainer">
         {nest ns=cashboxCalculation}

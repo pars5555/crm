@@ -81,7 +81,7 @@ namespace crm\managers {
             return false;
         }
 
-        public function createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense,$paid, $note) {
+        public function createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date, $note, $paid = true, $isExpense = false) {
             $partnerManager = PartnerManager::getInstance();
             $partner = $partnerManager->selectByPK($partnerId);
             if (empty($partner)) {
@@ -106,7 +106,7 @@ namespace crm\managers {
             return $this->insertDto($dto);
         }
 
-        public function updatePaymentOrder($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense, $paid, $note) {
+        public function updatePaymentOrder($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $note, $paid = true, $isExpense = false) {
             $partnerManager = PartnerManager::getInstance();
             $partner = $partnerManager->selectByPK($partnerId);
             if (empty($partner)) {
@@ -167,7 +167,7 @@ namespace crm\managers {
         }
 
         public function getNonCancelledPaymentOrdersByCurrency($date, $currencyId) {
-            return $this->mapper->getNonCancelledPaymentOrdersByCurrency($date,$currencyId);
+            return $this->mapper->getNonCancelledPaymentOrdersByCurrency($date, $currencyId);
         }
 
         public function getAllNonCancelledExpensePayments($startDate, $endDate) {
