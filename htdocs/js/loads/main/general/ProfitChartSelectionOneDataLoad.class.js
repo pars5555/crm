@@ -1,10 +1,12 @@
-NGS.createLoad("crm.loads.main.general.general", {
+NGS.createLoad("crm.loads.main.general.profit_chart_selection_one_data", {
     getContainer: function () {
-        return "initialLoad";
+        return "chartSelectionContainer";
     },
     onError: function (params) {
 
     },
     afterLoad: function () {
+
+
     }
 });

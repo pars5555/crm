@@ -16,24 +16,45 @@ NGS.createLoad("crm.loads.main.general.profit", {
 
     },
     initChart: function () {
-        google.setOnLoadCallback(function () {
-            var data = google.visualization.arrayToDataTable([
-                ['Task', 'Hours per Day'],
-                ['Work', 11],
-                ['Eat', 2],
-                ['Commute', 2],
-                ['Watch TV', 2],
-                ['Sleep', 7]
-            ]);
+        var chartData = jQuery.parseJSON($('#chartData').text());
+        var data = google.visualization.arrayToDataTable([
+            ['Task', 'Profit Chart'],
+            ['Profit Without Expenses', chartData.profit_without_expenses],
+            ['Payment Expenses', chartData.payment_expenses],
+            ['Sale Expenses', chartData.sale_expenses]
+        ]);
+        var options = {
+            title: 'Expenses',
+            width: 800,
+            height: 400,
+            is3D: true,
+            sliceVisibilityThreshold: 0
+        };
 
-            var options = {
-                title: 'My Daily Activities'
-            };
-
-            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-            chart.draw(data, options);
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        google.visualization.events.addListener(chart, 'select', function (event) {
+            var selection = chart.getSelection();
+            if (selection.length === 0)
+            {
+                return true;
+            }
+            var selectedPieIndex = parseInt(selection[0].row);
+            switch (selectedPieIndex) {
+                case 0:
+                    //'Profit Without Expenses'
+                    NGS.load('crm.loads.main.general.profit_chart_selection_one_data', {startDate: $('#startDate').val(), endDate: $('#endDate').val()});
+                    break;
+                case 1:
+                    //'Payment Expenses'
+                    NGS.load('crm.loads.main.general.profit_chart_selection_two_data', {startDate: $('#startDate').val(), endDate: $('#endDate').val()});
+                    break;
+                case 2:
+                    //'Sale Expenses'
+                    NGS.load('crm.loads.main.general.profit_chart_selection_three_data', {startDate: $('#startDate').val(), endDate: $('#endDate').val()});
+                    break;
+            }
         });
+        chart.draw(data, options);
 
     },
     getFromAndToDateParams: function () {

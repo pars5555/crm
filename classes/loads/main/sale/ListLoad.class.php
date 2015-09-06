@@ -26,7 +26,6 @@ namespace crm\loads\main\sale {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $this->addParam('payment_methods', PaymentMethodManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
-            $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
             $this->addParam('partners', PartnerManager::getInstance()->selectAdvance('*', [], ['name']));
             $this->addParam('products', ProductManager::getInstance()->selectAdvance('*', [], ['name']));
 

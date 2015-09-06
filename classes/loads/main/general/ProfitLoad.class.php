@@ -11,11 +11,13 @@
 
 namespace crm\loads\main\general {
 
-use crm\loads\NgsLoad;
-use crm\managers\PaymentTransactionManager;
-use crm\managers\SaleOrderLineManager;
-use crm\security\RequestGroups;
-use NGS;
+    use crm\loads\NgsLoad;
+    use crm\managers\CurrencyManager;
+    use crm\managers\PaymentTransactionManager;
+    use crm\managers\SaleOrderLineManager;
+    use crm\managers\SaleOrderManager;
+    use crm\security\RequestGroups;
+    use NGS;
 
     class ProfitLoad extends NgsLoad {
 
@@ -23,28 +25,29 @@ use NGS;
             list($startDate, $endDate) = $this->getFormData();
             $this->addParam('startDate', $startDate);
             $this->addParam('endDate', $endDate);
-
             $profit = SaleOrderLineManager::getInstance()->getTotalProfitSumInNonCancelledSaleOrders($startDate, $endDate);
             $expenseSaleOrderLineRowDtos = SaleOrderLineManager::getInstance()->getAllNonCancelledExpenseSaleOrders($startDate, $endDate);
             $expensePaymentDtos = PaymentTransactionManager::getInstance()->getAllNonCancelledExpensePayments($startDate, $endDate);
-            $expensesInMainCurrency = $this->calculateTotalExpense($expenseSaleOrderLineRowDtos, $expensePaymentDtos);
-            $profitIncludedExpensed = $profit - $expensesInMainCurrency;
+            list($saleExpensesInMainCurrency, $paymentExpensesInMainCurrency) = $this->calculateTotalExpense($expenseSaleOrderLineRowDtos, $expensePaymentDtos);
+            $profitIncludedExpensed = $profit - $saleExpensesInMainCurrency - $paymentExpensesInMainCurrency;
             $this->addParam("profit", $profitIncludedExpensed);
+            $this->addParam("chartData", json_encode(['profit_without_expenses' => $profit, 'payment_expenses' => $paymentExpensesInMainCurrency, 'sale_expenses' => $saleExpensesInMainCurrency]));
         }
 
         private function calculateTotalExpense($expenseSaleOrderLineRowDtos, $expensePaymentDtos) {
-            $total = 0;
+            $total1 = 0;
             foreach ($expenseSaleOrderLineRowDtos as $sol) {
                 $currencyRate = $sol->getCurrencyRate();
                 $totalInMainCurrency = floatval($sol->getQuantity()) * floatval($sol->getUnitPrice()) * floatval($currencyRate);
-                $total += $totalInMainCurrency;
+                $total1 += $totalInMainCurrency;
             }
+            $total2 = 0;
             foreach ($expensePaymentDtos as $expensePayment) {
                 $currencyRate = $expensePayment->getCurrencyRate();
                 $totalInMainCurrency = floatval($expensePayment->getAmount()) * floatval($currencyRate);
-                $total += $totalInMainCurrency;
+                $total2 += $totalInMainCurrency;
             }
-            return $total;
+            return array($total1, $total2);
         }
 
         private function getFormData() {
@@ -66,7 +69,7 @@ use NGS;
         }
 
         public function getTemplate() {
-            return NGS()->getTemplateDir() . "/main/general/profit.tpl";
+            return NGS()->getTemplateDir() . "/main/general/profit/profit.tpl";
         }
 
         public function getRequestGroup() {

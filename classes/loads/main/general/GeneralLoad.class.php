@@ -18,7 +18,6 @@ namespace crm\loads\main\general {
     class GeneralLoad extends NgsLoad {
 
         public function load() {
-            
         }
 
         public function getDefaultLoads() {

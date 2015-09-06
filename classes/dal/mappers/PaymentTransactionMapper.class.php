@@ -53,7 +53,7 @@ namespace crm\dal\mappers {
         public function getAllNonCancelledExpensePayments($startDate, $endDate) {
             $sql = "SELECT * FROM `%s` "
                     . "WHERE `cancelled` = 0 AND `is_expense` = 1 AND "
-                    . "`date`>='%s' AND `date`<=DATE_ADD('%s' ,INTERVAL 1 DAY)";
+                    . "`date`>='%s' AND `date`<=DATE_ADD('%s' ,INTERVAL 1 DAY) ORDER BY `date` DESC";
             $sqlQuery = sprintf($sql, $this->getTableName(), $startDate, $endDate);
             return $this->fetchRows($sqlQuery);
         }

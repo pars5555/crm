@@ -7,5 +7,12 @@ Profit:
     <div>
         Profit: {$ns.profit}
     </div>
-    <div id="piechart" style="width: 900px; height: 500px;"></div>
+    <div id="piechart" style="width: 800px; height: 400px;"></div>
+
+    <div id="chartData" class="hidden">{$ns.chartData}</div>
+    <input type="hidden" id="startDate" value="{$ns.startDate}"/>
+    <input type="hidden" id="endDate" value="{$ns.endDate}"/>
+
+    <div id="chartSelectionContainer">
+    </div>
 </div>
