@@ -13,7 +13,7 @@
             <div class="form-group">
                 <label class="label">Date</label>
                 {assign date null}
-                {if isset($ns.req.paymentDateYear)}
+                {if !empty($ns.req.purchaseOrderDateYear) && !empty($ns.req.purchaseOrderDateMonth) && !empty($ns.req.purchaseOrderDateDay)}
                     {assign date "`$ns.req.purchaseOrderDateYear`-`$ns.req.purchaseOrderDateMonth`-`$ns.req.purchaseOrderDateDay`"}
                 {/if}
                 {html_select_date prefix='purchaseOrderDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
