@@ -18,7 +18,7 @@
                 {/if}
                 {html_select_date prefix='paymentDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
                 {assign time null}
-                {if isset($ns.req.paymentTimeHour)}
+                {if !empty($ns.req.paymentTimeHour) && !empty($ns.req.paymentTimeHour)}
                     {assign time "`$ns.req.paymentTimeHour`:`$ns.req.paymentTimeMinute`"}
                 {/if}
                 {html_select_time prefix='paymentTime' display_seconds=false time=$time}
