@@ -1,10 +1,17 @@
-<div class="container partner--list--container">
-    <h1 class="main_title">{$ns.partner->getName()} All Deals</h1>
+<div class="container all--list--container">
+    <h1 class="main_title">All Deals</h1>
+    <div class="form-group">    
+        <label class="label">From </label>
+        {html_select_date prefix='startDate' start_year=2010 end_year=2020 field_order=YMD time=$ns.startDate}
+        <label class="label">To </label>
+        {html_select_date prefix='endDate' start_year=2010 end_year=2020 field_order=YMD time=$ns.endDate}
+    </div>
 
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell"> ID </span>
             <span class="table-cell"> Type </span>
+            <span class="table-cell"> Partner </span>
             <span class="table-cell"> Date </span>
             <span class="table-cell"> Note </span>
             <span class="table-cell"> Amount </span>
@@ -18,6 +25,9 @@
                 <a class="table-cell" href="{$SITE_PATH}/{$deal[0]}/{$deal[1]->getId()}" target="_blank">
                     <span>{$deal[0]} </span>
                 </a>
+                <a class="table-cell" href="{$SITE_PATH}/partner/{$deal[1]->getPartnerDto()->getId()}" target="_blank">
+                    <span>{$deal[1]->getPartnerDto()->getName()} </span>
+                </a>
                 <a class="table-cell">
                     {if $deal[0] == 'sale' || $deal[0] == 'purchase'}
                         <span>{$deal[1]->getOrderDate()} </span>
@@ -26,7 +36,7 @@
                     {/if}
                 </a>
                 <a class="table-cell">
-                        <span>{$deal[1]->getNote()} </span>
+                    <span>{$deal[1]->getNote()} </span>
                 </a>
                 <span class="table-cell">
                     {if $deal[0] == 'sale' || $deal[0] == 'purchase'}
@@ -46,15 +56,19 @@
 
                     {else}
                         <span class="price">
-                                {assign currencyDto $ns.currencies[$deal[1]->getCurrencyId()]}
-                                {if $currencyDto->getSymbolPosition() == 'left'}
-                                    {$currencyDto->getTemplateChar()}
-                                {/if}
+                            {assign currencyDto $ns.currencies[$deal[1]->getCurrencyId()]}
+                            {if $currencyDto->getSymbolPosition() == 'left'}
+                                {$currencyDto->getTemplateChar()}
+                            {/if}
+                            {if $deal[0] == 'billing'}
+                                {-$deal[1]->getAmount()|number_format:2}
+                            {else}
                                 {$deal[1]->getAmount()|number_format:2}
-                                {if $currencyDto->getSymbolPosition() == 'right'}
-                                    {$currencyDto->getTemplateChar()}
-                                {/if}
-                            </span>
+                            {/if}
+                            {if $currencyDto->getSymbolPosition() == 'right'}
+                                {$currencyDto->getTemplateChar()}
+                            {/if}
+                        </span>
                         <span> </span>
                     {/if}
                 </span>

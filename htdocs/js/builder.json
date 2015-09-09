@@ -68,6 +68,7 @@
                     "loads/main/purchase/CreateLoad.class.js",
                     "loads/main/purchase/UpdateLoad.class.js",
                     "loads/main/purchase/warranty/OpenLoad.class.js",
+                    "loads/main/all/IndexLoad.class.js",
                     "loads/main/manufacturer/ListLoad.class.js",
                     "loads/main/manufacturer/CreateLoad.class.js",
                     "loads/main/manufacturer/UpdateLoad.class.js",

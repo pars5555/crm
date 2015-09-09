@@ -11,7 +11,7 @@
         </header>
         <section class="wrapper">
             {include file="{getTemplateDir}/main/util/left_menu.tpl"}
-            <div class="content">
+            <div class="content" id="indexRightContent">
                 {nest ns=content}
             </div>
         </section>

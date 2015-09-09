@@ -1,4 +1,14 @@
 {
+    "all": [
+        {
+            "action": "loads.main.main",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.all.index"
+                }
+            }
+        }
+    ],
     "backup": [
         {
             "action": "loads.main.main",
