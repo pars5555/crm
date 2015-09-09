@@ -61,7 +61,7 @@
                                 {$currencyDto->getTemplateChar()}
                             {/if}
                             {if $deal[0] == 'billing'}
-                                {-$deal[1]->getAmount()|number_format:2}
+                                {(-$deal[1]->getAmount())|number_format:2}
                             {else}
                                 {$deal[1]->getAmount()|number_format:2}
                             {/if}
