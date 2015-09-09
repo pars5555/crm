@@ -28,16 +28,16 @@ namespace crm\loads\main\all {
             $this->addParam('endDate', $endDate);
             $partnerSaleOrders = AdvancedAbstractManager::mapDtosById(SaleOrderManager::getInstance()->getSaleOrdersFull(
                                     ['cancelled', '=', 0, 'AND', 'order_date', '>=', "'" . $startDate . "'", 'AND', 'order_date',
-                                '<=', "'" . $endDate . "'"], ['order_date'], 'DESC'));
+                                '<=', "DATE_ADD('$endDate' ,INTERVAL 1 DAY)"], ['order_date'], 'DESC'));
             $partnerPurchaseOrders = AdvancedAbstractManager::mapDtosById(PurchaseOrderManager::getInstance()->getPurchaseOrdersFull(
                                     ['cancelled', '=', 0, 'AND', 'order_date', '>=', "'" . $startDate . "'", 'AND', 'order_date',
-                                '<=', "'" . $endDate . "'"], ['order_date'], 'DESC'));
+                                '<=', "DATE_ADD('$endDate' ,INTERVAL 1 DAY)" ], ['order_date'], 'DESC'));
             $partnerPaymentTransactions = AdvancedAbstractManager::mapDtosById(PaymentTransactionManager::getInstance()->getPaymentListFull(
                                     ['cancelled', '=', 0, 'AND', 'amount', '>', 0, 'AND', 'date', '>=', "'" . $startDate . "'", 'AND', 'date',
-                                '<=', "'" . $endDate . "'"], ['date'], 'DESC'));
+                                '<=', "DATE_ADD('$endDate' ,INTERVAL 1 DAY)"], ['date'], 'DESC'));
             $partnerBillingTransactions = AdvancedAbstractManager::mapDtosById(PaymentTransactionManager::getInstance()->getPaymentListFull(
                                     ['cancelled', '=', 0, 'AND', 'amount', '<', 0, 'AND', 'date', '>=', "'" . $startDate . "'", 'AND', 'date',
-                                '<=', "'" . $endDate . "'"], ['date'], 'DESC'));
+                                '<=', "DATE_ADD('$endDate' ,INTERVAL 1 DAY)"], ['date'], 'DESC'));
             $sales = $this->mapByIdAndGivenField('sale_', 'order_date', $partnerSaleOrders);
             $purchases = $this->mapByIdAndGivenField('purchase_', 'order_date', $partnerPurchaseOrders);
             $paments = $this->mapByIdAndGivenField('payment_', 'date', $partnerPaymentTransactions);
