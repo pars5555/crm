@@ -55,7 +55,7 @@ NGS.createLoad("crm.loads.main.purchase.open", {
                 $("#purchaseOrderLineQuantity").css("display", "none").fadeIn(1000);
                 return;
             }
-            if (!(unit_price > 0))
+            if (!(unit_price >= 0))
             {
                 $('#purchaseOrderLineUnitPrice').focus();
                 $("#purchaseOrderLineUnitPrice").css("display", "none").fadeIn(1000);
