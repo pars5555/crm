@@ -12,11 +12,13 @@
 namespace crm\loads\main\general {
 
     use crm\loads\NgsLoad;
-    use crm\managers\CurrencyManager;
     use crm\managers\PaymentTransactionManager;
     use crm\managers\SaleOrderLineManager;
     use crm\managers\SaleOrderManager;
     use crm\security\RequestGroups;
+    use DateInterval;
+    use DatePeriod;
+    use DateTime;
     use NGS;
 
     class ProfitLoad extends NgsLoad {
@@ -32,6 +34,39 @@ namespace crm\loads\main\general {
             $profitIncludedExpensed = $profit - $saleExpensesInMainCurrency - $paymentExpensesInMainCurrency;
             $this->addParam("profit", $profitIncludedExpensed);
             $this->addParam("chartData", json_encode(['profit_without_expenses' => $profit, 'payment_expenses' => $paymentExpensesInMainCurrency, 'sale_expenses' => $saleExpensesInMainCurrency]));
+            $this->addParam("lineChartData", json_encode($this->prepareLineChartData($startDate, $endDate)));
+        }
+
+        private function prepareLineChartData($startDate, $endDate) {
+            $begin = new DateTime($startDate);
+            $end = (new DateTime($endDate))->modify('+1 day');
+
+            $interval = DateInterval::createFromDateString('1 day');
+            $period = new DatePeriod($begin, $interval, $end);
+            $ret = [];
+            foreach ($period as $dt) {
+                $ret[$dt->format("Y-m-d")] = [0, 0, 0];
+            }
+            $profitSaleOrders = SaleOrderManager::getInstance()->getSaleOrdersFull(['cancelled', '=', 0, 'AND', 'is_expense', '=', 0, 'AND', 'order_date', '>=', "'" . $startDate . "'", 'AND', 'order_date', '<=', "DATE_ADD('$endDate' ,INTERVAL 1 DAY)"], ['order_date'], 'DESC');
+            foreach ($profitSaleOrders as $profitSaleOrder) {
+                $oDate = new DateTime($profitSaleOrder->getOrderDate());
+                $sDate = $oDate->format("Y-m-d");
+                $ret[$sDate][0] = $profitSaleOrder->getTotalProfit();
+            }
+            $expenseSaleOrders = SaleOrderManager::getInstance()->getSaleOrdersFull(['cancelled', '=', 0, 'AND', 'is_expense', '=', 1, 'AND', 'order_date', '>=', "'" . $startDate . "'", 'AND', 'order_date', '<=', "DATE_ADD('$endDate' ,INTERVAL 1 DAY)"], ['order_date'], 'DESC');
+            foreach ($expenseSaleOrders as $expenseSaleOrder) {
+                $oDate = new DateTime($expenseSaleOrder->getOrderDate());
+                $sDate = $oDate->format("Y-m-d");
+                $ret[$sDate][1] = $expenseSaleOrder->getTotalAmountInMainCurrency();
+            }
+
+            $expensePaymentOrders = PaymentTransactionManager::getInstance()->getPaymentListFull(['cancelled', '=', 0, 'AND', 'is_expense', '=', 1, 'AND', 'date', '>=', "'" . $startDate . "'", 'AND', 'date', '<=', "DATE_ADD('$endDate' ,INTERVAL 1 DAY)"], ['date'], 'DESC');
+            foreach ($expensePaymentOrders as $expensePaymentOrder) {
+                $oDate = new DateTime($expensePaymentOrder->getDate());
+                $sDate = $oDate->format("Y-m-d");
+                $ret[$sDate][2] = $expensePaymentOrder->getAmount() * $expensePaymentOrder->getCurrencyRate();
+            }
+            return $ret;
         }
 
         private function calculateTotalExpense($expenseSaleOrderLineRowDtos, $expensePaymentDtos) {

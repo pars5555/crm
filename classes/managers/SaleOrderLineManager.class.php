@@ -49,12 +49,11 @@ namespace crm\managers {
             $saleOrderDto = SaleOrderManager::getInstance()->selectByPK($saleOrderId);
             $orderDate = $saleOrderDto->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
+            $dto->setCurrencyRate($rate);
             if ($saleOrderDto->getNonProfit() == 0) {
                 $profit = $quantity * ($unitPrice * $rate - $productUnitCostInBaseCurrency);
-                $dto->setCurrencyRate($rate);
                 $dto->setTotalProfit($profit);
             } else {
-                $dto->setCurrencyRate($rate);
                 $dto->setTotalProfit(0);
             }
             return $this->insertDto($dto);

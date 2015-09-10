@@ -35,6 +35,18 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function updateAllOrdersCurrencyRates() {
+            $allDtos = $this->selectAll();
+            foreach ($allDtos as $dto) {
+                $currencyId = $dto->getCurrencyId();
+                $date = $dto->getDate();
+                $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($date, $currencyId);
+                $dto->setCurrencyRate($rate);
+                $this->updateByPk($dto);
+            }
+            return count($allDtos);
+        }
+
         public function getPaymentListFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
             $partnerIds = array();

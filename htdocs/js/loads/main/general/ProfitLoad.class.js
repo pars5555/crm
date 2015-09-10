@@ -13,7 +13,38 @@ NGS.createLoad("crm.loads.main.general.profit", {
             NGS.load('crm.loads.main.general.profit', params);
         });
         this.initChart();
+        this.initChart2();
 
+    },
+    initChart2: function () {
+        var chartData = jQuery.parseJSON($('#lineChartData').text());
+        var chartDataFormatted = [];
+        chartDataFormatted.push(['Date', 'Sales', 'Sale Expenses', 'Payment Expenses']);
+        $.each(chartData, function (key, value) {
+            chartDataFormatted.push([new Date(key), value[0], value[1], value[2]]);
+        });
+        var kyz = Object.keys(chartData);
+        var data = google.visualization.arrayToDataTable(chartDataFormatted);
+
+        var options = {
+            title: 'Company Performance',
+            curveType: 'function',
+            // legend: {position: 'bottom'},
+            width: 800,
+            height: 400,
+            hAxis: {
+                format: 'yyyy-MM-dd',
+                title: 'Year End',
+                ticks: [
+                    new Date(kyz[0]),
+                    new Date(kyz[Math.round(kyz.length/3)]),
+                    new Date(kyz[Math.round(kyz.length/1.5)]),
+                    new Date(kyz[kyz.length-1])
+                ]
+            }
+        };
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+        chart.draw(data, options);
     },
     initChart: function () {
         var chartData = jQuery.parseJSON($('#chartData').text());

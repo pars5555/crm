@@ -45,7 +45,7 @@ namespace crm\managers {
             }
             return false;
         }
-        
+
         public function setBilled($id, $billed) {
             $saleOrderDto = $this->selectByPK($id);
             if (isset($saleOrderDto)) {
@@ -58,7 +58,7 @@ namespace crm\managers {
             }
             return false;
         }
-        
+
         public function setNonProfit($id, $nonProfit) {
             $nonProfit = intval($nonProfit);
             $saleOrderDto = $this->selectByPK($id);
@@ -69,7 +69,7 @@ namespace crm\managers {
                     $solDtos = SaleOrderLineManager::getInstance()->selectByField('sale_order_id', $id);
                     foreach ($solDtos as $solDto) {
                         SaleOrderLineManager::getInstance()->updateField($solDto->getId(), 'total_profit', 0);
-                    } 
+                    }
                 } else {
                     $this->recalculateProfit($id);
                 }
@@ -101,6 +101,21 @@ namespace crm\managers {
                 return true;
             }
             return false;
+        }
+
+        public function updateAllSaleOrderLinesCurrencyRates() {
+            $allSaleOrders = $this->getSaleOrdersFull();
+            foreach ($allSaleOrders as $saleOrder) {
+                $saleOrderLinesDtos = $saleOrder->getSaleOrderLinesDtos();
+                foreach ($saleOrderLinesDtos as $saleOrderLinesDto) {
+                    $orderDate = $saleOrder->getOrderDate();
+                    $currencyId = $saleOrderLinesDto->getCurrencyId();
+                    $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
+                    $saleOrderLinesDto->setCurrencyRate($rate);
+                    SaleOrderLineManager::getInstance()->updateByPK($saleOrderLinesDto);
+                }
+            }
+            return count($allSaleOrders);
         }
 
         public function createSaleOrder($partnerId, $date, $billingDeadlineDate, $isExpense, $note) {
@@ -156,20 +171,26 @@ namespace crm\managers {
             if (!empty($saleOrderIds)) {
                 $saleOrderLinesDtos = SaleOrderLineManager::getInstance()->getSaleOrderLinesFull(['sale_order_id', 'in', '(' . implode(',', $saleOrderIds) . ')']);
                 $amount = [];
+                $amountInMainCurrency = [];
                 $profits = [];
                 foreach ($saleOrderLinesDtos as $saleOrderLine) {
                     $saleOrderId = intval($saleOrderLine->getSaleOrderId());
                     $currencyId = intval($saleOrderLine->getCurrencyId());
+                    $currencyRate = floatval($saleOrderLine->getCurrencyRate());
                     $unitPrice = floatval($saleOrderLine->getUnitPrice());
                     $quantity = floatval($saleOrderLine->getQuantity());
                     $profit = floatval($saleOrderLine->getTotalProfit());
                     if (!array_key_exists($saleOrderId, $amount)) {
                         $amount[$saleOrderId] = [];
                     }
+                    if (!array_key_exists($saleOrderId, $amountInMainCurrency)) {
+                        $amountInMainCurrency[$saleOrderId] = 0;
+                    }
                     if (!array_key_exists($currencyId, $amount[$saleOrderId])) {
                         $amount[$saleOrderId][$currencyId] = 0;
                     }
                     $amount[$saleOrderId][$currencyId] += $unitPrice * $quantity;
+                    $amountInMainCurrency[$saleOrderId] += ($unitPrice * $quantity * $currencyRate);
                     if (!array_key_exists($saleOrderId, $profits)) {
                         $profits[$saleOrderId] = 0;
                     }
@@ -195,6 +216,7 @@ namespace crm\managers {
                 $row->setPartnerDto($partnerDtos[intval($row->getPartnerId())]);
                 $row->setSaleOrderLinesDtos($saleOrderLinesDtosMappedBySaleOrderId[$saleOrderId]);
                 $row->setTotalAmount($amount[$saleOrderId]);
+                $row->setTotalAmountInMainCurrency($amountInMainCurrency[$saleOrderId]);
                 $row->setTotalProfit($profits[$saleOrderId]);
             }
             return $rows;

@@ -21,7 +21,7 @@ namespace crm\loads\main\general {
 
         public function load() {
             list($startDate, $endDate) = [NGS()->args()->startDate, NGS()->args()->endDate];
-            $expensePaymentOrders = PaymentTransactionManager::getInstance()->getPaymentListFull(['cancelled', '=', 0, 'AND', 'is_expense', '=', 1, 'AND', 'date', '>=', "'" . $startDate . "'", 'AND', 'date', '<=', "'" . $endDate . "'"], ['date'], 'DESC');
+            $expensePaymentOrders = PaymentTransactionManager::getInstance()->getPaymentListFull(['cancelled', '=', 0, 'AND', 'is_expense', '=', 1, 'AND', 'date', '>=', "'" . $startDate . "'", 'AND', 'date', '<=', "DATE_ADD('$endDate' ,INTERVAL 1 DAY)"], ['date'], 'DESC');
             $this->addParam('currencies', CurrencyManager::getInstance()->mapDtosById(CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1])));
             $this->addParam("expensePaymentOrders", $expensePaymentOrders);
         }

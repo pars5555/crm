@@ -16,6 +16,7 @@ namespace crm\managers {
     use crm\managers\AdvancedAbstractManager;
     use crm\managers\CurrencyRateManager;
     use crm\managers\SettingManager;
+    use DateTime;
 
     class CurrencyRateManager extends AdvancedAbstractManager {
 
@@ -52,13 +53,27 @@ namespace crm\managers {
             return $this->getCurrencyRateByDate($date, $currencyId);
         }
 
+        public function getCurrencyRatesByDates($dates, $currencyId) {
+            $datesSql = "('" . implode("','", $dates) . "')";
+
+            $dtos = $this->selectAdvance('*', ['date', 'in', $datesSql]);
+            $rates = [];
+            foreach ($dtos as $dto) {
+                $rates [$dto->getDate()] = $dto;
+            }
+            $oDate = new DateTime($row->createdate);
+            $sDate = $oDate->format("Y-m-d H:i:s");
+        }
+
         public function getCurrencyRateByDate($date, $currencyId) {
             $currencyIso = CurrencyManager::getInstance()->selectByPK($currencyId)->getIso();
             if (strtolower($currencyIso) == strtolower(SettingManager::getInstance()->getSetting('main_currency_iso'))) {
                 return 1;
             }
-            $sqlStartDate = "DATE_SUB('$date',INTERVAL 15 DAY)";
-            $sqlEndDate = "'" . $date . "'";
+            $oDate = new DateTime($date);
+            $sDate = $oDate->format("Y-m-d");
+            $sqlStartDate = "DATE_SUB('$sDate',INTERVAL 15 DAY)";
+            $sqlEndDate = "DATE_ADD('$sDate',INTERVAL 1 DAY)";
             $sqlCurrencyIso = "'" . strtoupper($currencyIso) . "'";
             $rows = $this->selectAdvance('*', ['date', '>=', $sqlStartDate, 'AND', 'date', '<=', $sqlEndDate, 'AND', 'iso', '=', $sqlCurrencyIso], 'date', 'DESC');
             if (!empty($rows)) {
