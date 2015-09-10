@@ -103,8 +103,8 @@ namespace crm\managers {
             $productsPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductsPurchaseOrders($productIds);
             $productsSoldCount = SaleOrderLineManager::getInstance()->getProductsCountInNonCancelledSaleOrders($productIds);
             foreach ($productIds as $productId) {
-                $productPurchaseOrderLines = array_key_exists($productId, $productsPurchaseOrderLines)?$productsPurchaseOrderLines[$productId]:[];
-                $productSoldCount = array_key_exists($productId, $productsSoldCount)?$productsSoldCount[$productId]:0;
+                $productPurchaseOrderLines = array_key_exists($productId, $productsPurchaseOrderLines) ? $productsPurchaseOrderLines[$productId] : [];
+                $productSoldCount = array_key_exists($productId, $productsSoldCount) ? $productsSoldCount[$productId] : 0;
                 $notSoldProductsPurchaseOrderLines[$productId] = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
             }
             $product_calculation_method = SettingManager::getInstance()->getSetting('product_calculation_method');
@@ -112,12 +112,14 @@ namespace crm\managers {
             switch ($product_calculation_method) {
                 case 'max':
                     foreach ($productIds as $productId) {
-                        $ret[$productId] =  $this->findMaximumProductPriceInPurchaseOrderLines($notSoldProductsPurchaseOrderLines[$productId]);
+                        $ret[$productId] = $this->findMaximumProductPriceInPurchaseOrderLines($notSoldProductsPurchaseOrderLines[$productId]);
                     }
+                    break;
                 default:
-                     foreach ($productIds as $productId) {
-                        $ret[$productId] =  $this->calculateAverageProductPriceinPurchaseOrderLines($notSoldProductsPurchaseOrderLines[$productId]);
+                    foreach ($productIds as $productId) {
+                        $ret[$productId] = $this->calculateAverageProductPriceinPurchaseOrderLines($notSoldProductsPurchaseOrderLines[$productId]);
                     }
+                    break;
             }
             return $ret;
         }
@@ -154,7 +156,7 @@ namespace crm\managers {
                 $unitPrice = floatval($productPurchaseOrderLine->getUnitPrice());
                 $currencyRate = floatval($productPurchaseOrderLine->getCurrencyRate());
                 $quantity = floatval($productPurchaseOrderLine->getQuantity());
-                $sum += $unitPrice * $currencyRate;
+                $sum += $unitPrice * $currencyRate * $quantity;
                 $count += $quantity;
             }
             return $count > 0 ? $sum / $count : 0;
