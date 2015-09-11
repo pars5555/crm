@@ -16,7 +16,6 @@ namespace crm\actions\main\purchase {
 
     use crm\actions\BaseAction;
     use crm\managers\PurchaseOrderLineManager;
-    use crm\managers\PurchaseOrderLineSerialNumberManager;
     use NGS;
 
     class SavePurchaseOrderLinesAction extends BaseAction {
@@ -29,16 +28,20 @@ namespace crm\actions\main\purchase {
             $purchaseOrderId = intval(NGS()->args()->purchase_order_id);
             if (isset(NGS()->args()->lines)) {
                 $jsonLinesArray = NGS()->args()->lines;
-                PurchaseOrderLineManager::getInstance()->deleteByField('purchase_order_id', $purchaseOrderId);
+                $linesIdsToNotDelete = [];
                 if (!empty($jsonLinesArray)) {
                     foreach ($jsonLinesArray as $jsonLine) {
                         $line = json_decode($jsonLine);
-                        $newLineId = PurchaseOrderLineManager::getInstance()->createPurchaseOrderLine($purchaseOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
                         if (isset($line->line_id)) {
-                            PurchaseOrderLineSerialNumberManager::getInstance()->replaceLineId($line->line_id, $newLineId);
+                            $linesIdsToNotDelete[] = $line->line_id;
+                            PurchaseOrderLineManager::getInstance()->updatePurchaseOrderLine($line->line_id, $purchaseOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
+                        } else {
+                            $newLineId = PurchaseOrderLineManager::getInstance()->createPurchaseOrderLine($purchaseOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
+                            $linesIdsToNotDelete[] = $newLineId;
                         }
                     }
                 }
+                PurchaseOrderLineManager::getInstance()->deleteWhereIdNotIdIds($purchaseOrderId, $linesIdsToNotDelete);
             } else {
                 PurchaseOrderLineManager::getInstance()->deleteByField('purchase_order_id', $purchaseOrderId);
             }

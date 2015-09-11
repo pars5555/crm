@@ -35,14 +35,7 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function replaceLineId($oldLineId, $newLineId) {
-            $dtos = $this->selectByField('line_id', $oldLineId);
-            foreach ($dtos as $dto) {
-                $dto->setLineId($newLineId);
-                $this->updateByPk($dto);
-            }
-            return true;
-        }
+      
 
         public function setPurchaseOrderListSerialNumbers($polId, $serialNumbers, $warrantyMonths) {
             $this->deleteByField("line_id", $polId);

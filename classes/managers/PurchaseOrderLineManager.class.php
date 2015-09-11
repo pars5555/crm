@@ -54,6 +54,28 @@ namespace crm\managers {
             return $rows;
         }
 
+        public function deleteWhereIdNotIdIds($purchaseOrderId, $ids) {
+            $dtos = $this->selectByField('purchase_order_id', $purchaseOrderId);
+            foreach ($dtos as $dto) {
+                if (!in_array($dto->getId(), $ids)) {
+                    $this->deleteByPK($dto->getId());
+                }
+            }
+            return true;
+        }
+
+        public function updatePurchaseOrderLine($id, $purchaseOrderId, $productId, $quantity, $unitPrice, $currencyId) {
+            $dto = $this->selectByPK($id);
+            $dto->setProductId($productId);
+            $dto->setQuantity($quantity);
+            $dto->setUnitPrice($unitPrice);
+            $dto->setCurrencyId($currencyId);
+            $orderDate = PurchaseOrderManager::getInstance()->selectByPK($purchaseOrderId)->getOrderDate();
+            $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
+            $dto->setCurrencyRate($rate);
+            return $this->updateByPk($dto);
+        }
+
         public function createPurchaseOrderLine($purchaseOrderId, $productId, $quantity, $unitPrice, $currencyId) {
             $dto = $this->createDto();
             $dto->setPurchaseOrderId($purchaseOrderId);
@@ -95,7 +117,7 @@ namespace crm\managers {
             }
             $allPurchaseOrdersIds = array_unique($allPurchaseOrdersIds);
             $idsSql = '(' . implode(',', $allPurchaseOrdersIds) . ')';
-            $pos = PurchaseOrderManager::getInstance()->selectAdvance('*', ['id', 'IN', $idsSql], null,  null, null, null, true);
+            $pos = PurchaseOrderManager::getInstance()->selectAdvance('*', ['id', 'IN', $idsSql], null, null, null, null, true);
 
 
             foreach ($poIdsMappedByProductId as &$r) {

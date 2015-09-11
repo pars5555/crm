@@ -35,6 +35,29 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function updateSaleOrderLine($saleOrderId, $id, $productId, $quantity, $unitPrice, $currencyId) {
+            $unitPrice = floatval($unitPrice);
+            $quantity = floatval($quantity);
+            $dto = $this->selectByPK($id);
+            $dto->setProductId($productId);
+            $dto->setQuantity($quantity);
+            $dto->setUnitPrice($unitPrice);
+            $dto->setCurrencyId($currencyId);
+            $productUnitCostInBaseCurrency = floatval(ProductManager::getInstance()->calculateProductCost($productId));
+            $dto->setUnitCost($productUnitCostInBaseCurrency);
+            $saleOrderDto = SaleOrderManager::getInstance()->selectByPK($saleOrderId);
+            $orderDate = $saleOrderDto->getOrderDate();
+            $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
+            $dto->setCurrencyRate($rate);
+            if ($saleOrderDto->getNonProfit() == 0) {
+                $profit = $quantity * ($unitPrice * $rate - $productUnitCostInBaseCurrency);
+                $dto->setTotalProfit($profit);
+            } else {
+                $dto->setTotalProfit(0);
+            }
+            return $this->updateByPk($dto);
+        }
+
         public function createSaleOrderLine($saleOrderId, $productId, $quantity, $unitPrice, $currencyId) {
             $unitPrice = floatval($unitPrice);
             $quantity = floatval($quantity);

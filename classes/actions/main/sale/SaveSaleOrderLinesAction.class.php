@@ -16,7 +16,6 @@ namespace crm\actions\main\sale {
 
     use crm\actions\BaseAction;
     use crm\managers\SaleOrderLineManager;
-    use crm\managers\SaleOrderLineSerialNumberManager;
     use NGS;
 
     class SaveSaleOrderLinesAction extends BaseAction {
@@ -29,16 +28,20 @@ namespace crm\actions\main\sale {
             $saleOrderId = intval(NGS()->args()->sale_order_id);
             if (isset(NGS()->args()->lines)) {
                 $jsonLinesArray = NGS()->args()->lines;
-                SaleOrderLineManager::getInstance()->deleteByField('sale_order_id', $saleOrderId);
+                $linesIdsToNotDelete = [];
                 if (!empty($jsonLinesArray)) {
                     foreach ($jsonLinesArray as $jsonLine) {
                         $line = json_decode($jsonLine);
-                        $newLineId = SaleOrderLineManager::getInstance()->createSaleOrderLine($saleOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
                         if (isset($line->line_id)) {
-                            SaleOrderLineSerialNumberManager::getInstance()->replaceLineId($line->line_id, $newLineId);
+                            $linesIdsToNotDelete[] = $line->line_id;
+                            SaleOrderLineManager::getInstance()->updateSaleOrderLine($line->line_id, $saleOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
+                        } else {
+                            $newLineId = SaleOrderLineManager::getInstance()->createSaleOrderLine($saleOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
+                            $linesIdsToNotDelete[] = $newLineId;
                         }
                     }
                 }
+                SaleOrderLineManager::getInstance()->deleteWhereIdNotIdIds($saleOrderId, $linesIdsToNotDelete);
             } else {
                 SaleOrderLineManager::getInstance()->deleteByField('sale_order_id', $saleOrderId);
             }
