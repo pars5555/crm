@@ -34,7 +34,7 @@ namespace crm\actions\main\sale {
                         $line = json_decode($jsonLine);
                         if (isset($line->line_id)) {
                             $linesIdsToNotDelete[] = $line->line_id;
-                            SaleOrderLineManager::getInstance()->updateSaleOrderLine($line->line_id, $saleOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
+                            SaleOrderLineManager::getInstance()->updateSaleOrderLine($saleOrderId, $line->line_id, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
                         } else {
                             $newLineId = SaleOrderLineManager::getInstance()->createSaleOrderLine($saleOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
                             $linesIdsToNotDelete[] = $newLineId;

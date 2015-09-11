@@ -34,7 +34,7 @@ namespace crm\actions\main\purchase {
                         $line = json_decode($jsonLine);
                         if (isset($line->line_id)) {
                             $linesIdsToNotDelete[] = $line->line_id;
-                            PurchaseOrderLineManager::getInstance()->updatePurchaseOrderLine($line->line_id, $purchaseOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
+                            PurchaseOrderLineManager::getInstance()->updatePurchaseOrderLine($purchaseOrderId, $line->line_id, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
                         } else {
                             $newLineId = PurchaseOrderLineManager::getInstance()->createPurchaseOrderLine($purchaseOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
                             $linesIdsToNotDelete[] = $newLineId;
