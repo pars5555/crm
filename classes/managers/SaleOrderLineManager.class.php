@@ -111,7 +111,7 @@ namespace crm\managers {
             return $rows;
         }
 
-        public function getProductCountInNonCancelledSaleOrders($productId, $exceptSaleOrderId) {
+        public function getProductCountInNonCancelledSaleOrders($productId, $exceptSaleOrderId = 0) {
             return $this->mapper->getProductCountInNonCancelledSaleOrders($productId, $exceptSaleOrderId);
         }
 

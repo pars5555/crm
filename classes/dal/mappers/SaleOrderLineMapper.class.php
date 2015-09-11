@@ -45,7 +45,7 @@ namespace crm\dal\mappers {
         public function getProductCountInNonCancelledSaleOrders($productId, $exceptSaleOrderId) {
             $sql = "SELECT SUM(quantity) AS `product_qty` FROM `%s` INNER JOIN  "
                     . " `sale_orders` ON `sale_order_id` = `sale_orders`.`id` "
-                    . "WHERE `sale_orders`.`cancelled` = 0 AND `sale_orders`.`id`!=:soId product_id=:id";
+                    . "WHERE `sale_orders`.`cancelled` = 0 AND `sale_orders`.`id`!=:soId AND product_id=:id";
             $sqlQuery = sprintf($sql, $this->getTableName());
             $qty = $this->fetchField($sqlQuery, 'product_qty', array("soId" => $exceptSaleOrderId, "id" => $productId));
             return isset($qty) ? floatval($qty) : 0;
