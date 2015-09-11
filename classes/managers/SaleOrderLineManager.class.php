@@ -35,6 +35,16 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function deleteWhereIdNotIdIds($saleOrderId, $ids) {
+            $dtos = $this->selectByField('sale_order_id', $saleOrderId);
+            foreach ($dtos as $dto) {
+                if (!in_array($dto->getId(), $ids)) {
+                    $this->deleteByPK($dto->getId());
+                }
+            }
+            return true;
+        }
+
         public function updateSaleOrderLine($saleOrderId, $id, $productId, $quantity, $unitPrice, $currencyId) {
             $unitPrice = floatval($unitPrice);
             $quantity = floatval($quantity);
