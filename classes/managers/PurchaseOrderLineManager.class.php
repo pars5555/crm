@@ -64,7 +64,7 @@ namespace crm\managers {
             return true;
         }
 
-        public function updatePurchaseOrderLine($purchaseOrderId,$id, $productId, $quantity, $unitPrice, $currencyId) {
+        public function updatePurchaseOrderLine($purchaseOrderId, $id, $productId, $quantity, $unitPrice, $currencyId) {
             $dto = $this->selectByPK($id);
             $dto->setProductId($productId);
             $dto->setQuantity($quantity);
