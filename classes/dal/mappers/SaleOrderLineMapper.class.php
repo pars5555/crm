@@ -42,12 +42,12 @@ namespace crm\dal\mappers {
             return $this->tableName;
         }
 
-        public function getProductCountInNonCancelledSaleOrders($productId) {
+        public function getProductCountInNonCancelledSaleOrders($productId, $exceptSaleOrderId) {
             $sql = "SELECT SUM(quantity) AS `product_qty` FROM `%s` INNER JOIN  "
                     . " `sale_orders` ON `sale_order_id` = `sale_orders`.`id` "
-                    . "WHERE `sale_orders`.`cancelled` = 0 AND product_id=:id";
+                    . "WHERE `sale_orders`.`cancelled` = 0 AND `sale_orders`.`id`!=:soId product_id=:id";
             $sqlQuery = sprintf($sql, $this->getTableName());
-            $qty = $this->fetchField($sqlQuery, 'product_qty', array("id" => $productId));
+            $qty = $this->fetchField($sqlQuery, 'product_qty', array("soId" => $exceptSaleOrderId, "id" => $productId));
             return isset($qty) ? floatval($qty) : 0;
         }
 
@@ -84,7 +84,7 @@ namespace crm\dal\mappers {
             $profitSum = $this->fetchField($sqlQuery, 'profit');
             return isset($profitSum) ? floatval($profitSum) : 0;
         }
-        
+
         public function getAllNonCancelledExpenseSaleOrders($startDate, $endDate) {
             $sql = "SELECT * FROM `%s` INNER JOIN  "
                     . " `sale_orders` ON `sale_order_id` = `sale_orders`.`id` "

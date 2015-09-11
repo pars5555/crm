@@ -124,17 +124,21 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function calculateProductCost($productId) {
+        public function calculateProductCost($productId, $productSaleQty, $saleOrderId = 0) {
+            $ret = [];
             $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId);
-            $productSoldCount = intval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId));
-            $notSoldProductPurchaseOrderLines = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
-            $product_calculation_method = SettingManager::getInstance()->getSetting('product_calculation_method');
-            switch ($product_calculation_method) {
-                case 'max':
-                    return $this->findMaximumProductPriceInPurchaseOrderLines($notSoldProductPurchaseOrderLines);
-                default:
-                    return $this->calculateAverageProductPriceinPurchaseOrderLines($notSoldProductPurchaseOrderLines);
+            for ($i = 0; $i < $productSaleQty; $i++) {
+                $productSoldCount = intval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId, $saleOrderId));
+                $notSoldProductPurchaseOrderLines = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
+                $product_calculation_method = SettingManager::getInstance()->getSetting('product_calculation_method');
+                switch ($product_calculation_method) {
+                    case 'max':
+                        $ret [] = $this->findMaximumProductPriceInPurchaseOrderLines($notSoldProductPurchaseOrderLines);
+                    default:
+                        $ret [] = $this->calculateAverageProductPriceinPurchaseOrderLines($notSoldProductPurchaseOrderLines);
+                }
             }
+            return $ret;
         }
 
         private function findMaximumProductPriceInPurchaseOrderLines($productPurchaseOrderLines) {

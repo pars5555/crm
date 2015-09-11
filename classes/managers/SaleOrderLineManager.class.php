@@ -53,14 +53,14 @@ namespace crm\managers {
             $dto->setQuantity($quantity);
             $dto->setUnitPrice($unitPrice);
             $dto->setCurrencyId($currencyId);
-            $productUnitCostInBaseCurrency = floatval(ProductManager::getInstance()->calculateProductCost($productId));
-            $dto->setUnitCost($productUnitCostInBaseCurrency);
+            $productUnitCostInBaseCurrency = floatval(ProductManager::getInstance()->calculateProductCost($productId, $quantity, $saleOrderId));
+            $dto->setUnitCost(json_encode($productUnitCostInBaseCurrency));
             $saleOrderDto = SaleOrderManager::getInstance()->selectByPK($saleOrderId);
             $orderDate = $saleOrderDto->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
             if ($saleOrderDto->getNonProfit() == 0) {
-                $profit = $quantity * ($unitPrice * $rate - $productUnitCostInBaseCurrency);
+                $profit = $quantity * $unitPrice * $rate - array_sum($productUnitCostInBaseCurrency) * $rate;
                 $dto->setTotalProfit($profit);
             } else {
                 $dto->setTotalProfit(0);
@@ -77,14 +77,14 @@ namespace crm\managers {
             $dto->setQuantity($quantity);
             $dto->setUnitPrice($unitPrice);
             $dto->setCurrencyId($currencyId);
-            $productUnitCostInBaseCurrency = floatval(ProductManager::getInstance()->calculateProductCost($productId));
-            $dto->setUnitCost($productUnitCostInBaseCurrency);
+            $productUnitCostInBaseCurrency = floatval(ProductManager::getInstance()->calculateProductCost($productId, $quantity));
+            $dto->setUnitCost(json_encode($productUnitCostInBaseCurrency));
             $saleOrderDto = SaleOrderManager::getInstance()->selectByPK($saleOrderId);
             $orderDate = $saleOrderDto->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
             if ($saleOrderDto->getNonProfit() == 0) {
-                $profit = $quantity * ($unitPrice * $rate - $productUnitCostInBaseCurrency);
+                $profit = $quantity * $unitPrice * $rate - array_sum($productUnitCostInBaseCurrency) * $rate;
                 $dto->setTotalProfit($profit);
             } else {
                 $dto->setTotalProfit(0);
@@ -111,8 +111,8 @@ namespace crm\managers {
             return $rows;
         }
 
-        public function getProductCountInNonCancelledSaleOrders($productId) {
-            return $this->mapper->getProductCountInNonCancelledSaleOrders($productId);
+        public function getProductCountInNonCancelledSaleOrders($productId, $exceptSaleOrderId) {
+            return $this->mapper->getProductCountInNonCancelledSaleOrders($productId, $exceptSaleOrderId);
         }
 
         public function getProductsCountInNonCancelledSaleOrders($productId) {
