@@ -129,13 +129,15 @@ namespace crm\managers {
             $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId);
             for ($i = 0; $i < $productSaleQty; $i++) {
                 $productSoldCount = intval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId, $saleOrderId));
-                $notSoldProductPurchaseOrderLines = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
+                $notSoldProductPurchaseOrderLines = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount + $i);
                 $product_calculation_method = SettingManager::getInstance()->getSetting('product_calculation_method');
                 switch ($product_calculation_method) {
                     case 'max':
-                        $ret [] = $this->findMaximumProductPriceInPurchaseOrderLines($notSoldProductPurchaseOrderLines);
+                        $ret[] = $this->findMaximumProductPriceInPurchaseOrderLines($notSoldProductPurchaseOrderLines);
+                        break;
                     default:
-                        $ret [] = $this->calculateAverageProductPriceinPurchaseOrderLines($notSoldProductPurchaseOrderLines);
+                        $ret[] = $this->calculateAverageProductPriceinPurchaseOrderLines($notSoldProductPurchaseOrderLines);
+                        break;
                 }
             }
             return $ret;

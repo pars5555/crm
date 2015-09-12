@@ -53,7 +53,7 @@ namespace crm\managers {
             $dto->setQuantity($quantity);
             $dto->setUnitPrice($unitPrice);
             $dto->setCurrencyId($currencyId);
-            $productUnitCostInBaseCurrency = floatval(ProductManager::getInstance()->calculateProductCost($productId, $quantity, $saleOrderId));
+            $productUnitCostInBaseCurrency = ProductManager::getInstance()->calculateProductCost($productId, $quantity, $saleOrderId);
             $dto->setUnitCost(json_encode($productUnitCostInBaseCurrency));
             $saleOrderDto = SaleOrderManager::getInstance()->selectByPK($saleOrderId);
             $orderDate = $saleOrderDto->getOrderDate();
