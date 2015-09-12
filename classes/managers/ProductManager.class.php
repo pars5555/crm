@@ -127,6 +127,7 @@ namespace crm\managers {
         public function calculateProductCost($productId, $productSaleQty, $saleOrderId = 0) {
             $ret = [];
             $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId);
+            $productPurchaseOrderLines = $this->mapDtosById($productPurchaseOrderLines);
             for ($i = 0; $i < $productSaleQty; $i++) {
                 $productSoldCount = intval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId, $saleOrderId));
                 $notSoldProductPurchaseOrderLines = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount + $i);
@@ -170,7 +171,8 @@ namespace crm\managers {
 
         private function subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount) {
             foreach ($productPurchaseOrderLines as $productPurchaseOrderLine) {
-                $quantity = floatval($productPurchaseOrderLine->getQuantity());
+                $findMaxProductPriceLine = $this->findMaxProductPriceLine($productPurchaseOrderLines);
+                $quantity = floatval($productPurchaseOrderLines[$findMaxProductPriceLine]->getQuantity());
                 if ($quantity >= $productSoldCount) {
                     $productPurchaseOrderLine->setQuantity($quantity - $productSoldCount);
                     break;
@@ -186,6 +188,24 @@ namespace crm\managers {
                 }
             }
             return $ret;
+        }
+
+        private function findMaxProductPriceLine($productPurchaseOrderLines) {
+            $maxProductPrice = 0;
+            $maxProductPriceLineId = 0;
+            foreach ($productPurchaseOrderLines as $lineId => $dto) {
+                if ($dto->getQuantity() == 0) {
+                    continue;
+                }
+                $unitPrice = floatval($dto->getUnitPrice());
+                $currencyRate = floatval($dto->getCurrencyRate());
+                $productPriceInMainCurrency = $unitPrice * $currencyRate;
+                if ($productPriceInMainCurrency > $maxProductPrice) {
+                    $maxProductPrice = $productPriceInMainCurrency;
+                    $maxProductPriceLineId = $lineId;
+                }
+            }
+            return $maxProductPriceLineId;
         }
 
     }
