@@ -14,10 +14,11 @@
  *
  */
 namespace ngs\framework {
-	use \ngs\framework\exception\NoAccessException;
+	use \ngs\framework\exceptions\NoAccessException;
 	abstract class AbstractLoad extends AbstractRequest {
 
 		protected $params = array();
+    protected $parentParams = array();
 		private $jsonParam = array();
 		private $load_name = "";
 		private $isNestedLoad = false;
@@ -93,7 +94,7 @@ namespace ngs\framework {
 			$loadObj->initialize();
 			$allowLoad = false;
 			if (NGS()->getSessionManager()->validateRequest($loadObj) === false) {
-				$loadObj->onNoAccess("User hasn't access to the load: ".$actionArr["action"]);
+			  throw new NoAccessException("User hasn't access to the load: ".$actionArr["action"]);
 			}
 
 			$loadObj->service();
@@ -105,6 +106,8 @@ namespace ngs\framework {
 				$this->params["inc"] = array();
 			}
 			$this->setNestedLoadParams($namespace, $loadArr["action"], $loadObj);
+      $this->params = array_merge($this->getParams(), $loadObj->getParentParams());
+      
 		}
 
 		protected function setNestedLoadParams($namespace, $fileNs, $loadObj) {
@@ -131,6 +134,21 @@ namespace ngs\framework {
 			$this->params[$name] = $value;
 
 		}
+    
+    /**
+     * this method add template varialble
+     *
+     * @abstract
+     * @access public
+     * @param String $name
+     * @param mixed $value
+     *
+     * @return void
+     */
+    protected final function addParentParam($name, $value) {
+      $this->parentParams[$name] = $value;
+
+    }
 
 		/**
 		 * this method add json varialble
@@ -156,6 +174,18 @@ namespace ngs\framework {
 		public function getParams() {
 			return $this->params;
 		}
+    
+    /**
+     * Return params array
+     * @abstract
+     * @access public
+     *
+     * @return array|params
+     */
+    protected function getParentParams() {
+      return $this->parentParams;
+
+    }
 
 		/**
 		 * Return json params array
@@ -246,8 +276,7 @@ namespace ngs\framework {
 		 * @param boolean $paramie
 		 * @return integer|babyclass
 		 */
-		public function onNoAccess($msg = "") {
-			throw new NoAccessException($msg);
+		public function onNoAccess() {
 		}
 
 		/**

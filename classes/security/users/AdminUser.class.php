@@ -16,8 +16,10 @@
 
 namespace crm\security\users {
 
-    use \crm\security\UserGroups;
-    use \crm\managers\users\UserManager;
+    use crm\managers\users\UserManager;
+    use crm\security\UserGroups;
+    use ngs\framework\exceptions\InvalidUserException;
+    use ngs\framework\security\users\NgsUser;
 
     class AdminUser extends NgsUser {
 
@@ -60,7 +62,7 @@ namespace crm\security\users {
             if (UserManager::getInstance()->validate($this->getId(), $this->getUniqueId(), "admin")) {
                 return true;
             }
-            throw new \ngs\framework\exceptions\InvalidUserException("wrong user");
+            throw new InvalidUserException("wrong user");
         }
 
     }

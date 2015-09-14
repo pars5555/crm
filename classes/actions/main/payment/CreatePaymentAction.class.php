@@ -23,7 +23,7 @@ namespace crm\actions\main\payment {
 
         public function service() {
             try {
-                list($partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense, $paid, $note,$signature) = $this->getFormData();
+                list($partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense, $paid, $note, $signature) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
@@ -31,7 +31,7 @@ namespace crm\actions\main\payment {
             }
 
             $paymentTransactionManager = PaymentTransactionManager::getInstance();
-            $paymentId = $paymentTransactionManager->createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date, $note, $signature ,$paid,$isExpense);
+            $paymentId = $paymentTransactionManager->createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date, $note, $signature, $paid, $isExpense);
 
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Payment Successfully created!';
@@ -52,36 +52,19 @@ namespace crm\actions\main\payment {
             if (isset(NGS()->args()->paid)) {
                 $paid = 1;
             }
-            $year = intval(NGS()->args()->paymentDateYear);
-            $month = intval(NGS()->args()->paymentDateMonth);
-            $day = intval(NGS()->args()->paymentDateDay);
-            $hour = intval(NGS()->args()->paymentTimeHour);
-            $minute = intval(NGS()->args()->paymentTimeMinute);
             $partnerId = intval(NGS()->args()->partnerId);
             $paymentMethodId = intval(NGS()->args()->paymentMethodId);
             $currencyId = intval(NGS()->args()->currencyId);
             $amount = floatval(NGS()->args()->amount);
-            $signature= NGS()->args()->signature;
-            $date = "$year-$month-$day $hour:$minute";
-            return array($partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense, $paid, $note,$signature);
+            $signature = NGS()->args()->signature;
+            $date = NGS()->args()->date;
+            return array($partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense, $paid, $note, $signature);
         }
 
         private function validateFormData() {
-            if (empty(NGS()->args()->paymentDateYear)) {
+            if (empty(NGS()->args()->date)) {
                 throw new RedirectException('payment/create', "Invalid Date.");
-            }
-            if (empty(NGS()->args()->paymentDateMonth)) {
-                throw new RedirectException('payment/create', "Invalid Date.");
-            }
-            if (empty(NGS()->args()->paymentDateDay)) {
-                throw new RedirectException('payment/create', "Invalid Date.");
-            }
-            if (empty(NGS()->args()->paymentTimeHour)) {
-                throw new RedirectException('payment/create', "Invalid Time.");
-            }
-            if (empty(NGS()->args()->paymentTimeMinute)) {
-                throw new RedirectException('payment/create', "Invalid Time.");
-            }
+            }           
             if (!isset(NGS()->args()->partnerId) || !is_numeric(NGS()->args()->partnerId) || NGS()->args()->partnerId <= 0) {
                 throw new RedirectException('payment/create', "Invalid Partner.");
             }

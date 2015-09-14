@@ -204,6 +204,16 @@ class NGS {
     }
     return $this->getRootDirByModule($ns) . "/" . CLASSES_DIR;
   }
+  
+  public function getDataDir($ns = null) {
+    if ($ns == "") {
+      if ($this->getModuleName() != null) {
+        $ns = $this->getModuleName();
+      }
+    }
+    return $this->getRootDirByModule($ns) . "/" . DATA_DIR;
+
+  }
 
   public function getNgsRoutesFile() {
     return json_decode(file_get_contents($this->getRootDirByModule($_prefix) . "/" . CONF_DIR . "/config_" . $this->getShortEnvironment() . ".json"));

@@ -103,6 +103,17 @@ namespace crm\managers {
             return false;
         }
 
+        public function updateAllSaleOrdersProfit() {
+            $allSaleOrders = $this->getSaleOrdersFull(['cancelled', '=', 0], 'order_date', 'ASC');
+            foreach ($allSaleOrders as $saleOrder) {
+                $saleOrderLinesDtos = $saleOrder->getSaleOrderLinesDtos();
+                foreach ($saleOrderLinesDtos as $saleOrderLinesDto) {
+                    SaleOrderLineManager::getInstance()->updateSaleOrderLine($saleOrder->getId(), $saleOrderLinesDto->getId(), $saleOrderLinesDto->getProductId(), $saleOrderLinesDto->getQuantity(), $saleOrderLinesDto->getUnitPrice(), $saleOrderLinesDto->getCurrencyId());
+                }
+            }
+            return true;
+        }
+
         public function updateAllSaleOrderLinesCurrencyRates() {
             $allSaleOrders = $this->getSaleOrdersFull();
             foreach ($allSaleOrders as $saleOrder) {

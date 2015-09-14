@@ -11,17 +11,12 @@
     {if isset($ns.paymentOrder)}
         <form class="updatePaymentOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_payment/do_update_payment">
             <div class="form-group">
-                <label class="label">Payment Date</label>
-                {assign date null}
-                {if !empty($ns.req.paymentDateYear) && !empty($ns.req.paymentDateMonth) && !empty($ns.req.paymentDateDay)}
-                    {assign date "`$ns.req.paymentDateYear`-`$ns.req.paymentDateMonth`-`$ns.req.paymentDateDay`"}
+                <label class="label">Date</label>
+                {assign date $smarty.now|date_format:"%Y-%m-%d %H:%M"}
+                {if !empty($ns.req.date)}
+                    {assign date $ns.req.date}
                 {/if}
-                {html_select_date prefix='paymentDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
-                {assign time null}
-                {if !empty($ns.req.paymentTimeHour) && !empty($ns.req.paymentTimeHour)}
-                    {assign time "`$ns.req.paymentTimeHour`:`$ns.req.paymentTimeMinute`"}
-                {/if}
-                {html_select_time prefix='paymentTime' display_seconds=false time=$time}
+                <input class="datetimepicker" name ='date' type="text" value="{$date}"/>
             </div>
             <div class="form-group">
                 <label class="label">Partner</label>

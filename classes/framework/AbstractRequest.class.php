@@ -90,7 +90,7 @@ namespace ngs\framework {
 		 * @param boolean $paramie
 		 * @return integer|babyclass
 		 */
-		public function onNoAccess($msg = "") {
+		public function onNoAccess() {
 			return false;
 		}
 

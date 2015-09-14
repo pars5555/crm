@@ -29,7 +29,7 @@ namespace crm\actions\main\sale {
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            SaleOrderManager::getInstance()->updateSaleOrder($id, $partnerId, $date, $billingDeadlineDate,$isExpense, $note);
+            SaleOrderManager::getInstance()->updateSaleOrder($id, $partnerId, $date, $billingDeadlineDate, $isExpense, $note);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Sale Order Successfully updated!';
             $this->redirect('sale/' . $id);
@@ -46,17 +46,9 @@ namespace crm\actions\main\sale {
             if (isset(NGS()->args()->isExpense)) {
                 $isExpense = 1;
             }
-            $year = intval(NGS()->args()->saleOrderDateYear);
-            $month = intval(NGS()->args()->saleOrderDateMonth);
-            $day = intval(NGS()->args()->saleOrderDateDay);
-            $hour = intval(NGS()->args()->saleOrderTimeHour);
-            $minute = intval(NGS()->args()->saleOrderTimeMinute);
             $partnerId = intval(NGS()->args()->partnerId);
-            $billingDeadlineYear = intval(NGS()->args()->billingDeadlineDateYear);
-            $billingDeadlineMonth = intval(NGS()->args()->billingDeadlineDateMonth);
-            $billingDeadlineDay = intval(NGS()->args()->billingDeadlineDateDay);
-            $date = "$year-$month-$day $hour:$minute";
-            $billingDeadlineDate = "$billingDeadlineYear-$billingDeadlineMonth-$billingDeadlineDay";
+            $date = NGS()->args()->order_date;
+            $billingDeadlineDate = NGS()->args()->billing_deadline;
             return array($id, $partnerId, $date, $billingDeadlineDate, $isExpense, $note);
         }
 
@@ -64,31 +56,13 @@ namespace crm\actions\main\sale {
             if (!isset(NGS()->args()->id) || !is_numeric(NGS()->args()->id) || NGS()->args()->id <= 0) {
                 throw new RedirectException('sale/list' . NGS()->args()->id, "Invalid Sale Order.");
             }
-            if (empty(NGS()->args()->saleOrderDateYear)) {
+            if (empty(NGS()->args()->order_date)) {
                 throw new RedirectException('sale/edit/' . NGS()->args()->id, "Invalid Date.");
-            }
-            if (empty(NGS()->args()->saleOrderDateMonth)) {
-                throw new RedirectException('sale/edit/' . NGS()->args()->id, "Invalid Date.");
-            }
-            if (empty(NGS()->args()->saleOrderDateDay)) {
-                throw new RedirectException('sale/edit/' . NGS()->args()->id, "Invalid Date.");
-            }
-            if (empty(NGS()->args()->saleOrderTimeHour)) {
-                throw new RedirectException('sale/edit/' . NGS()->args()->id, "Invalid Time.");
-            }
-            if (empty(NGS()->args()->saleOrderTimeMinute)) {
-                throw new RedirectException('sale/edit/' . NGS()->args()->id, "Invalid Time.");
             }
             if (!isset(NGS()->args()->partnerId) || !is_numeric(NGS()->args()->partnerId) || NGS()->args()->partnerId <= 0) {
                 throw new RedirectException('sale/edit/' . NGS()->args()->id, "Invalid Partner.");
             }
-            if (empty(NGS()->args()->billingDeadlineDateYear)) {
-                throw new RedirectException('sale/edit' . NGS()->args()->id, "Invalid Payment Date.");
-            }
-            if (empty(NGS()->args()->billingDeadlineDateMonth)) {
-                throw new RedirectException('sale/edit' . NGS()->args()->id, "Invalid Payment Date.");
-            }
-            if (empty(NGS()->args()->billingDeadlineDateDay)) {
+            if (empty(NGS()->args()->billing_deadline)) {
                 throw new RedirectException('sale/edit' . NGS()->args()->id, "Invalid Payment Date.");
             }
         }

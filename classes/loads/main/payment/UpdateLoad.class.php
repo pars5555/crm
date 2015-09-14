@@ -30,14 +30,8 @@ namespace crm\loads\main\payment {
             $paymentOrder = PaymentTransactionManager::getInstance()->selectByPK($id);
             if ($paymentOrder) {
                 if (!isset($_SESSION['action_request'])) {
-                    $date = $paymentOrder->getDate();
-                    list($paymentDateYear, $paymentDateMonth, $paymentDateDay, $paymentTimeHour, $paymentTimeMinute) = $this->separateDateTime($date);
                     $_SESSION['action_request'] = [
-                        'paymentDateYear' => $paymentDateYear,
-                        'paymentDateMonth' => $paymentDateMonth,
-                        'paymentDateDay' => $paymentDateDay,
-                        'paymentTimeHour' => $paymentTimeHour,
-                        'paymentTimeMinute' => $paymentTimeMinute,
+                        'date' => $this->cutSecondsFromDateTime($paymentOrder->getDate()),
                         'partnerId' => $paymentOrder->getPartnerId(),
                         'billingMethodId' => $paymentOrder->getPaymentMethodId(),
                         'currencyId' => $paymentOrder->getCurrencyId(),
@@ -59,14 +53,12 @@ namespace crm\loads\main\payment {
             }
         }
 
-        private function separateDateTime($date) {
+        private function cutSecondsFromDateTime($date) {
             if ($date != 0) {
                 $d = DateTime::createFromFormat("Y-m-d H:i:s", $date);
-                if ($d !== false) {
-                    return [$d->format("Y"), $d->format("m"), $d->format("d"), $d->format("H"), $d->format("i")];
-                }
+                return $d->format('Y-m-d H:i');
             }
-            return [null, null, null, 0, 0];
+            return null;
         }
 
         public function getTemplate() {

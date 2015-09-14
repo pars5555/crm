@@ -13,11 +13,25 @@
 namespace ngs\framework\exceptions {
 	class NgsErrorException extends \Exception {
 
-		public function __construct($msg="", $code=-1, $params=array()) {
+		public function __construct() {
+			$argv = func_get_args();
+			switch( func_num_args() ) {
+				default :
+					return;
+					break;
+				case 1 :
+					$code = -1;
+					$msg = $argv[0];
+					break;
+				case 2 :
+					$code = $argv[0];
+					$msg = $argv[1];
+					break;
+			}
 			NGS()->getTemplateEngine()->assignJson("status", "error");
 			NGS()->getTemplateEngine()->assignJson("code", $code);
 			NGS()->getTemplateEngine()->assignJson("msg", $msg);
-      NGS()->getTemplateEngine()->assignJson("params", $params);
+                        var_dump($msg);exit;
 			NGS()->getTemplateEngine()->display();exit;
 		}
 	}

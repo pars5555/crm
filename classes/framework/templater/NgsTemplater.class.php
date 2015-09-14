@@ -140,7 +140,7 @@ namespace ngs\framework\templater {
         $arr["status"] = "ok";
       }
       if ($arr["status"] == "error") {
-        header("HTTP/1.0 205 Wrong Parameter");
+        header("HTTP/1.0 400 BAD REQUEST");
         if (isset($arr["code"])) {
           $jsonArr["code"] = $arr["code"];
         }

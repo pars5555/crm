@@ -19,6 +19,7 @@
                     "tooltipster/themes/tooltipster-noir.css",
                     "tooltipster/themes/tooltipster-punk.css",
                     "tooltipster/themes/tooltipster-shadow.css",
+                    "jquery.datetimepicker.css",
                     "chosen.min.css"
                 ]
             }

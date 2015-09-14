@@ -11,14 +11,14 @@
 
 namespace crm\loads\main\sale {
 
-use crm\loads\NgsLoad;
-use crm\managers\PartnerManager;
-use crm\managers\PaymentMethodManager;
-use crm\managers\SaleOrderManager;
-use crm\managers\SettingManager;
-use crm\security\RequestGroups;
-use DateTime;
-use NGS;
+    use crm\loads\NgsLoad;
+    use crm\managers\PartnerManager;
+    use crm\managers\PaymentMethodManager;
+    use crm\managers\SaleOrderManager;
+    use crm\managers\SettingManager;
+    use crm\security\RequestGroups;
+    use DateTime;
+    use NGS;
 
     class UpdateLoad extends NgsLoad {
 
@@ -29,23 +29,13 @@ use NGS;
             $saleOrder = SaleOrderManager::getInstance()->selectByPK($id);
             if ($saleOrder) {
                 if (!isset($_SESSION['action_request'])) {
-                    $orderDate = $saleOrder->getOrderDate();
-                    list($saleOrderDateYear, $saleOrderDateMonth, $saleOrderDateDay, $saleOrderTimeHour, $saleOrderTimeMinute) = $this->separateDateTime($orderDate);
-                    $billingDeadlineDate = $saleOrder->getBillingDeadline();
-                    list($billingDeadlineDateYear, $billingDeadlineDateMonth, $billingDeadlineDateDay) = $this->separateDate($billingDeadlineDate);
                     $_SESSION['action_request'] = [
-                        'saleOrderDateYear' => $saleOrderDateYear,
-                        'saleOrderDateMonth' => $saleOrderDateMonth,
-                        'saleOrderDateDay' => $saleOrderDateDay,
-                        'saleOrderTimeHour' => $saleOrderTimeHour,
-                        'saleOrderTimeMinute' => $saleOrderTimeMinute,
-                        'billingDeadlineDateYear' => $billingDeadlineDateYear,
-                        'billingDeadlineDateMonth' => $billingDeadlineDateMonth,
-                        'billingDeadlineDateDay' => $billingDeadlineDateDay,
+                        'order_date' => $this->cutSecondsFromDateTime($saleOrder->getOrderDate()),
+                        'billing_deadline' => $saleOrder->getBillingDeadline(),
                         'partnerId' => $saleOrder->getPartnerId(),
                         'note' => $saleOrder->getNote(),
                         'isExpense' => $saleOrder->getIsExpense()
-                            ];
+                    ];
                 }
                 $this->addParam("saleOrder", $saleOrder);
                 $this->addParam('req', $_SESSION['action_request']);
@@ -56,24 +46,12 @@ use NGS;
             }
         }
 
-        private function separateDate($date) {
-            if ($date != 0) {
-                $d = DateTime::createFromFormat("Y-m-d", $date);
-                if ($d !== false) {
-                    return [$d->format("Y"), $d->format("m"), $d->format("d")];
-                }
-            }
-            return [null, null, null];
-        }
-
-        private function separateDateTime($date) {
+        private function cutSecondsFromDateTime($date) {
             if ($date != 0) {
                 $d = DateTime::createFromFormat("Y-m-d H:i:s", $date);
-                if ($d !== false) {
-                    return [$d->format("Y"), $d->format("m"), $d->format("d"), $d->format("H"), $d->format("i")];
-                }
+                return $d->format('Y-m-d H:i');
             }
-            return [null, null, null, 0, 0];
+            return null;
         }
 
         public function getTemplate() {

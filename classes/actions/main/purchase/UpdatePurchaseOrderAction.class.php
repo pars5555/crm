@@ -42,50 +42,24 @@ namespace crm\actions\main\purchase {
             if (isset(NGS()->args()->note)) {
                 $note = NGS()->args()->note;
             }
-            
-            $year = intval(NGS()->args()->purchaseOrderDateYear);
-            $month = intval(NGS()->args()->purchaseOrderDateMonth);
-            $day = intval(NGS()->args()->purchaseOrderDateDay);
-            $hour = intval(NGS()->args()->purchaseOrderTimeHour);
-            $minute = intval(NGS()->args()->purchaseOrderTimeMinute);
             $partnerId = intval(NGS()->args()->partnerId);
-            $paymentDeadlineYear = intval(NGS()->args()->paymentDeadlineDateYear);
-            $paymentDeadlineMonth = intval(NGS()->args()->paymentDeadlineDateMonth);
-            $paymentDeadlineDay = intval(NGS()->args()->paymentDeadlineDateDay);
-            $date = "$year-$month-$day $hour:$minute";
-            $paymentDeadlineDate = "$paymentDeadlineYear-$paymentDeadlineMonth-$paymentDeadlineDay";
-            return array($id, $partnerId, $date, $paymentDeadlineDate,  $note);
+            $date = NGS()->args()->order_date;
+            $paymentDeadlineDate = NGS()->args()->payment_deadline;
+            return array($id, $partnerId, $date, $paymentDeadlineDate, $note);
         }
 
         private function validateFormData() {
             if (!isset(NGS()->args()->id) || !is_numeric(NGS()->args()->id) || NGS()->args()->id <= 0) {
                 throw new RedirectException('sale/list' . NGS()->args()->id, "Invalid Purchase Order.");
             }
-            if (empty(NGS()->args()->purchaseOrderDateYear)) {
+            if (empty(NGS()->args()->order_date)) {
                 throw new RedirectException('purchase/edit/' . NGS()->args()->id, "Invalid Date.");
             }
-            if (empty(NGS()->args()->purchaseOrderDateMonth)) {
-                throw new RedirectException('purchase/edit/' . NGS()->args()->id, "Invalid Date.");
-            }
-            if (empty(NGS()->args()->purchaseOrderDateDay)) {
-                throw new RedirectException('purchase/edit/' . NGS()->args()->id, "Invalid Date.");
-            }
-            if (empty(NGS()->args()->purchaseOrderTimeHour)) {
-                throw new RedirectException('purchase/edit/' . NGS()->args()->id, "Invalid Time.");
-            }
-            if (empty(NGS()->args()->purchaseOrderTimeMinute)) {
-                throw new RedirectException('purchase/edit/' . NGS()->args()->id, "Invalid Time.");
-            }
+
             if (!isset(NGS()->args()->partnerId) || !is_numeric(NGS()->args()->partnerId) || NGS()->args()->partnerId <= 0) {
                 throw new RedirectException('purchase/edit/' . NGS()->args()->id, "Invalid Partner.");
             }
-            if (empty(NGS()->args()->paymentDeadlineDateYear)) {
-                throw new RedirectException('purchase/edit' . NGS()->args()->id, "Invalid Payment Date.");
-            }
-            if (empty(NGS()->args()->paymentDeadlineDateMonth)) {
-                throw new RedirectException('purchase/edit' . NGS()->args()->id, "Invalid Payment Date.");
-            }
-            if (empty(NGS()->args()->paymentDeadlineDateDay)) {
+            if (empty(NGS()->args()->payment_deadline)) {
                 throw new RedirectException('purchase/edit' . NGS()->args()->id, "Invalid Payment Date.");
             }
         }

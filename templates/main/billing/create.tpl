@@ -10,18 +10,13 @@
 
     <form class="createBillingOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_billing/do_create_billing">
         <div class="form-group">
-            <label class="label">Billing Date</label>
-            {assign date null}
-            {if isset($ns.req.billingDateYear)}
-                {assign date "`$ns.req.billingDateYear`-`$ns.req.billingDateMonth`-`$ns.req.billingDateDay`"}
-            {/if}
-            {html_select_date prefix='billingDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
-            {assign time null}
-            {if isset($ns.req.billingTimeHour)}
-                {assign time "`$ns.req.billingTimeHour`:`$ns.req.billingTimeMinute`"}
-            {/if}
-            {html_select_time prefix='billingTime' display_seconds=false time=$time}
-        </div>
+                <label class="label">Date</label>
+                {assign date $smarty.now|date_format:"%Y-%m-%d %H:%M"}
+                {if !empty($ns.req.date)}
+                    {assign date $ns.req.date}
+                {/if}
+                <input class="datetimepicker" name ='date' type="text" value="{$date}"/>
+            </div>
         <div class="form-group">
             <label class="label">Partner</label>
             <select name="partnerId" data-autocomplete="true">

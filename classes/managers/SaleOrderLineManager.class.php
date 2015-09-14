@@ -60,12 +60,22 @@ namespace crm\managers {
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
             if ($saleOrderDto->getNonProfit() == 0) {
-                $profit = $quantity * $unitPrice * $rate - array_sum($productUnitCostInBaseCurrency) * $rate;
+                $profit = $quantity * $unitPrice * $rate - $this->calculateProductTotalCost($productUnitCostInBaseCurrency);
                 $dto->setTotalProfit($profit);
             } else {
                 $dto->setTotalProfit(0);
             }
             return $this->updateByPk($dto);
+        }
+
+        private function calculateProductTotalCost($productUnitCostInBaseCurrency) {
+            $ret = 0;
+            foreach ($productUnitCostInBaseCurrency as $pair) {
+                $qty = floatval($pair[0]);
+                $unitPrice = floatval($pair[1]);
+                $ret +=$qty * $unitPrice;
+            }
+            return $ret;
         }
 
         public function createSaleOrderLine($saleOrderId, $productId, $quantity, $unitPrice, $currencyId) {
@@ -84,7 +94,7 @@ namespace crm\managers {
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
             if ($saleOrderDto->getNonProfit() == 0) {
-                $profit = $quantity * $unitPrice * $rate - array_sum($productUnitCostInBaseCurrency) * $rate;
+                $profit = $quantity * $unitPrice * $rate - $this->calculateProductTotalCost($productUnitCostInBaseCurrency);
                 $dto->setTotalProfit($profit);
             } else {
                 $dto->setTotalProfit(0);
@@ -111,8 +121,8 @@ namespace crm\managers {
             return $rows;
         }
 
-        public function getProductCountInNonCancelledSaleOrders($productId, $exceptSaleOrderId = 0) {
-            return $this->mapper->getProductCountInNonCancelledSaleOrders($productId, $exceptSaleOrderId);
+        public function getProductCountInNonCancelledSaleOrders($productId, $exceptSaleOrderId = 0, $dateBefore = null) {
+            return $this->mapper->getProductCountInNonCancelledSaleOrders($productId, $exceptSaleOrderId, $dateBefore);
         }
 
         public function getProductsCountInNonCancelledSaleOrders($productId) {

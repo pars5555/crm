@@ -29,22 +29,11 @@ namespace crm\loads\main\purchase {
             $purchaseOrder = PurchaseOrderManager::getInstance()->selectByPK($id);
             if ($purchaseOrder) {
                 if (!isset($_SESSION['action_request'])) {
-                    $orderDate = $purchaseOrder->getOrderDate();
-                    list($purchaseOrderDateYear, $purchaseOrderDateMonth, $purchaseOrderDateDay, $purchaseOrderTimeHour, $purchaseOrderTimeMinute) = $this->separateDateTime($orderDate);
-                    $paymentDeadlineDate = $purchaseOrder->getPaymentDeadline();
-                    list($paymentDeadlineDateYear, $paymentDeadlineDateMonth, $paymentDeadlineDateDay) = $this->separateDate($paymentDeadlineDate);
                     $_SESSION['action_request'] = [
-                        'purchaseOrderDateYear' => $purchaseOrderDateYear,
-                        'purchaseOrderDateMonth' => $purchaseOrderDateMonth,
-                        'purchaseOrderDateDay' => $purchaseOrderDateDay,
-                        'purchaseOrderTimeHour' => $purchaseOrderTimeHour,
-                        'purchaseOrderTimeMinute' => $purchaseOrderTimeMinute,
-                        'paymentDeadlineDateYear' => $paymentDeadlineDateYear,
-                        'paymentDeadlineDateMonth' => $paymentDeadlineDateMonth,
-                        'paymentDeadlineDateDay' => $paymentDeadlineDateDay,
+                        'order_date' => $this->cutSecondsFromDateTime($purchaseOrder->getOrderDate()),
+                        'payment_deadline' => $purchaseOrder->getPaymentDeadline(),
                         'partnerId' => $purchaseOrder->getPartnerId(),
                         'note' => $purchaseOrder->getNote()
-                        
                     ];
                 }
                 $this->addParam("purchaseOrder", $purchaseOrder);
@@ -56,24 +45,12 @@ namespace crm\loads\main\purchase {
             }
         }
 
-        private function separateDate($date) {
-            if ($date != 0) {
-                $d = DateTime::createFromFormat("Y-m-d", $date);
-                if ($d !== false) {
-                    return [$d->format("Y"), $d->format("m"), $d->format("d")];
-                }
-            }
-            return [null, null, null];
-        }
-
-        private function separateDateTime($date) {
+        private function cutSecondsFromDateTime($date) {
             if ($date != 0) {
                 $d = DateTime::createFromFormat("Y-m-d H:i:s", $date);
-                if ($d !== false) {
-                    return [$d->format("Y"), $d->format("m"), $d->format("d"), $d->format("H"), $d->format("i")];
-                }
+                return $d->format('Y-m-d H:i');
             }
-            return [null, null, null, 0, 0];
+            return null;
         }
 
         public function getTemplate() {

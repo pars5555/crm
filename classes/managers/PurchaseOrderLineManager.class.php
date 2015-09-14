@@ -94,8 +94,8 @@ namespace crm\managers {
             return $this->mapper->getProductCountInNonCancelledPurchaseOrders($productId);
         }
 
-        public function getNonCancelledProductPurchaseOrders($productId) {
-            return $this->mapper->getNonCancelledProductPurchaseOrders($productId);
+        public function getNonCancelledProductPurchaseOrders($productId, $date = null) {
+            return $this->mapper->getNonCancelledProductPurchaseOrders($productId, $date);
         }
 
         public function getNonCancelledProductsPurchaseOrders($productIds) {

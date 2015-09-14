@@ -30,14 +30,8 @@ use NGS;
             $billingOrder = PaymentTransactionManager::getInstance()->selectByPK($id);
             if ($billingOrder) {
                 if (!isset($_SESSION['action_request'])) {
-                    $date = $billingOrder->getDate();
-                    list($billingDateYear, $billingDateMonth, $billingDateDay, $billingTimeHour, $billingTimeMinute) = $this->separateDateTime($date);
                     $_SESSION['action_request'] = [
-                        'billingDateYear' => $billingDateYear,
-                        'billingDateMonth' => $billingDateMonth,
-                        'billingDateDay' => $billingDateDay,
-                        'paymentTimeHour' => $billingTimeHour,
-                        'paymentTimeMinute' => $billingTimeMinute,
+                        'date' => $this->cutSecondsFromDateTime($billingOrder->getDate()),
                         'partnerId' => $billingOrder->getPartnerId(),
                         'paymentMethodId' => $billingOrder->getPaymentMethodId(),
                         'currencyId' => $billingOrder->getCurrencyId(),
@@ -56,14 +50,12 @@ use NGS;
             }
         }
 
-        private function separateDateTime($date) {
+        private function cutSecondsFromDateTime($date) {
             if ($date != 0) {
                 $d = DateTime::createFromFormat("Y-m-d H:i:s", $date);
-                if ($d !== false) {
-                    return [$d->format("Y"), $d->format("m"), $d->format("d"), $d->format("H"), $d->format("i")];
-                }
+                return $d->format('Y-m-d H:i');
             }
-            return [null, null, null, 0, 0];
+            return null;
         }
 
         public function getTemplate() {

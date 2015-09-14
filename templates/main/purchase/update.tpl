@@ -1,6 +1,6 @@
 <div class="container purchase--create--container">
     <h1 class="main_title">Create Purchase Order</h1>
-    
+
     {if isset($ns.error_message)}
         {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
@@ -12,16 +12,11 @@
         <form class="updatePurchaseOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_purchase/do_update_purchase_order">
             <div class="form-group">
                 <label class="label">Date</label>
-                {assign date null}
-                {if !empty($ns.req.purchaseOrderDateYear) && !empty($ns.req.purchaseOrderDateMonth) && !empty($ns.req.purchaseOrderDateDay)}
-                    {assign date "`$ns.req.purchaseOrderDateYear`-`$ns.req.purchaseOrderDateMonth`-`$ns.req.purchaseOrderDateDay`"}
+                {assign order_date $smarty.now|date_format:"%Y-%m-%d %H:%M"}
+                {if !empty($ns.req.order_date)}
+                    {assign order_date $ns.req.order_date}
                 {/if}
-                {html_select_date prefix='purchaseOrderDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
-                {assign time null}
-                {if isset($ns.req.paymentTimeHour)}
-                    {assign time "`$ns.req.purchaseOrderTimeHour`:`$ns.req.purchaseOrderTimeMinute`"}
-                {/if}
-                {html_select_time prefix='purchaseOrderTime' display_seconds=false time=$time}
+                <input class="datetimepicker" name ='order_date' type="text" value="{$order_date}"/>
             </div>
             <div class="form-group">
                 <label class="label">Partner</label>
@@ -38,14 +33,14 @@
                 </select>
             </div>
             <div class="form-group">
-                <label class="label">Date</label>
-                {assign date null}
-                {if !empty($ns.req.paymentDeadlineDateYear) && !empty($ns.req.paymentDeadlineDateMonth) && !empty($ns.req.paymentDeadlineDateDay)}
-                    {assign date "`$ns.req.paymentDeadlineDateYear`-`$ns.req.paymentDeadlineDateMonth`-`$ns.req.paymentDeadlineDateDay`"}
+                <label class="label">Payment Deadline</label>
+                {assign payment_deadline "+1 month"|date_format:'%Y-%m-%d'}
+                {if !empty($ns.req.payment_deadline)}
+                    {assign payment_deadline $ns.req.payment_deadline}
                 {/if}
-                {html_select_date prefix='paymentDeadlineDate' start_year=2010 end_year=2020 field_order=YMD time=$date}
+                <input class="datepicker" name ='payment_deadline' type="text" value="{$payment_deadline}"/>
             </div>
-            
+
     </div>
 
     <div class="form-group">

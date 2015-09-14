@@ -13,6 +13,7 @@
 namespace crm\managers {
 
     use crm\dal\mappers\ProductMapper;
+    use ngs\framework\exceptions\NgsErrorException;
 
     class ProductManager extends AdvancedAbstractManager {
 
@@ -91,11 +92,11 @@ namespace crm\managers {
         public function calculateProductQuantityInStock($productId) {
             $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId);
             $productSoldCount = intval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId));
-            $notSoldProductPurchaseOrderLines = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
             $ret = 0;
-            foreach ($notSoldProductPurchaseOrderLines as $productPurchaseOrderLine) {
+            foreach ($productPurchaseOrderLines as $productPurchaseOrderLine) {
                 $ret += floatval($productPurchaseOrderLine->getQuantity());
             }
+            $ret -= $productSoldCount;
             return $ret;
         }
 
@@ -125,59 +126,71 @@ namespace crm\managers {
         }
 
         public function calculateProductCost($productId, $productSaleQty, $saleOrderId = 0) {
-            $ret = [];
-            $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId);
+            $date = null;
+            if ($saleOrderId > 0) {
+                $so = SaleOrderManager::getInstance()->selectByPK($saleOrderId);
+                if (!$so) {
+                    throw new NgsErrorException('Sale Order does not exist! id: ' . $saleOrderId);
+                }
+                $date = $so->getOrderDate();
+            }
+            $this->calculationProductId = $productId;
+            $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId, $date);
             $productPurchaseOrderLines = $this->mapDtosById($productPurchaseOrderLines);
-            for ($i = 0; $i < $productSaleQty; $i++) {
-                $productSoldCount = intval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId, $saleOrderId));
-                $notSoldProductPurchaseOrderLines = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount + $i);
-                $product_calculation_method = SettingManager::getInstance()->getSetting('product_calculation_method');
-                switch ($product_calculation_method) {
-                    case 'max':
-                        $ret[] = $this->findMaximumProductPriceInPurchaseOrderLines($notSoldProductPurchaseOrderLines);
-                        break;
-                    default:
-                        $ret[] = $this->calculateAverageProductPriceinPurchaseOrderLines($notSoldProductPurchaseOrderLines);
-                        break;
+            $productSoldCount = intval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId, $saleOrderId, $date));
+            $profit_calculation_method = SettingManager::getInstance()->getSetting('profit_calculation_method');
+            $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount, $profit_calculation_method);
+            $ret = $this->removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSaleQty, $profit_calculation_method);
+            return $ret;
+        }
+
+        private function removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSoldCount, $profit_calculation_method) {
+            $ret = [];
+            while (true) {
+                if ($profit_calculation_method == 'max') {
+                    $lineId = $this->findMaxProductPriceLineId($productPurchaseOrderLines);
+                } else {
+                    $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
+                }
+                if ($lineId == 0) {
+                    throw new NgsErrorException('Insuficient product! function removePurchaseOrderLinesQuantityByProductSale');
+                }
+                $pol = $productPurchaseOrderLines[$lineId];
+                $quantity = floatval($pol->getQuantity());
+                if ($quantity >= $productSoldCount) {
+                    $pol->setQuantity($quantity - $productSoldCount);
+                    $ret[] = [$productSoldCount, $pol->getUnitPrice() * $pol->getCurrencyRate()];
+                    break;
+                } else {
+                    $ret[] = [$quantity, $pol->getUnitPrice() * $pol->getCurrencyRate()];
+                    $pol->setQuantity(0);
+                    $productSoldCount -= $quantity;
                 }
             }
             return $ret;
         }
 
-        private function findMaximumProductPriceInPurchaseOrderLines($productPurchaseOrderLines) {
-            $maxPrice = 0;
-            foreach ($productPurchaseOrderLines as $productPurchaseOrderLine) {
-                $unitPrice = floatval($productPurchaseOrderLine->getUnitPrice());
-                $currencyRate = floatval($productPurchaseOrderLine->getCurrencyRate());
-                if ($unitPrice * $currencyRate > $maxPrice) {
-                    $maxPrice = $unitPrice * $currencyRate;
+        private function subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount, $profit_calculation_method) {
+            if ($productSoldCount == 0) {
+                return $productPurchaseOrderLines;
+            }
+            while (true) {
+
+                if ($profit_calculation_method == 'max') {
+                    $lineId = $this->findMaxProductPriceLineId($productPurchaseOrderLines);
+                } else {
+                    $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
                 }
-            }
-            return $maxPrice;
-        }
-
-        private function calculateAverageProductPriceinPurchaseOrderLines($productPurchaseOrderLines) {
-            $sum = 0;
-            $count = 0;
-            foreach ($productPurchaseOrderLines as $productPurchaseOrderLine) {
-                $unitPrice = floatval($productPurchaseOrderLine->getUnitPrice());
-                $currencyRate = floatval($productPurchaseOrderLine->getCurrencyRate());
-                $quantity = floatval($productPurchaseOrderLine->getQuantity());
-                $sum += $unitPrice * $currencyRate * $quantity;
-                $count += $quantity;
-            }
-            return $count > 0 ? $sum / $count : 0;
-        }
-
-        private function subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount) {
-            foreach ($productPurchaseOrderLines as $productPurchaseOrderLine) {
-                $findMaxProductPriceLine = $this->findMaxProductPriceLine($productPurchaseOrderLines);
-                $quantity = floatval($productPurchaseOrderLines[$findMaxProductPriceLine]->getQuantity());
+                if ($lineId == 0) {
+                    throw new NgsErrorException('Insuficient product! function subtracPurchaseOrderLinesQuantityByProductSoldCount sold count:' . $productSoldCount);
+                }
+                $pol = $productPurchaseOrderLines[$lineId];
+                $quantity = floatval($pol->getQuantity());
                 if ($quantity >= $productSoldCount) {
-                    $productPurchaseOrderLine->setQuantity($quantity - $productSoldCount);
+                    $pol->setQuantity($quantity - $productSoldCount);
                     break;
                 } else {
-                    $productPurchaseOrderLine->setQuantity(0);
+                    $pol->setQuantity(0);
                     $productSoldCount -= $quantity;
                 }
             }
@@ -190,7 +203,17 @@ namespace crm\managers {
             return $ret;
         }
 
-        private function findMaxProductPriceLine($productPurchaseOrderLines) {
+        private function findFirstNonZeroQuantityLineId($productPurchaseOrderLines) {
+            foreach ($productPurchaseOrderLines as $lineId => $dto) {
+                if ($dto->getQuantity() == 0) {
+                    continue;
+                }
+                return $lineId;
+            }
+            throw new NgsErrorException('Insuficient product (function findFirstNonZeroQuantityLineId)!');
+        }
+
+        private function findMaxProductPriceLineId($productPurchaseOrderLines) {
             $maxProductPrice = 0;
             $maxProductPriceLineId = 0;
             foreach ($productPurchaseOrderLines as $lineId => $dto) {
@@ -204,6 +227,10 @@ namespace crm\managers {
                     $maxProductPrice = $productPriceInMainCurrency;
                     $maxProductPriceLineId = $lineId;
                 }
+            }
+            if ($maxProductPriceLineId == 0) {
+                $product = ProductManager::getInstance()->selectByPK($this->calculationProductId);
+                throw new NgsErrorException('Insuficient product (function findMaxProductPriceLineId)! product: ' . $product->getName() . " (id: $this->calculationProductId)");
             }
             return $maxProductPriceLineId;
         }

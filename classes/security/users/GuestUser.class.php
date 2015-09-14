@@ -15,8 +15,8 @@
 
 namespace crm\security\users {
 
-    use \crm\security\UserGroups;
-    use \crm\managers\users\GuestUserManager;
+    use crm\security\UserGroups;
+    use ngs\framework\security\users\NgsUser;
 
     class GuestUser extends NgsUser {
 

@@ -51,14 +51,18 @@ namespace crm\dal\mappers {
             return isset($qty) ? floatval($qty) : 0;
         }
 
-        public function getNonCancelledProductPurchaseOrders($productId) {
-            $sql = "SELECT * FROM `%s` INNER JOIN  "
+        public function getNonCancelledProductPurchaseOrders($productId, $date) {
+            $sql = "SELECT *, `purchase_order_lines`.`id` as `id` FROM `%s` INNER JOIN  "
                     . " `purchase_orders` ON `purchase_order_id` = `purchase_orders`.`id` "
-                    . "WHERE `purchase_orders`.`cancelled` = 0 AND product_id=:id ORDER BY `order_date` ASC";
-            $sqlQuery = sprintf($sql, $this->getTableName());
+                    . "WHERE `purchase_orders`.`cancelled` = 0 AND product_id=:id %s ORDER BY `order_date` ASC";
+            if ($date != null) {
+                $sqlQuery = sprintf($sql, $this->getTableName(), "AND `order_date`<='" . $date . "'");
+            } else {
+                $sqlQuery = sprintf($sql, $this->getTableName(), '');
+            }
             return $this->fetchRows($sqlQuery, array("id" => $productId));
         }
-        
+
         public function getNonCancelledProductsPurchaseOrders($productIds) {
             $productIdsExploded = implode(',', $productIds);
             $sql = "SELECT * FROM `%s` INNER JOIN  "
@@ -82,8 +86,7 @@ namespace crm\dal\mappers {
             }
             return $ret;
         }
-        
-      
+
     }
 
 }

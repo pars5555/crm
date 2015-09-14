@@ -45,17 +45,13 @@ namespace crm\actions\main\billing {
                 $note = NGS()->args()->note;
             }
             $id = intval(NGS()->args()->id);
-            $year = intval(NGS()->args()->billingDateYear);
-            $month = intval(NGS()->args()->billingDateMonth);
-            $day = intval(NGS()->args()->billingDateDay);
-            $hour = intval(NGS()->args()->billingTimeHour);
-            $minute = intval(NGS()->args()->billingTimeMinute);
+           
             $partnerId = intval(NGS()->args()->partnerId);
             $billingMethodId = intval(NGS()->args()->billingMethodId);
             $currencyId = intval(NGS()->args()->currencyId);
             $amount = floatval(NGS()->args()->amount);
             $signature = NGS()->args()->signature;
-            $date = "$year-$month-$day $hour:$minute";
+            $date = NGS()->args()->date;
             return array($id, $partnerId, $billingMethodId, $currencyId, $amount, $date, $note, $signature);
         }
 
@@ -63,21 +59,9 @@ namespace crm\actions\main\billing {
             if (!isset(NGS()->args()->id) || !is_numeric(NGS()->args()->id) || NGS()->args()->id <= 0) {
                 throw new RedirectException('billing/list', "Invalid Billing.");
             }
-            if (empty(NGS()->args()->billingDateYear)) {
+            if (empty(NGS()->args()->date)) {
                 throw new RedirectException('billing/edit/' . NGS()->args()->id, "Invalid Date.");
-            }
-            if (empty(NGS()->args()->billingDateMonth)) {
-                throw new RedirectException('billing/edit/' . NGS()->args()->id, "Invalid Date.");
-            }
-            if (empty(NGS()->args()->billingDateDay)) {
-                throw new RedirectException('billing/edit/' . NGS()->args()->id, "Invalid Date.");
-            }
-            if (empty(NGS()->args()->billingTimeHour)) {
-                throw new RedirectException('billing/edit/' . NGS()->args()->id, "Invalid Time.");
-            }
-            if (empty(NGS()->args()->billingTimeMinute)) {
-                throw new RedirectException('billing/edit/' . NGS()->args()->id, "Invalid Time.");
-            }
+            }           
             if (!isset(NGS()->args()->partnerId) || !is_numeric(NGS()->args()->partnerId) || NGS()->args()->partnerId <= 0) {
                 throw new RedirectException('billing/edit/' . NGS()->args()->id, "Invalid Partner.");
             }

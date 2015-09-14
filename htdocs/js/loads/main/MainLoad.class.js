@@ -7,8 +7,25 @@ NGS.createLoad("crm.loads.main.main", {
     },
     afterLoad: function () {
         this.wrapSelect();
+        this.datetimepicker();
+        this.datepicker();
         this.autocompleteSelect();
         this.checkbox();
+    },
+    datetimepicker: function () {
+        $('.datetimepicker').datetimepicker({
+            format: 'Y-m-d H:i',
+            inline: true,
+            step: 1
+        });
+    },
+    datepicker: function () {
+        $('.datepicker').datetimepicker({
+            format: 'Y-m-d',
+            inline: true,
+            timepicker: false,
+            step: 1
+        });
     },
     autocompleteSelect: function () {
         $("select[data-autocomplete=true]").chosen();

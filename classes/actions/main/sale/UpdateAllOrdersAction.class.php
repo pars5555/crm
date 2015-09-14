@@ -14,13 +14,14 @@
 
 namespace crm\actions\main\sale {
 
-use crm\actions\BaseAction;
-use crm\managers\SaleOrderManager;
+    use crm\actions\BaseAction;
+    use crm\managers\SaleOrderManager;
 
     class UpdateAllOrdersAction extends BaseAction {
 
         public function service() {
             $updateAllSaleOrderLinesCurrencyRates = SaleOrderManager::getInstance()->updateAllSaleOrderLinesCurrencyRates();
+            SaleOrderManager::getInstance()->updateAllSaleOrdersProfit();
             $this->addParam('status', true);
             $this->addParam('total_sale_orders', $updateAllSaleOrderLinesCurrencyRates);
         }
