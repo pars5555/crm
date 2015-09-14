@@ -7,11 +7,7 @@ NGS.createLoad("crm.loads.main.general.profit", {
     },
     afterLoad: function () {
         $('#profitCalculationContainer select').not("[data-no-wrap=true]").wrap("<div class='select_wrapper' />");
-        var thisInstance = this;
-        $('#profitCalculationContainer select').change(function () {
-            var params = thisInstance.getFromAndToDateParams();
-            NGS.load('crm.loads.main.general.profit', params);
-        });
+        this.initFromAndToDateParams();
         this.initChart();
         this.initChart2();
 
@@ -37,9 +33,9 @@ NGS.createLoad("crm.loads.main.general.profit", {
                 title: 'Year End',
                 ticks: [
                     new Date(kyz[0]),
-                    new Date(kyz[Math.round(kyz.length/3)]),
-                    new Date(kyz[Math.round(kyz.length/1.5)]),
-                    new Date(kyz[kyz.length-1])
+                    new Date(kyz[Math.round(kyz.length / 3)]),
+                    new Date(kyz[Math.round(kyz.length / 1.5)]),
+                    new Date(kyz[kyz.length - 1])
                 ]
             }
         };
@@ -88,15 +84,28 @@ NGS.createLoad("crm.loads.main.general.profit", {
         chart.draw(data, options);
 
     },
-    getFromAndToDateParams: function () {
-        var startYear = $("select[name='startDateYear']").val();
-        var startMonth = $("select[name='startDateMonth']").val();
-        var startDay = $("select[name='startDateDay']").val();
-        var endYear = $("select[name='endDateYear']").val();
-        var endMonth = $("select[name='endDateMonth']").val();
-        var endDay = $("select[name='endDateDay']").val();
-        return {startDateYear: startYear, startDateMonth: startMonth, startDateDay: startDay,
-            endDateYear: endYear, endDateMonth: endMonth, endDateDay: endDay};
+    initFromAndToDateParams: function () {
+
+        $('#startDateWidget').datetimepicker({
+            format: 'Y-m-d',
+            inline: true,
+            timepicker: false,
+            step: 1,
+            onSelectDate: function (ct, $i) {
+                $('#startDate').val(ct.dateFormat('Y-m-d'));
+                NGS.load('crm.loads.main.general.profit', {startDate: $('#startDate').val(), endDate: $('#endDate').val()});
+            }
+        });
+        $('#endDateWidget').datetimepicker({
+            format: 'Y-m-d',
+            inline: true,
+            timepicker: false,
+            step: 1,
+            onSelectDate: function (ct, $i) {
+                $('#endDate').val(ct.dateFormat('Y-m-d'));
+                NGS.load('crm.loads.main.general.profit', {startDate: $('#startDate').val(), endDate: $('#endDate').val()});
+            }
+        });
     }
 
 });

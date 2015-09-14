@@ -33,13 +33,9 @@ namespace crm\loads\main\general {
 
         private function getFormData() {
             $date = date('Y-m-d');
-            if (isset(NGS()->args()->dateYear) && isset(NGS()->args()->dateMonth) && isset(NGS()->args()->dateDay)) {
-                $year = intval(NGS()->args()->dateYear);
-                $month = intval(NGS()->args()->dateMonth);
-                $day = intval(NGS()->args()->dateDay);
-                $date = "$year-$month-$day";
+            if (!empty(NGS()->args()->date)) {
+                $date = NGS()->args()->date;
             }
-
             $selectCurrencyId = SettingManager::getInstance()->getSetting('default_currency_id');
             if (isset(NGS()->args()->cur)) {
                 $selectCurrencyId = intval(NGS()->args()->cur);

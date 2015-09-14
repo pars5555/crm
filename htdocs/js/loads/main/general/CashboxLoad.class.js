@@ -6,14 +6,15 @@ NGS.createLoad("crm.loads.main.general.cashbox", {
 
     },
     afterLoad: function () {
-        $('.cashboxContainer select').not("[data-no-wrap=true]").wrap("<div class='select_wrapper' />");
-        $('.cashboxContainer select').change(function () {
-            var year = $("select[name='dateYear']").val();
-            var month = $("select[name='dateMonth']").val();
-            var day = $("select[name='dateDay']").val();
-            var params = {cur: $('#cashboxCurrencySelect').val(), dateYear: year, dateMonth: month, dateDay: day};
-            NGS.load('crm.loads.main.general.cashbox', params);
+        $('#cashboxDate').datetimepicker({
+            format: 'Y-m-d',
+            inline: true,
+            timepicker: false,
+            step: 1,
+            onSelectDate: function (ct, $i) {
+                var params = {cur: $('#cashboxCurrencySelect').val(), date: ct.dateFormat('Y-m-d')};
+                NGS.load('crm.loads.main.general.cashbox', params);
+            }
         });
     }
-
 });

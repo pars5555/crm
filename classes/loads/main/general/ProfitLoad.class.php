@@ -87,18 +87,12 @@ namespace crm\loads\main\general {
 
         private function getFormData() {
             $startDate = date('Y-01-01');
-            if (isset(NGS()->args()->startDateYear) && isset(NGS()->args()->startDateMonth) && isset(NGS()->args()->startDateDay)) {
-                $startYear = intval(NGS()->args()->startDateYear);
-                $startmonth = intval(NGS()->args()->startDateMonth);
-                $startday = intval(NGS()->args()->startDateDay);
-                $startDate = "$startYear-$startmonth-$startday";
+            if (!empty(NGS()->args()->startDate)) {
+                $startDate = intval(NGS()->args()->startDate);
             }
             $endDate = date('Y-m-d');
-            if (isset(NGS()->args()->endDateYear) && isset(NGS()->args()->endDateMonth) && isset(NGS()->args()->endDateDay)) {
-                $endYear = intval(NGS()->args()->endDateYear);
-                $endmonth = intval(NGS()->args()->endDateMonth);
-                $endDay = intval(NGS()->args()->endDateDay);
-                $endDate = "$endYear-$endmonth-$endDay";
+            if (!empty(NGS()->args()->endDate)) {
+                $endDate = intval(NGS()->args()->endDate);
             }
             return array($startDate, $endDate);
         }

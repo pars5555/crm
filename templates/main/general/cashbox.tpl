@@ -9,6 +9,9 @@
         {/foreach}
     </select>
     <label class="label">Date </label>
-    {html_select_date prefix='date' start_year=2010 end_year=2020 field_order=YMD time=$ns.date}
+    <div class="form-group">
+        <label class="label">Date</label>
+        <input class="datepicker" id="cashboxDate" name ='date' type="text" value="{$ns.date}"/>
+    </div>
 </div>
 Amount: {$ns.amount}
