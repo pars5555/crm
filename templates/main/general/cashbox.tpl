@@ -11,7 +11,7 @@
     <label class="label">Date </label>
     <div class="form-group">
         <label class="label">Date</label>
-        <input class="datepicker" id="cashboxDate" name ='date' type="text" value="{$ns.date}"/>
+        <input id="cashboxDate" name ='date' type="text" value="{$ns.date}"/>
     </div>
 </div>
 Amount: {$ns.amount}

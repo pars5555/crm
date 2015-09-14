@@ -1,9 +1,9 @@
 Profit: 
 <div class="form-group">    
     <label class="label">From </label>
-    <input class="datepicker" name ='startDate' id='startDateWidget' type="text" value="{$ns.startDate}"/>
+    <input   id='startDateWidget' type="text" value="{$ns.startDate}"/>
     <label class="label">To </label>
-    <input class="datepicker" name ='endDate' id='endDateWidget' type="text" value="{$ns.endDate}"/>
+    <input id='endDateWidget' type="text" value="{$ns.endDate}"/>
     <div>
         Profit: {$ns.profit}
     </div>
