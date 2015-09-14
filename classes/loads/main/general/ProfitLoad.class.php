@@ -88,11 +88,11 @@ namespace crm\loads\main\general {
         private function getFormData() {
             $startDate = date('Y-01-01');
             if (!empty(NGS()->args()->startDate)) {
-                $startDate = intval(NGS()->args()->startDate);
+                $startDate = NGS()->args()->startDate;
             }
             $endDate = date('Y-m-d');
             if (!empty(NGS()->args()->endDate)) {
-                $endDate = intval(NGS()->args()->endDate);
+                $endDate = NGS()->args()->endDate;
             }
             return array($startDate, $endDate);
         }
