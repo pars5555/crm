@@ -3,9 +3,9 @@
     "DB": {
         "mysql": {
             "host": "127.0.0.1",
-            "user": "crm",
-            "pass": "crm123",
-            "name": "crm.pc.am"
+            "user": "root",
+            "pass": "",
+            "name": "crm"
         }
         ,
         "mongo": {

@@ -12,8 +12,8 @@
 
 namespace crm\managers {
 
-    use crm\dal\mappers\ProductMapper;
-    use ngs\framework\exceptions\NgsErrorException;
+use crm\dal\mappers\ProductMapper;
+use ngs\framework\exceptions\NgsErrorException;
 
     class ProductManager extends AdvancedAbstractManager {
 
@@ -106,6 +106,7 @@ namespace crm\managers {
             foreach ($productIds as $productId) {
                 $productPurchaseOrderLines = array_key_exists($productId, $productsPurchaseOrderLines) ? $productsPurchaseOrderLines[$productId] : [];
                 $productSoldCount = array_key_exists($productId, $productsSoldCount) ? $productsSoldCount[$productId] : 0;
+                $this->calculationProductId = $productId;
                 $notSoldProductsPurchaseOrderLines[$productId] = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
             }
             $product_calculation_method = SettingManager::getInstance()->getSetting('product_calculation_method');
