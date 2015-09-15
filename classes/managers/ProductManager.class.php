@@ -138,14 +138,15 @@ namespace crm\managers {
             $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId, $date);
             $productPurchaseOrderLines = $this->mapDtosById($productPurchaseOrderLines);
             $productSoldCount = intval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId, $saleOrderId, $date));
-            $profit_calculation_method = SettingManager::getInstance()->getSetting('profit_calculation_method');
-            $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount, $profit_calculation_method);
-            $ret = $this->removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSaleQty, $profit_calculation_method);
+            
+            $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
+            $ret = $this->removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSaleQty);
             return $ret;
         }
 
         private function removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSoldCount, $profit_calculation_method) {
             $ret = [];
+            $profit_calculation_method = SettingManager::getInstance()->getSetting('profit_calculation_method');
             while (true) {
                 if ($profit_calculation_method == 'max') {
                     $lineId = $this->findMaxProductPriceLineId($productPurchaseOrderLines);
@@ -170,10 +171,11 @@ namespace crm\managers {
             return $ret;
         }
 
-        private function subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount, $profit_calculation_method) {
+        private function subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount) {
             if ($productSoldCount == 0) {
                 return $productPurchaseOrderLines;
             }
+            $profit_calculation_method = SettingManager::getInstance()->getSetting('profit_calculation_method');
             while (true) {
 
                 if ($profit_calculation_method == 'max') {
