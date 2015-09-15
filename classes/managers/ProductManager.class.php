@@ -105,16 +105,17 @@ use ngs\framework\exceptions\NgsErrorException;
             $productsSoldCount = SaleOrderLineManager::getInstance()->getProductsCountInNonCancelledSaleOrders($productIds);
             foreach ($productIds as $productId) {
                 $productPurchaseOrderLines = array_key_exists($productId, $productsPurchaseOrderLines) ? $productsPurchaseOrderLines[$productId] : [];
+                $productPurchaseOrderLines = $this->mapDtosById($productPurchaseOrderLines);
                 $productSoldCount = array_key_exists($productId, $productsSoldCount) ? $productsSoldCount[$productId] : 0;
                 $this->calculationProductId = $productId;
                 $notSoldProductsPurchaseOrderLines[$productId] = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
             }
-            $product_calculation_method = SettingManager::getInstance()->getSetting('product_calculation_method');
+            $profit_calculation_method = SettingManager::getInstance()->getSetting('profit_calculation_method');
             $ret = [];
-            switch ($product_calculation_method) {
+            switch ($profit_calculation_method) {
                 case 'max':
                     foreach ($productIds as $productId) {
-                        $ret[$productId] = $this->findMaximumProductPriceInPurchaseOrderLines($notSoldProductsPurchaseOrderLines[$productId]);
+                        $ret[$productId] = $this->findMaxProductPriceLineId($notSoldProductsPurchaseOrderLines[$productId]);
                     }
                     break;
                 default:
