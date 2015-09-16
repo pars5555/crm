@@ -146,8 +146,12 @@ use ngs\framework\exceptions\NgsErrorException;
             return $ret;
         }
 
-        private function removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSoldCount, $profit_calculation_method) {
+        private function removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSoldCount) {
             $ret = [];
+            if (empty($productPurchaseOrderLines))
+            {
+                return 0;
+            }
             $profit_calculation_method = SettingManager::getInstance()->getSetting('profit_calculation_method');
             while (true) {
                 if ($profit_calculation_method == 'max') {
@@ -231,10 +235,6 @@ use ngs\framework\exceptions\NgsErrorException;
                     $maxProductPrice = $productPriceInMainCurrency;
                     $maxProductPriceLineId = $lineId;
                 }
-            }
-            if ($maxProductPriceLineId == 0) {
-                $product = ProductManager::getInstance()->selectByPK($this->calculationProductId);
-                throw new NgsErrorException('Insuficient product (function findMaxProductPriceLineId)! product: ' . $product->getName() . " (id: $this->calculationProductId)");
             }
             return $maxProductPriceLineId;
         }
