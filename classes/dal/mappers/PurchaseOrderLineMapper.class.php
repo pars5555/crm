@@ -65,7 +65,7 @@ namespace crm\dal\mappers {
 
         public function getNonCancelledProductsPurchaseOrders($productIds) {
             $productIdsExploded = implode(',', $productIds);
-            $sql = "SELECT * FROM `%s` INNER JOIN  "
+            $sql = "SELECT *, `purchase_order_lines`.`id` as `id` FROM `%s` INNER JOIN  "
                     . " `purchase_orders` ON `purchase_order_id` = `purchase_orders`.`id` "
                     . "WHERE `purchase_orders`.`cancelled` = 0 AND product_id IN (%s) ORDER BY `order_date` ASC";
             $sqlQuery = sprintf($sql, $this->getTableName(), $productIdsExploded);

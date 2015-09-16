@@ -12,8 +12,8 @@
 
 namespace crm\managers {
 
-use crm\dal\mappers\ProductMapper;
-use ngs\framework\exceptions\NgsErrorException;
+    use crm\dal\mappers\ProductMapper;
+    use ngs\framework\exceptions\NgsErrorException;
 
     class ProductManager extends AdvancedAbstractManager {
 
@@ -109,18 +109,25 @@ use ngs\framework\exceptions\NgsErrorException;
                 $productSoldCount = array_key_exists($productId, $productsSoldCount) ? $productsSoldCount[$productId] : 0;
                 $this->calculationProductId = $productId;
                 $notSoldProductsPurchaseOrderLines[$productId] = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
+                $notSoldProductsPurchaseOrderLines[$productId] = $this->mapDtosById($notSoldProductsPurchaseOrderLines[$productId]);
             }
             $profit_calculation_method = SettingManager::getInstance()->getSetting('profit_calculation_method');
             $ret = [];
             switch ($profit_calculation_method) {
                 case 'max':
                     foreach ($productIds as $productId) {
-                        $ret[$productId] = $this->findMaxProductPriceLineId($notSoldProductsPurchaseOrderLines[$productId]);
+                        $productPurchaseOrderLinesMappedByLineId = $notSoldProductsPurchaseOrderLines[$productId];
+                        $findMaxProductPriceLineId = $this->findMaxProductPriceLineId($productPurchaseOrderLinesMappedByLineId);
+                        if ($findMaxProductPriceLineId > 0) {
+                            $maxPricePoLineDto = $productPurchaseOrderLinesMappedByLineId[$findMaxProductPriceLineId];
+                            $ret[$productId] = $maxPricePoLineDto ->getUnitPrice() * $maxPricePoLineDto ->getCurrencyRate();
+                        } 
                     }
                     break;
                 default:
                     foreach ($productIds as $productId) {
-                        $ret[$productId] = $this->calculateAverageProductPriceinPurchaseOrderLines($notSoldProductsPurchaseOrderLines[$productId]);
+                        $productPurchaseOrderLinesMappedByLineId = $notSoldProductsPurchaseOrderLines[$productId];
+                        $ret[$productId] = $this->calculateAverageProductPriceinPurchaseOrderLines($productPurchaseOrderLinesMappedByLineId);
                     }
                     break;
             }
@@ -140,7 +147,6 @@ use ngs\framework\exceptions\NgsErrorException;
             $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId, $date);
             $productPurchaseOrderLines = $this->mapDtosById($productPurchaseOrderLines);
             $productSoldCount = intval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId, $saleOrderId, $date));
-            
             $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
             $ret = $this->removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSaleQty);
             return $ret;
@@ -148,8 +154,7 @@ use ngs\framework\exceptions\NgsErrorException;
 
         private function removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSoldCount) {
             $ret = [];
-            if (empty($productPurchaseOrderLines))
-            {
+            if (empty($productPurchaseOrderLines)) {
                 return 0;
             }
             $profit_calculation_method = SettingManager::getInstance()->getSetting('profit_calculation_method');
@@ -190,7 +195,7 @@ use ngs\framework\exceptions\NgsErrorException;
                     $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
                 }
                 if ($lineId == 0) {
-                    throw new NgsErrorException('Insuficient product! function subtracPurchaseOrderLinesQuantityByProductSoldCount sold count:' . $productSoldCount);
+                    throw new NgsErrorException('Insuficient product! function subtracPurchaseOrderLinesQuantityByProductSoldCount product id:' . $this->calculationProductId);
                 }
                 $pol = $productPurchaseOrderLines[$lineId];
                 $quantity = floatval($pol->getQuantity());
