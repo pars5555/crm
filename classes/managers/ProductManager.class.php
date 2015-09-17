@@ -109,7 +109,6 @@ namespace crm\managers {
                 $productSoldCount = array_key_exists($productId, $productsSoldCount) ? $productsSoldCount[$productId] : 0;
                 $this->calculationProductId = $productId;
                 $notSoldProductsPurchaseOrderLines[$productId] = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
-                $notSoldProductsPurchaseOrderLines[$productId] = $this->mapDtosById($notSoldProductsPurchaseOrderLines[$productId]);
             }
             $profit_calculation_method = SettingManager::getInstance()->getSetting('profit_calculation_method');
             $ret = [];
@@ -147,7 +146,7 @@ namespace crm\managers {
             $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId, $date);
             $productPurchaseOrderLines = $this->mapDtosById($productPurchaseOrderLines);
             $productSoldCount = intval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId, $saleOrderId, $date));
-            $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
+            $productPurchaseOrderLines = $this->subtracPurchaseOrderLinesQuantityByProductSoldCount($productPurchaseOrderLines, $productSoldCount);
             $ret = $this->removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSaleQty);
             return $ret;
         }
@@ -213,7 +212,8 @@ namespace crm\managers {
                     $ret [] = $productPurchaseOrderLine;
                 }
             }
-            return $ret;
+            
+            return $this->mapDtosById($ret);
         }
 
         private function findFirstNonZeroQuantityLineId($productPurchaseOrderLines) {
