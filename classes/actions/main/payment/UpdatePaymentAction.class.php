@@ -55,7 +55,7 @@ namespace crm\actions\main\payment {
             $currencyId = intval(NGS()->args()->currencyId);
             $amount = floatval(NGS()->args()->amount);
             $signature= NGS()->args()->signature;
-            $date = intval(NGS()->args()->date);
+            $date = NGS()->args()->date;
             return array($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $isExpense,$paid, $note, $signature);
         }
 
