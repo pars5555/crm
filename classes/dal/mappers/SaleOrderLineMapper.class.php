@@ -105,6 +105,15 @@ namespace crm\dal\mappers {
             $sqlQuery = sprintf($sql, $this->getTableName(), $productIdsExploded);
             return $this->fetchRows($sqlQuery);
         }
+        
+        public function getNonCancelledProductSaleOrders($productId) {
+            $sql = "SELECT * FROM `%s` INNER JOIN  "
+                    . " `sale_orders` ON `sale_order_id` = `sale_orders`.`id` "
+                    . "WHERE `sale_orders`.`cancelled` = 0 AND product_id=:id ORDER BY `order_date` ASC";
+            $sqlQuery = sprintf($sql, $this->getTableName());
+            
+            return $this->fetchRows($sqlQuery, ['id'=>$productId]);
+        }
 
     }
 

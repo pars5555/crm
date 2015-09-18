@@ -183,6 +183,10 @@ namespace crm\managers {
             }
             return $ret;
         }
+        
+        public function getNonCancelledProductSaleOrders($productId) {
+            return $this->mapper->getNonCancelledProductSaleOrders($productId);
+        }
 
     }
 
