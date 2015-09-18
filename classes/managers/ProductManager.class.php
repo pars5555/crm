@@ -148,6 +148,27 @@ namespace crm\managers {
             return $ret;
         }
 
+        public function updateProductCostForOneUnit($productId) {
+            $productUnitCostInBaseCurrency = ProductManager::getInstance()->calculateProductCost($productId, 1, 0);
+            $productDto = ProductManager::getInstance()->selectByPK($productId);
+            $productDto->setUnitCost($this->calculateProductTotalCost($productUnitCostInBaseCurrency));
+            ProductManager::getInstance()->updateByPK($productDto);
+        }
+
+        public function calculateProductTotalCost($productUnitCostInBaseCurrency) {
+            $ret = 0;
+            if (empty($productUnitCostInBaseCurrency))
+            {
+                return 0;
+            }
+            foreach ($productUnitCostInBaseCurrency as $pair) {
+                $qty = floatval($pair[0]);
+                $unitPrice = floatval($pair[1]);
+                $ret +=$qty * $unitPrice;
+            }
+            return $ret;
+        }
+
         private function subtracPurchaseOrderLinesByProductSaleOrders($productPurchaseOrderLines, $productSaleOrderLines) {
             if (empty($productSaleOrderLines)) {
                 return $productPurchaseOrderLines;

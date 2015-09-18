@@ -101,6 +101,32 @@ namespace crm\managers {
             return $opDtos;
         }
 
+        public function updateAllOrderLines() {
+            $allPurchaseOrders = $this->getPurchaseOrdersFull(['cancelled', '=', 0], 'order_date', 'ASC');
+            foreach ($allPurchaseOrders as $purchaseOrder) {
+                $purchaseOrderLinesDtos = $purchaseOrder->getPurchaseOrderLinesDtos();
+                foreach ($purchaseOrderLinesDtos as $purchaseOrderLinesDto) {
+                    PurchaseOrderLineManager::getInstance()->updatePurchaseOrderLine($purchaseOrder->getId(), $purchaseOrderLinesDto->getId(), $purchaseOrderLinesDto->getProductId(), $purchaseOrderLinesDto->getQuantity(), $purchaseOrderLinesDto->getUnitPrice(), $purchaseOrderLinesDto->getCurrencyId());
+                }
+            }
+            return true;
+        }
+        
+        public function updateAllLinesCurrencyRates() {
+            $allPurchaseOrders = $this->getPurchaseOrdersFull();
+            foreach ($allPurchaseOrders as $purchaseOrder) {
+                $purchaseOrderLinesDtos = $purchaseOrder->getPurchaseOrderLinesDtos();
+                foreach ($purchaseOrderLinesDtos as $purchaseOrderLinesDto) {
+                    $orderDate = $purchaseOrder->getOrderDate();
+                    $currencyId = $purchaseOrderLinesDto->getCurrencyId();
+                    $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
+                    $purchaseOrderLinesDto->setCurrencyRate($rate);
+                    PurchaseOrderLineManager::getInstance()->updateByPK($purchaseOrderLinesDto);
+                }
+            }
+            return count($allPurchaseOrders);
+        }
+
         public function setPaid($id, $paid) {
             $purchaseOrderDto = $this->selectByPK($id);
             if (isset($purchaseOrderDto)) {

@@ -12,7 +12,7 @@
 
 namespace crm\managers {
 
-    use crm\dal\mappers\SaleOrderLineMapper;
+use crm\dal\mappers\SaleOrderLineMapper;
 
     class SaleOrderLineManager extends AdvancedAbstractManager {
 
@@ -60,23 +60,16 @@ namespace crm\managers {
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
             if ($saleOrderDto->getNonProfit() == 0) {
-                $profit = $quantity * $unitPrice * $rate - $this->calculateProductTotalCost($productUnitCostInBaseCurrency);
+                $profit = $quantity * $unitPrice * $rate - ProductManager::getInstance()->calculateProductTotalCost($productUnitCostInBaseCurrency);
                 $dto->setTotalProfit($profit);
             } else {
                 $dto->setTotalProfit(0);
             }
+            ProductManager::getInstance()->updateProductCostForOneUnit($productId);
             return $this->updateByPk($dto);
         }
 
-        private function calculateProductTotalCost($productUnitCostInBaseCurrency) {
-            $ret = 0;
-            foreach ($productUnitCostInBaseCurrency as $pair) {
-                $qty = floatval($pair[0]);
-                $unitPrice = floatval($pair[1]);
-                $ret +=$qty * $unitPrice;
-            }
-            return $ret;
-        }
+        
 
         public function createSaleOrderLine($saleOrderId, $productId, $quantity, $unitPrice, $currencyId) {
             $unitPrice = floatval($unitPrice);
@@ -94,11 +87,12 @@ namespace crm\managers {
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
             if ($saleOrderDto->getNonProfit() == 0) {
-                $profit = $quantity * $unitPrice * $rate - $this->calculateProductTotalCost($productUnitCostInBaseCurrency);
+                $profit = $quantity * $unitPrice * $rate - ProductManager::getInstance()->calculateProductTotalCost($productUnitCostInBaseCurrency);
                 $dto->setTotalProfit($profit);
             } else {
                 $dto->setTotalProfit(0);
             }
+            ProductManager::getInstance()->updateProductCostForOneUnit($productId);
             return $this->insertDto($dto);
         }
 
@@ -183,7 +177,7 @@ namespace crm\managers {
             }
             return $ret;
         }
-        
+
         public function getNonCancelledProductSaleOrders($productId, $saleOrderId, $date) {
             return $this->mapper->getNonCancelledProductSaleOrders($productId, $saleOrderId, $date);
         }

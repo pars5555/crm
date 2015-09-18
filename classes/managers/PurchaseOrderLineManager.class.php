@@ -12,7 +12,7 @@
 
 namespace crm\managers {
 
-    use crm\dal\mappers\PurchaseOrderLineMapper;
+use crm\dal\mappers\PurchaseOrderLineMapper;
 
     class PurchaseOrderLineManager extends AdvancedAbstractManager {
 
@@ -73,6 +73,7 @@ namespace crm\managers {
             $orderDate = PurchaseOrderManager::getInstance()->selectByPK($purchaseOrderId)->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
+            ProductManager::getInstance()->updateProductCostForOneUnit($productId);
             return $this->updateByPk($dto);
         }
 
@@ -86,7 +87,7 @@ namespace crm\managers {
             $orderDate = PurchaseOrderManager::getInstance()->selectByPK($purchaseOrderId)->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
-
+            ProductManager::getInstance()->updateProductCostForOneUnit($productId);
             return $this->insertDto($dto);
         }
 

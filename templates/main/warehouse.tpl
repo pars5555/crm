@@ -19,13 +19,7 @@
                     <span class="table-cell">{$product->getModel()} </span>
                     <span class="table-cell">{$product->getUomDto()->getName()} </span>
                     <span class="table-cell">{$ns.productsQuantity[$product->getId()]|default:'0'}</span>
-                    <span class="table-cell">
-                        {if isset($ns.productsPrice[$product->getId()])}
-                            {$ns.productsPrice[$product->getId()]|ceil}
-                        {else}
-                            NaN
-                        {/if}
-                    </span>
+                    <span class="table-cell">{$product->getUnitCost()}</span>
                     <span class="table-cell {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}tooltipster{/if}">
                         {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
                         <p style="display: none">

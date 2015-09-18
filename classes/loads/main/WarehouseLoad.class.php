@@ -25,12 +25,10 @@ namespace crm\loads\main {
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity();
             $products = ProductManager::getInstance()->getProductListFull([], 'name', 'ASC');
             $productIds = ProductManager::getDtosIdsArray($products);
-            $productsPrice = ProductManager::getInstance()->calculateProductsCost($productIds);
             $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
             $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
             $this->addParam('products', $products);
             $this->addParam('productsQuantity', $productsQuantity);
-            $this->addParam('productsPrice', $productsPrice);
             $this->addParam('productsPurchaseOrder', $productsPurchaseOrders);
             $this->addParam('productsSaleOrder', $productsSaleOrders);
         }

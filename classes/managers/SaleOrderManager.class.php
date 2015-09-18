@@ -103,7 +103,7 @@ namespace crm\managers {
             return false;
         }
 
-        public function updateAllSaleOrdersProfit() {
+        public function updateAllOrdersProfit() {
             $allSaleOrders = $this->getSaleOrdersFull(['cancelled', '=', 0], 'order_date', 'ASC');
             foreach ($allSaleOrders as $saleOrder) {
                 $saleOrderLinesDtos = $saleOrder->getSaleOrderLinesDtos();
@@ -114,7 +114,7 @@ namespace crm\managers {
             return true;
         }
 
-        public function updateAllSaleOrderLinesCurrencyRates() {
+        public function updateAllLinesCurrencyRates() {
             $allSaleOrders = $this->getSaleOrdersFull();
             foreach ($allSaleOrders as $saleOrder) {
                 $saleOrderLinesDtos = $saleOrder->getSaleOrderLinesDtos();
