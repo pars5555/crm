@@ -106,13 +106,16 @@ namespace crm\dal\mappers {
             return $this->fetchRows($sqlQuery);
         }
         
-        public function getNonCancelledProductSaleOrders($productId) {
+        public function getNonCancelledProductSaleOrders($productId, $exceptSaleOrderId, $dateBefore) {
             $sql = "SELECT * FROM `%s` INNER JOIN  "
                     . " `sale_orders` ON `sale_order_id` = `sale_orders`.`id` "
-                    . "WHERE `sale_orders`.`cancelled` = 0 AND product_id=:id ORDER BY `order_date` ASC";
-            $sqlQuery = sprintf($sql, $this->getTableName());
-            
-            return $this->fetchRows($sqlQuery, ['id'=>$productId]);
+                    . "WHERE `sale_orders`.`cancelled` = 0  AND `sale_orders`.`id`!=:soId AND product_id=:id %s ORDER BY `order_date` ASC";
+            $subSql = "";
+            if (!empty($dateBefore)) {
+                $subSql .= " AND `order_date`<='$dateBefore'";
+            }
+            $sqlQuery = sprintf($sql, $this->getTableName(), $subSql);
+            return $this->fetchRows($sqlQuery, ['id'=>$productId, "soId" => $exceptSaleOrderId]);
         }
 
     }
