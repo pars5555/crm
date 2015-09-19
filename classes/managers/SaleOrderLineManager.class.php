@@ -150,7 +150,7 @@ use crm\dal\mappers\SaleOrderLineMapper;
             }
             $allSaleOrdersIds = array_unique($allSaleOrdersIds);
             $idsSql = '(' . implode(',', $allSaleOrdersIds) . ')';
-            $sos = SaleOrderManager::getInstance()->selectAdvance('*', ['id', 'IN', $idsSql], null, null, null, null, true);
+            $saleOrdersMappedById = SaleOrderManager::getInstance()->selectAdvance('*', ['id', 'IN', $idsSql], null, null, null, null, true);
 
 
             foreach ($soIdsMappedByProductId as &$r) {
@@ -163,7 +163,7 @@ use crm\dal\mappers\SaleOrderLineMapper;
                 }
                 $ret[$productId] = [];
                 foreach ($soIdsMappedByProductId[$productId] as $soId) {
-                    $ret[$productId][] = $sos[$soId];
+                    $ret[$productId][] = $saleOrdersMappedById[$soId];
                 }
             }
             return $ret;

@@ -100,6 +100,21 @@ namespace crm\managers {
             }
             return $opDtos;
         }
+        
+        public function updateAllDependingSaleOrderLines($purchaseOrderId) {
+            $productsIds = $this->getProductsIdsInOrder($purchaseOrderId);
+            SaleOrderManager::getInstance()->updateAllOrderLinesThatContainsProducts($productsIds);
+        }
+
+        
+        public function getProductsIdsInOrder($purchaseOrderId) {
+            $poLines = $this->selectAdvance('*', ['purchase_order_id', '=', $purchaseOrderId]);
+            $productIds = [];
+            foreach ($poLines as $poLine) {
+                $productIds [] = $poLine->getProductId();
+            }
+            return $productIds;
+        }
 
         public function updateAllOrderLines() {
             $allPurchaseOrders = $this->getPurchaseOrdersFull(['cancelled', '=', 0], 'order_date', 'ASC');

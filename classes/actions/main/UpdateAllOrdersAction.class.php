@@ -26,7 +26,7 @@ namespace crm\actions\main {
             $updateAllSaleOrderLinesCurrencyRates = SaleOrderManager::getInstance()->updateAllLinesCurrencyRates();
             $updateAllPurchaseOrderLinesCurrencyRates = PurchaseOrderManager::getInstance()->updateAllLinesCurrencyRates();
             $updateAllPaymentOrdersCurrencyRates = PaymentTransactionManager::getInstance()->updateAllOrdersCurrencyRates();
-            SaleOrderManager::getInstance()->updateAllOrdersProfit();
+            SaleOrderManager::getInstance()->updateAllOrderLines();
             PurchaseOrderManager::getInstance()->updateAllOrderLines();
             $this->addParam('status', true);
             $this->addParam('total_sale_orders', $updateAllSaleOrderLinesCurrencyRates);

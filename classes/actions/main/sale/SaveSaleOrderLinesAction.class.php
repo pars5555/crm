@@ -16,6 +16,7 @@ namespace crm\actions\main\sale {
 
     use crm\actions\BaseAction;
     use crm\managers\SaleOrderLineManager;
+    use crm\managers\SaleOrderManager;
     use NGS;
 
     class SaveSaleOrderLinesAction extends BaseAction {
@@ -46,6 +47,7 @@ namespace crm\actions\main\sale {
                 SaleOrderLineManager::getInstance()->deleteByField('sale_order_id', $saleOrderId);
             }
             $_SESSION['success_message'] = 'Sale Order lines successfully saved.';
+            SaleOrderManager::getInstance()->updateAllDependingSaleOrderLines($saleOrderId);
             $this->redirect('sale/warranty/' . $saleOrderId);
         }
 

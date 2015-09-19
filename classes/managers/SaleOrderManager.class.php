@@ -103,8 +103,35 @@ namespace crm\managers {
             return false;
         }
 
-        public function updateAllOrdersProfit() {
-            $allSaleOrders = $this->getSaleOrdersFull(['cancelled', '=', 0], 'order_date', 'ASC');
+        public function updateAllDependingSaleOrderLines($saleOrderId) {
+            $productsIds = $this->getProductsIdsInOrder($saleOrderId);
+            $this->updateAllOrderLinesThatContainsProducts($productsIds);
+        }
+
+        public function getProductsIdsInOrder($saleOrderId) {
+            $soLines = $this->selectAdvance('*', ['sale_order_id', '=', $saleOrderId]);
+            $productIds = [];
+            foreach ($soLines as $soLine) {
+                $productIds [] = $soLine->getProductId();
+            }
+            return $productIds;
+        }
+
+        public function updateAllOrderLinesThatContainsProducts($productIds) {
+            $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
+            foreach ($productsSaleOrders as $productSaleOrders) {
+                foreach ($productSaleOrders as $productSaleOrder) {
+                    $this->updateAllOrderLines($productSaleOrder->getId());
+                }
+            }
+        }
+
+        public function updateAllOrderLines($saleOrderId = 0) {
+            if ($saleOrderId > 0) {
+                $allSaleOrders = $this->getSaleOrdersFull(['id', '=', $saleOrderId]);
+            } else {
+                $allSaleOrders = $this->getSaleOrdersFull(['cancelled', '=', 0], 'order_date', 'ASC');
+            }
             foreach ($allSaleOrders as $saleOrder) {
                 $saleOrderLinesDtos = $saleOrder->getSaleOrderLinesDtos();
                 foreach ($saleOrderLinesDtos as $saleOrderLinesDto) {
