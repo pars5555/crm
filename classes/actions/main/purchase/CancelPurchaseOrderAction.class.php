@@ -14,9 +14,11 @@
 
 namespace crm\actions\main\purchase {
 
-use crm\actions\BaseAction;
-use crm\managers\PurchaseOrderManager;
-use NGS;
+    use crm\actions\BaseAction;
+    use crm\exceptions\InsufficientProductException;
+    use crm\managers\ProductManager;
+    use crm\managers\PurchaseOrderManager;
+    use NGS;
 
     class CancelPurchaseOrderAction extends BaseAction {
 
@@ -39,8 +41,14 @@ use NGS;
             }
             $note = NGS()->args()->note;
             $purchaseOrderManager->cancelPurchaseOrder($purchaseOrderId, $note);
-            $_SESSION['success_message'] = 'Purchase Order Successfully cancelled!';
-            PurchaseOrderManager::getInstance()->updateAllDependingSaleOrderLines($purchaseOrderId);
+            try {
+                PurchaseOrderManager::getInstance()->updateAllDependingSaleOrderLines($purchaseOrderId);
+                $_SESSION['success_message'] = 'Purchase Order Successfully cancelled!';
+            } catch (InsufficientProductException $exc) {
+                $purchaseOrderManager->restorePurchaseOrder($purchaseOrderId);
+                $productDto = ProductManager::getInstance()->selectByPK($exc->getProductId());
+                $_SESSION['error_message'] = $productDto->getName() . ' product insufficient!';
+            }
             $this->redirectToReferer();
         }
 

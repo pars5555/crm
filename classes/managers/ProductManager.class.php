@@ -13,6 +13,7 @@
 namespace crm\managers {
 
     use crm\dal\mappers\ProductMapper;
+    use crm\exceptions\InsufficientProductException;
     use ngs\framework\exceptions\NgsErrorException;
 
     class ProductManager extends AdvancedAbstractManager {
@@ -183,7 +184,7 @@ namespace crm\managers {
                         $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
                     }
                     if ($lineId == 0) {
-                        throw new NgsErrorException('Insuficient product! function subtracPurchaseOrderLinesQuantityByProductSoldCount product id:' . $this->calculationProductId);
+                        throw new InsufficientProductException($this->calculationProductId);
                     }
                     $pol = $productPurchaseOrderLines[$lineId];
                     $quantity = floatval($pol->getQuantity());
