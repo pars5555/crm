@@ -12,7 +12,7 @@
 
 namespace crm\managers {
 
-use crm\dal\mappers\SaleOrderLineMapper;
+    use crm\dal\mappers\SaleOrderLineMapper;
 
     class SaleOrderLineManager extends AdvancedAbstractManager {
 
@@ -68,8 +68,6 @@ use crm\dal\mappers\SaleOrderLineMapper;
             ProductManager::getInstance()->updateProductCostForOneUnit($productId);
             return $this->updateByPk($dto);
         }
-
-        
 
         public function createSaleOrderLine($saleOrderId, $productId, $quantity, $unitPrice, $currencyId) {
             $unitPrice = floatval($unitPrice);
@@ -149,8 +147,11 @@ use crm\dal\mappers\SaleOrderLineMapper;
                 $allSaleOrdersIds[] = intval($sol->getSaleOrderId());
             }
             $allSaleOrdersIds = array_unique($allSaleOrdersIds);
-            $idsSql = '(' . implode(',', $allSaleOrdersIds) . ')';
-            $saleOrdersMappedById = SaleOrderManager::getInstance()->selectAdvance('*', ['id', 'IN', $idsSql], null, null, null, null, true);
+            $saleOrdersMappedById = [];
+            if (!empty($allSaleOrdersIds)) {
+                $idsSql = '(' . implode(',', $allSaleOrdersIds) . ')';
+                $saleOrdersMappedById = SaleOrderManager::getInstance()->selectAdvance('*', ['id', 'IN', $idsSql], null, null, null, null, true);
+            }
 
 
             foreach ($soIdsMappedByProductId as &$r) {
