@@ -130,19 +130,20 @@ namespace crm\managers {
                 } else {
                     $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
                 }
+
                 if ($lineId == 0) {
-                    throw new NgsErrorException('Insuficient product! function removePurchaseOrderLinesQuantityByProductSale');
+                    return $ret;
                 }
                 $pol = $productPurchaseOrderLines[$lineId];
                 $quantity = floatval($pol->getQuantity());
                 if ($quantity >= $productSoldCount) {
-                    $pol->setQuantity($quantity - $productSoldCount);
-                    $ret[] = [$productSoldCount, $pol->getUnitPrice() * $pol->getCurrencyRate()];
+                    $pol->setQuantity(round($quantity - $productSoldCount, 2));
+                    $ret[] = [round($productSoldCount, 2), round($pol->getUnitPrice() * $pol->getCurrencyRate(), 2)];
                     break;
                 } else {
-                    $ret[] = [$quantity, $pol->getUnitPrice() * $pol->getCurrencyRate()];
+                    $ret[] = [round($quantity, 2), round($pol->getUnitPrice() * $pol->getCurrencyRate(), 2)];
                     $pol->setQuantity(0);
-                    $productSoldCount -= $quantity;
+                    $productSoldCount = round($productSoldCount - $quantity, 2);
                 }
             }
             return $ret;
