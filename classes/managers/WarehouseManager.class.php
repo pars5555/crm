@@ -33,12 +33,6 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function getProductQuantity($productId) {
-            $productQuantityInSaleOrders = SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId);
-            $productQuantityInPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId);
-            return $productQuantityInPurchaseOrders - $productQuantityInSaleOrders;
-        }
-
         public function getAllProductsQuantity() {
             $allProductQuantityInPurchaseOrders = PurchaseOrderLineManager::getInstance()->getAllProductCountInNonCancelledPurchaseOrders();
             $allProductQuantityInSaleOrders = SaleOrderLineManager::getInstance()->getAllProductCountInNonCancelledSaleOrders();

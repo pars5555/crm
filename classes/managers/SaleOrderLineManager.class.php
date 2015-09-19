@@ -139,7 +139,10 @@ namespace crm\managers {
         }
 
         public function getProductsSaleOrders($productIds) {
-            $soLines = $this->mapper->getNonCancelledProductsSaleOrders($productIds);
+            $soLines = [];
+            if (!empty($productIds)) {
+                $soLines = $this->mapper->getNonCancelledProductsSaleOrders($productIds);
+            }
             $soIdsMappedByProductId = [];
             $allSaleOrdersIds = [];
             foreach ($soLines as $sol) {

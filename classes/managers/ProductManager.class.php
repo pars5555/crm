@@ -91,7 +91,7 @@ namespace crm\managers {
 
         public function calculateProductQuantityInStock($productId) {
             $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId);
-            $productSoldCount = intval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId));
+            $productSoldCount = floatval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId));
             $ret = 0;
             foreach ($productPurchaseOrderLines as $productPurchaseOrderLine) {
                 $ret += floatval($productPurchaseOrderLine->getQuantity());
@@ -157,8 +157,7 @@ namespace crm\managers {
 
         public function calculateProductTotalCost($productUnitCostInBaseCurrency) {
             $ret = 0;
-            if (empty($productUnitCostInBaseCurrency))
-            {
+            if (empty($productUnitCostInBaseCurrency)) {
                 return 0;
             }
             foreach ($productUnitCostInBaseCurrency as $pair) {
