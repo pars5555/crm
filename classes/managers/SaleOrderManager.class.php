@@ -109,7 +109,7 @@ namespace crm\managers {
         }
 
         public function getProductsIdsInOrder($saleOrderId) {
-            $soLines = $this->selectAdvance('*', ['sale_order_id', '=', $saleOrderId]);
+            $soLines = SaleOrderLineManager::getInstance()->selectAdvance('*', ['sale_order_id', '=', $saleOrderId]);
             $productIds = [];
             foreach ($soLines as $soLine) {
                 $productIds [] = $soLine->getProductId();

@@ -108,7 +108,7 @@ namespace crm\managers {
 
         
         public function getProductsIdsInOrder($purchaseOrderId) {
-            $poLines = $this->selectAdvance('*', ['purchase_order_id', '=', $purchaseOrderId]);
+            $poLines = PurchaseOrderLineManager::getInstance()->selectAdvance('*', ['purchase_order_id', '=', $purchaseOrderId]);
             $productIds = [];
             foreach ($poLines as $poLine) {
                 $productIds [] = $poLine->getProductId();
