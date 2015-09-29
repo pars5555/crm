@@ -5,7 +5,7 @@
  * @mail levon@naghashyan.com
  * @year 2012-2014
  */
-namespace exceptions {
+namespace crm\exceptions {
 	class JsonException extends \Exception {
 
 		/**

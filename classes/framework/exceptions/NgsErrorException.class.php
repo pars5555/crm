@@ -28,11 +28,10 @@ namespace ngs\framework\exceptions {
 					$msg = $argv[1];
 					break;
 			}
-			NGS()->getTemplateEngine()->assignJson("status", "error");
-			NGS()->getTemplateEngine()->assignJson("code", $code);
-			NGS()->getTemplateEngine()->assignJson("msg", $msg);
-                        var_dump($msg);exit;
-			NGS()->getTemplateEngine()->display();exit;
+			//NGS()->getTemplateEngine()->assignJson("status", "error");
+			//NGS()->getTemplateEngine()->assignJson("code", $code);
+			//NGS()->getTemplateEngine()->assignJson("msg", $msg);
+			//NGS()->getTemplateEngine()->display();exit;
 		}
 	}
 }
