@@ -13,6 +13,7 @@ namespace crm\loads\main\product {
 
     use crm\loads\NgsLoad;
     use crm\managers\ManufacturerManager;
+    use crm\managers\ProductManager;
     use crm\managers\SettingManager;
     use crm\managers\UomManager;
     use crm\security\RequestGroups;
@@ -24,9 +25,10 @@ namespace crm\loads\main\product {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $this->addParam('req', isset($_SESSION['action_request']) ? $_SESSION['action_request'] : []);
+            $this->addParam('products', ProductManager::getInstance()->selectAdvance('*', [], ['name']));
             unset($_SESSION['action_request']);
             $this->addParam('uoms', UomManager::getInstance()->selectAdvance('*', [], ['name']));
-            $this->addParam('manufacturers', ManufacturerManager::getInstance()->selectAdvance('*', [],['name']));
+            $this->addParam('manufacturers', ManufacturerManager::getInstance()->selectAdvance('*', [], ['name']));
             $this->addParam('defaultCurrencyId', SettingManager::getInstance()->getSetting('default_currency_id'));
             $this->addParam('defaultUomId', SettingManager::getInstance()->getSetting('default_uom_id'));
         }

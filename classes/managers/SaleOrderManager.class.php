@@ -12,7 +12,7 @@
 
 namespace crm\managers {
 
-    use crm\dal\mappers\SaleOrderMapper;
+use crm\dal\mappers\SaleOrderMapper;
 
     class SaleOrderManager extends AdvancedAbstractManager {
 
@@ -124,6 +124,11 @@ namespace crm\managers {
                     $this->updateAllOrderLines($productSaleOrder->getId());
                 }
             }
+        }
+
+        public function delete($id) {
+            SaleOrderLineManager::getInstance()->deleteByField('sale_order_id', $id);
+            return $this->deleteByPK($id);
         }
 
         public function updateAllOrderLines($saleOrderId = 0) {

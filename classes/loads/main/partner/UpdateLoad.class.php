@@ -22,10 +22,17 @@ namespace crm\loads\main\partner {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $id = intval(NGS()->args()->id);
-            $partner = PartnerManager::getInstance()->selectByPK($id);
-            if (isset($partner)) {
+            $partners = PartnerManager::getInstance()->getPartnersFull(['id', '=', $id]);
+            if (!empty($partners)) {
+                $partner = $partners[0];
                 if (!isset($_SESSION['action_request'])) {
-                    $_SESSION['action_request'] = ['name' =>$partner->getName(), 'email' =>$partner->getEmail(), 'address' =>$partner->getAddress(), 'phone' =>$partner->getPhone()];
+                    $_SESSION['action_request'] = [
+                        'name' => $partner->getName(),
+                        'email' => $partner->getEmail(),
+                        'address' => $partner->getAddress(),
+                        'phone' => $partner->getPhone(),
+                        'initial_dept' => $partner->getPartnerInitialDeptDtos()
+                    ];
                 }
                 $this->addParam("partner", $partner);
                 $this->addParam('req', $_SESSION['action_request']);

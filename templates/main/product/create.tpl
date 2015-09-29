@@ -11,8 +11,9 @@
     <form class="createProduct create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_product/do_create_product">
         <div class="form-group">
             <label class="label">Name</label>
-            <input class="text" type="text" name="name" value="{$ns.req.name|default:''}"/>
+            <input class="text" type="text" name="name" id="productName" value="{$ns.req.name|default:''}"/>
         </div>
+        <div id="existingProductsContainer"></div>
         <div class="form-group">
             <label class="label">Model</label>
             <input class="text" type="text" name="model" value="{$ns.req.model|default:''}"/>

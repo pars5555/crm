@@ -28,7 +28,9 @@ NGS.createLoad("crm.loads.main.main", {
         });
     },
     autocompleteSelect: function () {
-        $("select[data-autocomplete=true]").chosen();
+        $("select[data-autocomplete=true]").chosen({
+            search_contains: true
+        });
     },
     wrapSelect: function () {
         $("select").not("[data-no-wrap=true]").not("[data-autocomplete=true]").wrap("<div class='select_wrapper' />");

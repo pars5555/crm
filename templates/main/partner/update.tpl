@@ -1,6 +1,6 @@
 <div class="container partner--create--container">
     <h1 class="main_title">Update Partner</h1>
-    
+
     {if isset($ns.error_message)}
         {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
@@ -26,6 +26,14 @@
                 <label class="label">Phone</label>
                 <input class="text" type="text" name="phone" value="{$ns.req.phone|default:''}"/>
             </div>
+            <div class="form-group">
+                {foreach from=$ns.req.initial_dept item=initial_dept}
+                    <input class="text" type="text" value="{$initial_dept->getAmount()}"/>
+                {/foreach}
+            </div>
+
+
+
             <input type="hidden" name="id" value="{$ns.partner->getId()}"/>
             <input class="button blue" type="submit" value="Save"/>
 

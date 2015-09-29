@@ -100,13 +100,12 @@ namespace crm\managers {
             }
             return $opDtos;
         }
-        
+
         public function updateAllDependingSaleOrderLines($purchaseOrderId) {
             $productsIds = $this->getProductsIdsInOrder($purchaseOrderId);
             SaleOrderManager::getInstance()->updateAllOrderLinesThatContainsProducts($productsIds);
         }
 
-        
         public function getProductsIdsInOrder($purchaseOrderId) {
             $poLines = PurchaseOrderLineManager::getInstance()->selectAdvance('*', ['purchase_order_id', '=', $purchaseOrderId]);
             $productIds = [];
@@ -126,7 +125,7 @@ namespace crm\managers {
             }
             return true;
         }
-        
+
         public function updateAllLinesCurrencyRates() {
             $allPurchaseOrders = $this->getPurchaseOrdersFull();
             foreach ($allPurchaseOrders as $purchaseOrder) {
@@ -140,6 +139,11 @@ namespace crm\managers {
                 }
             }
             return count($allPurchaseOrders);
+        }
+
+        public function delete($id) {
+            PurchaseOrderLineManager::getInstance()->deleteByField('purchase_order_id', $id);
+            return $this->deleteByPK($id);
         }
 
         public function setPaid($id, $paid) {

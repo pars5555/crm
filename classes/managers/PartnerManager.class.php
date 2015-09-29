@@ -35,6 +35,25 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function getPartnersFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
+            $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
+            $partnerIds = array();
+            foreach ($rows as $row) {
+                $partnerIds[] = intval($row->getId());
+            }
+            $partnerIds = array_unique($partnerIds);
+            $partnerInitialDeptDtos = PartnerInitialDeptManager::getInstance()->selectAdvance('*',['partner_id', 'in', '(' . implode(',', $partnerIds) . ')']);
+            $partnerInitialDeptDtos = $this->mapByPartnerId($partnerInitialDeptDtos);
+            foreach ($rows as $row) {
+                $partnerId = intval($row->getId());
+                if (!array_key_exists($partnerId, $partnerInitialDeptDtos)) {
+                    $partnerInitialDeptDtos[$partnerId] = [];
+                }
+                $row->setPartnerInitialDeptDtos($partnerInitialDeptDtos[$partnerId]);
+            }
+            return $rows;
+        }
+
         public function deletePartnerFull($partnerId) {
             $saleOrderDtosMappedById = SaleOrderManager::getInstance()->selectAdvance('id', ['partner_id', '=', $partnerId], null, null, null, null, true);
             $purchaseOrderDtosMappedById = PurchaseOrderManager::getInstance()->selectAdvance('id', ['partner_id', '=', $partnerId], null, null, null, null, true);
@@ -83,6 +102,14 @@ namespace crm\managers {
             $partnerBillingTransactions = PaymentTransactionManager::getInstance()->getPartnerBillingTransactions($id);
             return CalculationManager::getInstance()->calculatePartnerDeptBySalePurchaseAndPaymentTransations(
                             $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions);
+        }
+
+        private function mapByPartnerId($partnerInitialDeptDtos) {
+            $ret = [];
+            foreach ($partnerInitialDeptDtos as $partnerInitialDeptDto) {
+                $ret[$partnerInitialDeptDto->getPartnerId()][] = $partnerInitialDeptDto;
+            }
+            return $ret;
         }
 
     }
