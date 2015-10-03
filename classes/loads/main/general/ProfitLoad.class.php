@@ -32,7 +32,7 @@ namespace crm\loads\main\general {
             $expensePaymentDtos = PaymentTransactionManager::getInstance()->getAllNonCancelledExpensePayments($startDate, $endDate);
             list($saleExpensesInMainCurrency, $paymentExpensesInMainCurrency) = $this->calculateTotalExpense($expenseSaleOrderLineRowDtos, $expensePaymentDtos);
             $profitIncludedExpensed = $profit - $saleExpensesInMainCurrency - $paymentExpensesInMainCurrency;
-            $this->addParam("profit", $profitIncludedExpensed);
+            $this->addParam("profit", round($profitIncludedExpensed, 2));
             $this->addParam("chartData", json_encode(['profit_without_expenses' => $profit, 'payment_expenses' => $paymentExpensesInMainCurrency, 'sale_expenses' => $saleExpensesInMainCurrency]));
             $this->addParam("lineChartData", json_encode($this->prepareLineChartData($startDate, $endDate)));
         }

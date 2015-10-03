@@ -33,7 +33,7 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function calculatePartnerDeptBySalePurchaseAndPaymentTransations($partnersSaleOrders, $partnersPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions) {
+        public function calculatePartnerDeptBySalePurchaseAndPaymentTransations($partnersSaleOrders, $partnersPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions, $partnerInitialDept) {
             $partnerDept = [];
             foreach ($partnersSaleOrders as $saleOrder) {
                 if ($saleOrder->getCancelled() == 1) {
@@ -81,11 +81,15 @@ namespace crm\managers {
                 }
                 $partnerDept[$currencyId] += $amount;
             }
+            if (!empty($partnerInitialDept)) {
+                foreach ($partnerInitialDept as $currencyId => $amount) {
+                    $partnerDept[$currencyId] += $amount;
+                }
+            }
             return $partnerDept;
         }
 
-        public function calculatePartnersDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, 
-                $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId) {
+        public function calculatePartnersDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId, $partnersInitialDept) {
             $partnersDept = [];
             foreach ($partnersSaleOrdersMappedByPartnerId as $partnerId => $saleOrders) {
                 foreach ($saleOrders as $saleOrder) {
@@ -137,7 +141,7 @@ namespace crm\managers {
                     $partnersDept[$partnerId][$currencyId] += $unitPrice;
                 }
             }
-            
+
             foreach ($partnersBillingTransactionsMappedByPartnerId as $partnerId => $transactions) {
                 foreach ($transactions as $transaction) {
                     if ($transaction->getCancelled() == 1) {
@@ -161,6 +165,13 @@ namespace crm\managers {
                     //this case is for -0 only to show it as 0
                     if ($partnersDept[$partnerId][$currencyId] == -$partnersDept[$partnerId][$currencyId]) {
                         $partnersDept[$partnerId][$currencyId] = 0;
+                    }
+                }
+            }
+            if (!empty($partnersInitialDept)) {
+                foreach ($partnersInitialDept as $partnerId => $partnerInitialDept) {
+                    foreach ($partnerInitialDept as $currencyId => $amount) {
+                        $partnersDept[$partnerId][$currencyId] += $amount;
                     }
                 }
             }

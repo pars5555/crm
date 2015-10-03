@@ -35,6 +35,14 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function getPartnerFull($partnerId) {
+            $partners = $this->getPartnersFull(['id', '=', $partnerId]);
+            if (!empty($partners)) {
+                return $partners [0];
+            }
+            return null;
+        }
+
         public function getPartnersFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
             $partnerIds = array();
@@ -42,7 +50,7 @@ namespace crm\managers {
                 $partnerIds[] = intval($row->getId());
             }
             $partnerIds = array_unique($partnerIds);
-            $partnerInitialDeptDtos = PartnerInitialDeptManager::getInstance()->selectAdvance('*',['partner_id', 'in', '(' . implode(',', $partnerIds) . ')']);
+            $partnerInitialDeptDtos = PartnerInitialDeptManager::getInstance()->selectAdvance('*', ['partner_id', 'in', '(' . implode(',', $partnerIds) . ')'], 'datetime', 'DESC');
             $partnerInitialDeptDtos = $this->mapByPartnerId($partnerInitialDeptDtos);
             foreach ($rows as $row) {
                 $partnerId = intval($row->getId());

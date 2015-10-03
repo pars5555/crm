@@ -14,6 +14,7 @@ namespace crm\loads\main\partner {
     use crm\loads\NgsLoad;
     use crm\managers\CalculationManager;
     use crm\managers\CurrencyManager;
+    use crm\managers\PartnerInitialDeptManager;
     use crm\managers\PartnerManager;
     use crm\managers\PaymentTransactionManager;
     use crm\managers\PurchaseOrderManager;
@@ -34,15 +35,15 @@ namespace crm\loads\main\partner {
             $partnersSaleOrdersMappedByPartnerId = [];
             $partnersPurchaseOrdersMappedByPartnerId = [];
             $partnersTransactionsMappedByPartnerId = [];
+            $partnersInitialDept = [];
             if (!empty($partnerIds)) {
                 $partnersSaleOrdersMappedByPartnerId = SaleOrderManager::getInstance()->getPartnersSaleOrders($partnerIds);
                 $partnersPurchaseOrdersMappedByPartnerId = PurchaseOrderManager::getInstance()->getPartnersPurchaseOrders($partnerIds);
                 $partnersPaymentTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersPaymentTransactions($partnerIds);
                 $partnersBillingTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersBillingTransactions($partnerIds);
+                $partnersInitialDept = PartnerInitialDeptManager::getInstance()->getPartnersInitialDept($partnerIds);
             }
-
-            $partnersDept = CalculationManager::getInstance()->calculatePartnersDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, 
-                    $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId);
+            $partnersDept = CalculationManager::getInstance()->calculatePartnersDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId, $partnersInitialDept);
             $this->addParam('partnersSaleOrdersMappedByPartnerId', $partnersSaleOrdersMappedByPartnerId);
             $this->addParam('partnersPurchaseOrdersMappedByPartnerId', $partnersPurchaseOrdersMappedByPartnerId);
             $this->addParam('partnersPaymentTransactionsMappedByPartnerId', $partnersPaymentTransactionsMappedByPartnerId);

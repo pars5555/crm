@@ -35,6 +35,40 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function getPartnerInitialDept($partnerId) {
+            $dtos = $this->selectByField('partner_id', $partnerId);
+            $ret = [];
+            foreach ($dtos as $dto) {
+                $currencyId = intval($dto->getCurrencyId());
+                if (!array_key_exists($currencyId, $ret)) {
+                    $ret[$currencyId] = 0;
+                }
+                $ret[$currencyId] += floatval($dto->getAmount());
+            }
+            return $ret;
+        }
+
+        public function getPartnersInitialDept($partnersIds) {
+            if (is_array($partnersIds)) {
+                $partnersIds = implode(',', $partnersIds);
+            }
+            $partnersIds = '(' . $partnersIds . ')';
+            $dtos = $this->selectAdvance('*', ['partner_id', 'in', $partnersIds]);
+            $ret = [];
+            foreach ($dtos as $dto) {
+                $partnerId = intval($dto->getPartnerId());
+                $currencyId = intval($dto->getCurrencyId());
+                if (!array_key_exists($partnerId, $ret)) {
+                    $ret[$partnerId] = [];
+                }
+                if (!array_key_exists($currencyId, $ret[$partnerId])) {
+                    $ret[$partnerId][$currencyId] = 0;
+                }
+                $ret[$partnerId][$currencyId] += floatval($dto->getAmount());
+            }
+            return $ret;
+        }
+
     }
 
 }
