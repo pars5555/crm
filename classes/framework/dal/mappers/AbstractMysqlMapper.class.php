@@ -15,7 +15,6 @@ namespace ngs\framework\dal\mappers {
 	abstract class AbstractMysqlMapper extends AbstractSqlMapper {
 
 		public $dbms;
-		private $bulkUpdateQuery;
 
 		/**
 		 * Initializes DBMS pointer.

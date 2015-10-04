@@ -12,6 +12,7 @@
 namespace crm\loads\main\partner {
 
     use crm\loads\NgsLoad;
+    use crm\managers\CurrencyManager;
     use crm\managers\PartnerManager;
     use crm\security\RequestGroups;
     use NGS;
@@ -24,6 +25,7 @@ namespace crm\loads\main\partner {
             $id = intval(NGS()->args()->id);
             $partners = PartnerManager::getInstance()->getPartnersFull(['id', '=', $id]);
             if (!empty($partners)) {
+                $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
                 $partner = $partners[0];
                 if (!isset($_SESSION['action_request'])) {
                     $_SESSION['action_request'] = [

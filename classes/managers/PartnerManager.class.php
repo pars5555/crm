@@ -50,7 +50,7 @@ namespace crm\managers {
                 $partnerIds[] = intval($row->getId());
             }
             $partnerIds = array_unique($partnerIds);
-            $partnerInitialDeptDtos = PartnerInitialDeptManager::getInstance()->selectAdvance('*', ['partner_id', 'in', '(' . implode(',', $partnerIds) . ')'], 'datetime', 'DESC');
+            $partnerInitialDeptDtos = PartnerInitialDeptManager::getInstance()->getInitialDeptsFull(['partner_id', 'in', '(' . implode(',', $partnerIds) . ')'], 'datetime', 'DESC');
             $partnerInitialDeptDtos = $this->mapByPartnerId($partnerInitialDeptDtos);
             foreach ($rows as $row) {
                 $partnerId = intval($row->getId());
@@ -90,7 +90,7 @@ namespace crm\managers {
             return $this->insertDto($dto);
         }
 
-        public function updatePartner($id, $name, $email, $address, $phone) {
+        public function updatePartner($id, $name, $email, $address, $phone, $initialDepts) {
             $dto = $this->selectByPK($id);
             if (isset($dto)) {
                 $dto->setName($name);
@@ -98,7 +98,14 @@ namespace crm\managers {
                 $dto->setAddress($address);
                 $dto->setPhone($phone);
                 $dto->setCreateDate(date('Y-m-d H:i:s'));
-                return $this->updateByPk($dto);
+                $ret = $this->updateByPk($dto);
+                PartnerInitialDeptManager::getInstance()->deleteByField('partner_id', $id);
+                if (!empty($initialDepts)) {
+                    foreach ($initialDepts as $initialDept) {
+                        PartnerInitialDeptManager::getInstance()->addRow($id, $initialDept->amount, $initialDept->currency_id, $initialDept->note);
+                    }
+                }
+                return $ret;
             }
             return false;
         }

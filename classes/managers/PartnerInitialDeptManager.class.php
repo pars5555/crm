@@ -35,6 +35,29 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function addRow($partnerId, $amount, $currencyId, $note) {
+            $dto = $this->createDto();
+            $dto->setPartnerId($partnerId);
+            $dto->setAmount($amount);
+            $dto->setCurrencyId($currencyId);
+            $dto->setNote($note);
+            return $this->insertDto($dto);
+        }
+
+        public function getInitialDeptsFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
+            $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
+            $currencyIds = array();
+            foreach ($rows as $row) {
+                $currencyIds [] = intval($row->getCurrencyId());
+            }
+            $currencyIds = array_unique($currencyIds);
+            $currencyDtos = CurrencyManager::getInstance()->selectByPKs($currencyIds, true);
+            foreach ($rows as $row) {
+                $row->setCurrencyDto($currencyDtos[$row->getCurrencyId()]);
+            }
+            return $rows;
+        }
+
         public function getPartnerInitialDept($partnerId) {
             $dtos = $this->selectByField('partner_id', $partnerId);
             $ret = [];

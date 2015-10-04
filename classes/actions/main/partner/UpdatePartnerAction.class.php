@@ -23,13 +23,13 @@ namespace crm\actions\main\partner {
 
         public function service() {
             try {
-                list($id, $name, $email, $address, $phone) = $this->getFormData();
+                list($id, $name, $email, $address, $phone, $initialDepts) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            PartnerManager::getInstance()->updatePartner($id, $name, $email, $address, $phone);
+            PartnerManager::getInstance()->updatePartner($id, $name, $email, $address, $phone, $initialDepts);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Partner Successfully updated!';
             $this->redirect('partner/' . $id);
@@ -40,6 +40,14 @@ namespace crm\actions\main\partner {
             $id = NGS()->args()->id;
             $name = NGS()->args()->name;
             $email = NGS()->args()->email;
+            $initialDepts = NGS()->args()->initialDepts;
+            $initialDeptsDecoded = [];
+            if (!empty($initialDepts)) {
+                foreach ($initialDepts as $initialDeptJson) {
+                    $initialDeptObject = json_decode($initialDeptJson);
+                    $initialDeptsDecoded[] = $initialDeptObject;
+                }
+            }
             $address = "";
             if (isset(NGS()->args()->address)) {
                 $address = NGS()->args()->address;
@@ -48,7 +56,7 @@ namespace crm\actions\main\partner {
             if (isset(NGS()->args()->phone)) {
                 $phone = NGS()->args()->phone;
             }
-            return array($id, $name, $email, $address, $phone);
+            return array($id, $name, $email, $address, $phone, $initialDeptsDecoded);
         }
 
         private function validateFormData() {

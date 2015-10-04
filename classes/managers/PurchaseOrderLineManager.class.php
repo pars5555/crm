@@ -12,7 +12,7 @@
 
 namespace crm\managers {
 
-use crm\dal\mappers\PurchaseOrderLineMapper;
+    use crm\dal\mappers\PurchaseOrderLineMapper;
 
     class PurchaseOrderLineManager extends AdvancedAbstractManager {
 
@@ -117,8 +117,10 @@ use crm\dal\mappers\PurchaseOrderLineMapper;
                 $allPurchaseOrdersIds[] = intval($po->getPurchaseOrderId());
             }
             $allPurchaseOrdersIds = array_unique($allPurchaseOrdersIds);
-            $idsSql = '(' . implode(',', $allPurchaseOrdersIds) . ')';
-            $pos = PurchaseOrderManager::getInstance()->selectAdvance('*', ['id', 'IN', $idsSql], null, null, null, null, true);
+            if (!empty($allPurchaseOrdersIds)) {
+                $idsSql = '(' . implode(',', $allPurchaseOrdersIds) . ')';
+                $pos = PurchaseOrderManager::getInstance()->selectAdvance('*', ['id', 'IN', $idsSql], null, null, null, null, true);
+            }
 
 
             foreach ($poIdsMappedByProductId as &$r) {
@@ -131,7 +133,10 @@ use crm\dal\mappers\PurchaseOrderLineMapper;
                 }
                 $ret[$productId] = [];
                 foreach ($poIdsMappedByProductId[$productId] as $poId) {
+                    if (array_key_exists($poId, $pos)){
                     $ret[$productId][] = $pos[$poId];
+                    }
+                    
                 }
             }
             return $ret;
