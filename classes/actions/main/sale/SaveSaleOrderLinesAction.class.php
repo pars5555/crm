@@ -27,9 +27,9 @@ namespace crm\actions\main\sale {
                 $_SESSION['error_message'] = 'Sale Order ID is missing';
                 $this->redirect('sale/list');
             }
+            $saleOrderId = intval(NGS()->args()->sale_order_id);
             try {
-                SaleOrderLineManager::getInstance()->beginTransation();
-                $saleOrderId = intval(NGS()->args()->sale_order_id);
+                SaleOrderLineManager::getInstance()->startTransaction();
                 if (isset(NGS()->args()->lines)) {
                     $jsonLinesArray = NGS()->args()->lines;
                     $linesIdsToNotDelete = [];
@@ -53,7 +53,17 @@ namespace crm\actions\main\sale {
                 SaleOrderManager::getInstance()->commitTransaction();
             } catch (InsufficientProductException $exc) {
                 SaleOrderManager::getInstance()->rollbackTransaction();
-                $_SESSION['error_message'] = "Insufficient Product: " + $exc->getProductId();
+                $product = \crm\managers\ProductManager::getInstance()->selectByPK($exc->getProductId());
+                $productInfo = $product->getId();
+                if (isset($product)) {
+                    $productInfo = $product->getName() . " (" . $product->getId() . ")";
+                }
+                $_SESSION['error_message'] = "Insufficient Product: " . $productInfo;
+                $this->redirect('sale/' . $saleOrderId);
+            } catch (Exception $exc) {
+                SaleOrderManager::getInstance()->rollbackTransaction();
+                $_SESSION['error_message'] = $exc->getMessage();
+                $this->redirect('sale/' . $saleOrderId);
             }
             $this->redirect('sale/warranty/' . $saleOrderId);
         }

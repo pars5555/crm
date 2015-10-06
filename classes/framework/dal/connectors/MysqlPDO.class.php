@@ -46,7 +46,7 @@ namespace ngs\framework\dal\connectors {
 			}
 			return self::$instance;
 		}
-
+                
 	}
 
 }
