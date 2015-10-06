@@ -64,7 +64,8 @@ namespace ngs\framework\dal\connectors {
 		 *	Turns off auto-commiting database modifications
 		 */
 		public function startTransaction() {
-			mysqli_autocommit($this->link, FALSE);
+                    mysqli_autocommit($this->link, FALSE);
+                    mysqli_begin_transaction();
 		}
 
 		/**

@@ -15,6 +15,7 @@
 namespace crm\actions\main\sale {
 
     use crm\actions\BaseAction;
+    use crm\exceptions\InsufficientProductException;
     use crm\managers\SaleOrderLineManager;
     use crm\managers\SaleOrderManager;
     use NGS;
@@ -26,27 +27,34 @@ namespace crm\actions\main\sale {
                 $_SESSION['error_message'] = 'Sale Order ID is missing';
                 $this->redirect('sale/list');
             }
-            $saleOrderId = intval(NGS()->args()->sale_order_id);
-            if (isset(NGS()->args()->lines)) {
-                $jsonLinesArray = NGS()->args()->lines;
-                $linesIdsToNotDelete = [];
-                if (!empty($jsonLinesArray)) {
-                    foreach ($jsonLinesArray as $jsonLine) {
-                        $line = json_decode($jsonLine);
-                        if (isset($line->line_id)) {
-                            $linesIdsToNotDelete[] = $line->line_id;
-                            SaleOrderLineManager::getInstance()->updateSaleOrderLine($saleOrderId, $line->line_id, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
-                        } else {
-                            $newLineId = SaleOrderLineManager::getInstance()->createSaleOrderLine($saleOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
-                            $linesIdsToNotDelete[] = $newLineId;
+            try {
+                SaleOrderLineManager::getInstance()->beginTransation();
+                $saleOrderId = intval(NGS()->args()->sale_order_id);
+                if (isset(NGS()->args()->lines)) {
+                    $jsonLinesArray = NGS()->args()->lines;
+                    $linesIdsToNotDelete = [];
+                    if (!empty($jsonLinesArray)) {
+                        foreach ($jsonLinesArray as $jsonLine) {
+                            $line = json_decode($jsonLine);
+                            if (isset($line->line_id)) {
+                                $linesIdsToNotDelete[] = $line->line_id;
+                                SaleOrderLineManager::getInstance()->updateSaleOrderLine($saleOrderId, $line->line_id, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
+                            } else {
+                                $newLineId = SaleOrderLineManager::getInstance()->createSaleOrderLine($saleOrderId, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
+                                $linesIdsToNotDelete[] = $newLineId;
+                            }
                         }
                     }
+                    SaleOrderLineManager::getInstance()->deleteWhereIdNotIdIds($saleOrderId, $linesIdsToNotDelete);
+                } else {
+                    SaleOrderLineManager::getInstance()->deleteByField('sale_order_id', $saleOrderId);
                 }
-                SaleOrderLineManager::getInstance()->deleteWhereIdNotIdIds($saleOrderId, $linesIdsToNotDelete);
-            } else {
-                SaleOrderLineManager::getInstance()->deleteByField('sale_order_id', $saleOrderId);
+                SaleOrderManager::getInstance()->updateAllDependingSaleOrderLines($saleOrderId);
+                SaleOrderManager::getInstance()->commitTransaction();
+            } catch (InsufficientProductException $exc) {
+                SaleOrderManager::getInstance()->rollbackTransaction();
+                $_SESSION['error_message'] = "Insufficient Product: " + $exc->getProductId();
             }
-            SaleOrderManager::getInstance()->updateAllDependingSaleOrderLines($saleOrderId);
             $this->redirect('sale/warranty/' . $saleOrderId);
         }
 

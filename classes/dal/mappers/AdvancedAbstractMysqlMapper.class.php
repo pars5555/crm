@@ -63,6 +63,24 @@ namespace crm\dal\mappers {
             return null;
         }
 
+        public function startTransaction() {
+            $this->dbms->startTransaction();
+        }
+
+        /**
+         * Commits the current transaction
+         */
+        public function commitTransaction() {
+            $this->dbms->commitTransaction();
+        }
+
+        /**
+         * Rollback the current transaction
+         */
+        public function rollbackTransaction() {
+            $this->dbms->rollbackTransaction();
+        }
+
     }
 
 }

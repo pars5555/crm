@@ -23,6 +23,24 @@ namespace crm\managers {
             $this->mapper = $mapper;
         }
 
+        public function startTransaction() {
+            $this->mapper->startTransaction();
+        }
+
+        /**
+         * Commits the current transaction
+         */
+        public function commitTransaction() {
+            $this->mapper->commitTransaction();
+        }
+
+        /**
+         * Rollback the current transaction
+         */
+        public function rollbackTransaction() {
+            $this->mapper->rollbackTransaction();
+        }
+
         public function selectByField($fieldName, $fieldValue) {
             return $this->mapper->selectByField($fieldName, $fieldValue);
         }
@@ -53,8 +71,6 @@ namespace crm\managers {
             }
             return $mappedDtos;
         }
-       
-       
 
         public static function getDtosIdsArray($dtos) {
             $idsArray = array();
