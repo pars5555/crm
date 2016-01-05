@@ -11,7 +11,7 @@ namespace crm\actions\login {
     class LoginAction extends AbstractAction {
 
         public function service() {
-            $adminDto = AdminManager::getInstance()->getByUsernamePassword(NGS()->args()->getUsername(), NGS()->args()->getPassword());
+            $adminDto = AdminManager::getInstance()->getByUsernamePassword(NGS()->args()->getUsername(), md5(NGS()->args()->getPassword()));
             if (!$adminDto) {
                 $this->redirect('login');
             }
