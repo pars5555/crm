@@ -47,7 +47,7 @@ namespace crm\managers {
                 $user = $this->getUserByLevel(isset($_COOKIE["crmut"])? : null);
                 $user->validate();
             } catch (InvalidUserException $ex) {
-                $this->deleteUser($user);
+                $this->deleteUser($user, false);
                 NGS()->redirect(substr($_SERVER["REQUEST_URI"], 1));
                 exit;
             }
@@ -83,7 +83,7 @@ namespace crm\managers {
         }
 
         public function logout() {
-            $this->deleteUser($this->getUser());
+            $this->deleteUser($this->getUser(), false);
             return true;
         }
 

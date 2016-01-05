@@ -80,9 +80,9 @@ namespace ngs\framework\session {
       $domain = false;
       if ($useDomain) {
         if ($useSubdomain) {
-          $domain = ".".HTTP_HOST;
+          $domain = NGS()->getHttpUtils->getHost();
         } else {
-          $domain = ".".NGS()->getHost();
+          $domain = ".".NGS()->getHttpUtils->getHost();
         }
       }
       $cookieParams = $user->getCookieParams();
