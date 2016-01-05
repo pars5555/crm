@@ -101,10 +101,9 @@ namespace ngs\framework {
             }
             $loadObj->setLoadName($loadArr["action"]);
             $loadObj->initialize();
+
             if (NGS()->getSessionManager()->validateRequest($loadObj) === false) {
-                if ($loadObj->onNoAccess()) {
-                        return;
-                    }
+                throw NGS()->getNoAccessException("User hasn't access to the load: " . $actionArr["action"], 1);
             }
 
             $loadObj->service();

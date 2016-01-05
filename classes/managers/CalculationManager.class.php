@@ -171,6 +171,12 @@ namespace crm\managers {
             if (!empty($partnersInitialDept)) {
                 foreach ($partnersInitialDept as $partnerId => $partnerInitialDept) {
                     foreach ($partnerInitialDept as $currencyId => $amount) {
+                        if (!isset($partnersDept[$partnerId])) {
+                            $partnersDept[$partnerId] = [];
+                        }
+                        if (!isset($partnersDept[$partnerId][$currencyId])) {
+                            $partnersDept[$partnerId][$currencyId] = 0;
+                        }
                         $partnersDept[$partnerId][$currencyId] += $amount;
                     }
                 }

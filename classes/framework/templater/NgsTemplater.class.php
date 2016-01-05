@@ -107,10 +107,6 @@ namespace ngs\framework\templater {
       return $this->permalink;
     }
 
-    public function getSmarty() {
-        return $this->smarty;
-    }
-    
     public function display() {
       if ($this->getTemplate() == null) {
         $this->diplayJSONResuls();

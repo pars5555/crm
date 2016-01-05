@@ -101,7 +101,7 @@ namespace ngs\framework {
                 }
 
                 $loadObj->setLoadName(NGS()->getRoutesEngine()->getContentLoad());
-                $loadObj->service();;
+                $loadObj->service();
                 NGS()->getTemplateEngine()->setTemplate($loadObj->getTemplate());
                 NGS()->getTemplateEngine()->setPermalink($loadObj->getPermalink());
                 if ($loadObj->getLoadType() == "smarty") {
@@ -174,7 +174,7 @@ namespace ngs\framework {
                     return true;
                 }
             }
-            return false;
+            return true;
         }
 
         /**

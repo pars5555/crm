@@ -49,12 +49,13 @@ namespace ngs\framework\session {
         public function setUser($user, $remember = false, $useDomain = true, $useSubdomain = false) {
             $sessionTimeout = $remember ? 2078842581 : null;
             $domain = false;
-            if ($useDomain) {
-                if ($useSubdomain) {
-                    $domain = NGS()->getHttpUtils()->getHost();
-                } else {
-                    $domain = "." . NGS()->getHttpUtils()->getHost();
-                }
+      if ($useDomain) {
+
+        if ($useSubdomain) {
+          $domain = ".".NGS()->getHttpUtils()->getHost();
+        } else {
+          $domain = NGS()->getHttpUtils()->getHost();
+        }
             }
             $cookieParams = $user->getCookieParams();
             foreach ($cookieParams as $key => $value) {
@@ -66,31 +67,32 @@ namespace ngs\framework\session {
             }
         }
 
-        /**
-         * delete user from cookie and session
-         *
-         * @param mixed user Object| $user
-         * @param bool $useDomain | true
-         *
-         * @return
-         */
-        public function deleteUser($user, $useDomain = true, $useSubdomain = false) {
-            $sessionTimeout = time() - 42000;
-            $domain = false;
-            if ($useSubdomain) {
-                // $domain = NGS()->getHttpUtils()->getHost();
-                if ($useSubdomain) {
-                    $domain = "." . $domain;
-                }
-            }
-            $cookieParams = $user->getCookieParams();
-            foreach ($cookieParams as $key => $value) {
-                setcookie($key, '', $sessionTimeout, "/", $domain);
-            }
-            $sessionParams = $user->getSessionParams();
-            foreach ($sessionParams as $key => $value) {
-                if (isset($_SESSION[$key])) {
-                    unset($_SESSION[$key]);
+    /**
+     * delete user from cookie and session
+     *
+     * @param mixed user Object| $user
+     * @param bool $useDomain | true
+     *
+     * @return
+     */
+    public function deleteUser($user, $useDomain = true, $useSubdomain = false) {
+      $sessionTimeout = time() - 42000;
+      $domain = false;
+      if ($useDomain) {
+        if ($useSubdomain) {
+          $domain = ".".HTTP_HOST;
+        } else {
+          $domain = ".".NGS()->getHost();
+        }
+      }
+      $cookieParams = $user->getCookieParams();
+      foreach ($cookieParams as $key => $value) {
+        setcookie($key, '', $sessionTimeout, "/", $domain);
+      }
+      $sessionParams = $user->getSessionParams();
+      foreach ($sessionParams as $key => $value) {
+        if (isset($_SESSION[$key])) {
+          unset($_SESSION[$key]);
                 }
             }
         }

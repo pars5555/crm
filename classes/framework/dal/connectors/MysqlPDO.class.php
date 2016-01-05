@@ -1,15 +1,21 @@
 <?php
 /**
- * ImprovedDBMS class uses MySQL Improved Extension to access DB.
- * This class provides full transaction support instead of DBMS class.
+ * MysqlPDO class uses MySQL PHP PDO Extension to access DB.
  *
  * @author Levon Naghashyan <levon@naghashyan.com>
  * @site http://naghashyan.com
  * @mail levon@naghashyan.com
- * @package framework.dal.connectors
+ * @package ngs.framework.dal.connectors
  * @version 2.0.0
  * @year 2009-2014
+ * 
+ * This file is part of the NGS package.
+ *
  * @copyright Naghashyan Solutions LLC
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
  */
 namespace ngs\framework\dal\connectors {
 	use ngs\framework\exceptions\DebugException;
@@ -46,7 +52,7 @@ namespace ngs\framework\dal\connectors {
 			}
 			return self::$instance;
 		}
-                
+
 	}
 
 }
