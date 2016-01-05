@@ -6,9 +6,15 @@
  * @author Levon Naghashyan <levon@naghashyan.com>
  * @site http://naghashyan.com
  * @year 2010-2015
- * @package framework.util
+ * @package ngs.framework.util
  * @version 2.0.0
+ * 
+ * This file is part of the NGS package.
+ *
  * @copyright Naghashyan Solutions LLC
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
  */
 

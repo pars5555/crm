@@ -123,6 +123,18 @@ use crm\dal\mappers\TranslationMapper;
             }
         }
 
+        public function updateRow($id, $en, $am, $ru) {
+            $dto = $this->selectByPK($id);
+            if ($dto) {
+                $dto->setPhraseEn($en);
+                $dto->setPhraseAm($am);
+                $dto->setPhraseRu($ru);
+                $this->updateByPk($dto);
+                return true;
+            }
+            return false;
+        }
+
         public function getPhraseIdByPhraseEn($phraseEn) {
             if (array_key_exists($phraseEn, $this->allPhrasesDtosMappedByPhraseEn)) {
                 $dto = $this->allPhrasesDtosMappedByPhraseEn[$phraseEn];

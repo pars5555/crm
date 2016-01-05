@@ -2,14 +2,14 @@
     <h1 class="main_title">Edit Sale Order</h1>
 
     {if isset($ns.error_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
 
     {if isset($ns.saleOrder)}
-        <form class="updateSaleOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_sale/do_update_sale_order">
+        <form class="updateSaleOrder create--form" autocomplete="off" method="post" action="{$SITE_PATH}/dyn/main_sale/do_update_sale_order">
             <div class="form-group">
                 <label class="label">Date</label>
                 {assign order_date $smarty.now|date_format:"%Y-%m-%d %H:%M"}

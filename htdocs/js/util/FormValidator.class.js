@@ -1,5 +1,6 @@
 (function($) {
   $.fn.imFormValidator = function(options) {
+
     var defaults = {
       showError : imValidator.showError,
       hideError : imValidator.hideError
@@ -24,6 +25,9 @@
             break;
           case "text":
             var status = imValidator.validateText($(item).val());
+            break;
+          case "data-field":
+            var status = imValidator.validateDataField($(item).val());
             break;
           case "email":
             var status = imValidator.validateEmail($(item).val());
@@ -158,9 +162,15 @@
       if (!filter.test(str)) {
         return "Please use only letters (a-z), numbers, and periods.";
       }
-
       return true;
     },
+     validateDataField:function(str){
+         var str = str.trim();
+      if (!str) {
+        return "You can't leave this empty.";
+      }
+       return true;
+      },
     validatePasswords : function(str, str1) {
       var str = str.trim();
       var str1 = str1.trim();
@@ -177,6 +187,7 @@
       return true;
     },
     showError : function(elem, msg) {
+        
       $(elem).parent().append($("<div class='ilyov_validate'>" + msg + "</div>"));
       $(elem).css({
         "border-color" : "#FC5458",
@@ -211,8 +222,7 @@
       return base;
     };
     this.push_counter = function(key) {
-      if (push_counters[key] ===
-      void 0) {
+      if (push_counters[key] === void 0) {
         push_counters[key] = 0;
       }
       return push_counters[key]++;

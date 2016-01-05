@@ -6,10 +6,16 @@
  *
  * @author Levon Naghashyan <levon@naghashyan.com>
  * @site http://naghashyan.com
- * @year 2009-2014
- * @package framework.dal.dto
+ * @year 2009-2015
+ * @package ngs.framework.dal.dto
  * @version 2.0.0
+ *
+ * This file is part of the NGS package.
+ *
  * @copyright Naghashyan Solutions LLC
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
  */
 namespace ngs\framework\dal\dto {

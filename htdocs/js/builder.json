@@ -42,7 +42,7 @@
                 "output_file": "ngs_loads_main.js",
                 "compress": false,
                 "files": [
-                    "loads/main/MainLoad.class.js",
+                    "loads/main/IndexLoad.class.js",
                     "loads/main/payment/OpenLoad.class.js",
                     "loads/main/payment/ListLoad.class.js",
                     "loads/main/payment/CreateLoad.class.js",

@@ -42,7 +42,6 @@ NGS.AjaxLoader = {
 
 	request : function(_url, options) {
 		NGS.showAjaxLoader();
-		document.getElementById(NGS.getConfig().ajaxLoader).style.display = "block";
 		var defaultOptions = {
 			method : "get",
 			async : true,
@@ -69,7 +68,7 @@ NGS.AjaxLoader = {
 			if (xmlhttp.readyState == 4) {
 				if (xmlhttp.status == 200) {
 					options.onComplete(xmlhttp.responseText);
-				} else {
+				} else if (xmlhttp.status == 400) {
 					options.onError(xmlhttp.responseText);
 				}
 				NGS.hideAjaxLoader();

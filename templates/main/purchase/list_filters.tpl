@@ -1,4 +1,4 @@
-<form class="filters--form" id="purchaseOrderFilters" autocomplete="off" action="{SITE_PATH}/purchase/list" method="GET">
+<form class="filters--form" id="purchaseOrderFilters" autocomplete="off" action="{$SITE_PATH}/purchase/list" method="GET">
     <div class="form-group">
         <label class="label">Partner</label>
         <select name="prt" data-autocomplete="true">

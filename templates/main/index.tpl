@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        {include file="{getTemplateDir}/main/util/header_control.tpl"}
+        {include file="./util/header_control.tpl"}
     </head>
     <body>
         <div id="ajaxLoader"></div>
             
         <header class="header">
-            {include file="{getTemplateDir}/main/util/header.tpl"}
+            {include file="./util/header.tpl"}
         </header>
         <section class="wrapper">
-            {include file="{getTemplateDir}/main/util/left_menu.tpl"}
+            {include file="./util/left_menu.tpl"}
             <div class="content" id="indexRightContent">
                 {nest ns=content}
             </div>
         </section>
         <footer class="footer">
-            {include file="{getTemplateDir}/main/util/footer.tpl"}
+            {include file="./util/footer.tpl"}
         </footer>
     </body>
 </html>

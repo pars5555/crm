@@ -11,7 +11,7 @@
         </div> 
         {foreach from=$ns.expenseSaleOrders item=saleOrder}
             <div class="table-row" {if $saleOrder->getCancelled() == 1}style="background: red"{/if}>
-                <a class="table-cell" href="{SITE_PATH}/sale/{$saleOrder->getId()}">
+                <a class="table-cell" href="{$SITE_PATH}/sale/{$saleOrder->getId()}">
                     <span>{$saleOrder->getId()} </span>
                 </a>
                 <span class="table-cell"> {$saleOrder->getPartnerDto()->getName()} </span>

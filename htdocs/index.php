@@ -8,7 +8,7 @@
  * @site http://naghashyan.com
  * @mail levon@naghashyan.com
  * @year 2010-2015
- * @version 2.0.0
+ * @version 2.1.0
  *
  */
 //send conrol origin policy header for non same domain connection
@@ -18,6 +18,6 @@ if(php_sapi_name() == "cli"){
 	defined('__DIR__') or define('__DIR__', dirname(__FILE__));
 	chdir(__DIR__."/");
 }
-require_once ("../conf/constants.php");
+date_default_timezone_set("Asia/Yerevan");
 require_once ("../classes/framework/NGS.class.php");
 $dispatcher = new ngs\framework\Dispatcher();

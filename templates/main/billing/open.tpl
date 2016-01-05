@@ -2,10 +2,10 @@
     <h1 class="main_title">Billing Order View</h1>
 
     {if isset($ns.error_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
 
     {if isset($ns.billing)}
@@ -74,7 +74,7 @@
             </div>
         </div>
         {if $billing->getCancelled() == 0}
-            <form action="{SITE_PATH}/dyn/main_billing/do_cancel_billing">
+            <form action="{$SITE_PATH}/dyn/main_billing/do_cancel_billing">
                 <input type="hidden" name="id" value="{$ns.billing->getId()}"/>
                 <div class="form-group">
                     <label class="label">Note :</label>

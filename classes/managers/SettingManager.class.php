@@ -41,6 +41,21 @@ use crm\dal\mappers\SettingMapper;
             return self::$instance;
         }
 
+        public function setSetting($var, $value, $description = "") {
+            $dto = $this->selectByField('var', $var);
+            if ($dto) {
+                $dto[0]->setValue($value);
+                $dto[0]->setDescription($description);
+                return $this->updateByPk($dto[0]);
+            } else {
+                $dto = $this->createDto();
+                $dto->setVar($var);
+                $dto->setValue($value);
+                $dto->setDescription($description);
+                return $this->insertDto($dto);
+            }
+        }
+
         public function getSetting($var) {
             if (array_key_exists($var, $this->cache)) {
                 return $this->cache[$var];

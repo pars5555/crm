@@ -2,10 +2,10 @@
     <h1 class="main_title">Sale Order Warranty View</h1>
 
     {if isset($ns.error_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
 
     {if isset($ns.saleOrder)}
@@ -52,7 +52,7 @@
             </div>
         </div>
         <h2 class="title">Order Lines</h2>
-        <form id="saleOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main_sale_warranty/do_save_sale_order_lines_serial_numbers">
+        <form id="saleOrderLinesForm" method="POST" action="{$SITE_PATH}/dyn/main_sale_warranty/do_save_sale_order_lines_serial_numbers">
             <div class="table_striped" id="saleOrderLinesContainer">
                 <div class="table_header_group">                  
                     <span class="table-cell"> Product </span>

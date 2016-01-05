@@ -2,14 +2,14 @@
     <h1 class="main_title">Update Manufacturer</h1>
     
     {if isset($ns.error_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
 
     {if isset($ns.manufacturer)}
-        <form class="createManufacturer create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_manufacturer/do_update_manufacturer">
+        <form class="createManufacturer create--form" autocomplete="off" method="post" action="{$SITE_PATH}/dyn/main_manufacturer/do_update_manufacturer">
             <div class="form-group">
                 <label class="label">Name</label>
                 <input class="text" type="text" name="name" value="{$ns.req.name|default:''}"/>

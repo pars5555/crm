@@ -1,12 +1,16 @@
 {
-  "path": {
-    "demo-module": {
-      "dir": "demomodule"
+    "default": {
+        "subdomain": {
+            "admin": {
+                "dir": "admin"
+            },
+            "obs": {
+                "dir": "obs"
+            }
+        },
+        "path": {},
+        "default": {
+            "dir": "crm"
+        }
     }
-  },
-  "subdomain": {
-    "demomodule": {
-      "dir": "demosubdomain"
-    }
-  }
 }

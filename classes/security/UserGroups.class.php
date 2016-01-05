@@ -19,7 +19,9 @@ namespace crm\security {
         /**
          * @var System administrator
          */
-        public static $ADMIN = 0;
+        public static $ADMIN = 1;
+        public static $MODERATOR = 3;
+        public static $OBSERVER= 5;
 
         /**
          * @var Non authorized user with minimum privileges

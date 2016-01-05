@@ -40,7 +40,7 @@
                             {/foreach}
                         </p>
                     </span>
-                    <a class="table-cell" href="{SITE_PATH}/product/{$product->getId()}">
+                    <a class="table-cell" href="{$SITE_PATH}/product/{$product->getId()}">
                         <span class="button_icon" title="View">
                             <i class="fa fa-eye"></i>
                         </span>

@@ -2,14 +2,14 @@
     <h1 class="main_title">Products</h1>
 
     {if isset($ns.error_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
 
-    {include file="{getTemplateDir}/main/product/list_filters.tpl"}
-    <a href="{SITE_PATH}/product/create"><img src="{SITE_PATH}/img/add.png"/></a>
+    {include file="{ngs cmd=get_template_dir}/main/product/list_filters.tpl"}
+    <a href="{$SITE_PATH}/product/create"><img src="{$SITE_PATH}/img/add.png"/></a>
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell"> ID </span>
@@ -24,7 +24,7 @@
         </div> 
         {foreach from=$ns.products item=product}
             <div class="table-row">
-                <a class="table-cell" href="{SITE_PATH}/product/{$product->getId()}">
+                <a class="table-cell" href="{$SITE_PATH}/product/{$product->getId()}">
                     <span>{$product->getId()} </span>
                 </a>
                 <span class="table-cell"> {$product->getName()} </span>
@@ -52,12 +52,12 @@
                     </p>
                 </span>
 
-                <a class="table-cell view_item" href="{SITE_PATH}/product/{$product->getId()}">
+                <a class="table-cell view_item" href="{$SITE_PATH}/product/{$product->getId()}">
                     <span class="button_icon" title="View">
                         <i class="fa fa-eye"></i>
                     </span>
                 </a>
-                <a class="table-cell view_item" href="{SITE_PATH}/product/edit/{$product->getId()}">
+                <a class="table-cell view_item" href="{$SITE_PATH}/product/edit/{$product->getId()}">
                     <span class="button_icon" title="Edit">
                         <i class="fa fa-pencil"></i>
                     </span>

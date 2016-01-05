@@ -2,14 +2,14 @@
     <h1 class="main_title">Create PaymentOrder</h1>
 
     {if isset($ns.error_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
 
     {if isset($ns.paymentOrder)}
-        <form class="updatePaymentOrder create--form" autocomplete="off" method="post" action="{SITE_PATH}/dyn/main_payment/do_update_payment">
+        <form class="updatePaymentOrder create--form" autocomplete="off" method="post" action="{$SITE_PATH}/dyn/main_payment/do_update_payment">
             <div class="form-group">
                 <label class="label">Date</label>
                 {assign date $smarty.now|date_format:"%Y-%m-%d %H:%M"}

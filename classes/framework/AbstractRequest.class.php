@@ -1,13 +1,19 @@
 <?php
 /**
- * Sample File 2, phpDocumentor Quickstart
+ * parent class for all ngs requests (loads/action)
  *
- * This file demonstrates the rich information that can be included in
- * in-code documentation through DocBlocks and tags.
  * @author Zaven Naghashyan <zaven@naghashyan.com>, Levon Naghashyan <levon@naghashyan.com>
- * @version 2.0
- * @package framework
+ * @year 2009-2015
+ * @version 2.0.0
+ * @package ngs.framework
+ * 
+ * This file is part of the NGS package.
+ *
  * @copyright Naghashyan Solutions LLC
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
  */
 
 namespace ngs\framework {
@@ -101,13 +107,8 @@ namespace ngs\framework {
 		 * @param boolean $paramie
 		 * @return integer|babyclass
 		 */
-		protected function redirect($url, $isSecure = false) {
-			$protocol = "http";
-			if ($isSecure) {
-				$protocol = "https";
-			}
-			header("location: ".$protocol."://".HTTP_HOST."/$url");
-			exit();
+		protected function redirect($url) {
+			NGS()->getHttpUtils()->redirect($url);exit;
 		}
 
 	}

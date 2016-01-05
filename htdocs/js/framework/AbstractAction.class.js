@@ -217,12 +217,8 @@ NGS.AbstractAction = NGS.Class({
     loadObj.initPagging();
     NGS.LanguageManager.onLoad(loadObj.getName(), loadObj);
   },
-  /**
-   * The method set if show or not inicator
-   *
-   * @return  By default return true
-   */
-  showLoader : function() {
-    return true;
-  }
+
+	onComplate : function(params) {
+
+	}
 }); 

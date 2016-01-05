@@ -1,4 +1,4 @@
-<form class="filters--form" id="partnerFilters" autocomplete="off" action="{SITE_PATH}/partner/list" method="GET">
+<form class="filters--form" id="partnerFilters" autocomplete="off" action="{$SITE_PATH}/partner/list" method="GET">
     {if $ns.pagesCount > 0}
         <div class="form-group">
             <label>Page</label>

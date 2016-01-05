@@ -8,7 +8,14 @@
  * @mail levon@naghashyan.com
  * @year 2015
  * @package ngs.framework.security.users
- * @version 6.0
+ * @version 2.1.0
+ *  
+ * This file is part of the NGS package.
+ *
+ * @copyright Naghashyan Solutions LLC
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
  */
 namespace ngs\framework\security\users {
@@ -35,7 +42,7 @@ namespace ngs\framework\security\users {
      * @return
      */
     protected function setUniqueId($uniqueId) {
-      $this->setCookieParam("uh", $uniqueId);
+      $this->setCookieParam("crmuh", $uniqueId);
     }
 
     /**
@@ -45,7 +52,7 @@ namespace ngs\framework\security\users {
      * @return
      */
     protected function setId($id) {
-      $this->setCookieParam("ud", $id);
+      $this->setCookieParam("crmud", $id);
     }
 
     /**
@@ -54,7 +61,7 @@ namespace ngs\framework\security\users {
      * @return
      */
     protected function getUniqueId() {
-      return $this->getCookieParam("uh");
+      return $this->getCookieParam("crmuh");
     }
 
     /**
@@ -63,7 +70,7 @@ namespace ngs\framework\security\users {
      * @return
      */
     protected function getId() {
-      return $this->getCookieParam("ud");
+      return $this->getCookieParam("crmud");
     }
 
     /**

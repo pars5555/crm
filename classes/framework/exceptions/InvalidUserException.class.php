@@ -10,7 +10,7 @@ namespace ngs\framework\exceptions {
 		 * @return integer|babyclass
 		 */
 		public function __construct($msg, $type = false) {
-			if (ENVIRONMENT == "production") {
+			if (NGS()->getEnvironment() == "production") {
 				return;
 			}
 			if($msg != ""){

@@ -2,10 +2,10 @@
     <h1 class="main_title">Sale Orders View</h1>
 
     {if isset($ns.error_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
 
     {if isset($ns.saleOrder)}
@@ -54,7 +54,7 @@
             </div>
         </div>
         {if $ns.saleOrder->getCancelled() == 0}
-            <form action="{SITE_PATH}/dyn/main_sale/do_cancel_sale_order">
+            <form action="{$SITE_PATH}/dyn/main_sale/do_cancel_sale_order">
                 <input type="hidden" name="id" id="sale_order_id" value="{$ns.saleOrder->getId()}"/>
                 <div class="form-group">
                     <label class="label">Note</label>
@@ -63,7 +63,7 @@
                 <a class="button blue" id="cancelSaleOrderButton" href="javascript:void(0);">Cancel</a>
             </form>
         {else}
-            <a class="table-cell"  href="{SITE_PATH}/dyn/main_sale/do_restore_sale_order?id={$ns.saleOrder->getId()}">
+            <a class="table-cell"  href="{$SITE_PATH}/dyn/main_sale/do_restore_sale_order?id={$ns.saleOrder->getId()}">
                 <span class="button blue">Restore</span>
             </a>
         {/if}
@@ -82,7 +82,7 @@
             <label class="checkbox_label f_checkbox_label label">Billed</label>
         </div> 
 
-        <form id="saleOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main_sale/do_save_sale_order_lines">
+        <form id="saleOrderLinesForm" method="POST" action="{$SITE_PATH}/dyn/main_sale/do_save_sale_order_lines">
             <h2 class="title">Order Lines</h2>
             <div class="table_striped" id="saleOrderLinesContainer">
                 <div class="table_header_group">                    

@@ -7,11 +7,9 @@
  */
 NGS.Dispatcher = {
 
-	baseUrl : "",
 	loadsObject : {},
 
-	initialize : function(baseUrl) {
-		this.baseUrl = baseUrl;
+	initialize : function() {
 		if (NGS.getInitialLoad()) {
 			NGS.nestLoad(NGS.getInitialLoad().load, NGS.getInitialLoad().params);
 		}
@@ -42,15 +40,13 @@ NGS.Dispatcher = {
 					loadObject.setArgs(res.params);
 					loadObject.setPermalink(res.pl);
 					loadObject._updateContent(res.html, res.params);
-					loadObject.onComplate();
+					loadObject.onComplate(res.params);
 				} catch(e) {
 					loadObject._updateContent(responseText, {});
 				}
 
 			}.bind(this),
 			onError : function(responseText) {
-				loadObject._updateContent(responseText.responseText, {});
-				return;
 				var res = JSON.parse(responseText);
 				loadObject.onError(res);
 			}.bind(this)
@@ -66,7 +62,8 @@ NGS.Dispatcher = {
 			onComplete : function(responseText) {
 				var res = JSON.parse(responseText);
 				actionObject.setArgs(res.params);
-				actionObject.afterAction(res);
+				actionObject.afterAction(res.params);
+				actionObject.onComplate(res.params);
 			}.bind(this),
 			onError : function(responseText) {
 				var res = JSON.parse(responseText);
@@ -114,7 +111,7 @@ NGS.Dispatcher = {
 		if (NGS.getModule() != null) {
 			module = NGS.getModule() + "/";
 		}
-		return this.baseUrl + dynContainer + module + _package + "/" + command;
+		return NGS.getHttpHost() + dynContainer + _package + "/" + command;
 	}
 };
 

@@ -2,10 +2,10 @@
     <h1 class="main_title">Purchase Order Warranty View</h1>
 
     {if isset($ns.error_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
 
     {if isset($ns.purchaseOrder)}
@@ -52,7 +52,7 @@
             </div>
         </div>
         <h2 class="title">Order Lines</h2>
-        <form id="purchaseOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main_purchase_warranty/do_save_purchase_order_lines_serial_numbers">
+        <form id="purchaseOrderLinesForm" method="POST" action="{$SITE_PATH}/dyn/main_purchase_warranty/do_save_purchase_order_lines_serial_numbers">
             <div class="table_striped" id="purchaseOrderLinesContainer">
                 <div class="table_header_group">                  
                     <span class="table-cell"> Product </span>

@@ -28,6 +28,8 @@ namespace crm\loads\main\sale {
             $this->addParam('payment_methods', PaymentMethodManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
             $this->addParam('partners', PartnerManager::getInstance()->selectAdvance('*', [], ['name']));
             $this->addParam('products', ProductManager::getInstance()->selectAdvance('*', [], ['name']));
+            
+            
 
             $limit = 100;
             list($where, $offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);

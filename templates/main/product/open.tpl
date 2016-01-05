@@ -2,10 +2,10 @@
     <h1 class="main_title">Product View</h1>
     
     {if isset($ns.error_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
 
     {if isset($ns.product)}
@@ -64,7 +64,7 @@
             </div>
         </div>
     {/if}
-    <a class="button blue deleteProductButton"  href="{SITE_PATH}/dyn/main_product/do_delete_product?id={$product->getId()}">
+    <a class="button blue deleteProductButton"  href="{$SITE_PATH}/dyn/main_product/do_delete_product?id={$product->getId()}">
         <span>delete</span>
     </a>
 </div>

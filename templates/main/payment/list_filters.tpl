@@ -1,4 +1,4 @@
-<form class="filters--form" id="paymentFilters" autocomplete="off" action="{SITE_PATH}/payment/list" method="GET">
+<form class="filters--form" id="paymentFilters" autocomplete="off" action="{$SITE_PATH}/payment/list" method="GET">
     {if $ns.pagesCount>0}
         <div class="form-group">
             <label>Page</label>

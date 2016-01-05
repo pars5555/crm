@@ -5,10 +5,16 @@
  *
  * @author Levon Naghashyan <levon@naghashyan.com>
  * @site http://naghashyan.com
- * @package uril
- * @version 2.0.0
+ * @package ngs.framework.templater
+ * @version 2.1.1
  * @year 2010-2015
+ *
+ * This file is part of the NGS package.
+ *
  * @copyright Naghashyan Solutions LLC
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 namespace ngs\framework\templater {
   use ngs\framework\templater\AbstractTemplater;
@@ -27,16 +33,15 @@ namespace ngs\framework\templater {
     }
 
     public function smartyInitialize() {
-      require_once (SMARTY_DIR . "/Smarty.class.php");
+      require_once (realpath(NGS()->getFrameworkDir()."/lib/smarty/Smarty.class.php"));
       $this->smarty = new \Smarty();
       $this->smarty->template_dir = NGS()->getTemplateDir();
       $this->smarty->setCompileDir($this->getSmartyCompileDir());
       $this->smarty->config_dir = $this->getSmartyConfigDir();
       $this->smarty->cache_dir = $this->getSmartyCacheDir();
       $this->smarty->compile_check = true;
-      $this->smarty->registerPlugin("function", "getTemplateDir", array($this, "getSmartyTemplateDir"));
 
-      $this->smarty->assign("TEMPLATE_DIR", TEMPLATES_DIR);
+      $this->smarty->assign("TEMPLATE_DIR", NGS()->getTemplateDir());
       $this->smarty->assign("pm", NGS()->getLoadMapper());
 
       $protocol = "//";
@@ -44,21 +49,13 @@ namespace ngs\framework\templater {
       // register the outputfilter
       $this->smarty->registerFilter("output", array($this, "add_dyn_header"));
 
-      $staticPath = $protocol . $_SERVER["HTTP_HOST"];
+      $staticPath = $protocol.$_SERVER["HTTP_HOST"];
       if (isset(NGS()->getConfig()->static_path) && NGS()->getConfig()->static_path != null) {
-        $staticPath = $protocol . NGS()->getConfig()->static_path;
+        $staticPath = $protocol.NGS()->getConfig()->static_path;
       }
-      $version = NGS()->getNGSVersion();
-      if (isset(NGS()->getConfig()->version)) {
-        $version = NGS()->getConfig()->version;
-      }
-
-      $this->assign("SITE_URL", $_SERVER["HTTP_HOST"]);
-      $this->assign("SITE_PATH", $protocol . $_SERVER["HTTP_HOST"]);
+      $this->assign("SITE_URL", NGS()->getHttpUtils()->getHttpHost());
+      $this->assign("SITE_PATH", NGS()->getHttpUtils()->getHttpHost(true));
       $this->assign("STATIC_PATH", $staticPath);
-      $this->assign("TEMPLATE_DIR", TEMPLATES_DIR);
-      $this->assign("ENVIRONMENT", ENVIRONMENT);
-      $this->assign("VERSION", $version);
       foreach ($this->smartyParams as $key => $value) {
         $this->smarty->assign($key, $value);
       }
@@ -110,13 +107,17 @@ namespace ngs\framework\templater {
       return $this->permalink;
     }
 
+    public function getSmarty() {
+        return $this->smarty;
+    }
+    
     public function display() {
       if ($this->getTemplate() == null) {
         $this->diplayJSONResuls();
         return;
       }
       $this->smartyInitialize();
-      if (NGS()->isAjaxRequest() && NGS()->isJsFrameworkEnable()) {
+      if (NGS()->getHttpUtils()->isAjaxRequest() && NGS()->isJsFrameworkEnable()) {
         $this->assignJson("html", $this->smarty->fetch($this->getTemplate()));
         $this->assignJson("nl", NGS()->getLoadMapper()->getNestedLoads());
         $this->assignJson("pl", $this->getPermalink());
@@ -179,27 +180,33 @@ namespace ngs\framework\templater {
     }
 
     public function add_dyn_header($tpl_output, $template) {
-
-      $jsString = "";
-      $jsString = '<meta name="generator" content="Naghashyan Framework ' . NGS()->getNGSVersion() . '" />';
-      if (!defined("JS_FRAMEWORK_ENABLE") || JS_FRAMEWORK_ENABLE === false) {
-        $tpl_output = str_replace('</head>', $jsString, $tpl_output) . "\n";
+      $jsString = '<meta name="generator" content="Naghashyan Framework '.NGS()->getNGSVersion().'" />';
+      if (NGS()->isJsFrameworkEnable() == false) {
+        $tpl_output = str_replace('</head>', $jsString, $tpl_output)."\n";
         return $tpl_output;
       }
       $jsString .= '<script type="text/javascript">';
-      $jsString .= "NGS.setInitialLoad('" . NGS()->getRoutesEngine()->getContentLoad() . "', '" . json_encode($this->params) . "');";
-      $jsString .= 'NGS.setModule("' .NGS()->getModuleName() . '");';
-      $jsString .= 'NGS.setTmst("' . time() . '");';
-      $jsString .= 'var NGS_URL = "' . HTTP_HOST . '";';
-      $jsString .= 'var NGS_PATH = "//' . HTTP_HOST . '";';
+      $jsString .= "NGS.setInitialLoad('".NGS()->getRoutesEngine()->getContentLoad()."', '".json_encode($this->params)."');";
+      $jsString .= 'NGS.setModule("'.NGS()->getModulesRoutesEngine()->getModuleNS().'");';
+      $jsString .= 'NGS.setTmst("'.time().'");';
+      $httpHost = NGS()->getHttpUtils()->getHttpHostByNs("", true);
+      if (NGS()->getModulesRoutesEngine()->getModuleType() == "path") {
+        $httpHost = NGS()->getHttpUtils()->getNgsStaticPath("", true);
+      }
+      $jsString .= 'NGS.setHttpHost("'.$httpHost.'");';
+      $staticPath = NGS()->getHttpUtils()->getNgsStaticPath("", true);
+      if (isset(NGS()->getConfig()->static_path)) {
+        $staticPath = NGS()->getConfig()->static_path;
+      }
+      $jsString .= 'NGS.setStaticPath("'.$staticPath.'");';
       foreach ($this->getCustomJsParams() as $key => $value) {
-        $jsString .= $key . " = '" . $value . "';";
+        $jsString .= $key." = '".$value."';";
       }
       $jsString .= '</script>';
       $jsString .= '</head>';
       $tpl_output = str_replace('</head>', $jsString, $tpl_output);
-      if (ENVIRONMENT == "production") {
-        $tpl_output = preg_replace('![\t ]*[\r\n]+[\t ]*!', '', $tpl_output);
+      if (NGS()->getEnvironment() == "production") {
+        $tpl_output = preg_replace('![\t ]*[\r]+[\t ]*!', '', $tpl_output);
       }
       return $tpl_output;
     }
@@ -208,36 +215,20 @@ namespace ngs\framework\templater {
       return array();
     }
 
-    public function getSmartyTemplateDir($params, &$smarty) {
-      $module = null;
-      if (!empty($params["module"])) {
-        $module = $params["module"];
-      }
-      return NGS()->getTemplateDir($module);
+    public function getSmartyCompileDir() {
+      return NGS()->getTemplateDir()."/".NGS()->getDefinedValue("SMARTY_COMPILE_DIR");
     }
 
-    protected function getSmartyCompileDir() {
-      $compileDir = "compile";
-      if (defined("SMARTY_COMPILE_DIR")) {
-        $compileDir = SMARTY_COMPILE_DIR;
-      }
-      return NGS()->getTemplateDir() . "/" . $compileDir;
+    public function getSmartyCacheDir() {
+      return NGS()->getTemplateDir()."/".NGS()->getDefinedValue("SMARTY_CACHE_DIR");
     }
 
-    protected function getSmartyCacheDir() {
-      $cacheDir = "cache";
-      if (defined("SMARTY_CACHE_DIR")) {
-        $cacheDir = SMARTY_CACHE_DIR;
-      }
-      return NGS()->getTemplateDir() . "/" . $cacheDir;
-    }
-
-    protected function getSmartyConfigDir() {
+    public function getSmartyConfigDir() {
       $configDir = "config";
       if (defined("SMARTY_CONFIG_DIR")) {
         $configDir = SMARTY_CONFIG_DIR;
       }
-      return NGS()->getTemplateDir() . "/" . $configDir;
+      return NGS()->getTemplateDir()."/".$configDir;
     }
 
   }

@@ -11,130 +11,88 @@
  * @year 2014-2015
  * @package ngs.framework.util
  * @version 2.0.0
+ * 
+ * This file is part of the NGS package.
+ *
  * @copyright Naghashyan Solutions LLC
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
  */
 namespace ngs\framework\util {
-	use ngs\framework\exception\NotFoundException;
-	class CssBuilder {
-        
-    private $cssPublicDir = ""; 
-    
-		public function streamFile($file) {
-		  $moduleDir = "";
-		  if(NGS()->isModuleEnable()){
-		    $moduleDir = "/".NGS()->getModuleName();
-		  }
-		  $this->cssPublicDir = NGS()->getPublicDir().$moduleDir;
-		  $builderJsonFile = realpath($this->cssPublicDir."/css/builder.json");
-			$filePath = realpath($this->cssPublicDir.$file);
-			if (NGS()->getEnvironment() == "production") {
-				if (strpos($file, "out/") === false) {
-					NGS()->getFileUtils()->sendFile($filePath, array("mimeType" => "text/css", "cache" => true));
-				} else if (fileatime($filePath) == fileatime($builderJsonFile) && file_exists($filePath)) {
-					NGS()->getFileUtils()->sendFile($filePath, array("mimeType" => "text/css", "cache" => true));
-				} else {
-					$this->doBuildCss($builderJsonFile, $file);
-					NGS()->getFileUtils()->sendFile(realpath($this->cssPublicDir.$file), array("mimeType" => "text/css", "cache" => true));
-				}
-			} elseif (NGS()->getEnvironment() == "development") {
-				if (strpos($file, "out/") === false) {
-					NGS()->getFileUtils()->sendFile($filePath, array("mimeType" => "text/css", "cache" => false));
-					return;
-				}
-				$files = $this->getBuilderArr(json_decode(file_get_contents($builderJsonFile)), $file);
-				if (count($files) == 0) {
-					throw new \ngs\framework\exception\NotFoundException( array("type" => "json", "msg" => $file." not found"));
-				}
-				$this->doDevOutput($files);
-				return;
-			}
-		}
+  use ngs\framework\exception\NotFoundException;
+  class CssBuilder extends AbstractBuilder {
 
-		private function doBuildCss($builderJsonFile, $file) {
-			$files = $this->getBuilderArr(json_decode(file_get_contents($builderJsonFile)), $file);
-			if (!$files) {
-				return;
-			}
-			$outDir = $this->cssPublicDir."/css/out";
-			$buf = "";
-			foreach ($files["files"] as $inputFile) {
-				$filePath = ($this->cssPublicDir."/css/".$inputFile);
-				$realFilePath = realpath($this->cssPublicDir."/css/".$inputFile);
-				if (!$realFilePath) {
-					throw new \ngs\framework\exception\NotFoundException( array("type" => "json", "msg" => $filePath." not found"));
-				}
-				$buf .= file_get_contents($realFilePath).";\n\r";
-			}
-			if($files["compress"] == true){
-				$buf = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $buf);
-				$buf = str_replace(array("\r\n", "\r", "\n", "\t"), '', $buf);
-			}
-			file_put_contents($outDir."/".$files["output_file"], $buf);
-		}
-		
-		private function doDevOutput($files) {
-			header('Content-type: text/css');
-			foreach ($files["files"] as $inputFile) {
-				$inputFile = SITE_PATH."/css/".trim($inputFile);
-				echo '@import url("'.$inputFile.'");';
-			}
-		}
+    protected function doBuild($file) {
 
-		/**
-		 * get js files from builders json array by filename
-		 *
-		 *
-		 * @param array $bulders
-		 * @param string $file - request file name
-		 *
-		 * @return array builder
-		 */
-		private function getBuilderArr($bulders, $file = null) {
-			$tmpArr = array();
-			foreach ($bulders as $key => $value) {
-				if (strpos($file, $value->output_file) === false) {
-					$builders = null;
-					if (isset($value->builders)) {
-						$builders = (array)$value->builders;
-						$tempArr = $this->getBuilderArr($builders, $file);
-						if ($tempArr) {
-							return $tempArr;
-						} else {
-							continue;
-						}
-					} else {
-						continue;
-					}
-					$tmpArr = array();
-					$tmpArr["output_file"] = (string)$value->output_file;
-					$tmpArr["debug"] = false;
-					$tmpArr["compress"] = $value->compress;
-					$tmpArr["files"] = (array)$value->files;
-				} else {
-					$tmpArr = array();
-					$tmpArr["output_file"] = (string)$value->output_file;
-					$tmpArr["debug"] = false;
-					$tmpArr["compress"] = $value->compress;
-					$tmpArr["files"] = array();
-					if (isset($value->builders) && is_array($value->builders)) {
-						foreach ($value->builders as $builder) {
-							if (!is_array($builder)) {
-								$builder = array($builder);
-							}
-							$tempArr = $this->getBuilderArr($builder, $builder[0]->output_file);
-							if (isset($tempArr["files"])) {
-								$tmpArr["files"] = array_merge($tmpArr["files"], $tempArr["files"]);
-							}
-						}
-					} else {
-						$tmpArr["files"] = (array)$value->files;
-					}
-				}
-			}
-			return $tmpArr;
-		}
+      $files = $this->getBuilderArr(json_decode(file_get_contents($this->getBuilderFile())), $file);
+      if (!$files) {
+        return;
+      }
+      $outDir = $this->getOutputDir();
+      $buf = "";
+      foreach ($files["files"] as $value) {
+        $module = "";
+        if ($value["module"] == null) {
+          $module = "ngs";
+        }
+        $inputFile = realpath(NGS()->getCssDir($module)."/".trim($value["file"]));
+        if (!$inputFile) {
+          throw NGS()->getNotFoundException($filePath." not found");
+        }
+        $buf .= file_get_contents($inputFile)."\n\r";
+      }
 
-	}
+      if ($files["compress"] == true) {
+        $buf = $this->doCompress($buf);
+      }
+      touch($outDir."/".$files["output_file"], fileatime($this->getBuilderFile()));
+      file_put_contents($outDir."/".$files["output_file"], $buf);
+    }
+
+    protected function customBufferUpdates($buffer) {
+      return str_replace(array("@NGS_PATH", "@NGS_MODULE_PATH"), array(NGS()->getHttpUtils()->getHttpHost(true), NGS()->getPublicHostByNS()), $buffer);
+    }
+
+    public function getOutputDir() {
+      $_outDir = NGS()->getPublicOutputDir()."/".NGS()->getDefinedValue("CSS_DIR");
+      $outDir = realpath($_outDir);
+      if ($outDir == false) {
+        mkdir($_outDir, 0755, true);
+        $outDir = realpath($_outDir);
+      }
+      return $outDir;
+    }
+
+    protected function doCompress($buf) {
+      return \ngs\framework\lib\minify\CssCompressor::process($buf);
+    }
+
+    protected function doDevOutput($files) {
+      header('Content-type: text/css');
+      foreach ($files["files"] as $value) {
+        $module = "";
+        if ($value["module"] != null) {
+          $module = $value["module"];
+        }
+        $inputFile = NGS()->getHttpUtils()->getHttpHostByNs($module)."/devout/css/".trim($value["file"]);
+        echo '@import url("'.$inputFile.'");';
+      }
+    }
+
+    protected function getItemDir($module) {
+      return NGS()->getCssDir($module);
+    }
+
+    protected function getBuilderFile() {
+      return realpath(NGS()->getCssDir()."/builder.json");
+    }
+
+    protected function getContentType() {
+      return "text/css";
+    }
+
+  }
 
 }

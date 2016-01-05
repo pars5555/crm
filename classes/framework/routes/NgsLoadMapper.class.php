@@ -6,16 +6,21 @@
  *
  * @author Levon Naghashyan <levon@naghashyan.com>
  * @site http://naghashyan.com
- * @year 2014
- * @package framework.routes
- * @version 2.0.0
+ * @year 2014-2015
+ * @package ngs.framework.routes
+ * @version 2.1.1
+ * 
+ * This file is part of the NGS package.
+ *
  * @copyright Naghashyan Solutions LLC
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
  */
 namespace ngs\framework\routes {
-	use ngs\framework\AbstractLoadMapper;
 
-	class NgsLoadMapper extends \ngs\framework\AbstractLoadMapper {
+	class NgsLoadMapper{
 
 		private $nestedLoad = array();
 
@@ -31,6 +36,4 @@ namespace ngs\framework\routes {
 		}
 
 	}
-
-	return __NAMESPACE__;
 }

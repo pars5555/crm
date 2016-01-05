@@ -5,199 +5,197 @@
  * @site http://naghashyan.com
  * @year 2009-2015
  * @package framework
- * @version 2.0.0
+ * @version 2.1.2
+ *
+ * This file is part of the NGS package.
+ *
  * @copyright Naghashyan Solutions LLC
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  *
  */
 namespace ngs\framework {
-  use \ngs\framework\exceptions\ClientException;
-  use \ngs\framework\exceptions\RedirectException;
-  use \ngs\framework\exceptions\NoAccessException;
-  use \ngs\framework\exceptions\NotFoundException;
 
-  class Dispatcher {
+    use \ngs\framework\exceptions\ClientException;
+    use \ngs\framework\exceptions\RedirectException;
+    use \ngs\framework\exceptions\NoAccessException;
+    use \ngs\framework\exceptions\NotFoundException;
 
-    /**
-     * Dispacher constructor
-     * this for manage modules and get routes from uri
-     *
-     * @return void
-     */
-    public function __construct() {
-
-      $uri = isset($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : "";
-      if (strpos($uri, "?") !== false) {
-        $uri = substr($uri, 0, strpos($uri, "?"));
-      }
-      if (NGS()->isModuleEnable()) {
-        $moduleArr = NGS()->getModulesRoutesEngine()->getModule(null, $uri);
-        NGS()->setModuleName($moduleArr["module"]);
-        $uri = $moduleArr["uri"];
-        //include module constant if exsist
-        $moduleConstatPath = NGS()->getRootDirByModule($moduleArr["module"]) . "/" . CONF_DIR . "/constants.php";
-        if (file_exists($moduleConstatPath)) {
-          require_once $moduleConstatPath;
-        }
-      }
-      $this->dispatch(NGS()->getRoutesEngine()->getDynamicLoad($uri));
-    }
-
-    /**
-     * Dispacher constructor
-     * this for manage modules and get routes from uri
-     *
-     * @param array $loadArr
-     *
-     * @return void
-     */
-    private function dispatch($loadArr) {
-      try {
-        if ($loadArr["matched"] === false) {
-          throw NGS()->getNotFoundException();
-        }
-        if (isset($loadArr["args"])) {
-          NGS()->setArgs($loadArr["args"]);
-        }
-        switch ($loadArr["type"]) {
-          case 'load' :
-            NGS()->getTemplateEngine();
-            $this->loadPage($loadArr["action"]);
-            break;
-          case 'action' :
-            NGS()->getTemplateEngine();
-            $this->doAction($loadArr["action"]);
-            break;
-          case 'file' :
-            $this->streamStaticFile($loadArr);
-            break;
-        }
-      } catch(exception\ClientException $ex) {
-        $errorArr = $ex->getErrorParams();
-        header('Content-Type: application/json; charset=utf-8');
-        header("HTTP/1.0 403 Forbidden");
-        echo json_encode($errorArr);
-        exit();
-
-      } catch(JsonException $ex) {
-        $this->diplayJSONResuls($ex->getMsg());
-      } catch(exception\RedirectException $ex) {
-        $this->redirect($ex->getRedirectTo());
-      }catch(Exception $ex) {
-        throw NGS()->getNotFoundException();
-      }
-    }
-
-    /**
-     * Return a thingie based on $paramie
-     * @abstract
-     * @access
-     * @param boolean $paramie
-     * @return integer|babyclass
-     */
-    public function loadPage($action) {
-
-      try {
-        if (class_exists($action) == false) {
-          throw NGS()->getNotFoundException();
-        }
-        $loadObj = new $action;
-        $loadObj->initialize();
-        if ($this->validateRequest($loadObj)) {
-          $loadObj->setLoadName(NGS()->getRoutesEngine()->getContentLoad());
-          $loadObj->service();
-          NGS()->getTemplateEngine()->setTemplate($loadObj->getTemplate());
-          NGS()->getTemplateEngine()->setPermalink($loadObj->getPermalink());
-          if ($loadObj->getLoadType() == "smarty") {
-            //passing arguments
-            NGS()->getTemplateEngine()->assign("ns", $loadObj->getParams());
-            NGS()->getTemplateEngine()->assignJson("params", $loadObj->getJsonParams());
-          } else if ($loadObj->getLoadType() == "json") {
-            NGS()->getTemplateEngine()->assignJson("_params_", $loadObj->getParams());
-          }
-          $this->displayResult();
-          return;
-        }
-        if ($loadObj->onNoAccess()) {
-          return;
+    class Dispatcher {
+        /**
+         * Dispacher constructor
+         * this for manage modules and get routes from uri
+         *
+         * @return void
+         */
+        public function __construct() {
+            $routesArr = NGS()->getRoutesEngine()->getDynamicLoad(NGS()->getHttpUtils()->getRequestUri());
+            $this->dispatch($routesArr);
         }
 
-      } catch(NoAccessException $ex) {
-        $loadObj->onNoAccess();
-      }
-      throw NGS()->getNotFoundException();
-    }
+        /**
+         * this method manage mathced routes
+         *
+         * @param array $routesArr
+         *
+         * @return void
+         */
+        private function dispatch($routesArr) {
 
-    /**
-     * Return a thingie based on $paramie
-     * @abstract
-     * @access
-     * @param boolean $paramie
-     * @return integer|babyclass
-     */
-    private function doAction($action) {
-
-      try {
-        if (class_exists($action) == false) {
-          throw NGS()->getNotFoundException();
+            try {
+                if ($routesArr["matched"] === false) {
+                    throw NGS()->getNotFoundException("Load/Action Not found");
+                }
+                if (isset($routesArr["args"])) {
+                    NGS()->setArgs($routesArr["args"]);
+                }
+                switch ($routesArr["type"]) {
+                    case 'load' :
+                        NGS()->getTemplateEngine();
+                        $this->loadPage($routesArr["action"]);
+                        break;
+                    case 'action' :
+                        NGS()->getTemplateEngine();
+                        $this->doAction($routesArr["action"]);
+                        break;
+                    case 'file' :
+                        $this->streamStaticFile($routesArr);
+                        break;
+                }
+            } catch (ClientException $ex) {
+                throw NGS()->getNotFoundException("Load/Action Not found");
+            } catch (JsonException $ex) {
+                $this->diplayJSONResuls($ex->getMsg());
+            } catch (RedirectException $ex) {
+                $this->redirect($ex->getRedirectTo());
+            } catch (NotFoundException $ex) {
+                throw NGS()->getNotFoundException("Load/Action Not found");
+            } catch (Exception $ex) {
+                throw NGS()->getNotFoundException("Load/Action Not found");
+            }
         }
-        $actionObj = new $action;
-        $actionObj->initialize();
-        if ($this->validateRequest($actionObj)) {
-          $actionObj->service();
-          //passing arguments
-          NGS()->getTemplateEngine()->assignJson("params", $actionObj->getParams());
-          $this->displayResult();
-          return;
+
+        /**
+         * manage ngs loads
+         * initialize load object
+         * verify access
+         * display collected output from loads
+         *
+         * @param array $action
+         *
+         * @return void
+         */
+        public function loadPage($action) {
+
+            try {
+                if (class_exists($action) == false) {
+                    throw NGS()->getNotFoundException();
+                }
+                $loadObj = new $action;
+                $loadObj->initialize();
+                if (!$this->validateRequest($loadObj)) {
+                    if ($loadObj->onNoAccess()) {
+                        return;
+                    }
+                }
+
+                $loadObj->setLoadName(NGS()->getRoutesEngine()->getContentLoad());
+                $loadObj->service();;
+                NGS()->getTemplateEngine()->setTemplate($loadObj->getTemplate());
+                NGS()->getTemplateEngine()->setPermalink($loadObj->getPermalink());
+                if ($loadObj->getLoadType() == "smarty") {
+                    //passing arguments
+                    NGS()->getTemplateEngine()->assign("ns", $loadObj->getParams());
+                    NGS()->getTemplateEngine()->assignJson("params", $loadObj->getJsonParams());
+                } else if ($loadObj->getLoadType() == "json") {
+                    NGS()->getTemplateEngine()->assignJson("_params_", $loadObj->getParams());
+                }
+                $this->displayResult();
+                return;
+
+            } catch (NoAccessException $ex) {
+                $loadObj->onNoAccess();
+            }
+            throw NGS()->getNotFoundException();
         }
 
-        if ($loadObj->onNoAccess()) {
-          return;
+        /**
+         * manage ngs action
+         * initialize action object
+         * verify access
+         * display action output
+         *
+         * @param array $action
+         *
+         * @return void
+         *
+         */
+        private function doAction($action) {
+            try {
+                if (class_exists($action) == false) {
+                    throw NGS()->getNotFoundException();
+                }
+                $actionObj = new $action;
+                $actionObj->initialize();
+                if (!$this->validateRequest($actionObj)) {
+                    $actionObj->onNoAccess();
+                }
+                $actionObj->service();
+                //passing arguments
+                NGS()->getTemplateEngine()->assignJson("params", $actionObj->getParams());
+                $this->displayResult();
+                return;
+
+            } catch (NoAccessException $ex) {
+                $actionObj->onNoAccess();
+            }
+            throw NGS()->getNotFoundException();
+
         }
 
-      } catch(exception\NoAccessException $ex) {
-        $loadObj->onNoAccess();
-      }
-      throw NGS()->getNotFoundException();
-
-    }
-
-    private function streamStaticFile($fileArr) {
-      $stramer = NGS()->getFileStreamerByType($fileArr["file_type"]);
-      if ($stramer == false) {
-        return false;
-      }
-      $stramer->streamFile($fileArr["file_url"]);
-    }
-
-    /**
-     * Return a thingie based on $paramie
-     * @abstract
-     * @access
-     * @param boolean $paramie
-     * @return integer|babyclass
-     */
-    private function validateRequest($request) {
-      $user = NGS()->getSessionManager()->getUser();
-      if ($user->validate()) {
-        if (NGS()->getSessionManager()->validateRequest($request, $user)) {
-          return true;
+        private function streamStaticFile($fileArr) {
+            $stramer = NGS()->getFileStreamerByType($fileArr["file_type"]);
+            $stramer->streamFile($fileArr["module"], $fileArr["file_url"]);
         }
-      }
-      return false;
-    }
 
-    /**
-     * Return a thingie based on $paramie
-     * @abstract
-     * @access
-     * @param boolean $paramie
-     * @return integer|babyclass
-     */
-    private function displayResult() {
-      NGS()->getTemplateEngine()->display();
+        /**
+         * validate request load/action access permissions
+         *
+         * @param object $request
+         *
+         * @return boolean
+         *
+         */
+        private function validateRequest($request) {
+            $user = NGS()->getSessionManager()->getUser();
+            if ($user->validate()) {
+                if (NGS()->getSessionManager()->validateRequest($request, $user)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /**
+         * display collected output
+         * from loads and actions
+         *
+         *
+         * @return void
+         */
+        private function displayResult() {
+            foreach (NGS()->getSessionManager()->getRequestHeader() as $key => $value) {
+                $headerStr = $key;
+                if ($value != "") {
+                    $headerStr .= " : " . $value;
+                }
+                header($headerStr);
+            }
+            NGS()->getTemplateEngine()->display();
+
+        }
 
     }
-
-  }
 
 }

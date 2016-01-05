@@ -6,8 +6,14 @@
  * in-code documentation through DocBlocks and tags.
  * @author Levon Naghashyan <levon@naghashyan.com>
  * @version 2.0.0
- * @package framework
+ * @package ngs.framework
+ * 
+ * This file is part of the NGS package.
+ *
  * @copyright Naghashyan Solutions LLC
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace ngs\framework\templater {

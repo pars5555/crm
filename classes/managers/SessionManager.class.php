@@ -15,15 +15,19 @@
 
 namespace crm\managers {
 
-    use \crm\security\UserGroups;
-    use \crm\security\RequestGroups;
-    use \ngs\framework\exceptions\InvalidUserException;
+    use crm\security\RequestGroups;
+    use crm\security\UserGroups;
+    use crm\security\users\GuestUser;
+    use crm\security\users\NgsAdminUser;
+    use crm\security\users\NgsModeratorUser;
+    use crm\security\users\NgsObserverUser;
+    use NGS;
+    use ngs\framework\exceptions\InvalidUserException;
+    use ngs\framework\session\NgsSessionManager;
 
-    class SessionManager extends \ngs\framework\session\NgsSessionManager {
+    class SessionManager extends NgsSessionManager {
 
         private $user = null;
-        private $customerManager;
-        private $adminManager;
 
         public function __construct() {
             session_start();
@@ -40,27 +44,27 @@ namespace crm\managers {
                 return $this->user;
             }
             try {
-                if (!isset($_COOKIE["ut"])) {
-                    $user = new \crm\security\users\GuestUser();
-                    $user->register();
-                    $this->setUser($user, true, true);
-                } else {
-                    $user = $this->getUserByLevel($_COOKIE["ut"]);
-                }
+                $user = $this->getUserByLevel(isset($_COOKIE["crmut"])? : null);
                 $user->validate();
             } catch (InvalidUserException $ex) {
                 $this->deleteUser($user);
                 NGS()->redirect(substr($_SERVER["REQUEST_URI"], 1));
                 exit;
             }
-            if ($user->getLevel() != UserGroups::$GUEST) {
-                $user->updateActivity();
-                if ($user->getLevel() != UserGroups::$API) {
-                    $this->updateUserUniqueId($user);
-                }
-            }
             $this->user = $user;
             return $this->user;
+        }
+
+        protected function getUserHashKey() {
+            return 'crmuh';
+        }
+
+        protected function getUserIdKey() {
+            return 'crmud';
+        }
+
+        protected function getUserTypeKey() {
+            return 'crmut';
         }
 
         /**
@@ -71,10 +75,10 @@ namespace crm\managers {
          *
          * @return boolean
          */
-        public function login($userDto) {
-            $user = $this->getUserByType($userDto->getUserLevel());
-            $user->login($userDto->getId());
-            $this->setUser($user, true, true);
+        public function login($type, $id) {
+            $user = $this->getUserByType($type);
+            $user->login($id);
+            $this->setUser($user, true, false);
             return true;
         }
 
@@ -84,38 +88,41 @@ namespace crm\managers {
         }
 
         /**
-         * create and return user object by user level
-         *
-         * @param bool $ut
-         *
+         * create and return user object by user level       
          * @return userObject
          */
         public function getUserByLevel($ut) {
             switch ($ut) {
-                case UserGroups::$GUEST :
-                    return new \crm\security\users\GuestUser();
-                    break;
+                case UserGroups::$ADMIN :
+                    return new NgsAdminUser();
+                case UserGroups::$MODERATOR :
+                    return new NgsModeratorUser();
+                case UserGroups::$OBSERVER:
+                    return new NgsObserverUser();
                 default :
-                    throw new InvalidUserException("user not found");
-                    break;
+                    return new GuestUser();
             }
         }
 
         /**
          * create and return user object by user level text
          *
-         * @param string $ut
+         * @param string $userType
          *
          * @return userObject
          */
-        public function getUserByType($ut) {
-            switch ($ut) {
+        public function getUserByType($userType) {
+            switch ($userType) {
+                case UserGroups::$ADMIN:
+                    return new NgsAdminUser();
+                case UserGroups::$MODERATOR:
+                    return new NgsModeratorUser();
+                case UserGroups::$OBSERVER:
+                    return new NgsObserverUser();
                 case UserGroups::$GUEST :
-                    return new \crm\security\users\GuestUser();
-                    break;
+                    return new GuestUser();
                 default :
                     throw new InvalidUserException("user not found");
-                    break;
             }
         }
 
@@ -124,6 +131,13 @@ namespace crm\managers {
                 return null;
             }
             return $this->getUser()->getId();
+        }
+
+        public function getUserType() {
+            if ($this->getUser() == null) {
+                return null;
+            }
+            return $this->getUser()->getLevel();
         }
 
         /**
@@ -139,11 +153,25 @@ namespace crm\managers {
                 $user = $this->getUser();
             }
             switch ($request->getRequestGroup()) {
-                case RequestGroups::$guestRequest :
+                case RequestGroups::$adminRequest :
+                    if ($user->getLevel() == UserGroups::$ADMIN) {
+                        return true;
+                    }
+                    break;
+                case RequestGroups::$moderatorRequest :
+                    if ($user->getLevel() == UserGroups::$MODERATOR || $user->getLevel() == UserGroups::$ADMIN) {
+                        return true;
+                    }
+                    break;
+                case RequestGroups::$observerRequest:
+                    if ($user->getLevel() == UserGroups::$OBSERVER) {
+                        return true;
+                    }
+                    break;
+                case RequestGroups::$guestRequest:
                     return true;
                     break;
             }
-
             return false;
         }
 

@@ -33,7 +33,7 @@ namespace crm\security\users {
          * @return int userId
          */
         public function register() {
-            $this->setCookieParam("ut", UserGroups::$ADMIN);
+            $this->setCookieParam("crmut", UserGroups::$ADMIN);
             $user = AdminManager::getInstance()->register();
             $this->setUniqueId($user->getHashcode());
             $this->setId($user->getId());
@@ -47,7 +47,7 @@ namespace crm\security\users {
          */
         public function login($id) {
             $userHashcode = UserManager::getInstance()->login($id);
-            $this->setCookieParam("ut", UserGroups::$ADMIN);
+            $this->setCookieParam("crmut", UserGroups::$ADMIN);
             $this->setUniqueId($userHashcode);
             $this->setId($id);
             return $id;

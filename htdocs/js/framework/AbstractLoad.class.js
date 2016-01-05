@@ -1,10 +1,12 @@
 NGS.AbstractLoad = NGS.Class({
 	_package : "",
 	_name : "",
-	_action: "",
+	_action : "",
 	params : {},
 	_args : {},
 	permalink : null,
+	_parentLoadName : null,
+	_abort: false,
 
 	/**
 	 * The main method, which invokes load operation, i.e. ajax call to the backend and then updates corresponding container with the response
@@ -22,16 +24,16 @@ NGS.AbstractLoad = NGS.Class({
 		}
 		this.afterLoad(params);
 		//fire after load event
-    NGS.events.onAfterLoad.data = {
-      "load" : this
-    };
-    document.dispatchEvent(NGS.events.onAfterLoad);
+		NGS.events.onAfterLoad.data = {
+			"load" : this
+		};
+		document.dispatchEvent(NGS.events.onAfterLoad);
 		var laodsArr = NGS.getNestedLoadByParent(this.getAction());
 		if (laodsArr == null) {
 			return;
 		}
 		for (var i = 0; i < laodsArr.length; i++) {
-			NGS.nestLoad(laodsArr[i].load, laodsArr[i].params);
+			NGS.nestLoad(laodsArr[i].load, laodsArr[i].params, this.getAction());
 		}
 	},
 
@@ -45,7 +47,14 @@ NGS.AbstractLoad = NGS.Class({
 	load : function(params, replace) {
 		this.params = params;
 		this.beforeLoad();
-		NGS.Dispatcher.load(this, params);
+		if(this.abort){
+			return false;
+		}
+		this.runLoad();
+	},
+	
+	runLoad: function(){
+		NGS.Dispatcher.load(this, this.params);
 	},
 
 	/**
@@ -55,8 +64,9 @@ NGS.AbstractLoad = NGS.Class({
 	 * @param  params http parameters which will be sent to the serverside Load, these parameters will be added to the ajax loader's default parameters
 	 * @see
 	 */
-	nestLoad : function(params) {
+	nestLoad : function(parent, params) {
 		this.beforeLoad();
+		this.setParentLoadName(parent);
 		this.service(params);
 
 	},
@@ -88,7 +98,7 @@ NGS.AbstractLoad = NGS.Class({
 	getOwnContainer : function() {
 		return "";
 	},
-	
+
 	/**
 	 * Abstract function, Child classes should be override this function,
 	 * and should return the name of the server load, formated with framework's URL nameing convention
@@ -108,7 +118,6 @@ NGS.AbstractLoad = NGS.Class({
 	getAction : function() {
 		return this._action;
 	},
-
 
 	/**
 	 * Abstract function, Child classes should be override this function,
@@ -227,6 +236,14 @@ NGS.AbstractLoad = NGS.Class({
 		return this.permalink;
 	},
 
+	setParentLoadName : function(parent) {
+		this._parentLoadName = parent;
+	},
+
+	getParentLoadName : function() {
+		return this._parentLoadName;
+	},
+
 	/**
 	 * Abstract method for working with breadcrumb manager, which functionallity should be refactored
 	 *
@@ -247,7 +264,7 @@ NGS.AbstractLoad = NGS.Class({
 				containerElem = containerElem[0];
 			}
 			if (containerElem) {
-				var fade = true;
+				var fade = false;
 				if (fade) {
 					$(containerElem).fadeOut('slow', function() {
 						containerElem.innerHTML = html;
@@ -271,8 +288,12 @@ NGS.AbstractLoad = NGS.Class({
 	 * @see
 	 */
 	beforeLoad : function() {
-
+		NGS.events.onBeforeLoad.data = {
+			"load" : this
+		};
+		document.dispatchEvent(NGS.events.onBeforeLoad);
 	},
+	
 
 	/**
 	 * Function, which is called after load is done. Can be overridden by the children of the class
@@ -283,7 +304,11 @@ NGS.AbstractLoad = NGS.Class({
 
 	},
 
-	onComplate : function() {
+	onComplate : function(params) {
 
+	},
+	
+	pauseLoad: function(){
+		this.abort = true;
 	}
 });

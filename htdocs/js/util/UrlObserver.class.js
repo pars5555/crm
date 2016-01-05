@@ -6,7 +6,7 @@
  * @site http://naghashyan.com
  * @mail levon@naghashyan.com
  * @year 2015
- * @version 6.0
+ * @version 2.0.0
  */
 (function(NGS) {
   NGS.UrlObserver = {
@@ -14,7 +14,7 @@
     onUrlUpdateHandle : function(e) {
       this.load = e.data.load;
       var params = {};
-      params["load"] = this.load.getPackage() + "." + this.load.getName();
+      params["load"] = this.load.getAction();
       params["params"] = this.load.getParams();
       var permalink = "";
       if (this.load.getPermalink() != null) {
@@ -22,13 +22,16 @@
         if (permalink.indexOf("/") !== 0) {
           permalink = "/" + permalink;
         }
-      }else{
-      	//permalink = "/"+this.load.getName();
       }
-      if (permalink == window.location.pathname) {
+      if (permalink == "") {
         return;
       }
-      history.pushState(params, "", permalink);
+      if(permalink == window.location.pathname){
+      	history.replaceState(params, uniq, permalink);
+      	return;
+      }
+      var uniq = 'id' + (new Date()).getTime();
+      history.pushState(params, uniq, permalink);
     }
   };
   document.addEventListener("ngs-onUrlUpdate", NGS.UrlObserver.onUrlUpdateHandle);
@@ -37,7 +40,7 @@
       "load" : e
     };
     document.dispatchEvent(NGS.events.onUrlChange);
-    if ( typeof e.state == "object") {
+    if ( typeof e.state == "object" && e.state != null) {
       if ( typeof e.state.load == "string") {
         NGS.load(e.state.load, e.state.params);
       }

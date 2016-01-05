@@ -2,10 +2,10 @@
     <h1 class="main_title">Purchase Order View</h1>
     
     {if isset($ns.error_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
 
     {if isset($ns.purchaseOrder)}
@@ -44,7 +44,7 @@
             </div>
         </div>
         {if $ns.purchaseOrder->getCancelled() == 0}
-            <form action="{SITE_PATH}/dyn/main_purchase/do_cancel_purchase_order">
+            <form action="{$SITE_PATH}/dyn/main_purchase/do_cancel_purchase_order">
                 <input type="hidden" name="id" id="purchase_order_id" value="{$ns.purchaseOrder->getId()}"/>
                 <div class="form-group">
                     <label class="label">Note</label>
@@ -53,7 +53,7 @@
                 <a class="button blue" id="cancelPurchaseOrderButton" href="javascript:void(0);">Cancel</a>
             </form>
         {else}
-            <a class="table-cell"  href="{SITE_PATH}/dyn/main_purchase/do_restore_purchase_order?id={$ns.purchaseOrder->getId()}">
+            <a class="table-cell"  href="{$SITE_PATH}/dyn/main_purchase/do_restore_purchase_order?id={$ns.purchaseOrder->getId()}">
                 <span class="button blue">Restore</span>
             </a>
         {/if}
@@ -67,7 +67,7 @@
             <label class="checkbox_label f_checkbox_label label">Paid</label>
         </div> 
 
-        <form id="purchaseOrderLinesForm" method="POST" action="{SITE_PATH}/dyn/main_purchase/do_save_purchase_order_lines">
+        <form id="purchaseOrderLinesForm" method="POST" action="{$SITE_PATH}/dyn/main_purchase/do_save_purchase_order_lines">
             <h2 class="title">Order Lines</h2>
             <div class="table_striped" id="purchaseOrderLinesContainer">
                 <div class="table_header_group">                  

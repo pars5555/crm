@@ -2,10 +2,10 @@
     <h1 class="main_title">Payment Order View</h1>
 
     {if isset($ns.error_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
     {if isset($ns.success_message)}
-        {include file="{getTemplateDir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
 
     {if isset($ns.payment)}
@@ -74,7 +74,7 @@
             </div>
         </div>
         {if $payment->getCancelled() == 0}
-            <form action="{SITE_PATH}/dyn/main_payment/do_cancel_payment">
+            <form action="{$SITE_PATH}/dyn/main_payment/do_cancel_payment">
                 <input type="hidden" name="id" value="{$ns.payment->getId()}"/>
                 <div class="form-group">
                     <label class="label">Note</label>
@@ -83,10 +83,10 @@
                 <a class="button blue" id="cancelPaymentButton" href="javascript:void(0);">Cancel</a>
             </form>
         {else}
-            <a class="button blue" href="{SITE_PATH}/dyn/main_payment/do_restore_payment?id={$ns.payment->getId()}">
+            <a class="button blue" href="{$SITE_PATH}/dyn/main_payment/do_restore_payment?id={$ns.payment->getId()}">
                 <span>Restore</span>
             </a>
-            <a class="button blue" href="{SITE_PATH}/dyn/main_payment/do_delete_payment?id={$ns.payment->getId()}">
+            <a class="button blue" href="{$SITE_PATH}/dyn/main_payment/do_delete_payment?id={$ns.payment->getId()}">
                 <span>Delete</span>
             </a>
         {/if}
