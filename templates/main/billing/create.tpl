@@ -73,8 +73,6 @@
         <div class="form-group">
             <label class="label">Dept</label>
             <div id="partnerDeptContainer"></div>
-            <label class="label">Dept After Billing</label>
-            <div id="partnerDeptAfterBillingContainer"></div>
             <input type="hidden" id="partnerDeptHidden"/>
         </div>
     </form>

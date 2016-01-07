@@ -115,8 +115,9 @@ namespace crm\managers {
             $partnerPurchaseOrders = PurchaseOrderManager::getInstance()->getPartnerPurchaseOrders($id);
             $partnerPaymentTransactions = PaymentTransactionManager::getInstance()->getPartnerPaymentTransactions($id);
             $partnerBillingTransactions = PaymentTransactionManager::getInstance()->getPartnerBillingTransactions($id);
+            $partnerInitialDept = PartnerInitialDeptManager::getInstance()->getPartnerInitialDept($id);
             return CalculationManager::getInstance()->calculatePartnerDeptBySalePurchaseAndPaymentTransations(
-                            $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions);
+                            $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions, $partnerInitialDept);
         }
 
         private function mapByPartnerId($partnerInitialDeptDtos) {

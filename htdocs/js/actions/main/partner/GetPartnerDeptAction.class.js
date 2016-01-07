@@ -3,6 +3,6 @@ NGS.createAction("crm.actions.main.partner.get_partner_dept", {
         alert(res.msg);
     },
     afterAction: function (transport) {
-        $('#partnerDeptHidden').val(JSON.stringify(transport.params)).trigger('change');;
+        $('#partnerDeptHidden').val(JSON.stringify(transport)).trigger('change');
     }
 });
