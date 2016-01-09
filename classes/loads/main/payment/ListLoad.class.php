@@ -11,14 +11,14 @@
 
 namespace crm\loads\main\payment {
 
-use crm\loads\NgsLoad;
+use crm\loads\AdminLoad;
 use crm\managers\CurrencyManager;
 use crm\managers\PartnerManager;
 use crm\managers\PaymentTransactionManager;
 use crm\security\RequestGroups;
 use NGS;
 
-    class ListLoad extends NgsLoad {
+    class ListLoad  extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -124,10 +124,6 @@ use NGS;
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/payment/list.tpl";
-        }
-
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
         }
 
         public function getSortByFields() {

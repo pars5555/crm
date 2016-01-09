@@ -11,7 +11,7 @@
 
 namespace crm\loads\main\purchase {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\CurrencyManager;
     use crm\managers\PartnerManager;
     use crm\managers\PaymentMethodManager;
@@ -20,7 +20,7 @@ namespace crm\loads\main\purchase {
     use crm\security\RequestGroups;
     use NGS;
 
-    class ListLoad extends NgsLoad {
+    class ListLoad  extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -121,9 +121,6 @@ namespace crm\loads\main\purchase {
             return NGS()->getTemplateDir() . "/main/purchase/list.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
         public function getSortByFields() {
             return ['order_date' => 'Date', 'payment_deadline' => 'Payment Deadline'];

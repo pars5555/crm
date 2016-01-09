@@ -16,6 +16,7 @@ NGS.createLoad("crm.loads.main.index", {
         $('.datetimepicker').datetimepicker({
             format: 'Y-m-d H:i',
             inline: true,
+            lang:'hy',
             step: 1
         });
     },
@@ -24,6 +25,7 @@ NGS.createLoad("crm.loads.main.index", {
             format: 'Y-m-d',
             inline: true,
             timepicker: false,
+            lang:'hy',
             step: 1
         });
     },

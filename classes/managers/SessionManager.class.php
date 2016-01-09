@@ -158,19 +158,8 @@ namespace crm\managers {
                         return true;
                     }
                     break;
-                case RequestGroups::$moderatorRequest :
-                    if ($user->getLevel() == UserGroups::$MODERATOR || $user->getLevel() == UserGroups::$ADMIN) {
-                        return true;
-                    }
-                    break;
-                case RequestGroups::$observerRequest:
-                    if ($user->getLevel() == UserGroups::$OBSERVER) {
-                        return true;
-                    }
-                    break;
                 case RequestGroups::$guestRequest:
                     return true;
-                    break;
             }
             return false;
         }

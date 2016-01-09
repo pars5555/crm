@@ -11,14 +11,14 @@
 
 namespace crm\loads\main\product {
 
-use crm\loads\NgsLoad;
+use crm\loads\AdminLoad;
 use crm\managers\ProductManager;
 use crm\managers\PurchaseOrderLineManager;
 use crm\managers\SaleOrderLineManager;
 use crm\security\RequestGroups;
 use NGS;
 
-    class ListLoad extends NgsLoad {
+    class ListLoad  extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -91,9 +91,6 @@ use NGS;
             return NGS()->getTemplateDir() . "/main/product/list.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
         public function getSortByFields() {
             return ['name' => 'Name', 'model' => 'Model'];

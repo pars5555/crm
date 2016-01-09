@@ -16,6 +16,7 @@ NGS.createLoad("crm.loads.main.general.cashbox", {
             inline: true,
             timepicker: false,
             step: 1,
+            lang:'hy',
             onSelectDate: function (ct, $i) {
                 var params = {cur: $('#cashboxCurrencySelect').val(), date: ct.dateFormat('Y-m-d')};
                 NGS.load('crm.loads.main.general.cashbox', params);

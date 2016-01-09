@@ -11,11 +11,11 @@
 
 namespace crm\loads\main\manufacturer {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\security\RequestGroups;
     use NGS;
 
-    class CreateLoad extends NgsLoad {
+    class CreateLoad  extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -28,9 +28,6 @@ namespace crm\loads\main\manufacturer {
             return NGS()->getTemplateDir() . "/main/manufacturer/create.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
     }
 

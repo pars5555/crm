@@ -18,7 +18,6 @@ namespace crm\loads\main {
     class IndexLoad extends AdminLoad {
 
         public function load() {
-            
         }
 
         public function getTemplate() {

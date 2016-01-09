@@ -11,7 +11,7 @@
 
 namespace crm\loads\main\sale\warranty {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\CurrencyManager;
     use crm\managers\ProductManager;
     use crm\managers\SaleOrderLineManager;
@@ -20,7 +20,7 @@ namespace crm\loads\main\sale\warranty {
     use crm\security\RequestGroups;
     use NGS;
 
-    class OpenLoad extends NgsLoad {
+    class OpenLoad  extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -65,9 +65,6 @@ namespace crm\loads\main\sale\warranty {
             return NGS()->getTemplateDir() . "/main/sale/warranty/open.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
     }
 

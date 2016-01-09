@@ -11,14 +11,14 @@
 
 namespace crm\loads\main\general {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\CurrencyManager;
     use crm\managers\PaymentTransactionManager;
     use crm\managers\SettingManager;
     use crm\security\RequestGroups;
     use NGS;
 
-    class CashboxLoad extends NgsLoad {
+    class CashboxLoad  extends AdminLoad {
 
         public function load() {
             list($date, $curr) = $this->getFormData();
@@ -47,9 +47,6 @@ namespace crm\loads\main\general {
             return NGS()->getTemplateDir() . "/main/general/cashbox.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
     }
 

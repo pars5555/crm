@@ -11,12 +11,12 @@
 
 namespace crm\loads\main\billing {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\PaymentTransactionManager;
     use crm\security\RequestGroups;
     use NGS;
 
-    class OpenLoad extends NgsLoad {
+    class OpenLoad  extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -33,9 +33,6 @@ namespace crm\loads\main\billing {
             return NGS()->getTemplateDir() . "/main/billing/open.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
     }
 

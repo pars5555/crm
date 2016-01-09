@@ -11,7 +11,7 @@
 
 namespace crm\loads\main\sale {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\PartnerManager;
     use crm\managers\PaymentMethodManager;
     use crm\managers\SaleOrderManager;
@@ -20,7 +20,7 @@ namespace crm\loads\main\sale {
     use DateTime;
     use NGS;
 
-    class UpdateLoad extends NgsLoad {
+    class UpdateLoad  extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -56,10 +56,6 @@ namespace crm\loads\main\sale {
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/sale/update.tpl";
-        }
-
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
         }
 
     }

@@ -24,7 +24,7 @@ namespace crm\actions\main {
             } else {
                 $_COOKIE['showprofit'] = 1;
             }
-            setcookie('showprofit', $_COOKIE['showprofit'], time() + 60 * 60 * 24 * 365, "/", HTTP_HOST);
+            setcookie('showprofit', $_COOKIE['showprofit'], time() + 60 * 60 * 24 * 365, "/");
             header("location: " . $_SERVER['HTTP_REFERER']);
             exit;
         }

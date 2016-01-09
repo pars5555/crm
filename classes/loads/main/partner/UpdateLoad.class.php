@@ -11,13 +11,13 @@
 
 namespace crm\loads\main\partner {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\CurrencyManager;
     use crm\managers\PartnerManager;
     use crm\security\RequestGroups;
     use NGS;
 
-    class UpdateLoad extends NgsLoad {
+    class UpdateLoad  extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -46,9 +46,6 @@ namespace crm\loads\main\partner {
             return NGS()->getTemplateDir() . "/main/partner/update.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
     }
 

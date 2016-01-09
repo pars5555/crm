@@ -11,7 +11,7 @@
 
 namespace crm\loads\main\all {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\AdvancedAbstractManager;
     use crm\managers\CurrencyManager;
     use crm\managers\PaymentTransactionManager;
@@ -20,7 +20,7 @@ namespace crm\loads\main\all {
     use crm\security\RequestGroups;
     use NGS;
 
-    class IndexLoad extends NgsLoad {
+    class IndexLoad  extends AdminLoad {
 
         public function load() {
             list($startDate, $endDate) = $this->getFormData();
@@ -104,10 +104,6 @@ namespace crm\loads\main\all {
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/all/index.tpl";
-        }
-
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
         }
 
     }

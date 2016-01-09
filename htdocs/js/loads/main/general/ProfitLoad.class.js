@@ -91,6 +91,7 @@ NGS.createLoad("crm.loads.main.general.profit", {
             inline: true,
             timepicker: false,
             step: 1,
+            lang:'hy',
             onSelectDate: function (ct, $i) {
                 $('#startDate').val(ct.dateFormat('Y-m-d'));
                 NGS.load('crm.loads.main.general.profit', {startDate: $('#startDate').val(), endDate: $('#endDate').val()});
@@ -101,6 +102,7 @@ NGS.createLoad("crm.loads.main.general.profit", {
             inline: true,
             timepicker: false,
             step: 1,
+            lang:'hy',
             onSelectDate: function (ct, $i) {
                 $('#endDate').val(ct.dateFormat('Y-m-d'));
                 NGS.load('crm.loads.main.general.profit', {startDate: $('#startDate').val(), endDate: $('#endDate').val()});

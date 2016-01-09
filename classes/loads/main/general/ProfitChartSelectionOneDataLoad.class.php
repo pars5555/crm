@@ -11,13 +11,13 @@
 
 namespace crm\loads\main\general {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\CurrencyManager;
     use crm\managers\SaleOrderManager;
     use crm\security\RequestGroups;
     use NGS;
 
-    class ProfitChartSelectionOneDataLoad extends NgsLoad {
+    class ProfitChartSelectionOneDataLoad  extends AdminLoad {
 
         public function load() {
             list($startDate, $endDate) = [NGS()->args()->startDate, NGS()->args()->endDate];
@@ -30,9 +30,6 @@ namespace crm\loads\main\general {
             return NGS()->getTemplateDir() . "/main/general/profit/profit_sale_orders_list.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
     }
 

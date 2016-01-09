@@ -11,7 +11,7 @@
 
 namespace crm\loads\main\general {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\PaymentTransactionManager;
     use crm\managers\SaleOrderLineManager;
     use crm\managers\SaleOrderManager;
@@ -21,7 +21,7 @@ namespace crm\loads\main\general {
     use DateTime;
     use NGS;
 
-    class ProfitLoad extends NgsLoad {
+    class ProfitLoad  extends AdminLoad {
 
         public function load() {
             list($startDate, $endDate) = $this->getFormData();
@@ -101,9 +101,6 @@ namespace crm\loads\main\general {
             return NGS()->getTemplateDir() . "/main/general/profit/profit.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
     }
 

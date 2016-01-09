@@ -11,7 +11,7 @@
 
 namespace crm\loads\main\partner {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\CalculationManager;
     use crm\managers\CurrencyManager;
     use crm\managers\PartnerManager;
@@ -21,7 +21,7 @@ namespace crm\loads\main\partner {
     use crm\security\RequestGroups;
     use NGS;
 
-    class AllDealsLoad extends NgsLoad {
+    class AllDealsLoad  extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -87,9 +87,6 @@ namespace crm\loads\main\partner {
             return NGS()->getTemplateDir() . "/main/partner/all_deals.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
     }
 

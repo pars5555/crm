@@ -11,11 +11,11 @@
 
 namespace crm\loads\main\general {
 
-    use crm\loads\NgsLoad;
-    use crm\security\RequestGroups;
-    use NGS;
+use crm\loads\AdminLoad;
+use crm\security\RequestGroups;
+use NGS;
 
-    class GeneralLoad extends NgsLoad {
+    class GeneralLoad  extends AdminLoad {
 
         public function load() {
         }
@@ -33,9 +33,6 @@ namespace crm\loads\main\general {
             return NGS()->getTemplateDir() . "/main/general/general.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
     }
 

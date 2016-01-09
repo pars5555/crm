@@ -11,7 +11,7 @@
 
 namespace crm\loads\main {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\ProductManager;
     use crm\managers\PurchaseOrderLineManager;
     use crm\managers\SaleOrderLineManager;
@@ -19,7 +19,7 @@ namespace crm\loads\main {
     use crm\security\RequestGroups;
     use NGS;
 
-    class WarehouseLoad extends NgsLoad {
+    class WarehouseLoad  extends AdminLoad {
 
         public function load() {
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity();
@@ -37,9 +37,6 @@ namespace crm\loads\main {
             return NGS()->getTemplateDir() . "/main/warehouse.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
     }
 

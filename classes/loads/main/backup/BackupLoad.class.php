@@ -11,11 +11,11 @@
 
 namespace crm\loads\main\backup {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\security\RequestGroups;
     use NGS;
 
-    class BackupLoad extends NgsLoad {
+    class BackupLoad  extends AdminLoad {
 
         public function load() {
             
@@ -25,9 +25,6 @@ namespace crm\loads\main\backup {
             return NGS()->getTemplateDir() . "/main/backup/backup.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
     }
 

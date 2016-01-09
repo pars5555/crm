@@ -11,7 +11,7 @@
 
 namespace crm\loads\main\payment {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\CurrencyManager;
     use crm\managers\PartnerManager;
     use crm\managers\PaymentMethodManager;
@@ -21,7 +21,7 @@ namespace crm\loads\main\payment {
     use DateTime;
     use NGS;
 
-    class UpdateLoad extends NgsLoad {
+    class UpdateLoad  extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -65,9 +65,6 @@ namespace crm\loads\main\payment {
             return NGS()->getTemplateDir() . "/main/payment/update.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
     }
 

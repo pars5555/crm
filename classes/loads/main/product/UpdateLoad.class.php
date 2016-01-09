@@ -11,7 +11,7 @@
 
 namespace crm\loads\main\product {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\ManufacturerManager;
     use crm\managers\ProductManager;
     use crm\managers\SettingManager;
@@ -19,7 +19,7 @@ namespace crm\loads\main\product {
     use crm\security\RequestGroups;
     use NGS;
 
-    class UpdateLoad extends NgsLoad {
+    class UpdateLoad  extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -43,10 +43,6 @@ namespace crm\loads\main\product {
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/product/update.tpl";
-        }
-
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
         }
 
     }

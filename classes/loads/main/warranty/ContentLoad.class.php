@@ -11,7 +11,7 @@
 
 namespace crm\loads\main\warranty {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\PurchaseOrderLineManager;
     use crm\managers\PurchaseOrderLineSerialNumberManager;
     use crm\managers\PurchaseOrderManager;
@@ -21,7 +21,7 @@ namespace crm\loads\main\warranty {
     use crm\security\RequestGroups;
     use NGS;
 
-    class ContentLoad extends NgsLoad {
+    class ContentLoad  extends AdminLoad {
 
         public function load() {
             $searchText = $this->initFilters();
@@ -51,9 +51,6 @@ namespace crm\loads\main\warranty {
             return NGS()->getTemplateDir() . "/main/warranty/content.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
         private function initFilters() {
             $search = False;

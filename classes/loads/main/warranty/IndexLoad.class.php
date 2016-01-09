@@ -11,11 +11,11 @@
 
 namespace crm\loads\main\warranty {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\security\RequestGroups;
     use NGS;
 
-    class IndexLoad extends NgsLoad {
+    class IndexLoad  extends AdminLoad {
 
         public function load() {
             
@@ -30,10 +30,6 @@ namespace crm\loads\main\warranty {
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/warranty/index.tpl";
-        }
-
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
         }
 
     }

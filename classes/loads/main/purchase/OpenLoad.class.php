@@ -11,14 +11,14 @@
 
 namespace crm\loads\main\purchase {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\CurrencyManager;
     use crm\managers\ProductManager;
     use crm\managers\PurchaseOrderManager;
     use crm\security\RequestGroups;
     use NGS;
 
-    class OpenLoad extends NgsLoad {
+    class OpenLoad  extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -37,9 +37,6 @@ namespace crm\loads\main\purchase {
             return NGS()->getTemplateDir() . "/main/purchase/open.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
     }
 

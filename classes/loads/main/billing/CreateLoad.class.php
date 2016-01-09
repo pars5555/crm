@@ -11,7 +11,7 @@
 
 namespace crm\loads\main\billing {
 
-    use crm\loads\NgsLoad;
+    use crm\loads\AdminLoad;
     use crm\managers\CurrencyManager;
     use crm\managers\PartnerManager;
     use crm\managers\PaymentMethodManager;
@@ -19,7 +19,7 @@ namespace crm\loads\main\billing {
     use crm\security\RequestGroups;
     use NGS;
 
-    class CreateLoad extends NgsLoad {
+    class CreateLoad  extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -37,9 +37,6 @@ namespace crm\loads\main\billing {
             return NGS()->getTemplateDir() . "/main/billing/create.tpl";
         }
 
-        public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
-        }
 
     }
 
