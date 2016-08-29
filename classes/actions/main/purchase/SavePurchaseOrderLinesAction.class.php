@@ -16,6 +16,7 @@ namespace crm\actions\main\purchase {
 
     use crm\actions\BaseAction;
     use crm\exceptions\InsufficientProductException;
+    use crm\managers\ProductManager;
     use crm\managers\PurchaseOrderLineManager;
     use crm\managers\PurchaseOrderManager;
     use NGS;
@@ -49,8 +50,7 @@ namespace crm\actions\main\purchase {
                     PurchaseOrderLineManager::getInstance()->deleteByField('purchase_order_id', $purchaseOrderId);
                 }
             } catch (InsufficientProductException $exc) {
-                SaleOrderManager::getInstance()->rollbackTransaction();
-                $product = \crm\managers\ProductManager::getInstance()->selectByPK($exc->getProductId());
+                $product = ProductManager::getInstance()->selectByPK($exc->getProductId());
                 $productInfo = $product->getId();
                 if (isset($product)) {
                     $productInfo = $product->getName() . " (" . $product->getId() . ")";
@@ -58,7 +58,6 @@ namespace crm\actions\main\purchase {
                 $_SESSION['error_message'] = "Insufficient Product: " . $productInfo;
                 $this->redirect('purchase/' . $purchaseOrderId);
             } catch (Exception $exc) {
-                SaleOrderManager::getInstance()->rollbackTransaction();
                 $_SESSION['error_message'] = $exc->getMessage();
                 $this->redirect('purchase/' . $purchaseOrderId);
             }
