@@ -1,6 +1,6 @@
 <div class="container partner--list--container">
     <h1 class="main_title">Partners</h1>
-    
+
     {if isset($ns.error_message)}
         {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
@@ -9,7 +9,7 @@
     {/if}
 
     {include file="{ngs cmd=get_template_dir}/main/partner/list_filters.tpl"}
-<a href="{$SITE_PATH}/partner/create"><img src="{$SITE_PATH}/img/add.png"/></a>
+    <a href="{$SITE_PATH}/partner/create"><img src="{$SITE_PATH}/img/add.png"/></a>
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell"> ID </span>
@@ -72,5 +72,5 @@
         {/foreach}
     </div>
 
-    
+
 </div>
