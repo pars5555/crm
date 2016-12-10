@@ -11,12 +11,18 @@ NGS.createLoad("crm.loads.main.index", {
         this.datepicker();
         this.autocompleteSelect();
         this.checkbox();
+        this.initCloseModal();
+    },
+    initCloseModal: function () {
+        $('.modal .modal-close').click(function () {
+            $(this).closest('.modal').removeClass('is_active');
+        });
     },
     datetimepicker: function () {
         $('.datetimepicker').datetimepicker({
             format: 'Y-m-d H:i',
             inline: true,
-            lang:'hy',
+            lang: 'hy',
             step: 1
         });
     },
@@ -25,7 +31,7 @@ NGS.createLoad("crm.loads.main.index", {
             format: 'Y-m-d',
             inline: true,
             timepicker: false,
-            lang:'hy',
+            lang: 'hy',
             step: 1
         });
     },
