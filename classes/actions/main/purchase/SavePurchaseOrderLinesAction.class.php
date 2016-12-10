@@ -19,6 +19,7 @@ namespace crm\actions\main\purchase {
     use crm\managers\ProductManager;
     use crm\managers\PurchaseOrderLineManager;
     use crm\managers\PurchaseOrderManager;
+    use crm\managers\SaleOrderManager;
     use NGS;
 
     class SavePurchaseOrderLinesAction extends BaseAction {
@@ -50,7 +51,7 @@ namespace crm\actions\main\purchase {
                     PurchaseOrderLineManager::getInstance()->deleteByField('purchase_order_id', $purchaseOrderId);
                 }
             } catch (InsufficientProductException $exc) {
-                $product = ProductManager::getInstance()->selectByPK($exc->getProductId());
+                $product = \crm\managers\ProductManager::getInstance()->selectByPK($exc->getProductId());
                 $productInfo = $product->getId();
                 if (isset($product)) {
                     $productInfo = $product->getName() . " (" . $product->getId() . ")";
