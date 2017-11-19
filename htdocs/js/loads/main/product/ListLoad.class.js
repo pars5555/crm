@@ -21,5 +21,11 @@ NGS.createLoad("crm.loads.main.product.list", {
                 theme: 'tooltipster-shadow'
             });
         });
+        $('.f_hidden_checkbox').change(function () {
+            var product_id = $(this).data('product_id');
+            var hidden = $(this).is(':checked') ? 1 : 0;
+
+            NGS.action('crm.actions.main.product.set_product_hidden', {product_id: product_id, hidden: hidden});
+        });
     }
 });

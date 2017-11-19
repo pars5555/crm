@@ -36,6 +36,11 @@ namespace crm\managers {
             }
             return self::$instance;
         }
+        
+        public function setProductHidden($id, $hidden) {
+            $this->mapper->updateField($id, 'hidden', $hidden);
+            
+        }
 
         public function safeDeleteProduct($productId) {
             $solDtos = SaleOrderLineManager::getInstance()->selectByField('product_id', $productId);

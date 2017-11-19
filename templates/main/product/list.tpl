@@ -21,6 +21,7 @@
             <span class="table-cell"> Sale Orders</span>
             <span class="table-cell"> View  </span>
             <span class="table-cell"> Edit </span>
+            <span class="table-cell"> Hidden </span>
         </div> 
         {foreach from=$ns.products item=product}
             <div class="table-row">
@@ -62,6 +63,7 @@
                         <i class="fa fa-pencil"></i>
                     </span>
                 </a>
+                     <span class="table-cell "> <input class="f_hidden_checkbox" data-product_id="{$product->getId()}" type="checkbox" value="1" {if $product->getHidden() ==1}checked{/if}/></span>
             </div>
         {/foreach}
     </div>

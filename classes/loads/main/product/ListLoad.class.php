@@ -24,8 +24,12 @@ use NGS;
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 100;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
-            $products = ProductManager::getInstance()->getProductListFull([], $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterHidden) = $this->initFilters($limit);
+            $where = [];
+            if ($selectedFilterHidden !== 'all') {
+                $where = ['hidden', '=', 0];
+            }
+            $products = ProductManager::getInstance()->getProductListFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $productIds = ProductManager::getDtosIdsArray($products);
             $productsPurchaseOrder = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
             $productsSaleOrder = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
@@ -81,10 +85,18 @@ use NGS;
                     $selectedFilterSortByAscDesc = strtoupper(NGS()->args()->ascdesc);
                 }
             }
+            $selectedFilterHidden = 'all';
+            if (isset(NGS()->args()->hddn)) {
+                if (in_array(strtolower(NGS()->args()->hddn), ['all', 'no'])) {
+                    $selectedFilterHidden = strtolower(NGS()->args()->hddn);
+                }
+            }
+
+            $this->addParam('selectedFilterHidden', $selectedFilterHidden);
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $selectedFilterHidden];
         }
 
         public function getTemplate() {
