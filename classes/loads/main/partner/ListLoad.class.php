@@ -22,15 +22,19 @@ namespace crm\loads\main\partner {
     use crm\security\RequestGroups;
     use NGS;
 
-    class ListLoad  extends AdminLoad {
+    class ListLoad extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 100;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterHidden) = $this->initFilters($limit);
             $partnerManager = PartnerManager::getInstance();
-            $partners = $partnerManager->selectAdvance('*', [], $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            $where = [];
+            if ($selectedFilterHidden !== 'all') {
+                $where = ['hidden', '=', 0];
+            }
+            $partners = $partnerManager->selectAdvance('*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $partnerIds = $partnerManager->getDtosIdsArray($partners);
             $partnersSaleOrdersMappedByPartnerId = [];
             $partnersPurchaseOrdersMappedByPartnerId = [];
@@ -70,6 +74,9 @@ namespace crm\loads\main\partner {
             if (isset(NGS()->args()->ascdesc)) {
                 $url .= "ascdesc=" . NGS()->args()->ascdesc . '&';
             }
+            if (isset(NGS()->args()->hddn)) {
+                $url .= "hddn=" . NGS()->args()->hddn . '&';
+            }
             $this->redirect(trim($url, '&?'));
         }
 
@@ -100,16 +107,23 @@ namespace crm\loads\main\partner {
                     $selectedFilterSortByAscDesc = strtoupper(NGS()->args()->ascdesc);
                 }
             }
+            $selectedFilterHidden = 'all';
+            if (isset(NGS()->args()->hddn)) {
+                if (in_array(strtolower(NGS()->args()->hddn), ['all', 'no'])) {
+                    $selectedFilterHidden = strtolower(NGS()->args()->hddn);
+                }
+            }
+
+            $this->addParam('selectedFilterHidden', $selectedFilterHidden);
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $selectedFilterHidden];
         }
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/partner/list.tpl";
         }
-
 
         public function getSortByFields() {
             return ['name' => 'Name', 'email' => 'Email'];

@@ -24,6 +24,7 @@
             <span class="table-cell"> All Deals </span>
             <span class="table-cell"> View </span>
             <span class="table-cell"> Edit </span>
+            <span class="table-cell"> Hidden </span>
         </div> 
         {foreach from=$ns.partners item=partner}
             <div class="table-row">
@@ -68,6 +69,7 @@
                         <i class="fa fa-pencil"></i>
                     </span>
                 </a>
+                <span class="table-cell "> <input class="f_hidden_checkbox" data-partner_id="{$partner->getId()}" type="checkbox" value="1" {if $partner->getHidden() ==1}checked{/if}/></span>
             </div>
         {/foreach}
     </div>

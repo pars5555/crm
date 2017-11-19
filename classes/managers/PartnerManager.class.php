@@ -43,6 +43,10 @@ namespace crm\managers {
             return null;
         }
 
+        public function setPartnerHidden($id, $hidden) {
+            $this->mapper->updateField($id, 'hidden', $hidden);
+            
+        }
         public function getPartnersFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
             $partnerIds = array();

@@ -56,6 +56,7 @@ namespace ngs\framework\templater {
       $this->assign("SITE_URL", NGS()->getHttpUtils()->getHttpHost());
       $this->assign("SITE_PATH", NGS()->getHttpUtils()->getHttpHost(true));
       $this->assign("STATIC_PATH", $staticPath);
+      $this->assign("VERSION", NGS()->getConfig()->VERSION);
       foreach ($this->smartyParams as $key => $value) {
         $this->smarty->assign($key, $value);
       }
