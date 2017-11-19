@@ -5,7 +5,7 @@
 			"host": "127.0.0.1",
 			"user": "crm",
 			"pass": "crm123",
-			"name": "crm.pc.am"
+			"name": "crm"
 		}
 	},
 	"static_path": "crm.am"
