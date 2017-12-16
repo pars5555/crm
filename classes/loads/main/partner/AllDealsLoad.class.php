@@ -45,6 +45,10 @@ namespace crm\loads\main\partner {
                 $this->addParam('partnerPurchaseOrders', $partnerPurchaseOrders);
                 $this->addParam('partnerPaymentTransactions', $partnerPaymentTransactions);
                 $this->addParam('partnerBillingTransactions', $partnerBillingTransactions);
+                
+                
+                CalculationManager::getInstance()->calculatePartnerAllDealesDebtHistory($partnerId, array_reverse ($allDeals, true));
+                
             }
         }
 
@@ -74,7 +78,7 @@ namespace crm\loads\main\partner {
             }
             return $ret;
         }
-
+       
         private function mapByIdAndGivenField($keyPrefix, $fieldName, $partnerTransactions) {
             $ret = [];
             foreach ($partnerTransactions as $partnerTransaction) {
@@ -85,9 +89,9 @@ namespace crm\loads\main\partner {
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/partner/all_deals.tpl";
-        }
-
-
     }
+
+
+}
 
 }

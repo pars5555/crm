@@ -89,6 +89,58 @@ namespace crm\managers {
             return $partnerDept;
         }
 
+        public function calculatePartnerAllDealesDebtHistory($partnerId, $allDeals) {
+             
+            $partnerDebt = PartnerInitialDeptManager::getInstance()->getPartnerInitialDept($partnerId);
+
+            foreach ($allDeals as $dealTypeObjectPair) {
+                $dealType = $dealTypeObjectPair[0];
+                $dealObject = $dealTypeObjectPair[1];
+                
+                if ($dealObject->getCancelled() == 1) {
+                    continue;
+                }
+                switch ($dealType) {
+                    case 'sale':
+                        $totalAmount = $dealObject->getTotalAmount();
+                        foreach ($totalAmount as $currencyId => $amount) {
+                            if (!array_key_exists($currencyId, $partnerDebt)) {
+                                $partnerDebt[$currencyId] = 0;
+                            }
+                            $partnerDebt[$currencyId] += $amount;
+                        }
+                        break;
+                    case 'purchase':
+                        $totalAmount = $dealObject->getTotalAmount();
+                        foreach ($totalAmount as $currencyId => $amount) {
+                            if (!array_key_exists($currencyId, $partnerDebt)) {
+                                $partnerDebt[$currencyId] = 0;
+                            }
+                            $partnerDebt[$currencyId] -= $amount;
+                        }
+                        break;
+                    case 'billing':
+                        $currencyId = $dealObject->getCurrencyId();
+                        $totalAmount = floatval($dealObject->getAmount());
+                        if (!array_key_exists($currencyId, $partnerDebt)) {
+                            $partnerDebt[$currencyId] = 0;
+                        }
+                        $partnerDebt[$currencyId] += $totalAmount;
+                        break;
+                    case 'payment':
+                        $currencyId = $dealObject->getCurrencyId();
+                        $totalAmount = floatval($dealObject->getAmount());
+                        if (!array_key_exists($currencyId, $partnerDebt)) {
+                            $partnerDebt[$currencyId] = 0;
+                        }
+                        $partnerDebt[$currencyId] += $totalAmount;
+                        break;
+                }
+               $dealObject->setDebt($partnerDebt);
+               
+            }
+        }
+
         public function calculatePartnersDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId, $partnersInitialDept) {
             $partnersDept = [];
             foreach ($partnersSaleOrdersMappedByPartnerId as $partnerId => $saleOrders) {

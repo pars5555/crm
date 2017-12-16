@@ -8,6 +8,7 @@
             <span class="table-cell"> Date </span>
             <span class="table-cell"> Note </span>
             <span class="table-cell"> Amount </span>
+            <span class="table-cell"> Balance </span>
         </div> 
         {foreach from=$ns.allDeals item=deal}
             <div class="table-row">
@@ -59,6 +60,20 @@
                     {/if}
                 </span>
 
+                <a class="table-cell">
+                        {foreach from=$deal[1]->getDebt() key=currencyId item=amount}
+                            <span style="white-space-collapse: discard;">
+                                {assign currencyDto $ns.currencies[$currencyId]}
+                                {if $currencyDto->getSymbolPosition() == 'left'}
+                                    {$currencyDto->getTemplateChar()}
+                                {/if}
+                                {$amount}
+                                {if $currencyDto->getSymbolPosition() == 'right'}
+                                    {$currencyDto->getTemplateChar()}
+                                {/if}
+                            </span>
+                        {/foreach}
+                </a>
             </div>
         {/foreach}
     </div>

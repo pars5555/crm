@@ -20,19 +20,23 @@ namespace crm\dal\dto {
 
     class SaleOrderDto extends AbstractDto {
 
-        // constructs class instance
-        public function __construct() {
-            
-        }
-
+        private $debt;
         // Map of DB value to Field value
         private $mapArray = array("id" => "id", "order_date" => "orderDate", "partner_id" => "partnerId", "note" => "note",
-            "cancelled"=>"cancelled", "cancel_note"=>"cancelNote", "non_profit"=>"nonProfit","billing_deadline" => "billingDeadline",
+            "cancelled" => "cancelled", "cancel_note" => "cancelNote", "non_profit" => "nonProfit", "billing_deadline" => "billingDeadline",
             "billed" => "billed", "billed_at" => "billedAt", "is_expense" => "isExpense");
 
         // returns map array
         public function getMapArray() {
             return $this->mapArray;
+        }
+
+        function getDebt() {
+            return $this->debt;
+        }
+
+        function setDebt($debt) {
+            $this->debt = $debt;
         }
 
     }

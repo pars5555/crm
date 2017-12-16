@@ -23,6 +23,7 @@ namespace crm\dal\dto {
         private $partnerDto;
         private $paymentMethodDto;
         private $currencyDto;
+        private $debt;
 
         // constructs class instance
         public function __construct() {
@@ -63,7 +64,16 @@ namespace crm\dal\dto {
         function setCurrencyDto($currencyDto) {
             $this->currencyDto = $currencyDto;
         }
+        
+        function getDebt() {
+            return $this->debt;
+        }
 
+        function setDebt($debt) {
+            $this->debt = $debt;
+        }
+
+    
     }
 
 }
