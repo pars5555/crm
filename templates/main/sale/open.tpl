@@ -91,6 +91,7 @@
                     <span class="table-cell"> Unit Price </span>
                     <span class="table-cell"> Currency </span>
                     <span class="table-cell"> Total </span>
+                    <span class="table-cell"> Profit </span>
                     <span class="table-cell"> Delete </span>
                 </div> 
                 {if $ns.saleOrder->getSaleOrderLinesDtos()|@count > 0}
@@ -121,6 +122,9 @@
                             </div>
                             <div class="table-cell">
                                 <span class="saleOrderLinesTotal"></span>
+                            </div>
+                            <div class="table-cell">
+                                {$saleOrderLine->getTotalProfit()}
                             </div>
                             <div class="table-cell">
                                 <a class="button_icon removeSaleOrderLine" title="delete">

@@ -107,7 +107,7 @@ namespace crm\loads\main\partner {
                     $selectedFilterSortByAscDesc = strtoupper(NGS()->args()->ascdesc);
                 }
             }
-            $selectedFilterHidden = 'all';
+            $selectedFilterHidden = 'no';
             if (isset(NGS()->args()->hddn)) {
                 if (in_array(strtolower(NGS()->args()->hddn), ['all', 'no'])) {
                     $selectedFilterHidden = strtolower(NGS()->args()->hddn);
