@@ -40,7 +40,8 @@ namespace crm\managers {
                 $rows = $this->selectAdvance('*', ['id', '=', $partnerId, 'and', 'currency_id', '=', $currencyId]);
                 if (!empty($rows)) {
                     $row= $rows[0];
-                    $this->mapper->updateField($row->getId(), 'amount',floatval($amount));
+                    $row ->setAmount(floatval($amount));
+                    $this->mapper->updateByPK($row);
                 }else
                 {
                     $dto = new \crm\dal\dto\PartnerDebtCacheDto();
