@@ -44,7 +44,7 @@ namespace crm\loads\main\partner {
                 $join = 'LEFT JOIN partner_debt_cache on partner_debt_cache.partner_id=partners.id';
                 $where = array_merge($where, ['and','partner_debt_cache.amount', '<', 0]);
             }
-            $partners = $partnerManager->selectAdvance('*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit, false, $join, 'GROUP BY partners.id');
+            $partners = $partnerManager->selectAdvance('partners.*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit, false, $join, 'GROUP BY partners.id');
             $partnerIds = $partnerManager->getDtosIdsArray($partners);
             $partnersSaleOrdersMappedByPartnerId = [];
             $partnersPurchaseOrdersMappedByPartnerId = [];
