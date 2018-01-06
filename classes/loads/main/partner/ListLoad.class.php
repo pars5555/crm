@@ -32,19 +32,22 @@ namespace crm\loads\main\partner {
             $partnerManager = PartnerManager::getInstance();
             $where = ['1', '=', '1'];
             if ($selectedFilterHidden !== 'all') {
-                $where = ['and', 'hidden', '=', 0];
+                $where = array_merge($where, ['and', 'hidden', '=', 0]);
             }
             $join = '';
-
+            $groupBy= '';
             if ($selectedFilterHasDebt === 'yes') {
                 $join = 'LEFT JOIN partner_debt_cache on partner_debt_cache.partner_id=partners.id';
+                
+                $groupBy= 'GROUP BY partners.id';
                 $where = array_merge($where, ['and','partner_debt_cache.amount', '>', 0]);
             }
             if ($selectedFilterHasDebt === 'no') {
                 $join = 'LEFT JOIN partner_debt_cache on partner_debt_cache.partner_id=partners.id';
+                $groupBy= 'GROUP BY partners.id';
                 $where = array_merge($where, ['and','partner_debt_cache.amount', '<', 0]);
             }
-            $partners = $partnerManager->selectAdvance('partners.*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit, false, $join, 'GROUP BY partners.id');
+            $partners = $partnerManager->selectAdvance('partners.*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit, false, $join, $groupBy);
             $partnerIds = $partnerManager->getDtosIdsArray($partners);
             $partnersSaleOrdersMappedByPartnerId = [];
             $partnersPurchaseOrdersMappedByPartnerId = [];
