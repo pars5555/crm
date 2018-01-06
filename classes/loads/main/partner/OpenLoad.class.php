@@ -14,7 +14,7 @@ namespace crm\loads\main\partner {
     use crm\loads\AdminLoad;
     use crm\managers\CalculationManager;
     use crm\managers\CurrencyManager;
-    use crm\managers\PartnerInitialDeptManager;
+    use crm\managers\PartnerInitialDebtManager;
     use crm\managers\PartnerManager;
     use crm\managers\PaymentTransactionManager;
     use crm\managers\PurchaseOrderManager;
@@ -35,14 +35,14 @@ namespace crm\loads\main\partner {
                 $partnerPurchaseOrders = PurchaseOrderManager::getInstance()->getPartnerPurchaseOrders($partnerId);
                 $partnerPaymentTransactions = PaymentTransactionManager::getInstance()->getPartnerPaymentTransactions($partnerId);
                 $partnerBillingTransactions = PaymentTransactionManager::getInstance()->getPartnerBillingTransactions($partnerId);
-                $partnerInitialDept = PartnerInitialDeptManager::getInstance()->getPartnerInitialDept($partnerId);
+                $partnerInitialDebt = PartnerInitialDebtManager::getInstance()->getPartnerInitialDebt($partnerId);
                 $this->addParam('partnerSaleOrders', $partnerSaleOrders);
                 $this->addParam('partnerPurchaseOrders', $partnerPurchaseOrders);
                 $this->addParam('partnerPaymentTransactions', $partnerPaymentTransactions);
                 $this->addParam('partnerBillingTransactions', $partnerBillingTransactions);
-                $dept = CalculationManager::getInstance()->calculatePartnerDeptBySalePurchaseAndPaymentTransations(
-                        $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions, $partnerInitialDept);
-                $this->addParam('partnerDept', $dept);
+                $debt = CalculationManager::getInstance()->calculatePartnerDebtBySalePurchaseAndPaymentTransations(
+                        $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions, $partnerInitialDebt);
+                $this->addParam('partnerDebt', $debt);
                 $currencyManager = CurrencyManager::getInstance();
                 $this->addParam('currencies', $currencyManager->mapDtosById($currencyManager->selectAdvance('*', ['active', '=', 1], ['name'])));
             }

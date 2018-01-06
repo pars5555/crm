@@ -15,14 +15,14 @@
  * @author Monte Ohrt <monte at ohrt dot com>
  *
  * @param array|object $var     variable to be formatted
- * @param int          $max     maximum recursion depth if $var is an array or object
+ * @param int          $max     maximum recursion debth if $var is an array or object
  * @param int          $length  maximum string length if $var is a string
- * @param int          $depth   actual recursion depth
- * @param array        $objects processed objects in actual depth to prevent recursive object processing
+ * @param int          $debth   actual recursion debth
+ * @param array        $objects processed objects in actual debth to prevent recursive object processing
  *
  * @return string
  */
-function smarty_modifier_debug_print_var($var, $max = 10, $length = 40, $depth = 0, $objects = array())
+function smarty_modifier_debug_print_var($var, $max = 10, $length = 40, $debth = 0, $objects = array())
 {
     $_replace = array("\n" => '<i>\n</i>',
                       "\r" => '<i>\r</i>',
@@ -31,14 +31,14 @@ function smarty_modifier_debug_print_var($var, $max = 10, $length = 40, $depth =
     switch (gettype($var)) {
         case 'array' :
             $results = '<b>Array (' . count($var) . ')</b>';
-            if ($depth == $max) {
+            if ($debth == $max) {
                 break;
             }
             foreach ($var as $curr_key => $curr_val) {
-                $results .= '<br>' . str_repeat('&nbsp;', $depth * 2)
+                $results .= '<br>' . str_repeat('&nbsp;', $debth * 2)
                     . '<b>' . strtr($curr_key, $_replace) . '</b> =&gt; '
-                    . smarty_modifier_debug_print_var($curr_val, $max, $length, ++ $depth, $objects);
-                $depth --;
+                    . smarty_modifier_debug_print_var($curr_val, $max, $length, ++ $debth, $objects);
+                $debth --;
             }
             break;
 
@@ -49,15 +49,15 @@ function smarty_modifier_debug_print_var($var, $max = 10, $length = 40, $depth =
                 $results .= ' called recursive';
                 break;
             }
-            if ($depth == $max) {
+            if ($debth == $max) {
                 break;
             }
             $objects[] = $var;
             foreach ($object_vars as $curr_key => $curr_val) {
-                $results .= '<br>' . str_repeat('&nbsp;', $depth * 2)
+                $results .= '<br>' . str_repeat('&nbsp;', $debth * 2)
                     . '<b> -&gt;' . strtr($curr_key, $_replace) . '</b> = '
-                    . smarty_modifier_debug_print_var($curr_val, $max, $length, ++ $depth, $objects);
-                $depth --;
+                    . smarty_modifier_debug_print_var($curr_val, $max, $length, ++ $debth, $objects);
+                $debth --;
             }
             break;
 

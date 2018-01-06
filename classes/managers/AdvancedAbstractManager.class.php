@@ -113,7 +113,7 @@ namespace crm\managers {
             $where = $this->getWhereSubQueryByFilters($filters);
             return $this->mapper->countAdvance($where);
         }
-        public function selectAdvance($fieldsArray = '*', $filters = null, $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null, $mapByIds = False) {
+        public function selectAdvance($fieldsArray = '*', $filters = null, $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null, $mapByIds = False, $leftJoin = "", $groupBy = "") {
 
             $where = $this->getWhereSubQueryByFilters($filters);
             $fields = $fieldsArray;
@@ -133,7 +133,8 @@ namespace crm\managers {
                 $order = 'ORDER BY `' . $order . '` ' . $orderByAscDesc;
             }
             $this->lastSelectAdvanceWhere = $where;
-            $ret = $this->mapper->selectAdvance($fields, $where, $order, $offset, $limit);
+            $this->lastSelectAdvanceLeftJoin = $leftJoin;
+            $ret = $this->mapper->selectAdvance($fields, $where, $order, $offset, $limit, $leftJoin, $groupBy);
             if ($mapByIds) {
                 return $this->mapDtosById($ret);
             }
@@ -144,7 +145,7 @@ namespace crm\managers {
             if (!isset($this->lastSelectAdvanceWhere)) {
                 return 0;
             }
-            return intval($this->mapper->selectAdvanceCount($this->lastSelectAdvanceWhere));
+            return intval($this->mapper->selectAdvanceCount($this->lastSelectAdvanceWhere, $this->lastSelectAdvanceLeftJoin));
         }
 
         protected function getWhereSubQueryByFilters($filters) {

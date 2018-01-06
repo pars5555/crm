@@ -18,7 +18,7 @@ namespace crm\dal\dto {
 
     use \ngs\framework\dal\dto\AbstractDto;
 
-    class PartnerInitialDeptDto extends AbstractDto {
+    class PartnerDebtCacheDto extends AbstractDto {
 
         // constructs class instance
         public function __construct() {
@@ -26,7 +26,7 @@ namespace crm\dal\dto {
         }
 
         // Map of DB value to Field value
-        private $mapArray = array("id" => "id", "partner_id" => "partnerId", "currency_id" => "currencyId", "amount" => "amount", "datetime" => "datetime", "note" => "note");
+        private $mapArray = array("id" => "id", "partner_id" => "partnerId", "currency_id" => "currencyId", "amount" => "amount");
 
         // returns map array
         public function getMapArray() {

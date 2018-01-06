@@ -42,7 +42,7 @@ namespace crm\managers {
             }
             return null;
         }
-
+        
         public function setPartnerHidden($id, $hidden) {
             $this->mapper->updateField($id, 'hidden', $hidden);
             
@@ -54,14 +54,14 @@ namespace crm\managers {
                 $partnerIds[] = intval($row->getId());
             }
             $partnerIds = array_unique($partnerIds);
-            $partnerInitialDeptDtos = PartnerInitialDeptManager::getInstance()->getInitialDeptsFull(['partner_id', 'in', '(' . implode(',', $partnerIds) . ')'], 'datetime', 'DESC');
-            $partnerInitialDeptDtos = $this->mapByPartnerId($partnerInitialDeptDtos);
+            $partnerInitialDebtDtos = PartnerInitialDebtManager::getInstance()->getInitialDebtsFull(['partner_id', 'in', '(' . implode(',', $partnerIds) . ')'], 'datetime', 'DESC');
+            $partnerInitialDebtDtos = $this->mapByPartnerId($partnerInitialDebtDtos);
             foreach ($rows as $row) {
                 $partnerId = intval($row->getId());
-                if (!array_key_exists($partnerId, $partnerInitialDeptDtos)) {
-                    $partnerInitialDeptDtos[$partnerId] = [];
+                if (!array_key_exists($partnerId, $partnerInitialDebtDtos)) {
+                    $partnerInitialDebtDtos[$partnerId] = [];
                 }
-                $row->setPartnerInitialDeptDtos($partnerInitialDeptDtos[$partnerId]);
+                $row->setPartnerInitialDebtDtos($partnerInitialDebtDtos[$partnerId]);
             }
             return $rows;
         }
@@ -94,7 +94,7 @@ namespace crm\managers {
             return $this->insertDto($dto);
         }
 
-        public function updatePartner($id, $name, $email, $address, $phone, $initialDepts) {
+        public function updatePartner($id, $name, $email, $address, $phone, $initialDebts) {
             $dto = $this->selectByPK($id);
             if (isset($dto)) {
                 $dto->setName($name);
@@ -103,10 +103,10 @@ namespace crm\managers {
                 $dto->setPhone($phone);
                 $dto->setCreateDate(date('Y-m-d H:i:s'));
                 $ret = $this->updateByPk($dto);
-                PartnerInitialDeptManager::getInstance()->deleteByField('partner_id', $id);
-                if (!empty($initialDepts)) {
-                    foreach ($initialDepts as $initialDept) {
-                        PartnerInitialDeptManager::getInstance()->addRow($id, $initialDept->amount, $initialDept->currency_id, $initialDept->note);
+                PartnerInitialDebtManager::getInstance()->deleteByField('partner_id', $id);
+                if (!empty($initialDebts)) {
+                    foreach ($initialDebts as $initialDebt) {
+                        PartnerInitialDebtManager::getInstance()->addRow($id, $initialDebt->amount, $initialDebt->currency_id, $initialDebt->note);
                     }
                 }
                 return $ret;
@@ -114,20 +114,20 @@ namespace crm\managers {
             return false;
         }
 
-        public function calculatePartnerDeptBySalePurchaseAndPaymentTransations($id) {
+        public function calculatePartnerDebtBySalePurchaseAndPaymentTransations($id) {
             $partnerSaleOrders = SaleOrderManager::getInstance()->getPartnerSaleOrders($id);
             $partnerPurchaseOrders = PurchaseOrderManager::getInstance()->getPartnerPurchaseOrders($id);
             $partnerPaymentTransactions = PaymentTransactionManager::getInstance()->getPartnerPaymentTransactions($id);
             $partnerBillingTransactions = PaymentTransactionManager::getInstance()->getPartnerBillingTransactions($id);
-            $partnerInitialDept = PartnerInitialDeptManager::getInstance()->getPartnerInitialDept($id);
-            return CalculationManager::getInstance()->calculatePartnerDeptBySalePurchaseAndPaymentTransations(
-                            $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions, $partnerInitialDept);
+            $partnerInitialDebt = PartnerInitialDebtManager::getInstance()->getPartnerInitialDebt($id);
+            return CalculationManager::getInstance()->calculatePartnerDebtBySalePurchaseAndPaymentTransations(
+                            $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions, $partnerInitialDebt);
         }
 
-        private function mapByPartnerId($partnerInitialDeptDtos) {
+        private function mapByPartnerId($partnerInitialDebtDtos) {
             $ret = [];
-            foreach ($partnerInitialDeptDtos as $partnerInitialDeptDto) {
-                $ret[$partnerInitialDeptDto->getPartnerId()][] = $partnerInitialDeptDto;
+            foreach ($partnerInitialDebtDtos as $partnerInitialDebtDto) {
+                $ret[$partnerInitialDebtDto->getPartnerId()][] = $partnerInitialDebtDto;
             }
             return $ret;
         }

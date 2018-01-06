@@ -12,9 +12,9 @@
 
 namespace crm\managers {
 
-    use crm\dal\mappers\PartnerInitialDeptMapper;
+    use crm\dal\mappers\PartnerInitialDebtMapper;
 
-    class PartnerInitialDeptManager extends AdvancedAbstractManager {
+    class PartnerInitialDebtManager extends AdvancedAbstractManager {
 
         /**
          * @var $instance
@@ -30,7 +30,7 @@ namespace crm\managers {
          */
         public static function getInstance() {
             if (self::$instance == null) {
-                self::$instance = new PartnerInitialDeptManager(PartnerInitialDeptMapper::getInstance());
+                self::$instance = new PartnerInitialDebtManager(PartnerInitialDebtMapper::getInstance());
             }
             return self::$instance;
         }
@@ -44,7 +44,7 @@ namespace crm\managers {
             return $this->insertDto($dto);
         }
 
-        public function getInitialDeptsFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
+        public function getInitialDebtsFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
             $currencyIds = array();
             foreach ($rows as $row) {
@@ -58,7 +58,7 @@ namespace crm\managers {
             return $rows;
         }
 
-        public function getPartnerInitialDept($partnerId) {
+        public function getPartnerInitialDebt($partnerId) {
             $dtos = $this->selectByField('partner_id', $partnerId);
             $ret = [];
             foreach ($dtos as $dto) {
@@ -71,7 +71,7 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function getPartnersInitialDept($partnersIds) {
+        public function getPartnersInitialDebt($partnersIds) {
             if (is_array($partnersIds)) {
                 $partnersIds = implode(',', $partnersIds);
             }

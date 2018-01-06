@@ -33,7 +33,7 @@ namespace crm\loads\main\partner {
                         'email' => $partner->getEmail(),
                         'address' => $partner->getAddress(),
                         'phone' => $partner->getPhone(),
-                        'initial_dept' => $partner->getPartnerInitialDeptDtos()
+                        'initial_debt' => $partner->getPartnerInitialDebtDtos()
                     ];
                 }
                 $this->addParam("partner", $partner);

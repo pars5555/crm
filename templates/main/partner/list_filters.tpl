@@ -26,5 +26,11 @@
             <option value="all" {if $ns.selectedFilterHidden == 'all'}selected{/if}>All</option>
             <option value="no" {if $ns.selectedFilterHidden == 'no'}selected{/if}>No</option>
         </select>
+        <label>Debt</label>
+        <select name="hasdebt">
+            <option value="all" {if $ns.selectedFilterHasDebt == 'all'}selected{/if}>All</option>
+            <option value="yes" {if $ns.selectedFilterHasDebt == 'yes'}selected{/if}>Yes</option>
+            <option value="no" {if $ns.selectedFilterHasDebt == 'no'}selected{/if}>No</option>
+        </select>
     </div>
 </form>

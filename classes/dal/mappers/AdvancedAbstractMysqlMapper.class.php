@@ -40,16 +40,17 @@ namespace crm\dal\mappers {
             return $this->fetchRows($sqlQuery);
         }
 
-        public function selectAdvanceCount($where) {
-            $sqlQuery = sprintf("SELECT count(`id`) as `count` FROM `%s` %s ", $this->getTableName(), $where);
+        public function selectAdvanceCount($where, $join) {
+            $sqlQuery = sprintf("SELECT count(*) as `count` FROM `%s` %s  %s ", $this->getTableName(), $join, $where);
             return $this->fetchField($sqlQuery, 'count');
         }
 
-        public function selectAdvance($fields, $where, $order, $offset, $limit) {
-            $sqlQuery = sprintf("SELECT %s FROM `%s` %s %s ", $fields, $this->getTableName(), $where, $order);
+        public function selectAdvance($fields, $where, $order, $offset, $limit, $leftJoin, $groupBy) {
+            $sqlQuery = sprintf("SELECT %s FROM `%s` %s %s %s %s ", $fields, $this->getTableName(), $leftJoin, $where, $groupBy, $order);
             if (isset($limit) && $limit > 0) {
                 $sqlQuery .= ' LIMIT ' . $offset . ', ' . $limit;
             }
+            //var_dump($sqlQuery);exit;
             return $this->fetchRows($sqlQuery);
         }
 

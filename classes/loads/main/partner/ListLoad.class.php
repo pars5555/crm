@@ -14,7 +14,7 @@ namespace crm\loads\main\partner {
     use crm\loads\AdminLoad;
     use crm\managers\CalculationManager;
     use crm\managers\CurrencyManager;
-    use crm\managers\PartnerInitialDeptManager;
+    use crm\managers\PartnerInitialDebtManager;
     use crm\managers\PartnerManager;
     use crm\managers\PaymentTransactionManager;
     use crm\managers\PurchaseOrderManager;
@@ -28,31 +28,40 @@ namespace crm\loads\main\partner {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 100;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterHidden) = $this->initFilters($limit);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterHidden, $selectedFilterHasDebt) = $this->initFilters($limit);
             $partnerManager = PartnerManager::getInstance();
             $where = [];
             if ($selectedFilterHidden !== 'all') {
                 $where = ['hidden', '=', 0];
             }
-            $partners = $partnerManager->selectAdvance('*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            $join = '';
+
+            if ($selectedFilterHasDebt === 'yes') {
+                $join = 'LEFT JOIN partner_debt_cache on partner_debt_cache.partner_id=partners.id';
+                $where = array_merge($where, ['and','partner_debt_cache.amount', '>', 0]);
+            }
+            if ($selectedFilterHasDebt === 'no') {
+                $join = 'LEFT JOIN partner_debt_cache on partner_debt_cache.partner_id=partners.id';
+                $where = array_merge($where, ['and','partner_debt_cache.amount', '<', 0]);
+            }
+            $partners = $partnerManager->selectAdvance('*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit, false, $join, 'GROUP BY partners.id');
             $partnerIds = $partnerManager->getDtosIdsArray($partners);
             $partnersSaleOrdersMappedByPartnerId = [];
             $partnersPurchaseOrdersMappedByPartnerId = [];
-            $partnersTransactionsMappedByPartnerId = [];
-            $partnersInitialDept = [];
+            $partnersInitialDebt = [];
             if (!empty($partnerIds)) {
                 $partnersSaleOrdersMappedByPartnerId = SaleOrderManager::getInstance()->getPartnersSaleOrders($partnerIds);
                 $partnersPurchaseOrdersMappedByPartnerId = PurchaseOrderManager::getInstance()->getPartnersPurchaseOrders($partnerIds);
                 $partnersPaymentTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersPaymentTransactions($partnerIds);
                 $partnersBillingTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersBillingTransactions($partnerIds);
-                $partnersInitialDept = PartnerInitialDeptManager::getInstance()->getPartnersInitialDept($partnerIds);
+                $partnersInitialDebt = PartnerInitialDebtManager::getInstance()->getPartnersInitialDebt($partnerIds);
             }
-            $partnersDept = CalculationManager::getInstance()->calculatePartnersDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId, $partnersInitialDept);
+            $partnersDebt = CalculationManager::getInstance()->calculatePartnersDebtBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId, $partnersInitialDebt);
             $this->addParam('partnersSaleOrdersMappedByPartnerId', $partnersSaleOrdersMappedByPartnerId);
             $this->addParam('partnersPurchaseOrdersMappedByPartnerId', $partnersPurchaseOrdersMappedByPartnerId);
             $this->addParam('partnersPaymentTransactionsMappedByPartnerId', $partnersPaymentTransactionsMappedByPartnerId);
             $this->addParam('partnersBillingTransactionsMappedByPartnerId', $partnersBillingTransactionsMappedByPartnerId);
-            $this->addParam('partnersDept', $partnersDept);
+            $this->addParam('partnersDebt', $partnersDebt);
 
             $this->addParam('partners', $partners);
             $count = PartnerManager::getInstance()->getLastSelectAdvanceRowsCount();
@@ -114,11 +123,19 @@ namespace crm\loads\main\partner {
                 }
             }
 
+            $selectedFilterHasDebt = 'all';
+            if (isset(NGS()->args()->hasdebt)) {
+                if (in_array(strtolower(NGS()->args()->hasdebt), ['all', 'no', 'yes'])) {
+                    $selectedFilterHasDebt = strtolower(NGS()->args()->hasdebt);
+                }
+            }
+
+            $this->addParam('selectedFilterHasDebt', $selectedFilterHasDebt);
             $this->addParam('selectedFilterHidden', $selectedFilterHidden);
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $selectedFilterHidden];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $selectedFilterHidden, $selectedFilterHasDebt];
         }
 
         public function getTemplate() {

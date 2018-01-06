@@ -16,7 +16,7 @@
             <span class="table-cell"> Name</span>
             <span class="table-cell"> Email </span>
             <span class="table-cell"> Tel. </span>
-            <span class="table-cell"> Dept </span>
+            <span class="table-cell"> Debt </span>
             <span class="table-cell"> Sale Orders</span>
             <span class="table-cell"> Purchase Orders</span>
             <span class="table-cell"> Payments Transactions </span>
@@ -35,8 +35,8 @@
                 <span class="table-cell"> {$partner->getEmail()} </span>
                 <span class="table-cell " style="white-space: nowrap"> {$partner->getPhone()|replace:',':'</br>'} </span>
                 <span  class="table-cell"> 
-                    {if isset($partnersDept[$partner->getId()])}
-                        {foreach from=$partnersDept[$partner->getId()] key=currencyId item=amount}
+                    {if isset($partnersDebt[$partner->getId()])}
+                        {foreach from=$partnersDebt[$partner->getId()] key=currencyId item=amount}
                             <span style="white-space-collapse: discard;">
                                 {assign currencyDto $ns.currencies[$currencyId]}
                                 {if $currencyDto->getSymbolPosition() == 'left'}

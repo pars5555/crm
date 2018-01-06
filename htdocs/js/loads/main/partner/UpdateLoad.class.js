@@ -8,49 +8,49 @@ NGS.createLoad("crm.loads.main.partner.update", {
     afterLoad: function () {
         var thisInstance = this;
         $('#submitForm').click(function () {
-            thisInstance.calculateInitialDeptsData();
+            thisInstance.calculateInitialDebtsData();
             $('#updatePartnerForm').trigger('submit');
             return false;
         });
-        this.initInitialDeptAddFunctionallity();
-        this.initInitialDeptRemoveFunctionallity();
+        this.initInitialDebtAddFunctionallity();
+        this.initInitialDebtRemoveFunctionallity();
     },
-    calculateInitialDeptsData: function () {
-        $('.initialDeptRow').each(function () {
-            var amount = $(this).find(".initialDeptAmount").val();
-            var currency_id = $(this).find(".initialDeptSelectCurrency").val();
-            var note = $(this).find(".initialDeptNote").val();
+    calculateInitialDebtsData: function () {
+        $('.initialDebtRow').each(function () {
+            var amount = $(this).find(".initialDebtAmount").val();
+            var currency_id = $(this).find(".initialDebtSelectCurrency").val();
+            var note = $(this).find(".initialDebtNote").val();
             var data = {amount: amount, currency_id: currency_id, note: note};
             var jsonData = JSON.stringify(data);
             $(this).find("input[type='hidden']").val(jsonData);
         });
     },
-    initInitialDeptRemoveFunctionallity: function () {
-        $('#initialDeptContainer').on("click", ".removeInitialDept", function () {
-            $(this).closest('.initialDeptRow').remove();
+    initInitialDebtRemoveFunctionallity: function () {
+        $('#initialDebtContainer').on("click", ".removeInitialDebt", function () {
+            $(this).closest('.initialDebtRow').remove();
         });
     },
-    initInitialDeptAddFunctionallity: function () {
-        $('#addInitialDeptButton').click(function () {
-            var amount = $('#initialDeptAmount').val();
-            var currency_id = $('#initialDeptSelectCurrency').val();
-            var note = $('#initialDeptNote').val();
+    initInitialDebtAddFunctionallity: function () {
+        $('#addInitialDebtButton').click(function () {
+            var amount = $('#initialDebtAmount').val();
+            var currency_id = $('#initialDebtSelectCurrency').val();
+            var note = $('#initialDebtNote').val();
             if (amount <= 0)
             {
-                $('#initialDeptAmount').focus();
+                $('#initialDebtAmount').focus();
                 return;
             }
-            var deptRow = $('#partnerInitialDeptTemplate').clone();
-            deptRow.css({'display': 'table-row'});
-            deptRow.removeAttr('id');
-            deptRow.addClass('initialDeptRow');
+            var debtRow = $('#partnerInitialDebtTemplate').clone();
+            debtRow.css({'display': 'table-row'});
+            debtRow.removeAttr('id');
+            debtRow.addClass('initialDebtRow');
 
-            deptRow.find(".initialDeptAmount").val(amount);
-            deptRow.find(".initialDeptSelectCurrency").val(currency_id);
-            deptRow.find(".initialDeptNote").val(note);
-            deptRow.appendTo("#initialDeptContainer");
-            $('#initialDeptAmount').val('');
-            $('#initialDeptNote').val('');
+            debtRow.find(".initialDebtAmount").val(amount);
+            debtRow.find(".initialDebtSelectCurrency").val(currency_id);
+            debtRow.find(".initialDebtNote").val(note);
+            debtRow.appendTo("#initialDebtContainer");
+            $('#initialDebtAmount').val('');
+            $('#initialDebtNote').val('');
         });
     }
 });

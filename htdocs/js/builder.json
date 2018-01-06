@@ -105,7 +105,7 @@
                     "actions/main/purchase/SetPaidAction.class.js",
                     "actions/main/sale/SetBilledAction.class.js",
                     "actions/main/sale/SetNonProfitAction.class.js",
-                    "actions/main/partner/GetPartnerDeptAction.class.js",
+                    "actions/main/partner/GetPartnerDebtAction.class.js",
                     "actions/main/partner/SetPartnerHiddenAction.class.js",
                     "actions/main/product/SetProductHiddenAction.class.js"
 

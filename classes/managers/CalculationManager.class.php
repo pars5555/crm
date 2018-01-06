@@ -33,18 +33,18 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function calculatePartnerDeptBySalePurchaseAndPaymentTransations($partnersSaleOrders, $partnersPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions, $partnerInitialDept) {
-            $partnerDept = [];
+        public function calculatePartnerDebtBySalePurchaseAndPaymentTransations($partnersSaleOrders, $partnersPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions, $partnerInitialDebt) {
+            $partnerDebt = [];
             foreach ($partnersSaleOrders as $saleOrder) {
                 if ($saleOrder->getCancelled() == 1) {
                     continue;
                 }
                 $totalAmount = $saleOrder->getTotalAmount();
                 foreach ($totalAmount as $currencyId => $amount) {
-                    if (!array_key_exists($currencyId, $partnerDept)) {
-                        $partnerDept[$currencyId] = 0;
+                    if (!array_key_exists($currencyId, $partnerDebt)) {
+                        $partnerDebt[$currencyId] = 0;
                     }
-                    $partnerDept[$currencyId] += $amount;
+                    $partnerDebt[$currencyId] += $amount;
                 }
             }
             foreach ($partnersPurchaseOrders as $purchaseOrder) {
@@ -53,10 +53,10 @@ namespace crm\managers {
                 }
                 $totalAmount = $purchaseOrder->getTotalAmount();
                 foreach ($totalAmount as $currencyId => $amount) {
-                    if (!array_key_exists($currencyId, $partnerDept)) {
-                        $partnerDept[$currencyId] = 0;
+                    if (!array_key_exists($currencyId, $partnerDebt)) {
+                        $partnerDebt[$currencyId] = 0;
                     }
-                    $partnerDept[$currencyId] -= $amount;
+                    $partnerDebt[$currencyId] -= $amount;
                 }
             }
             foreach ($partnerPaymentTransactions as $transaction) {
@@ -65,10 +65,10 @@ namespace crm\managers {
                 }
                 $currencyId = $transaction->getCurrencyId();
                 $amount = floatval($transaction->getAmount());
-                if (!array_key_exists($currencyId, $partnerDept)) {
-                    $partnerDept[$currencyId] = 0;
+                if (!array_key_exists($currencyId, $partnerDebt)) {
+                    $partnerDebt[$currencyId] = 0;
                 }
-                $partnerDept[$currencyId] += $amount;
+                $partnerDebt[$currencyId] += $amount;
             }
             foreach ($partnerBillingTransactions as $transaction) {
                 if ($transaction->getCancelled() == 1) {
@@ -76,22 +76,22 @@ namespace crm\managers {
                 }
                 $currencyId = $transaction->getCurrencyId();
                 $amount = floatval($transaction->getAmount());
-                if (!array_key_exists($currencyId, $partnerDept)) {
-                    $partnerDept[$currencyId] = 0;
+                if (!array_key_exists($currencyId, $partnerDebt)) {
+                    $partnerDebt[$currencyId] = 0;
                 }
-                $partnerDept[$currencyId] += $amount;
+                $partnerDebt[$currencyId] += $amount;
             }
-            if (!empty($partnerInitialDept)) {
-                foreach ($partnerInitialDept as $currencyId => $amount) {
-                    $partnerDept[$currencyId] += $amount;
+            if (!empty($partnerInitialDebt)) {
+                foreach ($partnerInitialDebt as $currencyId => $amount) {
+                    $partnerDebt[$currencyId] += $amount;
                 }
             }
-            return $partnerDept;
+            return $partnerDebt;
         }
 
         public function calculatePartnerAllDealesDebtHistory($partnerId, $allDeals) {
              
-            $partnerDebt = PartnerInitialDeptManager::getInstance()->getPartnerInitialDept($partnerId);
+            $partnerDebt = PartnerInitialDebtManager::getInstance()->getPartnerInitialDebt($partnerId);
 
             foreach ($allDeals as $dealTypeObjectPair) {
                 $dealType = $dealTypeObjectPair[0];
@@ -141,8 +141,8 @@ namespace crm\managers {
             }
         }
 
-        public function calculatePartnersDeptBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId, $partnersInitialDept) {
-            $partnersDept = [];
+        public function calculatePartnersDebtBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId, $partnersInitialDebt) {
+            $partnersDebt = [];
             foreach ($partnersSaleOrdersMappedByPartnerId as $partnerId => $saleOrders) {
                 foreach ($saleOrders as $saleOrder) {
                     if ($saleOrder->getCancelled() == 1) {
@@ -150,13 +150,13 @@ namespace crm\managers {
                     }
                     $totalAmount = $saleOrder->getTotalAmount();
                     foreach ($totalAmount as $currencyId => $amount) {
-                        if (!array_key_exists($partnerId, $partnersDept)) {
-                            $partnersDept[$partnerId] = [];
+                        if (!array_key_exists($partnerId, $partnersDebt)) {
+                            $partnersDebt[$partnerId] = [];
                         }
-                        if (!array_key_exists($currencyId, $partnersDept[$partnerId])) {
-                            $partnersDept[$partnerId][$currencyId] = 0;
+                        if (!array_key_exists($currencyId, $partnersDebt[$partnerId])) {
+                            $partnersDebt[$partnerId][$currencyId] = 0;
                         }
-                        $partnersDept[$partnerId][$currencyId] += $amount;
+                        $partnersDebt[$partnerId][$currencyId] += $amount;
                     }
                 }
             }
@@ -167,13 +167,13 @@ namespace crm\managers {
                     }
                     $totalAmount = $purchaseOrder->getTotalAmount();
                     foreach ($totalAmount as $currencyId => $amount) {
-                        if (!array_key_exists($partnerId, $partnersDept)) {
-                            $partnersDept[$partnerId] = [];
+                        if (!array_key_exists($partnerId, $partnersDebt)) {
+                            $partnersDebt[$partnerId] = [];
                         }
-                        if (!array_key_exists($currencyId, $partnersDept[$partnerId])) {
-                            $partnersDept[$partnerId][$currencyId] = 0;
+                        if (!array_key_exists($currencyId, $partnersDebt[$partnerId])) {
+                            $partnersDebt[$partnerId][$currencyId] = 0;
                         }
-                        $partnersDept[$partnerId][$currencyId] -= $amount;
+                        $partnersDebt[$partnerId][$currencyId] -= $amount;
                     }
                 }
             }
@@ -184,13 +184,13 @@ namespace crm\managers {
                     }
                     $currencyId = $transaction->getCurrencyId();
                     $unitPrice = floatval($transaction->getAmount());
-                    if (!array_key_exists($partnerId, $partnersDept)) {
-                        $partnersDept[$partnerId] = [];
+                    if (!array_key_exists($partnerId, $partnersDebt)) {
+                        $partnersDebt[$partnerId] = [];
                     }
-                    if (!array_key_exists($currencyId, $partnersDept[$partnerId])) {
-                        $partnersDept[$partnerId][$currencyId] = 0;
+                    if (!array_key_exists($currencyId, $partnersDebt[$partnerId])) {
+                        $partnersDebt[$partnerId][$currencyId] = 0;
                     }
-                    $partnersDept[$partnerId][$currencyId] += $unitPrice;
+                    $partnersDebt[$partnerId][$currencyId] += $unitPrice;
                 }
             }
 
@@ -201,39 +201,39 @@ namespace crm\managers {
                     }
                     $currencyId = $transaction->getCurrencyId();
                     $unitPrice = floatval($transaction->getAmount());
-                    if (!array_key_exists($partnerId, $partnersDept)) {
-                        $partnersDept[$partnerId] = [];
+                    if (!array_key_exists($partnerId, $partnersDebt)) {
+                        $partnersDebt[$partnerId] = [];
                     }
-                    if (!array_key_exists($currencyId, $partnersDept[$partnerId])) {
-                        $partnersDept[$partnerId][$currencyId] = 0;
+                    if (!array_key_exists($currencyId, $partnersDebt[$partnerId])) {
+                        $partnersDebt[$partnerId][$currencyId] = 0;
                     }
-                    $partnersDept[$partnerId][$currencyId] += $unitPrice;
+                    $partnersDebt[$partnerId][$currencyId] += $unitPrice;
                 }
             }
             //rounding
-            foreach ($partnersDept as $partnerId => $partnerDept) {
-                foreach ($partnerDept as $currencyId => &$dept) {
-                    $partnersDept[$partnerId][$currencyId] = round($dept, 2);
+            foreach ($partnersDebt as $partnerId => $partnerDebt) {
+                foreach ($partnerDebt as $currencyId => &$debt) {
+                    $partnersDebt[$partnerId][$currencyId] = round($debt, 2);
                     //this case is for -0 only to show it as 0
-                    if ($partnersDept[$partnerId][$currencyId] == -$partnersDept[$partnerId][$currencyId]) {
-                        $partnersDept[$partnerId][$currencyId] = 0;
+                    if ($partnersDebt[$partnerId][$currencyId] == -$partnersDebt[$partnerId][$currencyId]) {
+                        $partnersDebt[$partnerId][$currencyId] = 0;
                     }
                 }
             }
-            if (!empty($partnersInitialDept)) {
-                foreach ($partnersInitialDept as $partnerId => $partnerInitialDept) {
-                    foreach ($partnerInitialDept as $currencyId => $amount) {
-                        if (!isset($partnersDept[$partnerId])) {
-                            $partnersDept[$partnerId] = [];
+            if (!empty($partnersInitialDebt)) {
+                foreach ($partnersInitialDebt as $partnerId => $partnerInitialDebt) {
+                    foreach ($partnerInitialDebt as $currencyId => $amount) {
+                        if (!isset($partnersDebt[$partnerId])) {
+                            $partnersDebt[$partnerId] = [];
                         }
-                        if (!isset($partnersDept[$partnerId][$currencyId])) {
-                            $partnersDept[$partnerId][$currencyId] = 0;
+                        if (!isset($partnersDebt[$partnerId][$currencyId])) {
+                            $partnersDebt[$partnerId][$currencyId] = 0;
                         }
-                        $partnersDept[$partnerId][$currencyId] += $amount;
+                        $partnersDebt[$partnerId][$currencyId] += $amount;
                     }
                 }
             }
-            return $partnersDept;
+            return $partnersDebt;
         }
 
     }

@@ -90,9 +90,9 @@
                     <i class="fa fa-calendar"></i>
                 </a>
             </div>
-            {if !empty($partnerDept)}
+            {if !empty($partnerDebt)}
                 <div class="table-row" style="white-space-collapse: discard;">
-                    {foreach from=$partnerDept key=currencyId item=amount}
+                    {foreach from=$partnerDebt key=currencyId item=amount}
                         <span class="table-cell">
                             Amount
                         </span>

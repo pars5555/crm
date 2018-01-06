@@ -10,16 +10,16 @@ NGS.createLoad("crm.loads.main.billing.create", {
 
         $("select[name='partnerId']").change(function () {
             var partner_id = $(this).val();
-            NGS.action('crm.actions.main.partner.get_partner_dept', {partner_id: partner_id});
+            NGS.action('crm.actions.main.partner.get_partner_debt', {partner_id: partner_id});
         });
         $("select[name='currencyId']").change(function () {
-            this.calculationPartnerDept();
+            this.calculationPartnerDebt();
         }.bind(this));
         $("input[name='amount']").on('input', function () {
-            this.calculationPartnerDept();
+            this.calculationPartnerDebt();
         }.bind(this));
-        $('#partnerDeptHidden').on('change', function () {
-            this.calculationPartnerDept();
+        $('#partnerDebtHidden').on('change', function () {
+            this.calculationPartnerDebt();
         }.bind(this));
 
         this.initSignature();
@@ -40,24 +40,24 @@ NGS.createLoad("crm.loads.main.billing.create", {
             return true;
         });
     },
-    calculationPartnerDept: function () {
-        var dept = $.parseJSON($('#partnerDeptHidden').val());
-        var deptHtml = '';
-        $.each(dept, function (currencyIso, amountSymbolPositionArray) {
+    calculationPartnerDebt: function () {
+        var debt = $.parseJSON($('#partnerDebtHidden').val());
+        var debtHtml = '';
+        $.each(debt, function (currencyIso, amountSymbolPositionArray) {
             var amount = amountSymbolPositionArray[0];
             var symbol = amountSymbolPositionArray[1];
             var position = amountSymbolPositionArray[2];
-            deptHtml += (position === 'left' ? symbol : '') + amount.toFixed(2) + (position === 'right' ? symbol : '') + '</br>';
+            debtHtml += (position === 'left' ? symbol : '') + amount.toFixed(2) + (position === 'right' ? symbol : '') + '</br>';
         });
-        $('#partnerDeptContainer').html(deptHtml);
+        $('#partnerDebtContainer').html(debtHtml);
 
 
         var currencySelectBox = $("select[name='currencyId']");
         var selectedCurrencyOption = $('option:selected', currencySelectBox);
         var iso = selectedCurrencyOption.attr('iso');
         var userInputAmunt = $("input[name='amount']").val();
-        var deptHtml = '';
-        $.each(dept, function (currencyIso, amountSymbolPositionArray) {
+        var debtHtml = '';
+        $.each(debt, function (currencyIso, amountSymbolPositionArray) {
             var amount = amountSymbolPositionArray[0];
             var symbol = amountSymbolPositionArray[1];
             var position = amountSymbolPositionArray[2];
@@ -65,9 +65,9 @@ NGS.createLoad("crm.loads.main.billing.create", {
             {
                 amount -= !isNaN(parseFloat(userInputAmunt)) ? parseFloat(userInputAmunt) : 0;
             }
-            deptHtml += (position === 'left' ? symbol : '') + amount.toFixed(2) + (position === 'right' ? symbol : '') + '</br>';
+            debtHtml += (position === 'left' ? symbol : '') + amount.toFixed(2) + (position === 'right' ? symbol : '') + '</br>';
         });
-        $('#partnerDeptContainer').html(deptHtml);
+        $('#partnerDebtContainer').html(debtHtml);
 
     }
 });

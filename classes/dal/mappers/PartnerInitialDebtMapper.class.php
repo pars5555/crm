@@ -16,22 +16,22 @@
 
 namespace crm\dal\mappers {
 
-    use crm\dal\dto\PartnerInitialDeptDto;
+    use crm\dal\dto\PartnerInitialDebtDto;
 
-    class PartnerInitialDeptMapper extends AdvancedAbstractMysqlMapper {
+    class PartnerInitialDebtMapper extends AdvancedAbstractMysqlMapper {
 
         private static $instance;
-        public $tableName = "partner_initial_dept";
+        public $tableName = "partner_initial_debt";
 
         public static function getInstance() {
             if (self::$instance == null) {
-                self::$instance = new PartnerInitialDeptMapper();
+                self::$instance = new PartnerInitialDebtMapper();
             }
             return self::$instance;
         }
 
         public function createDto() {
-            return new PartnerInitialDeptDto();
+            return new PartnerInitialDebtDto();
         }
 
         public function getPKFieldName() {

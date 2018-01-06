@@ -27,40 +27,40 @@
                 <input class="text" type="text" name="phone" value="{$ns.req.phone|default:''}"/>
             </div>
             <div class="form-group">
-                <label class="label">Initial Dept</label>
-                <div id="initialDeptContainer">
-                    {foreach from=$ns.partner->getPartnerInitialDeptDtos() item=initialDeptDto}
-                        <div class="initialDeptRow table-row" line_id="{$initialDeptDto->getId()}" >
+                <label class="label">Initial Debt</label>
+                <div id="initialDebtContainer">
+                    {foreach from=$ns.partner->getPartnerInitialDebtDtos() item=initialDebtDto}
+                        <div class="initialDebtRow table-row" line_id="{$initialDebtDto->getId()}" >
                             <div class="table-cell">
-                                <input type="number" class="initialDeptAmount text" value="{$initialDeptDto->getAmount()}"/>
+                                <input type="number" class="initialDebtAmount text" value="{$initialDebtDto->getAmount()}"/>
                             </div>
                             <div class="table-cell">
-                                <select class="initialDeptSelectCurrency">               
+                                <select class="initialDebtSelectCurrency">               
                                     {foreach from=$ns.currencies item=c}
-                                        <option value="{$c->getId()}" iso="{$c->getIso()}" symbol="{$c->getTemplateChar()}" position="{$c->getSymbolPosition()}" {if $c->getId() == $initialDeptDto->getCurrencyId()}selected{/if}>
+                                        <option value="{$c->getId()}" iso="{$c->getIso()}" symbol="{$c->getTemplateChar()}" position="{$c->getSymbolPosition()}" {if $c->getId() == $initialDebtDto->getCurrencyId()}selected{/if}>
                                             {$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})
                                         </option>
                                     {/foreach}
                                 </select>
                             </div>
                             <div class="table-cell">
-                                <input type="text" class="initialDeptNote text" value="{$initialDeptDto->getNote()}"/>
+                                <input type="text" class="initialDebtNote text" value="{$initialDebtDto->getNote()}"/>
                             </div>
                             <div class="table-cell">
-                                <a class="button_icon removeInitialDept" title="delete">
+                                <a class="button_icon removeInitialDebt" title="delete">
                                     <i class="fa fa-trash-o"></i>
                                 </a>
                             </div>
-                            <input type="hidden" name="initialDepts[]"/>
+                            <input type="hidden" name="initialDebts[]"/>
                         </div>
                     {/foreach}
                 </div>
-                <div class="initialDeptRow table-row">
+                <div class="initialDebtRow table-row">
                     <div class="table-cell">
-                        <input type="number" id="initialDeptAmount" class="text" value=""/>
+                        <input type="number" id="initialDebtAmount" class="text" value=""/>
                     </div>
                     <div class="table-cell">
-                        <select id="initialDeptSelectCurrency">               
+                        <select id="initialDebtSelectCurrency">               
                             {foreach from=$ns.currencies item=c}
                                 <option value="{$c->getId()}" iso="{$c->getIso()}" symbol="{$c->getTemplateChar()}" position="{$c->getSymbolPosition()}" >
                                     {$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})
@@ -69,10 +69,10 @@
                         </select>
                     </div>
                     <div class="table-cell">
-                        <input type="text" id="initialDeptNote" class="text" value=""/>
+                        <input type="text" id="initialDebtNote" class="text" value=""/>
                     </div>
                     <div class="table-cell">
-                        <a class="button_icon" href="javascript:void(0);" id="addInitialDeptButton" title="Add">
+                        <a class="button_icon" href="javascript:void(0);" id="addInitialDebtButton" title="Add">
                             <i class="fa fa-plus-circle"></i>
                         </a>
                     </div>
@@ -81,12 +81,12 @@
             <input type="hidden" name="id" value="{$ns.partner->getId()}"/>
             <input id="submitForm" class="button blue" type="submit" value="Save"/>
         </form>
-        <div class="table-row" id="partnerInitialDeptTemplate" style="display:none">
+        <div class="table-row" id="partnerInitialDebtTemplate" style="display:none">
             <div class="table-cell">
-                <input type="number" class="initialDeptAmount text" />
+                <input type="number" class="initialDebtAmount text" />
             </div>
             <div class="table-cell">
-                <select class="initialDeptSelectCurrency">               
+                <select class="initialDebtSelectCurrency">               
                     {foreach from=$ns.currencies item=c}
                         <option value="{$c->getId()}" iso="{$c->getIso()}" symbol="{$c->getTemplateChar()}" position="{$c->getSymbolPosition()}" >
                             {$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})</option>
@@ -94,14 +94,14 @@
                 </select>
             </div>  
             <div class="table-cell">
-                <input type="text" class="initialDeptNote text"/>
+                <input type="text" class="initialDebtNote text"/>
             </div>
             <div class="table-cell">
-                <a class="button_icon removePartnerInitialDept" title="delete">
+                <a class="button_icon removePartnerInitialDebt" title="delete">
                     <i class="fa fa-trash-o"></i>
                 </a>
             </div>  
-            <input type="hidden" name="initialDepts[]"/>
+            <input type="hidden" name="initialDebts[]"/>
         </div>
 
     {else}

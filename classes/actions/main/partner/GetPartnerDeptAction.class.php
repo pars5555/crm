@@ -20,7 +20,7 @@ namespace crm\actions\main\partner {
     use NGS;
     use ngs\framework\exceptions\NgsErrorException;
 
-    class GetPartnerDeptAction extends BaseAction {
+    class GetPartnerDebtAction extends BaseAction {
 
         public function service() {
             if (!isset(NGS()->args()->partner_id)) {
@@ -31,11 +31,11 @@ namespace crm\actions\main\partner {
             if (!isset($partnerDto)) {
                 new NgsErrorException('Partner does not exist with given ID: ' . NGS()->args()->partner_id);
             }
-            $dept = PartnerManager::getInstance()->calculatePartnerDeptBySalePurchaseAndPaymentTransations($partner_id);
+            $debt = PartnerManager::getInstance()->calculatePartnerDebtBySalePurchaseAndPaymentTransations($partner_id);
             $currenciesMappedById = CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], null, null, null, null, true);
 
             
-            foreach ($dept as $currencyId => $amount) {
+            foreach ($debt as $currencyId => $amount) {
                 $currencyDto = $currenciesMappedById[$currencyId];
                 $this->addParam($currencyDto->getIso(), [$amount, $currencyDto->getTemplateChar(), $currencyDto->getSymbolPosition()]);
             }
