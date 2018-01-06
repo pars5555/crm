@@ -30,9 +30,9 @@ namespace crm\loads\main\partner {
             $limit = 100;
             list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterHidden, $selectedFilterHasDebt) = $this->initFilters($limit);
             $partnerManager = PartnerManager::getInstance();
-            $where = [];
+            $where = ['1', '=', '1'];
             if ($selectedFilterHidden !== 'all') {
-                $where = ['hidden', '=', 0];
+                $where = ['and', 'hidden', '=', 0];
             }
             $join = '';
 
