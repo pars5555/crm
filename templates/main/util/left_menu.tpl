@@ -17,6 +17,8 @@
             <li><a {if $ns.loadName=='warehouse'}class="active"{/if} href="{$SITE_PATH}/warehouse">Warehouse</a></li>
             <li><a {if $ns.loadName=='product'}class="active"{/if} href="{$SITE_PATH}/product/list">Products</a></li>
             <li><a {if $ns.loadName=='manufacturer'}class="active"{/if} href="{$SITE_PATH}/manufacturer/list">Manufacturers</a></li>
+            <li><a {if $ns.loadName=='recipient'}class="active"{/if} href="{$SITE_PATH}/recipient/list">Recipients</a></li>
+            <li><a {if $ns.loadName=='rorder'}class="active"{/if} href="{$SITE_PATH}/rorder/list?srt=order_date&ascdesc=DESC">Recipient Orders</a></li>
             <li><a {if $ns.loadName=='warranty'}class="active"{/if} href="{$SITE_PATH}/warranty">Warranty</a></li>
             <li><a {if $ns.loadName=='backup'}class="active"{/if} href="{$SITE_PATH}/backup">Backup/Restore</a></li>
             <li><a href="{$SITE_PATH}/logout">Logout</a></li>

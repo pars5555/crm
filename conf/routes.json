@@ -152,6 +152,51 @@
         }
 
     ],
+    "rorder": [
+        {
+            "action": "loads.main.index",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.rorder.list"
+                }
+            }
+        },
+        {
+            "action": "loads.main.index",
+            "route": "create",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.rorder.create"
+                }
+            }
+        },
+        {
+            "action": "loads.main.index",
+            "route": "edit/[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.rorder.update"
+                }
+            }
+
+        },
+        {
+            "action": "loads.main.index",
+            "route": "[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.rorder.open"
+                }
+            }
+        }
+    ],
     "purchase": [
         {
             "action": "loads.main.index",
@@ -350,6 +395,51 @@
             }
         }
 
+    ],
+    "recipient": [
+        {
+            "action": "loads.main.index",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.recipient.list"
+                }
+            }
+        },
+        {
+            "action": "loads.main.index",
+            "route": "create",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.recipient.create"
+                }
+            }
+
+        },
+        {
+            "action": "loads.main.index",
+            "route": "[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.recipient.open"
+                }
+            }
+        },
+        {
+            "action": "loads.main.index",
+            "route": "edit/[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.recipient.update"
+                }
+            }
+        }
     ],
     "partner": [
         {
