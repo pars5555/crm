@@ -99,7 +99,7 @@
                     {foreach from=$saleOrderLines item=saleOrderLine}
                         <div class="saleOrderLine table-row" line_id="{$saleOrderLine->getId()}" >
                             <div class="table-cell">
-                                <select class="saleOrderLinesSelectProduct" disabled>
+                                <select class="saleOrderLinesSelectProduct"  style="max-width: 500px" disabled>
                                     {foreach from=$ns.products item=p}
                                         <option value="{$p->getId()}" {if $p->getId() == $saleOrderLine->getProductId()}selected{/if}>{$p->getName()}</option>
                                     {/foreach}
@@ -185,7 +185,7 @@
 
 <div class="table-row" id="saleOrderLineTemplate" style="display:none">
     <div class="table-cell">
-        <select class="saleOrderLinesSelectProduct" disabled>
+        <select class="saleOrderLinesSelectProduct"  style="max-width: 500px" disabled>
             {foreach from=$ns.products item=p}
                 <option value="{$p->getId()}">{$p->getName()}</option>
             {/foreach}

@@ -120,7 +120,7 @@
         <div class="table_striped add_new_purchase_order_line">
             <div class="table-row">
                 <div class="table-cell">
-                    <select id="purchaseOrderLineProductId" data-autocomplete="true" data-no-wrap="true">                       
+                    <select id="purchaseOrderLineProductId" style="max-width: 500px" data-autocomplete="true" data-no-wrap="true">                       
                         <option value="0">Select...</option>
                         {foreach from=$ns.products item=p}
                             <option value="{$p->getId()}">{$p->getName()}</option>
