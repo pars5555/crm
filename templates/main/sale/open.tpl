@@ -149,7 +149,7 @@
                             <option value="{$p->getId()}">{$p->getName()}</option>
                         {/foreach}
                     </select>
-                    <span id="saleOrderLineProductStockCount" style="color:green"></span>
+                    <span id="saleOrderLineProductStockCount" style="max-width: 500px" style="color:green"></span>
                 </div>
                 <div class="table-cell">
                     <input class="text" type="number" step="0.1"  min="0.1" id="saleOrderLineQuantity"/>
