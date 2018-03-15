@@ -143,7 +143,7 @@
         <div class="table_striped add_new_sale_order_line">
             <div class="table-row">
                 <div class="table-cell">
-                    <select id="saleOrderLineProductId" data-autocomplete="true">                       
+                    <select id="saleOrderLineProductId" style="max-width: 500px" data-autocomplete="true">                       
                         <option value="0">Select...</option>
                         {foreach from=$ns.products item=p}
                             <option value="{$p->getId()}">{$p->getName()}</option>
