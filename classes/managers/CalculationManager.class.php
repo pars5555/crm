@@ -83,6 +83,9 @@ namespace crm\managers {
             }
             if (!empty($partnerInitialDebt)) {
                 foreach ($partnerInitialDebt as $currencyId => $amount) {
+                    if (!array_key_exists($currencyId, $partnerDebt)) {
+                        $partnerDebt[$currencyId] = 0;
+                    }
                     $partnerDebt[$currencyId] += $amount;
                 }
             }
