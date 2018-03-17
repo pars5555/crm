@@ -100,6 +100,9 @@ namespace crm\managers {
         }
 
         public function getNonCancelledProductsPurchaseOrders($productIds) {
+            if (empty($productIds)){
+                return [];
+            }
             $dtos = $this->mapper->getNonCancelledProductsPurchaseOrders($productIds);
             $ret = [];
             foreach ($dtos as $dto) {
@@ -109,6 +112,9 @@ namespace crm\managers {
         }
 
         public function getProductsPurchaseOrders($productIds) {
+            if (empty($productIds)){
+                return [];
+            }
             $poLines = $this->mapper->getNonCancelledProductsPurchaseOrders($productIds);
             $poIdsMappedByProductId = [];
             $allPurchaseOrdersIds = [];
