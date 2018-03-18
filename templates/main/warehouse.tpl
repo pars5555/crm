@@ -1,4 +1,5 @@
 <div class="container warehouse--container">
+    <h1>Total: {$ns.total|number_format:2}</h1>
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell">Id</span>

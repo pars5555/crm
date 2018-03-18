@@ -35,6 +35,11 @@ namespace crm\loads\main {
             $this->addParam('productsPrice', $productsPrice);
             $this->addParam('productsPurchaseOrder', $productsPurchaseOrders);
             $this->addParam('productsSaleOrder', $productsSaleOrders);
+            $total = 0;
+            foreach ($productsQuantity as $pId => $qty) {
+                $total += $productsPrice[$pId]*$qty;
+            }
+            $this->addParam('total', $total / $usdRate);
         }
 
         public function getTemplate() {
