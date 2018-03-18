@@ -33,11 +33,35 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function getAllProductsPrice() {
+            $allProductPriceInPurchaseOrders = PurchaseOrderLineManager::getInstance()->getAllProductPriceInNonCancelledPurchaseOrders();
+            $productPrices = [];
+            $productCurrenciesCount = [];
+            
+            foreach ($allProductPriceInPurchaseOrders as $productId => $price) {                                
+                if (!isset($productPrices[$productId]))
+                {
+                    $productPrices[$productId] = 0;
+                }
+                if (!isset($productCurrenciesCount[$productId]))
+                {
+                    $productCurrenciesCount[$productId] = 0;
+                }
+                $productPrices[$productId] += $price;
+                $productCurrenciesCount[$productId] ++;
+            }
+            $ret = [];
+            foreach ($productPrices as $productId => $price) {
+                $ret [$productId] = $price / $productCurrenciesCount[$productId];
+            }
+            return $ret;
+        }
+        
         public function getAllProductsQuantity() {
-            $allProductQuantityInPurchaseOrders = PurchaseOrderLineManager::getInstance()->getAllProductCountInNonCancelledPurchaseOrders();
+            $allProductQuantityInPurchaseOrders = PurchaseOrderLineManager::getInstance()->getAllProductCountInNonCancelledPurchaseOrders();            
             $allProductQuantityInSaleOrders = SaleOrderLineManager::getInstance()->getAllProductCountInNonCancelledSaleOrders();
             $ret = [];
-            foreach ($allProductQuantityInPurchaseOrders as $productId => $productQty) {
+            foreach ($allProductQuantityInPurchaseOrders as $productId => $productQty) {                                
                 $ret[$productId] = $productQty;
             }
             foreach ($allProductQuantityInSaleOrders as $productId => $productQty) {
@@ -48,7 +72,7 @@ namespace crm\managers {
             }
             return $ret;
         }
-
+        
     }
 
 }

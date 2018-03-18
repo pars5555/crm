@@ -21,7 +21,7 @@ namespace crm\loads\main\warranty {
     use crm\security\RequestGroups;
     use NGS;
 
-    class ContentLoad  extends AdminLoad {
+    class ContentLoad extends AdminLoad {
 
         public function load() {
             $searchText = $this->initFilters();
@@ -50,7 +50,6 @@ namespace crm\loads\main\warranty {
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/warranty/content.tpl";
         }
-
 
         private function initFilters() {
             $search = False;
@@ -93,8 +92,10 @@ namespace crm\loads\main\warranty {
             }
             $solDtos = SaleOrderLineManager::getInstance()->selectByPKs(array_keys($snMappedBySolIds));
             $soIdsMappedBySolId = $this->getSoIdsMappedBySolIds($solDtos);
-            $soDtos = SaleOrderManager::getInstance()->getSaleOrdersFull($where = ['id', 'in', '(' . implode(',', array_unique(array_values($soIdsMappedBySolId))), ')']);
-            $soDtosMappedByID = SaleOrderManager::mapDtosById($soDtos);
+            if (!empty($soIdsMappedBySolId)) {
+                $soDtos = SaleOrderManager::getInstance()->getSaleOrdersFull($where = ['id', 'in', '(' . implode(',', array_unique(array_values($soIdsMappedBySolId))), ')']);
+                $soDtosMappedByID = SaleOrderManager::mapDtosById($soDtos);
+            }
             $ret = [];
             foreach ($soIdsMappedBySolId as $solId => $soId) {
                 foreach ($snMappedBySolIds[$solId] as $sn) {

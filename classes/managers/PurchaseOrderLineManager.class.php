@@ -151,6 +151,19 @@ namespace crm\managers {
         public function getAllProductCountInNonCancelledPurchaseOrders() {
             return $this->mapper->getAllProductCountInNonCancelledPurchaseOrders();
         }
+        
+        public function getAllProductPriceInNonCancelledPurchaseOrders() {
+            $rows =  $this->mapper->getAllProductPriceInNonCancelledPurchaseOrders();
+            $ret = [];
+            foreach ($rows as $productId => $productPriceInMainCurrency) {
+                if (!isset($ret[$productId]))
+                {
+                    $ret[$productId] = 0;
+                }
+                $ret[$productId] += $productPriceInMainCurrency;
+            }
+            return $ret;
+        }
 
     }
 
