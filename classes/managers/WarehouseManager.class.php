@@ -33,46 +33,39 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function getAllProductsPrice() {
-            $allProductPriceInPurchaseOrders = PurchaseOrderLineManager::getInstance()->getAllProductPriceInNonCancelledPurchaseOrders();
-            $productPrices = [];
-            $productCurrenciesCount = [];
-            
-            foreach ($allProductPriceInPurchaseOrders as $productId => $price) {                                
-                if (!isset($productPrices[$productId]))
-                {
-                    $productPrices[$productId] = 0;
-                }
-                if (!isset($productCurrenciesCount[$productId]))
-                {
-                    $productCurrenciesCount[$productId] = 0;
-                }
-                $productPrices[$productId] += $price;
-                $productCurrenciesCount[$productId] ++;
-            }
+        public function getAllProductsPrice($productsIds) {
             $ret = [];
-            foreach ($productPrices as $productId => $price) {
-                $ret [$productId] = $price / $productCurrenciesCount[$productId];
+            $usdRate = floatval(\crm\managers\CurrencyRateManager::getInstance()->getCurrencyRate(1));
+            foreach ($productsIds as $pid) {
+                $prCosts = ProductManager::getInstance()->calculateProductCost($pid, 1);
+                $costInUsd = ProductManager::getInstance()->calculateProductTotalCost($prCosts);
+                $ret[$pid] = $costInUsd/$usdRate ;
             }
             return $ret;
         }
-        
+
         public function getAllProductsQuantity() {
-            $allProductQuantityInPurchaseOrders = PurchaseOrderLineManager::getInstance()->getAllProductCountInNonCancelledPurchaseOrders();            
+            $allProductQuantityInPurchaseOrders = PurchaseOrderLineManager::getInstance()->getAllProductCountInNonCancelledPurchaseOrders();
             $allProductQuantityInSaleOrders = SaleOrderLineManager::getInstance()->getAllProductCountInNonCancelledSaleOrders();
-            $ret = [];
-            foreach ($allProductQuantityInPurchaseOrders as $productId => $productQty) {                                
-                $ret[$productId] = $productQty;
+            $productQtyMappedByProductId = [];
+            foreach ($allProductQuantityInPurchaseOrders as $productId => $productQty) {
+                $productQtyMappedByProductId[$productId] = $productQty;
             }
             foreach ($allProductQuantityInSaleOrders as $productId => $productQty) {
-                if (!array_key_exists($productId, $ret)) {
-                    $ret[$productId] = 0;
+                if (!array_key_exists($productId, $productQtyMappedByProductId)) {
+                    $productQtyMappedByProductId[$productId] = 0;
                 }
-                $ret[$productId] -= $productQty;
+                $productQtyMappedByProductId[$productId] -= $productQty;
+            }
+            $ret = [];
+            foreach ($productQtyMappedByProductId as $key => $r) {
+                if ($r > 0) {
+                    $ret[$key] = $r;
+                }
             }
             return $ret;
         }
-        
+
     }
 
 }

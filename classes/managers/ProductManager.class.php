@@ -167,12 +167,14 @@ namespace crm\managers {
             if (empty($productUnitCostInBaseCurrency)) {
                 return 0;
             }
+            $totalQty = 0;
             foreach ($productUnitCostInBaseCurrency as $pair) {
                 $qty = floatval($pair[0]);
                 $unitPrice = floatval($pair[1]);
-                $ret +=$qty * $unitPrice;
+                $ret += $qty * $unitPrice;
+                $totalQty += $qty;
             }
-            return $ret;
+            return $ret/$totalQty;
         }
 
         private function subtracPurchaseOrderLinesByProductSaleOrders($productPurchaseOrderLines, $productSaleOrderLines) {
