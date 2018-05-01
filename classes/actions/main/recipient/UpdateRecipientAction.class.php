@@ -15,11 +15,11 @@
 namespace crm\actions\main\recipient {
 
     use crm\actions\BaseAction;
-    use crm\managers\PecipientManager;
+    use crm\managers\RecipientManager;
     use NGS;
     use ngs\framework\exceptions\RedirectException;
 
-    class UpdatePecipientAction extends BaseAction {
+    class UpdateRecipientAction extends BaseAction {
 
         public function service() {
             try {
@@ -29,9 +29,9 @@ namespace crm\actions\main\recipient {
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            PecipientManager::getInstance()->updatePecipient($id, $name, $email, $address, $phone, $initialDebts);
+            RecipientManager::getInstance()->updateRecipient($id, $name, $email, $address, $phone, $initialDebts);
             unset($_SESSION['action_request']);
-            $_SESSION['success_message'] = 'Pecipient Successfully updated!';
+            $_SESSION['success_message'] = 'Recipient Successfully updated!';
             $this->redirect('recipient/' . $id);
         }
 
@@ -61,19 +61,19 @@ namespace crm\actions\main\recipient {
 
         private function validateFormData() {
             if (empty(NGS()->args()->id)) {
-                throw new RedirectException('recipient/edit', "Pecipient Id is missing.");
+                throw new RedirectException('recipient/edit', "Recipient Id is missing.");
             }
             if (empty(NGS()->args()->name)) {
-                throw new RedirectException('recipient/edit/' . NGS()->args()->id, "Pecipient Name can not be empty.");
+                throw new RedirectException('recipient/edit/' . NGS()->args()->id, "Recipient Name can not be empty.");
             }
             if (!filter_var(NGS()->args()->email, FILTER_VALIDATE_EMAIL)) {
                 throw new RedirectException('recipient/edit/' . NGS()->args()->id, "Invalid email address.");
             }
             $email = NGS()->args()->email;
-            $recipientDtos = PecipientManager::getInstance()->selectByField('email', $email);
+            $recipientDtos = RecipientManager::getInstance()->selectByField('email', $email);
             if (!empty($recipientDtos)) {
                 if ($recipientDtos[0]->getId() != NGS()->args()->id) {
-                    throw new RedirectException('recipient/edit/' . NGS()->args()->id, "Pecipient already exists with given email address");
+                    throw new RedirectException('recipient/edit/' . NGS()->args()->id, "Recipient already exists with given email address");
                 }
             }
         }

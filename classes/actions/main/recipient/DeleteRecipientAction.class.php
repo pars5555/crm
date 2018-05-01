@@ -15,26 +15,26 @@
 namespace crm\actions\main\recipient {
 
 use crm\actions\BaseAction;
-use crm\managers\PecipientManager;
+use crm\managers\RecipientManager;
 use NGS;
 
-    class DeletePecipientAction extends BaseAction {
+    class DeleteRecipientAction extends BaseAction {
 
         public function service() {
             if (isset(NGS()->args()->id)) {
                 $recipientId = NGS()->args()->id;
             } else {
-                $_SESSION['error_message'] = 'Pecipient ID is missing';
+                $_SESSION['error_message'] = 'Recipient ID is missing';
                 $this->redirect('recipient/list');
             }
-            $recipientManager = PecipientManager::getInstance();
+            $recipientManager = RecipientManager::getInstance();
             $recipientDto = $recipientManager->selectByPK($recipientId);
             if (!isset($recipientDto)) {
-                $_SESSION['error_message'] = 'Pecipient with ID ' . NGS()->args()->id . ' does not exists.';
+                $_SESSION['error_message'] = 'Recipient with ID ' . NGS()->args()->id . ' does not exists.';
                 $this->redirect('recipient/list');
             }
-            $recipientManager->deletePecipientFull($recipientId);
-            $_SESSION['success_message'] = 'Pecipient Successfully deleted!';
+            $recipientManager->deleteRecipientFull($recipientId);
+            $_SESSION['success_message'] = 'Recipient Successfully deleted!';
             $this->redirect('recipient/list');
         }
 

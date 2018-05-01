@@ -23,13 +23,13 @@ namespace crm\actions\main\recipient {
 
         public function service() {
             try {
-                list($name, $email, $meta,$documents,$phone) = $this->getFormData();
+                list($name, $email, $meta, $documents, $phone, $isFavorite) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            $recipientId = RecipientManager::getInstance()->createRecipient($name, $email, $meta,$documents,$phone);
+            $recipientId = RecipientManager::getInstance()->createRecipient($name, $email, $meta, $documents, $phone, $isFavorite);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Recipient Successfully created!';
             $this->redirectToReferer();
@@ -43,7 +43,7 @@ namespace crm\actions\main\recipient {
             if (isset(NGS()->args()->meta)) {
                 $meta = NGS()->args()->meta;
             }
-            $documents= "";
+            $documents = "";
             if (isset(NGS()->args()->documents)) {
                 $documents = NGS()->args()->documents;
             }
@@ -51,7 +51,11 @@ namespace crm\actions\main\recipient {
             if (isset(NGS()->args()->phone)) {
                 $phone = NGS()->args()->phone;
             }
-            return array($name, $email, $meta,$documents,$phone);
+            $isFavorite = 0;
+            if (isset(NGS()->args()->isFavorite)) {
+                $isFavorite = 1;
+            }
+            return array($name, $email, $meta, $documents, $phone, $isFavorite);
         }
 
         private function validateFormData() {
@@ -60,7 +64,7 @@ namespace crm\actions\main\recipient {
             }
             if (!filter_var(NGS()->args()->email, FILTER_VALIDATE_EMAIL)) {
                 throw new RedirectException('recipient/create', "Invalid email address.");
-            }            
+            }
         }
 
     }

@@ -42,11 +42,15 @@ namespace crm\managers {
             }
             return null;
         }
-        
+
         public function setRecipientHidden($id, $hidden) {
             $this->mapper->updateField($id, 'hidden', $hidden);
-            
         }
+
+        public function setRecipientFavorite($id, $favorite) {
+            $this->mapper->updateField($id, 'favorite', $favorite);
+        }
+
         public function getRecipientsFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             return $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
         }
@@ -69,13 +73,14 @@ namespace crm\managers {
             return true;
         }
 
-        public function createRecipient($name, $email, $meta,$documents,$phone) {
+        public function createRecipient($name, $email, $meta, $documents, $phone, $isFavorite) {
             $dto = $this->createDto();
             $dto->setName($name);
             $dto->setEmail($email);
             $dto->setMeta($meta);
             $dto->setDocuments($documents);
             $dto->setPhone($phone);
+            $dto->setFavorite($isFavorite);
             return $this->insertDto($dto);
         }
 
@@ -98,8 +103,6 @@ namespace crm\managers {
             }
             return false;
         }
-
-       
 
     }
 

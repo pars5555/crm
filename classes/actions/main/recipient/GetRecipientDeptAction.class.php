@@ -16,22 +16,22 @@ namespace crm\actions\main\recipient {
 
     use crm\actions\BaseAction;
     use crm\managers\CurrencyManager;
-    use crm\managers\PecipientManager;
+    use crm\managers\RecipientManager;
     use NGS;
     use ngs\framework\exceptions\NgsErrorException;
 
-    class GetPecipientDebtAction extends BaseAction {
+    class GetRecipientDebtAction extends BaseAction {
 
         public function service() {
             if (!isset(NGS()->args()->recipient_id)) {
-                new NgsErrorException('Missing Pecipient ID!');
+                new NgsErrorException('Missing Recipient ID!');
             }
             $recipient_id = intval(NGS()->args()->recipient_id);
-            $recipientDto = PecipientManager::getInstance()->selectByPK($recipient_id);
+            $recipientDto = RecipientManager::getInstance()->selectByPK($recipient_id);
             if (!isset($recipientDto)) {
-                new NgsErrorException('Pecipient does not exist with given ID: ' . NGS()->args()->recipient_id);
+                new NgsErrorException('Recipient does not exist with given ID: ' . NGS()->args()->recipient_id);
             }
-            $debt = PecipientManager::getInstance()->calculatePecipientDebtBySalePurchaseAndPaymentTransations($recipient_id);
+            $debt = RecipientManager::getInstance()->calculateRecipientDebtBySalePurchaseAndPaymentTransations($recipient_id);
             $currenciesMappedById = CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], null, null, null, null, true);
 
             

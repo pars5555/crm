@@ -16,7 +16,7 @@
             <span class="table-cell"> Name</span>
             <span class="table-cell"> Email </span>
             <span class="table-cell"> Tel. </span>
-           
+            <span class="table-cell"> Favorite </span>
             <span class="table-cell"> Orders</span>           
             <span class="table-cell"> View </span>
             <span class="table-cell"> Edit </span>
@@ -30,6 +30,9 @@
                 <span class="table-cell">{$recipient->getName()} </span>
                 <span class="table-cell"> {$recipient->getEmail()} </span>
                 <span class="table-cell " style="white-space: nowrap"> {$recipient->getPhone()|replace:',':'</br>'} </span>
+                
+                <span class="table-cell "> <input class="f_favorite_checkbox" data-recipient_id="{$recipient->getId()}" 
+                                                  type="checkbox" value="1" {if $recipient->getFavorite() ==1}checked{/if}/></span>                
                 
                 <a class="table-cell link" href="{$SITE_PATH}/rorder/list?prt={$recipient->getId()}"> {$ns.recipientsOrdersMappedByRecipientId[$recipient->getId()]|@count} </a>
               

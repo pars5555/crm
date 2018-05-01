@@ -30,6 +30,13 @@
             <label class="label">Phone</label>
             <input class="text" type="text" name="phone" value="{$ns.req.phone|default:''}"/>
         </div>
+         <div class="checkbox_container">
+            <div class="checkbox f_checkbox">
+                <input type="checkbox" name="isFavorite" id="isFavoriteCheckbox" value="1" 
+                       {if isset($ns.req.isFavorite) && $ns.req.isFavorite == 1}checked{/if}/>
+            </div>
+            <label class="label" for="isFavoriteCheckbox">Is Favorite</label>
+        </div>
 
         <input class="button blue" type="submit" value="Save"/>
 

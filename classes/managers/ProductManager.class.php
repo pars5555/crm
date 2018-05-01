@@ -36,10 +36,9 @@ namespace crm\managers {
             }
             return self::$instance;
         }
-        
+
         public function setProductHidden($id, $hidden) {
             $this->mapper->updateField($id, 'hidden', $hidden);
-            
         }
 
         public function safeDeleteProduct($productId) {
@@ -124,6 +123,13 @@ namespace crm\managers {
             return $ret;
         }
 
+        public function updateProductCostForOneUnit($productId) {
+            $productUnitCostInBaseCurrency = ProductManager::getInstance()->calculateProductCost($productId, 1, 0);
+            $productDto = ProductManager::getInstance()->selectByPK($productId);
+            $productDto->setUnitCost($this->calculateProductTotalCost($productUnitCostInBaseCurrency));
+            ProductManager::getInstance()->updateByPK($productDto);
+        }
+
         private function removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSoldCount, $date) {
             $ret = [];
             if (empty($productPurchaseOrderLines)) {
@@ -155,13 +161,6 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function updateProductCostForOneUnit($productId) {
-            $productUnitCostInBaseCurrency = ProductManager::getInstance()->calculateProductCost($productId, 1, 0);
-            $productDto = ProductManager::getInstance()->selectByPK($productId);
-            $productDto->setUnitCost($this->calculateProductTotalCost($productUnitCostInBaseCurrency));
-            ProductManager::getInstance()->updateByPK($productDto);
-        }
-
         public function calculateProductTotalCost($productUnitCostInBaseCurrency) {
             $ret = 0;
             if (empty($productUnitCostInBaseCurrency)) {
@@ -170,7 +169,7 @@ namespace crm\managers {
             foreach ($productUnitCostInBaseCurrency as $pair) {
                 $qty = floatval($pair[0]);
                 $unitPrice = floatval($pair[1]);
-                $ret +=$qty * $unitPrice;
+                $ret += $qty * $unitPrice;
             }
             return $ret;
         }
