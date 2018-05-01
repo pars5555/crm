@@ -23,14 +23,23 @@ namespace crm\loads\main {
 
         public function load() {
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity();
+            $productsPrice = WarehouseManager::getInstance()->getAllProductsPrice(array_keys($productsQuantity));
             $products = ProductManager::getInstance()->getProductListFull([], 'name', 'ASC');
             $productIds = ProductManager::getDtosIdsArray($products);
             $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
             $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
+            $usdRate = \crm\managers\CurrencyRateManager::getInstance()->getCurrencyRate(1);
             $this->addParam('products', $products);
+            $this->addParam('usd_rate', $usdRate);
             $this->addParam('productsQuantity', $productsQuantity);
+            $this->addParam('productsPrice', $productsPrice);
             $this->addParam('productsPurchaseOrder', $productsPurchaseOrders);
             $this->addParam('productsSaleOrder', $productsSaleOrders);
+            $total = 0;
+            foreach ($productsQuantity as $pId => $qty) {
+                $total += floatval($productsPrice[$pId])* floatval($qty);
+            }
+            $this->addParam('total', $total);
         }
 
         public function getTemplate() {

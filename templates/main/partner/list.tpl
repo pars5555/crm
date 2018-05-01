@@ -10,32 +10,19 @@
 
     {include file="{ngs cmd=get_template_dir}/main/partner/list_filters.tpl"}
     <a href="{$SITE_PATH}/partner/create"><img src="{$SITE_PATH}/img/add.png"/></a>
-    <div class="table_striped">
-        <div class="table_header_group">
-            <span class="table-cell"> ID </span>
-            <span class="table-cell"> Name</span>
-            <span class="table-cell"> Email </span>
-            <span class="table-cell"> Tel. </span>
-            <span class="table-cell"> Debt </span>
-            <span class="table-cell"> Sale Orders</span>
-            <span class="table-cell"> Purchase Orders</span>
-            <span class="table-cell"> Payments Transactions </span>
-            <span class="table-cell"> Billing Transactions </span>
-            <span class="table-cell"> All Deals </span>
-            <span class="table-cell"> View </span>
-            <span class="table-cell"> Edit </span>
-            <span class="table-cell"> Hidden </span>
-        </div> 
-        {foreach from=$ns.partners item=partner}
-            <div class="table-row">
-                <a class="table-cell" href="{$SITE_PATH}/partner/{$partner->getId()}">
-                    <span>{$partner->getId()} </span>
-                </a>
-                <span class="table-cell">{$partner->getName()} </span>
-                <span class="table-cell"> {$partner->getEmail()} </span>
-                <span class="table-cell " style="white-space: nowrap"> {$partner->getPhone()|replace:',':'</br>'} </span>
-                <span  class="table-cell"> 
-                    {if isset($partnersDebt[$partner->getId()])}
+    <div class="table main-table">
+        <table style="border-collapse: collapse;  width: 100%;border: 1px solid black">
+            <tr>
+                <th>Id</th><th>Name</th><th>Email</th><th>Tel.</th><th>Debt</th><th>SaleOrders</th><th>PurchaseOrders</th><th>Payments Transactions</th><th>Billing Transactions</th><th>All Deals</th><th>View</th><th>Edit</th><th>Hidden</th></tr>
+                    {foreach from=$ns.partners item=partner}
+                <tr>
+                    <td><a class="table-cell" href="{$SITE_PATH}/partner/{$partner->getId()}">
+                            <span>{$partner->getId()} </span>
+                        </a></td>
+                    <td>{$partner->getName()}</td>
+                    <td>{$partner->getEmail()}</td>
+                    <td style="white-space: nowrap">{$partner->getPhone()|replace:',':'</br>'}</td>
+                    <td>{if isset($partnersDebt[$partner->getId()])}
                         {foreach from=$partnersDebt[$partner->getId()] key=currencyId item=amount}
                             <span style="white-space-collapse: discard;">
                                 {assign currencyDto $ns.currencies[$currencyId]}
@@ -48,31 +35,36 @@
                                 {/if}
                             </span>
                         {/foreach}
-                    {/if}
-                </span>
-                <a class="table-cell link" href="{$SITE_PATH}/sale/list?prt={$partner->getId()}"> {$ns.partnersSaleOrdersMappedByPartnerId[$partner->getId()]|@count} </a>
-                <a class="table-cell link" href="{$SITE_PATH}/purchase/list?prt={$partner->getId()}"> {$ns.partnersPurchaseOrdersMappedByPartnerId[$partner->getId()]|@count} </a>
-                <a class="table-cell link" href="{$SITE_PATH}/payment/list?prt={$partner->getId()}"> {$ns.partnersPaymentTransactionsMappedByPartnerId[$partner->getId()]|@count} </a>
-                <a class="table-cell link" href="{$SITE_PATH}/billing/list?prt={$partner->getId()}"> {$ns.partnersBillingTransactionsMappedByPartnerId[$partner->getId()]|@count} </a>
-                <a class="table-cell view_item" href="{$SITE_PATH}/partner/all/{$partner->getId()}">
-                    <span class="button_icon" title="View">
-                        <i class="fa fa-calendar"></i>
-                    </span>
-                </a>
-                <a class="table-cell view_item" href="{$SITE_PATH}/partner/{$partner->getId()}">
-                    <span class="button_icon" title="View">
-                        <i class="fa fa-eye"></i>
-                    </span>
-                </a>
-                <a class="table-cell view_item" href="{$SITE_PATH}/partner/edit/{$partner->getId()}">
-                    <span class="button_icon" title="Edit">
-                        <i class="fa fa-pencil"></i>
-                    </span>
-                </a>
-                <span class="table-cell "> <input class="f_hidden_checkbox" data-partner_id="{$partner->getId()}" type="checkbox" value="1" {if $partner->getHidden() ==1}checked{/if}/></span>
+                        {/if}
+                        </td>
+                        <td><a class="table-cell link" href="{$SITE_PATH}/sale/list?prt={$partner->getId()}"> {$ns.partnersSaleOrdersMappedByPartnerId[$partner->getId()]|@count} </a></td>
+                        <td><a class="table-cell link" href="{$SITE_PATH}/purchase/list?prt={$partner->getId()}"> {$ns.partnersPurchaseOrdersMappedByPartnerId[$partner->getId()]|@count} </a></td>
+                        <td><a class="table-cell link" href="{$SITE_PATH}/payment/list?prt={$partner->getId()}"> {$ns.partnersPaymentTransactionsMappedByPartnerId[$partner->getId()]|@count} </a></td>
+                        <td><a class="table-cell link" href="{$SITE_PATH}/billing/list?prt={$partner->getId()}"> {$ns.partnersBillingTransactionsMappedByPartnerId[$partner->getId()]|@count} </a></td>
+                        <td><a class="table-cell view_item" href="{$SITE_PATH}/partner/all/{$partner->getId()}">
+                                <span class="button_icon" title="View">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </a>
+                        </td>
+                        <td><a class="table-cell view_item" href="{$SITE_PATH}/partner/{$partner->getId()}">
+                                <span class="button_icon" title="View">
+                                    <i class="fa fa-eye"></i>
+                                </span>
+                            </a>
+                        </td>
+                        <td><a class="table-cell view_item" href="{$SITE_PATH}/partner/edit/{$partner->getId()}">
+                                <span class="button_icon" title="Edit">
+                                    <i class="fa fa-pencil"></i>
+                                </span>
+                            </a>
+                        </td>
+                        <td><input class="f_hidden_checkbox" data-partner_id="{$partner->getId()}" type="checkbox" value="1" {if $partner->getHidden() ==1}checked{/if}/></td>
+
+                    </tr>
+                    {/foreach}
+                    </table>
+
+
+                </div>
             </div>
-        {/foreach}
-    </div>
-
-
-</div>

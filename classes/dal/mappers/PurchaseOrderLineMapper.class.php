@@ -86,6 +86,21 @@ namespace crm\dal\mappers {
             }
             return $ret;
         }
+        
+        public function getAllProductPriceInNonCancelledPurchaseOrders() {
+            $sql = "SELECT product_id, SUM(unit_price)*`currency_rate` AS `product_price` FROM `%s` INNER JOIN  "
+                    . " `purchase_orders` ON `purchase_order_id` = `purchase_orders`.`id` "
+                    . "WHERE `purchase_orders`.`cancelled` = 0 GROUP by `product_id`, `currency_id`";
+            $sqlQuery = sprintf($sql, $this->getTableName());
+            $productIdQtyObjects = $this->fetchRows($sqlQuery);
+            $ret = [];
+            foreach ($productIdQtyObjects as $productIdQtyObject) {
+                $product_id = intval($productIdQtyObject->product_id);
+                $qty = floatval($productIdQtyObject->product_price);
+                $ret [$product_id] = $qty;
+            }
+            return $ret;
+        }
 
     }
 

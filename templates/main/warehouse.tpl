@@ -1,4 +1,5 @@
 <div class="container warehouse--container">
+    <h1>Total: {$ns.total|number_format:2}</h1>
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell">Id</span>
@@ -19,7 +20,7 @@
                     <span class="table-cell">{$product->getModel()} </span>
                     <span class="table-cell">{$product->getUomDto()->getName()} </span>
                     <span class="table-cell">{$ns.productsQuantity[$product->getId()]|default:'0'}</span>
-                    <span class="table-cell">{$product->getUnitCost()}</span>
+                    <span class="table-cell">{$ns.productsPrice[$product->getId()]|number_format:2}</span>
                     <span class="table-cell {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}tooltipster{/if}">
                         {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
                         <p style="display: none">
