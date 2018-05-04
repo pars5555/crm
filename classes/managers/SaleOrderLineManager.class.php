@@ -60,7 +60,7 @@ namespace crm\managers {
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
             if ($saleOrderDto->getNonProfit() == 0) {
-                $profit = $quantity * $unitPrice * $rate - ProductManager::getInstance()->calculateProductTotalCost($productUnitCostInBaseCurrency);
+                $profit = $quantity * $unitPrice * $rate - $quantity * ProductManager::getInstance()->calculateProductTotalCost($productUnitCostInBaseCurrency);
                 $dto->setTotalProfit($profit);
             } else {
                 $dto->setTotalProfit(0);
