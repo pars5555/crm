@@ -17,5 +17,13 @@ NGS.createLoad("crm.loads.main.warehouse", {
                 theme: 'tooltipster-shadow'
             });
         });
+        this.initExport();
+    },
+    initExport: function(){
+        $('#export_csv').click(function(){
+            var actionUrl = '/dyn/main_warehouse/do_export_csv?';
+            $(this).attr('href', actionUrl);
+        });
+        
     }
 });

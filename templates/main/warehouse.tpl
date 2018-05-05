@@ -1,5 +1,8 @@
 <div class="container warehouse--container">
     <h1>Total: {$ns.total|number_format:2}</h1>
+    <div class="form-group" style="float: right">
+        <a href="javascript:void(0);" id="export_csv"><img src="/img/csv.png" width="60"/></a>
+    </div>
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell">Id</span>

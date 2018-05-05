@@ -15,5 +15,13 @@ NGS.createLoad("crm.loads.main.partner.list", {
 
             NGS.action('crm.actions.main.partner.set_partner_hidden', {partner_id: partner_id, hidden: hidden});
         });
+         this.initExportCsv();
+    },
+    initExportCsv:function(){
+        $('#export_csv').click(function(){
+            var urlParams = $("#partnerFilters").serialize();
+            var actionUrl = '/dyn/main_partner/do_export_csv?';
+            $(this).attr('href', actionUrl + urlParams);
+        });
     }
 });

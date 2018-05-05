@@ -12,14 +12,14 @@
 namespace crm\loads\main {
 
     use crm\loads\AdminLoad;
+    use crm\managers\CurrencyRateManager;
     use crm\managers\ProductManager;
     use crm\managers\PurchaseOrderLineManager;
     use crm\managers\SaleOrderLineManager;
     use crm\managers\WarehouseManager;
-    use crm\security\RequestGroups;
     use NGS;
 
-    class WarehouseLoad  extends AdminLoad {
+    class WarehouseLoad extends AdminLoad {
 
         public function load() {
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity();
@@ -28,7 +28,7 @@ namespace crm\loads\main {
             $productIds = ProductManager::getDtosIdsArray($products);
             $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
             $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
-            $usdRate = \crm\managers\CurrencyRateManager::getInstance()->getCurrencyRate(1);
+            $usdRate = CurrencyRateManager::getInstance()->getCurrencyRate(1);
             $this->addParam('products', $products);
             $this->addParam('usd_rate', $usdRate);
             $this->addParam('productsQuantity', $productsQuantity);
@@ -37,7 +37,7 @@ namespace crm\loads\main {
             $this->addParam('productsSaleOrder', $productsSaleOrders);
             $total = 0;
             foreach ($productsQuantity as $pId => $qty) {
-                $total += floatval($productsPrice[$pId])* floatval($qty);
+                $total += floatval($productsPrice[$pId]) * floatval($qty);
             }
             $this->addParam('total', $total);
         }
@@ -45,7 +45,6 @@ namespace crm\loads\main {
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/warehouse.tpl";
         }
-
 
     }
 
