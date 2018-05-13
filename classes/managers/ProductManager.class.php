@@ -40,6 +40,10 @@ namespace crm\managers {
         public function setProductHidden($id, $hidden) {
             $this->mapper->updateField($id, 'hidden', $hidden);
         }
+        
+        public function setProductQtyChecked($id, $qty_checked) {
+            $this->mapper->updateField($id, 'qty_checked', $qty_checked);
+        }
 
         public function safeDeleteProduct($productId) {
             $solDtos = SaleOrderLineManager::getInstance()->selectByField('product_id', $productId);

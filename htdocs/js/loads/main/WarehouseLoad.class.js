@@ -18,6 +18,15 @@ NGS.createLoad("crm.loads.main.warehouse", {
             });
         });
         this.initExport();
+        this.initQtyChecked();
+    },
+    initQtyChecked: function(){
+        $('.f_qty_checked_checkbox').change(function () {
+            var product_id = $(this).data('product_id');
+            var qty_checked = $(this).is(':checked') ? 1 : 0;
+
+            NGS.action('crm.actions.main.product.set_product_qty_checked', {product_id: product_id, qty_checked: qty_checked});
+        });
     },
     initExport: function(){
         $('#export_csv').click(function(){

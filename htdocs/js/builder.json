@@ -115,7 +115,8 @@
                     "actions/main/sale/SetNonProfitAction.class.js",
                     "actions/main/partner/GetPartnerDebtAction.class.js",
                     "actions/main/partner/SetPartnerHiddenAction.class.js",
-                    "actions/main/product/SetProductHiddenAction.class.js"
+                    "actions/main/product/SetProductHiddenAction.class.js",
+                    "actions/main/product/SetProductQtyCheckedAction.class.js"
 
                 ]
             }
