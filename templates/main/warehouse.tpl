@@ -18,7 +18,7 @@
         </div> 
         {foreach from=$ns.products item=product}
             {if isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0}
-                <div class="table-row" {if $product->getQtyChecked() == 1}style="background: green"{/if}> 
+                <div class="table-row" {if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}> 
                     <span class="table-cell">{$product->getId()} </span> 
                     <span class="table-cell">{$product->getName()} </span>
                     <span class="table-cell">{$product->getModel()} </span>
