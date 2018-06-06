@@ -18,10 +18,10 @@
         </div> 
         {foreach from=$ns.products item=product}
             {if isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0}
-                <div class="table-row" {if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}> 
-                    <span class="table-cell">{$product->getId()} </span> 
-                    <span class="table-cell">{$product->getName()} </span>
-                    <span class="table-cell">{$product->getModel()} </span>
+                <div data-id="{$product->getId()}" class="table-row" {if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}> 
+                    <span class="table-cell" >{$product->getId()} </span> 
+                    <span class="table-cell f_editable_cell" data-field-name="name">{$product->getName()} </span>
+                    <span class="table-cell f_editable_cell" data-field-name="model">{$product->getModel()} </span>
                     <span class="table-cell">{$product->getUomDto()->getName()} </span>
                     <span class="table-cell">{$ns.productsQuantity[$product->getId()]|default:'0'}</span>
                     <span class="table-cell">{$ns.productsPrice[$product->getId()]|number_format:2}</span>

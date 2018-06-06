@@ -16,6 +16,7 @@ namespace crm\actions\main {
 
     use crm\actions\BaseAction;
     use crm\managers\PaymentTransactionManager;
+    use crm\managers\ProductManager;
     use crm\managers\PurchaseOrderManager;
     use crm\managers\SaleOrderManager;
     use crm\managers\TranslationManager;
@@ -41,6 +42,9 @@ namespace crm\actions\main {
                     break;
                 case 'billing':
                     $manager = TranslationManager::getInstance();
+                    break;
+                case 'product':
+                    $manager = ProductManager::getInstance();
                     break;
             }
             $manager->updateField($id, $fieldName, $fieldValue);

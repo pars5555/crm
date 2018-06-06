@@ -24,7 +24,6 @@ NGS.createLoad("crm.loads.main.all.index", {
         });
     },
     initEditableCells: function () {
-        
         $('.f_editable_cell').dblclick(function () {
             var cellValues = $(this).text().trim();
             var cellFieldName = $(this).data('field-name');

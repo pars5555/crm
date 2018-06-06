@@ -12,6 +12,28 @@ NGS.createLoad("crm.loads.main.index", {
         this.autocompleteSelect();
         this.checkbox();
         this.initCloseModal();
+        this.initEditableCells();
+    },
+    initEditableCells: function () {
+        $('.f_editable_cell').dblclick(function () {
+            var cellValues = $(this).text().trim();
+            var cellFieldName = $(this).data('field-name');
+            var id = $(this).parent('div').data('id');
+            var input = $('<input style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '" type="text" value="' + cellValues + '"/>')
+            $(this).html(input);
+            var cellElement = $(this);
+            input.focus();
+            input.blur(function () {
+                var id = $(this).data('id');
+                var fielldName = $(this).data('field-name');
+                var value = $(this).val().trim();
+                cellElement.html(value);
+                $(this).off();
+                NGS.action('crm.actions.main.UpdateField', {'id': id,'object_type':'product', 'field_name': fielldName, "field_value": value}, function (ret) {
+                    cellElement.html(ret.value);
+                });
+            });
+        });
     },
     initCloseModal: function () {
         $('.modal .modal-close').click(function () {
