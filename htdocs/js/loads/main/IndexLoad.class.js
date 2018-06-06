@@ -19,7 +19,7 @@ NGS.createLoad("crm.loads.main.index", {
             var cellValues = $(this).text().trim();
             var cellFieldName = $(this).data('field-name');
             var id = $(this).parent('div').data('id');
-            var input = $('<input style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '" type="text" value="' + cellValues + '"/>')
+            var input = $('<input style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '" type="text" value="' + cellValues.htmlEncode() + '"/>')
             $(this).html(input);
             var cellElement = $(this);
             input.focus();
@@ -29,7 +29,11 @@ NGS.createLoad("crm.loads.main.index", {
                 var value = $(this).val().trim();
                 cellElement.html(value);
                 $(this).off();
-                NGS.action('crm.actions.main.UpdateField', {'id': id,'object_type':'product', 'field_name': fielldName, "field_value": value}, function (ret) {
+                NGS.action('crm.actions.main.UpdateField', 
+                    {'id': id, 'object_type':'product', 
+                     'field_name': fielldName, 
+                     "field_value": value}, 
+                 function (ret) {
                     cellElement.html(ret.value);
                 });
             });

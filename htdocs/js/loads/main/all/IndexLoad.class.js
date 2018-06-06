@@ -29,7 +29,7 @@ NGS.createLoad("crm.loads.main.all.index", {
             var cellFieldName = $(this).data('field-name');
             var id = $(this).parent('div').data('id');
             var object_type = $(this).parent('div').data('type');
-            var input = $('<input style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '" type="text" value="' + cellValues + '"/>')
+            var input = $('<input style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '" type="text" value="' + cellValues.htmlEncode() + '"/>')
             $(this).html(input);
             var cellElement = $(this);
             input.focus();

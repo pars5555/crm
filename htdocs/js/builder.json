@@ -16,6 +16,13 @@
                 ]
             },
             {
+                "output_file": "im_util.js",
+                "compress": false,
+                "files": [
+                    "util/UtilFunctions.js"
+                ]
+            },
+            {
                 "output_file": "ngs_framework.js",
                 "compress": false,
                 "files": ["framework/NGS.js",
