@@ -515,7 +515,9 @@ select::-ms-expand{
 .inline-block{
     display:inline-block;
 }
-
+.pre{
+    white-space: pre;
+}
 /*************************** Main Table **************************/
 
 .table_striped{
