@@ -19,13 +19,13 @@ NGS.createLoad("crm.loads.main.index", {
             var cellValues = $(this).text().trim();
             var cellFieldName = $(this).data('field-name');
             var type = $(this).data('type');
+            var id = $(this).parent('div').data('id');
             if (type === 'richtext') {
                 var input = $('<textarea ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '">' + cellValues.htmlEncode() + '</textarea>')
             } else {
                 var input = $('<input ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '" type="text" value="' + cellValues.htmlEncode() + '"/>')
             }
 
-            var id = $(this).parent('div').data('id');
             $(this).html(input);
             var cellElement = $(this);
             input.focus();
