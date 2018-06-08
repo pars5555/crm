@@ -24,6 +24,16 @@
             }
         }
     ],
+    "settings": [
+        {
+            "action": "loads.main.index",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.settings.index"
+                }
+            }
+        }
+    ],
     "warranty": [
         {
             "action": "loads.main.index",

@@ -19,6 +19,7 @@ namespace crm\actions\main {
     use crm\managers\ProductManager;
     use crm\managers\PurchaseOrderManager;
     use crm\managers\SaleOrderManager;
+    use crm\managers\SettingManager;
     use crm\managers\TranslationManager;
     use NGS;
 
@@ -45,6 +46,9 @@ namespace crm\actions\main {
                     break;
                 case 'product':
                     $manager = ProductManager::getInstance();
+                    break;
+                case 'settings':
+                    $manager = SettingManager::getInstance();
                     break;
             }
             $manager->updateField($id, $fieldName, $fieldValue);
