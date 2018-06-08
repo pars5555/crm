@@ -78,7 +78,7 @@ namespace crm\dal\mappers {
                     . "WHERE `purchase_orders`.`cancelled` = 0 %s GROUP by `product_id`";
             $skip = "";
             if ($skipWarehousePartners) {
-                $skip = "AND `purchase_orders`.partner_id not in ($partnersIds)";
+                $skip = "AND `sale_orders`.partner_id not in ($partnersIds)";
             }
             $sqlQuery = sprintf($sql, $this->getTableName(), $skip);
             $productIdQtyObjects = $this->fetchRows($sqlQuery);
@@ -91,15 +91,11 @@ namespace crm\dal\mappers {
             return $ret;
         }
 
-        public function getAllProductPriceInNonCancelledPurchaseOrders($skipWarehousePartners = false, $partnersIds = []) {
+        public function getAllProductPriceInNonCancelledPurchaseOrders() {
             $sql = "SELECT product_id, SUM(unit_price)*`currency_rate` AS `product_price` FROM `%s` INNER JOIN  "
                     . " `purchase_orders` ON `purchase_order_id` = `purchase_orders`.`id` "
-                    . "WHERE `purchase_orders`.`cancelled` = 0 %s GROUP by `product_id`, `currency_id`";
-            $skip = "";
-            if ($skipWarehousePartners) {
-                $skip = "AND `purchase_orders`.partner_id not in ($partnersIds)";
-            }
-            $sqlQuery = sprintf($sql, $this->getTableName(), $skip);
+                    . "WHERE `purchase_orders`.`cancelled` = 0 GROUP by `product_id`, `currency_id`";
+            $sqlQuery = sprintf($sql, $this->getTableName());
             $productIdQtyObjects = $this->fetchRows($sqlQuery);
             $ret = [];
             foreach ($productIdQtyObjects as $productIdQtyObject) {
