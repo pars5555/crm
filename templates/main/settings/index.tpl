@@ -7,7 +7,7 @@
         {foreach from=$ns.rows item=row}
             <div class="table-row" data-id="{$row->getId()}" data-type="settings">
                 <span class="table-cell">{$row->getVar()}</span>
-                <span class="table-cell f_editable_cell" data-field-name="value">{$row->getValue()}</span>
+                <span class="table-cell f_editable_cell" data-field-name="value" data-type="settings">{$row->getValue()}</span>
             </div>
         {/foreach}
     </div>

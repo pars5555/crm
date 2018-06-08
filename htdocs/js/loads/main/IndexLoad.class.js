@@ -19,6 +19,7 @@ NGS.createLoad("crm.loads.main.index", {
             var cellValues = $(this).text().trim();
             var cellFieldName = $(this).data('field-name');
             var type = $(this).data('type');
+            var object_type = $(this).parent('div').data('type');
             var id = $(this).parent('div').data('id');
             if (type === 'richtext') {
                 var input = $('<textarea ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '">' + cellValues.htmlEncode() + '</textarea>')
@@ -36,7 +37,7 @@ NGS.createLoad("crm.loads.main.index", {
                 cellElement.html(value);
                 $(this).off();
                 NGS.action('crm.actions.main.UpdateField',
-                        {'id': id, 'object_type': 'product',
+                        {'id': id, 'object_type': object_type,
                             'field_name': fielldName,
                             "field_value": value},
                         function (ret) {
