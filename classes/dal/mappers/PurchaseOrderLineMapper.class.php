@@ -80,7 +80,7 @@ namespace crm\dal\mappers {
             if ($skipWarehousePartners) {
                 $skip = "AND `sale_orders`.partner_id not in ($partnersIds)";
             }
-            $sqlQuery = sprintf($sql, $this->getTableName());
+            $sqlQuery = sprintf($sql, $this->getTableName(), $skip);
             $productIdQtyObjects = $this->fetchRows($sqlQuery);
             $ret = [];
             foreach ($productIdQtyObjects as $productIdQtyObject) {
@@ -99,7 +99,7 @@ namespace crm\dal\mappers {
             if ($skipWarehousePartners) {
                 $skip = "AND `sale_orders`.partner_id not in ($partnersIds)";
             }
-            $sqlQuery = sprintf($sql, $this->getTableName());
+            $sqlQuery = sprintf($sql, $this->getTableName(), $skip);
             $productIdQtyObjects = $this->fetchRows($sqlQuery);
             $ret = [];
             foreach ($productIdQtyObjects as $productIdQtyObject) {
