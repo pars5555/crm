@@ -78,7 +78,7 @@ namespace crm\dal\mappers {
                     . "WHERE `purchase_orders`.`cancelled` = 0 %s GROUP by `product_id`";
             $skip = "";
             if ($skipWarehousePartners) {
-                $skip = "AND `sale_orders`.partner_id not in ($partnersIds)";
+                $skip = "AND `purchase_orders`.partner_id not in ($partnersIds)";
             }
             $sqlQuery = sprintf($sql, $this->getTableName(), $skip);
             $productIdQtyObjects = $this->fetchRows($sqlQuery);
@@ -97,7 +97,7 @@ namespace crm\dal\mappers {
                     . "WHERE `purchase_orders`.`cancelled` = 0 %s GROUP by `product_id`, `currency_id`";
             $skip = "";
             if ($skipWarehousePartners) {
-                $skip = "AND `sale_orders`.partner_id not in ($partnersIds)";
+                $skip = "AND `purchase_orders`.partner_id not in ($partnersIds)";
             }
             $sqlQuery = sprintf($sql, $this->getTableName(), $skip);
             $productIdQtyObjects = $this->fetchRows($sqlQuery);
