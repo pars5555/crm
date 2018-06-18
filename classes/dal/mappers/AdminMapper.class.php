@@ -88,10 +88,7 @@ namespace crm\dal\mappers {
         public function validateUser($userId, $hash) {
             $sqlQuery = sprintf($this->GET_ADMIN_BY_ID_AND_HASH, $this->getTableName());
             $result = $this->fetchRow($sqlQuery, array("userId" => $userId, "hash" => $hash));
-            if (count($result) === 1) {
-                return true;
-            }
-            return false;
+            return !empty($result);
         }
 
     }

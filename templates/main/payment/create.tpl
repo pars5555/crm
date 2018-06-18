@@ -84,6 +84,11 @@
         </div>
         <input class="button blue" type="submit" value="Save"/>
         <input type="hidden" name="signature" id="signature"/>
+        <div class="form-group">
+            <label class="label">Debt</label>
+            <div id="partnerDebtContainer"></div>
+            <input type="hidden" id="partnerDebtHidden"/>
+        </div>
     </form>
     <div id="signatureContainer" style="width: 500px;border: 1px solid gray;color:#0f60a7">
         <span class="hidden">{$ns.req.signature}</span>
