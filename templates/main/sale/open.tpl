@@ -106,7 +106,7 @@
                                 </select>
                             </div>
                             <div class="table-cell">
-                                <input type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text" value="{$saleOrderLine->getQuantity()}" disabled/>
+                                <input type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text" value="{$saleOrderLine->getQuantity()}"/>
                             </div>
                             <div class="table-cell">
                                 <input type="number" step="0.01" min="0.01" class="saleOrderLinesSelectUnitPrice text" value="{$saleOrderLine->getUnitPrice()}"/>
@@ -192,7 +192,7 @@
         </select>
     </div>
     <div class="table-cell">
-        <input  type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text" disabled/>
+        <input  type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text"/>
     </div>
     <div class="table-cell">
         <input  type="number" step="0.01" min="0.01" class="saleOrderLinesSelectUnitPrice text"/>
