@@ -15,5 +15,5 @@ NGS.createLoad("crm.loads.main.partner.all_deals", {
             var object_type = $(this).data('type');
             NGS.action('crm.actions.main.set_object_checked', {object_type: object_type, id: id, checked: checked});
         });
-    },
+    }
 });
