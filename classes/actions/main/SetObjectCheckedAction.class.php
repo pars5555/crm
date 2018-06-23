@@ -18,7 +18,6 @@ namespace crm\actions\main {
     use crm\managers\PaymentTransactionManager;
     use crm\managers\PurchaseOrderManager;
     use crm\managers\SaleOrderManager;
-    use crm\managers\TranslationManager;
     use NGS;
 
     class SetObjectCheckedAction extends BaseAction {
@@ -39,7 +38,7 @@ namespace crm\actions\main {
                     $manager = PaymentTransactionManager::getInstance();
                     break;
                 case 'billing':
-                    $manager = TranslationManager::getInstance();
+                    $manager = PaymentTransactionManager::getInstance();
                     break;
             }
             $manager->updateField($id, 'checked', $fieldValue);

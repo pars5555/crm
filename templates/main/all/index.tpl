@@ -14,6 +14,7 @@
             <span class="table-cell"> Partner </span>
             <span class="table-cell"> Date </span>
             <span class="table-cell"> Note </span>
+            <span class="table-cell"> Checked </span>            
             <span class="table-cell"> Amount </span>            
         </div> 
         {foreach from=$ns.allDeals item=deal}
