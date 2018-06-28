@@ -7,11 +7,12 @@
             <span class="table-cell"> Type </span>
             <span class="table-cell"> Date </span>
             <span class="table-cell"> Note </span>
+            <span class="table-cell"> Checked </span>
             <span class="table-cell"> Amount </span>
             <span class="table-cell"> Balance </span>
         </div> 
         {foreach from=$ns.allDeals item=deal}
-            <div class="table-row">
+            <div class="table-row" {if $deal[1]->getChecked() == 1}style="background: green"{/if}>
 
                 <a class="table-cell"  href="{$SITE_PATH}/{$deal[0]}/{$deal[1]->getId()}" target="_blank">
                     <span>{$deal[1]->getId()} </span>
@@ -29,6 +30,7 @@
                 <a class="table-cell">
                         <span>{$deal[1]->getNote()} </span>
                 </a>
+                <span class="table-cell "> <input data-type="{$deal[0]}" data-id="{$deal[1]->getId()}" class="f_checked_checkbox"  type="checkbox" value="1" {if $deal[1]->getChecked() ==1}checked{/if}/></span>
                 <span class="table-cell">
                     {if $deal[0] == 'sale' || $deal[0] == 'purchase'}
                         {assign totalAmount $deal[1]->getTotalAmount()}
