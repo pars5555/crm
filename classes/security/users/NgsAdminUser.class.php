@@ -57,7 +57,7 @@ namespace crm\security\users {
             if (AdminManager::getInstance()->validate($this->getId(), $this->getUniqueId())) {
                 return true;
             }
-            throw new InvalidUserException("wrong user");
+            return false;
         }
 
     }

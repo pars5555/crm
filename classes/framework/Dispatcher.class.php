@@ -173,6 +173,10 @@ namespace ngs\framework {
                 if (NGS()->getSessionManager()->validateRequest($request, $user)) {
                     return true;
                 }
+            }else
+            {
+                NGS()->getSessionManager()->logout();
+                NGS()->getHttpUtils()->redirect('login');
             }
             return true;
         }
