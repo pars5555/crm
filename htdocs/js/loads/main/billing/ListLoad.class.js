@@ -1,4 +1,5 @@
 NGS.createLoad("crm.loads.main.billing.list", {
+    search_timout_handler:null,
     getContainer: function () {
         return "initialLoad";
     },
@@ -6,6 +7,14 @@ NGS.createLoad("crm.loads.main.billing.list", {
 
     },
     afterLoad: function () {
+        $('#billingFilters').find('input[name="st"]').keyup(function () {
+            if (this.search_timout_handler > 0) {
+                window.clearTimeout(this.search_timout_handler);
+            }
+            this.search_timout_handler = window.setTimeout(function () {
+                $('#billingFilters').trigger('submit');
+            }, 1000);
+        }.bind(this));
         $('#billingFilters').find('input, select, checkbox').change(function () {
             $('#billingFilters').trigger('submit');
         });

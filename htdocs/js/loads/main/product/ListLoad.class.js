@@ -1,4 +1,5 @@
 NGS.createLoad("crm.loads.main.product.list", {
+    search_timout_handler: null,
     getContainer: function () {
         return "initialLoad";
     },
@@ -6,7 +7,15 @@ NGS.createLoad("crm.loads.main.product.list", {
 
     },
     afterLoad: function () {
-        $('#productFilters').find('input, select, checkbox').change(function () {
+        $('#productFilters').find('input[name="st"]').keyup(function () {
+            if (this.search_timout_handler > 0) {
+                window.clearTimeout(this.search_timout_handler);
+            }
+            this.search_timout_handler = window.setTimeout(function () {
+                $('#productFilters').trigger('submit');
+            }, 1000);
+        }.bind(this));
+        $('#productFilters').find('select, checkbox').change(function () {
             $('#productFilters').trigger('submit');
         });
 

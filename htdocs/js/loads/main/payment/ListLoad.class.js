@@ -1,4 +1,5 @@
 NGS.createLoad("crm.loads.main.payment.list", {
+    search_timout_handler:null,
     getContainer: function () {
         return "initialLoad";
     },
@@ -6,7 +7,15 @@ NGS.createLoad("crm.loads.main.payment.list", {
 
     },
     afterLoad: function () {
-        $('#paymentFilters').find('input, select, checkbox').change(function () {
+        $('#paymentFilters').find('input[name="st"]').keyup(function () {
+            if (this.search_timout_handler > 0) {
+                window.clearTimeout(this.search_timout_handler);
+            }
+            this.search_timout_handler = window.setTimeout(function () {
+                $('#paymentFilters').trigger('submit');
+            }, 1000);
+        }.bind(this));
+        $('#paymentFilters').find('select, checkbox').change(function () {
             $('#paymentFilters').trigger('submit');
         });
         $('.deletePayment').click(function () {

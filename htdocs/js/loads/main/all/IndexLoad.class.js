@@ -14,13 +14,31 @@ NGS.createLoad("crm.loads.main.all.index", {
         });
         this.initEditableCells();
         this.initChecked();
+        this.initCheckAllCheckbox();
     },
-    initChecked: function(){
+    initCheckAllCheckbox: function () {
+        $('#f_check_all_checkbox').change(function () {
+            var destClass = $(this).data('destination_class');
+            var count = $('.' + destClass).length;
+            if (count > 50) {
+                if (window.confirm('It will change ' + count + ' checkbox selection, are you sure?'))
+                {
+                    $('.' + destClass).prop("checked", $(this).is(":checked"));
+                    $('.' + destClass).trigger('change');
+                }
+            } else
+            {
+                $('.' + destClass).prop("checked", $(this).is(":checked"));
+                $('.' + destClass).trigger('change');
+            }
+        });
+    },
+    initChecked: function () {
         $('.f_checked_checkbox').change(function () {
             var id = $(this).data('id');
             var checked = $(this).is(':checked') ? 1 : 0;
             var object_type = $(this).data('type');
-            NGS.action('crm.actions.main.set_object_checked', {object_type:object_type, id: id, checked: checked});
+            NGS.action('crm.actions.main.set_object_checked', {object_type: object_type, id: id, checked: checked});
         });
     },
     initEditableCells: function () {
@@ -39,7 +57,7 @@ NGS.createLoad("crm.loads.main.all.index", {
                 var value = $(this).val().trim();
                 cellElement.html(value);
                 $(this).off();
-                NGS.action('crm.actions.main.UpdateField', {'id': id,'object_type':object_type, 'field_name': fielldName, "field_value": value}, function (ret) {
+                NGS.action('crm.actions.main.UpdateField', {'id': id, 'object_type': object_type, 'field_name': fielldName, "field_value": value}, function (ret) {
                     cellElement.html(ret.value);
                 });
             });

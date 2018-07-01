@@ -24,10 +24,14 @@ use NGS;
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 100;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterHidden) = $this->initFilters($limit);
-            $where = [];
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterHidden, $searchText) = $this->initFilters($limit);
+            $where = ['1', '=','1'];
             if ($selectedFilterHidden !== 'all') {
-                $where = ['hidden', '=', 0];
+                $where = array_merge($where, ['AND ','hidden', '=', 0]);
+            }
+            if (!empty($searchText)) {
+                $where = array_merge($where, ['AND','(', 'name', 'like', "'%$searchText%'"]);
+                $where = array_merge($where, ['OR', 'model', 'like', "'%$searchText%'", ')']);
             }
             $products = ProductManager::getInstance()->getProductListFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $productIds = ProductManager::getDtosIdsArray($products);
@@ -91,12 +95,17 @@ use NGS;
                     $selectedFilterHidden = strtolower(NGS()->args()->hddn);
                 }
             }
+            $searchText = '';
+            if (isset(NGS()->args()->st)) {
+                $searchText = trim(NGS()->args()->st);
+            }
 
+            $this->addParam('searchText', $searchText);
             $this->addParam('selectedFilterHidden', $selectedFilterHidden);
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $selectedFilterHidden];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $selectedFilterHidden, $searchText];
         }
 
         public function getTemplate() {

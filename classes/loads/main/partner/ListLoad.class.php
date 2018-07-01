@@ -28,11 +28,15 @@ namespace crm\loads\main\partner {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 100;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterHidden, $selectedFilterHasDebt) = $this->initFilters($limit);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterHidden, $selectedFilterHasDebt, $searchText) = $this->initFilters($limit);
             $partnerManager = PartnerManager::getInstance();
             $where = ['1', '=', '1'];
             if ($selectedFilterHidden !== 'all') {
                 $where = array_merge($where, ['and', 'hidden', '=', 0]);
+            }
+            if (!empty($searchText)) {
+                $where = array_merge($where, ['AND','(', 'name', 'like', "'%$searchText%'"]);
+                $where = array_merge($where, ['OR', 'phone', 'like', "'%$searchText%'", ')']);
             }
             $join = '';
             $groupBy= '';
@@ -132,13 +136,19 @@ namespace crm\loads\main\partner {
                     $selectedFilterHasDebt = strtolower(NGS()->args()->hasdebt);
                 }
             }
+            $searchText = '';
+            if (isset(NGS()->args()->st)) {
+                $searchText = trim(NGS()->args()->st);
+            }
+
+            $this->addParam('searchText', $searchText);
 
             $this->addParam('selectedFilterHasDebt', $selectedFilterHasDebt);
             $this->addParam('selectedFilterHidden', $selectedFilterHidden);
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $selectedFilterHidden, $selectedFilterHasDebt];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $selectedFilterHidden, $selectedFilterHasDebt, $searchText];
         }
 
         public function getTemplate() {

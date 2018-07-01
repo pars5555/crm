@@ -14,7 +14,9 @@
             <span class="table-cell"> Partner </span>
             <span class="table-cell"> Date </span>
             <span class="table-cell"> Note </span>
-            <span class="table-cell"> Checked </span>            
+            <span class="table-cell"> Checked 
+            <input id="f_check_all_checkbox" data-destination_class='f_checked_checkbox' type="checkbox"/>
+            </span>            
             <span class="table-cell"> Amount </span>            
         </div> 
         {foreach from=$ns.allDeals item=deal}

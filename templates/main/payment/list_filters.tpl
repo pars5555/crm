@@ -45,6 +45,10 @@
     <div class="form-group" style="float: right">
         <a href="javascript:void(0);" id="export_csv"><img src="/img/csv.png" width="60"/></a>
     </div>
+    <div class="form-group">
+        <label>Search</label>
+        <input class="text" style="max-width: 200px;" type="text" name="st" value="{$ns.searchText}"/>
+    </div>
 </form>
 
 <div id="export_modalBox" class="modal modal-large">

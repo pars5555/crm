@@ -11,14 +11,14 @@
 
 namespace crm\loads\main\payment {
 
-use crm\loads\AdminLoad;
-use crm\managers\CurrencyManager;
-use crm\managers\PartnerManager;
-use crm\managers\PaymentTransactionManager;
-use crm\security\RequestGroups;
-use NGS;
+    use crm\loads\AdminLoad;
+    use crm\managers\CurrencyManager;
+    use crm\managers\PartnerManager;
+    use crm\managers\PaymentTransactionManager;
+    use crm\security\RequestGroups;
+    use NGS;
 
-    class ListLoad  extends AdminLoad {
+    class ListLoad extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -55,7 +55,7 @@ use NGS;
         }
 
         private function initFilters($limit) {
-            $where = [];
+            $where = ['1', '=', '1'];
             //partner
             $selectedFilterPartnerId = 0;
             if (isset(NGS()->args()->prt)) {
@@ -63,9 +63,16 @@ use NGS;
             }
             $this->addParam('selectedFilterPartnerId', $selectedFilterPartnerId);
             if ($selectedFilterPartnerId > 0) {
+                $where[] = 'AND';
                 $where[] = 'partner_id';
                 $where[] = '=';
                 $where[] = $selectedFilterPartnerId;
+            }
+
+            $searchText = '';
+            if (isset(NGS()->args()->st)) {
+                $searchText = trim(NGS()->args()->st);
+                $where = array_merge($where, ['AND', 'note', 'like', "'%$searchText%'"]);
             }
 
             //currency
@@ -75,17 +82,13 @@ use NGS;
             }
             $this->addParam('selectedFilterCurrencyId', $selectedFilterCurrencyId);
             if ($selectedFilterCurrencyId > 0) {
-                if (!empty($where)) {
-                    $where[] = 'AND';
-                }
+                $where[] = 'AND';
                 $where[] = 'currency_id';
                 $where[] = '=';
                 $where[] = $selectedFilterCurrencyId;
             }
             //load only payment transation (not billling)
-            if (!empty($where)) {
-                $where[] = 'AND';
-            }
+            $where[] = 'AND';
             $where[] = 'amount';
             $where[] = '>';
             $where[] = 0;
@@ -116,6 +119,7 @@ use NGS;
                     $selectedFilterSortByAscDesc = strtoupper(NGS()->args()->ascdesc);
                 }
             }
+            $this->addParam('searchText', $searchText);
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 

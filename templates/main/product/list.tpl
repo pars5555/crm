@@ -16,10 +16,10 @@
             <span class="table-cell"> Name </span>
             <span class="table-cell"> Model </span>
             <span class="table-cell"> Manufacturer </span>
-            <span class="table-cell"> Uom  </span>
+            <span class="table-cell"> Uom </span>
             <span class="table-cell"> Purchase Orders </span>
             <span class="table-cell"> Sale Orders</span>
-            <span class="table-cell"> View  </span>
+            <span class="table-cell"> View </span>
             <span class="table-cell"> Edit </span>
             <span class="table-cell"> Hidden </span>
         </div> 

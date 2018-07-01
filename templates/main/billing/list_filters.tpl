@@ -42,7 +42,11 @@
             <option value="DESC" {if $ns.selectedFilterSortByAscDesc== 'DESC'}selected{/if}>DESC</option>
         </select>
     </div>
-  <div class="form-group" style="float: right">
+    <div class="form-group">
+        <label>Search</label>
+        <input class="text" style="max-width: 200px;" type="text" name="st" value="{$ns.searchText}"/>
+    </div>
+    <div class="form-group" style="float: right">
         <a href="javascript:void(0);" id="export_csv"><img src="/img/csv.png" width="60"/></a>
     </div>
 </form>

@@ -11,9 +11,9 @@ NGS.createLoad("crm.loads.main.index", {
         this.datepicker();
         this.autocompleteSelect();
         this.checkbox();
-        this.initCloseModal();
+        this.initCloseModal();        
         this.initEditableCells();
-    },
+    },    
     initEditableCells: function () {
         $('.f_editable_cell').dblclick(function () {
             var cellValues = $(this).text().trim();

@@ -9,7 +9,7 @@
             </select>
         </div>
     {/if}
-    <div class="form-group">
+    <div class="form-group" style="display: -webkit-box;">
         <label>Sort by </label>
         <select name="srt">
             <option value="0" {if $ns.selectedFilterSortBy== 0}selected{/if}>None</option>
@@ -32,5 +32,7 @@
             <option value="yes" {if $ns.selectedFilterHasDebt == 'yes'}selected{/if}>Yes</option>
             <option value="no" {if $ns.selectedFilterHasDebt == 'no'}selected{/if}>No</option>
         </select>
+        <label>Search</label>
+        <input class="text" style="max-width: 200px;" type="text" name="st" value="{$ns.searchText}"/>
     </div>
 </form>
