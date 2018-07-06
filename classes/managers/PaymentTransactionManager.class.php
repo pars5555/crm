@@ -12,7 +12,8 @@
 
 namespace crm\managers {
 
-    use crm\dal\mappers\PaymentTransactionMapper;
+use crm\dal\mappers\PaymentTransactionMapper;
+use ngs\framework\exceptions\NgsErrorException;
 
     class PaymentTransactionManager extends AdvancedAbstractManager {
 
@@ -94,6 +95,18 @@ namespace crm\managers {
         }
 
         public function createPaymentOrder($partnerId, $paymentMethodId, $currencyId, $amount, $date, $note, $signature = '[]', $paid = true, $isExpense = false) {
+            $lastRows = $this->selectAdvance('*', [], 'id', 'desc', 0, 1);
+            $lastRow = $lastRows[0];
+            $lastRowCreatedAt = $lastRow->getCreatedAt();
+
+
+            $timeFirst = strtotime($lastRowCreatedAt);
+            $timeSecond = strtotime(date('y-m-d H:i:s'));
+            $differenceInSeconds = $timeSecond - $timeFirst;
+            if (abs($differenceInSeconds) <= 3) {
+                throw new NgsErrorException("Duplicated transation submitted, please check last submitted transation");
+            }
+
             $partnerManager = PartnerManager::getInstance();
             $partner = $partnerManager->selectByPK($partnerId);
             if (empty($partner)) {
@@ -116,6 +129,7 @@ namespace crm\managers {
             $dto->setIsExpense($isExpense);
             $dto->setPaid($paid);
             $dto->setSignature($signature);
+            $dto->setCreatedAt(date('y-m-d H:i:s'));
             return $this->insertDto($dto);
         }
 
