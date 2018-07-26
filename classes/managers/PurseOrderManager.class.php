@@ -61,7 +61,9 @@ namespace crm\managers {
                 $dto->setAmazonOrderNumber($amazonOrderNumber);
                 $dto->setPurseTotal($purseTotal);
                 $dto->setBuyerName($buyerName);
-                $dto->setUpdatedAt(date('Y-m-d H:i:s'));
+                if ($changed) {
+                    $dto->setUpdatedAt(date('Y-m-d H:i:s'));
+                }
                 $this->updateByPk($dto);
                 if ($changed) {
                     return true;
