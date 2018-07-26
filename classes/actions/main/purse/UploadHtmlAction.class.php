@@ -33,8 +33,8 @@ namespace crm\actions\main\purse {
 
             libxml_clear_errors();
             $changedOrNewOrders = [];
-            $orderNumbers = []
-            for ($i = $ordersRows->length; --$i >= 0;) {
+            $orderNumbers = [];
+            for ($i = 0; $i < $ordersRows->length; $i++) {
                 $el = $ordersRows->item($i);
                 $img = $el->getElementsByTagName('img')[0];
                 $parts = explode("/", $img->getAttribute('src'));
@@ -42,20 +42,21 @@ namespace crm\actions\main\purse {
                 $parts = explode("/", $img->parentNode->getAttribute('href'));
                 $orderNumber = end($parts);
                 $orderNumbers[] = $orderNumber;
+
                 $productTitle = $img->getAttribute('title');
-                
+
                 $amazonOrderNumberElements = $el->getElementsByTagName('td')[3]->getElementsByTagName('small');
                 $amazonOrderNumber = "";
                 if ($amazonOrderNumberElements->length > 0) {
                     $amazonOrderNumber = $amazonOrderNumberElements->item(0)->nodeValue;
                 }
-                
+
                 $buyerNameElements = $el->getElementsByTagName('td')[3]->getElementsByTagName('span');
                 $buyerName = "";
                 if ($buyerNameElements->length > 0) {
                     $buyerName = $buyerNameElements->item(0)->nodeValue;
                 }
-                
+
                 $purseTotal = trim($el->getElementsByTagName('td')[4]->getElementsByTagName('span')->item(0)->nodeValue, ' $');
                 $orderStatus = $finder->query(".//*[contains(@class, 'status-lg')]", $el)[0]->nodeValue;
 
@@ -64,7 +65,9 @@ namespace crm\actions\main\purse {
                     $changedOrNewOrders[] = $orderNumber;
                 }
             }
-            $changedOrNewOrdersText ='"'. implode(';', $changedOrNewOrders) . '"';
+            \crm\managers\PurseOrderManager::getInstance()->archiveIfnotExists($orderNumbers);
+
+            $changedOrNewOrdersText = '"' . implode(';', $changedOrNewOrders) . '"';
             echo "<script>parent.uploadedFileResponse($changedOrNewOrdersText);</script>";
             exit;
         }

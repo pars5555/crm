@@ -52,6 +52,14 @@ namespace crm\managers {
             return $rows;
         }
 
+        public function archiveIfnotExists($orderNumbers) {
+            $orderNumbersSql = "('" . implode("','", $orderNumbers) . "')";
+            $rows = $this->selectAdvance('id',['`order_number`', 'not in', $orderNumbersSql]);
+            foreach ($rows as $row) {
+                $this->updateField($row->getId(), 'hidden', 1);
+            }
+        }
+
         public function insertOrUpdateOrder($orderNumber, $productTitle, $orderStatus, $imgName, $amazonOrderNumber, $purseTotal, $buyerName) {
             $dtos = $this->selectByField('order_number', $orderNumber);
             if (!empty($dtos)) {
