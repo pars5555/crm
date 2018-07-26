@@ -20,7 +20,7 @@ namespace crm\dal\dto {
 
     class PurseOrderDto extends AbstractDto {
 
-        private $histores;
+        private $histores = [];
         // Map of DB value to Field value
         private $mapArray = array("id" => "id", "order_number" => "orderNumber", "amazon_order_number" => "amazonOrderNumber",
             "tracking_number" => "trackingNumber", "amazon_total" => "amazonTotal", "buyer_name" => "buyerName",

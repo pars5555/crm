@@ -33,6 +33,7 @@ namespace crm\actions\main\purse {
 
             libxml_clear_errors();
             $changedOrNewOrders = [];
+            $orderNumbers = []
             for ($i = $ordersRows->length; --$i >= 0;) {
                 $el = $ordersRows->item($i);
                 $img = $el->getElementsByTagName('img')[0];
@@ -40,8 +41,9 @@ namespace crm\actions\main\purse {
                 $imgName = end($parts);
                 $parts = explode("/", $img->parentNode->getAttribute('href'));
                 $orderNumber = end($parts);
+                $orderNumbers[] = $orderNumber;
                 $productTitle = $img->getAttribute('title');
-
+                
                 $amazonOrderNumberElements = $el->getElementsByTagName('td')[3]->getElementsByTagName('small');
                 $amazonOrderNumber = "";
                 if ($amazonOrderNumberElements->length > 0) {
