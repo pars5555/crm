@@ -87,7 +87,6 @@
                     "action": "loads.main.manufacturer.create"
                 }
             }
-
         },
         {
             "action": "loads.main.index",
@@ -100,7 +99,6 @@
                     "action": "loads.main.manufacturer.update"
                 }
             }
-
         }
     ],
     "sale": [
@@ -133,7 +131,6 @@
                     "action": "loads.main.sale.create"
                 }
             }
-
         },
         {
             "action": "loads.main.index",
@@ -146,7 +143,6 @@
                     "action": "loads.main.sale.update"
                 }
             }
-
         },
         {
             "action": "loads.main.index",
@@ -192,7 +188,6 @@
                     "action": "loads.main.rorder.update"
                 }
             }
-
         },
         {
             "action": "loads.main.index",
@@ -237,7 +232,6 @@
                     "action": "loads.main.purchase.create"
                 }
             }
-
         },
         {
             "action": "loads.main.index",
@@ -250,7 +244,6 @@
                     "action": "loads.main.purchase.update"
                 }
             }
-
         },
         {
             "action": "loads.main.index",
@@ -287,7 +280,6 @@
                     "action": "loads.main.payment.update"
                 }
             }
-
         },
         {
             "action": "loads.main.index",
@@ -297,7 +289,6 @@
                     "action": "loads.main.payment.create"
                 }
             }
-
         },
         {
             "action": "loads.main.index",
@@ -331,7 +322,6 @@
                     "action": "loads.main.billing.create"
                 }
             }
-
         },
         {
             "action": "loads.main.index",
@@ -344,7 +334,6 @@
                     "action": "loads.main.billing.update"
                 }
             }
-
         },
         {
             "action": "loads.main.index",
@@ -359,6 +348,29 @@
             }
         }
 
+    ],
+    "purse": [
+        {
+            "action": "loads.main.index",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.purse.list"
+                }
+            }
+        },
+        {
+            "action": "loads.main.index",
+            "route": "[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.purse.open"
+                }
+            }
+        }
     ],
     "product": [
         {
@@ -378,7 +390,6 @@
                     "action": "loads.main.product.create"
                 }
             }
-
         },
         {
             "action": "loads.main.index",
@@ -424,7 +435,6 @@
                     "action": "loads.main.recipient.create"
                 }
             }
-
         },
         {
             "action": "loads.main.index",
@@ -469,7 +479,6 @@
                     "action": "loads.main.partner.create"
                 }
             }
-
         },
         {
             "action": "loads.main.index",
@@ -482,7 +491,6 @@
                     "action": "loads.main.partner.all_deals"
                 }
             }
-
         },
         {
             "action": "loads.main.index",
@@ -549,6 +557,4 @@
             }
         }
     }
-
-
 }

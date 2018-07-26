@@ -65,6 +65,8 @@
                     "loads/main/recipient/UpdateLoad.class.js",
                     "loads/main/product/OpenLoad.class.js",
                     "loads/main/product/ListLoad.class.js",
+                    "loads/main/purse/OpenLoad.class.js",
+                    "loads/main/purse/ListLoad.class.js",
                     "loads/main/product/CreateLoad.class.js",
                     "loads/main/product/UpdateLoad.class.js",
                     "loads/main/product/SearchListLoad.class.js",
