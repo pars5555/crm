@@ -39,25 +39,40 @@ namespace crm\managers {
             foreach ($productsIds as $pid) {
                 $prCosts = ProductManager::getInstance()->calculateProductCost($pid, 1);
                 $costInUsd = ProductManager::getInstance()->calculateProductTotalCost($prCosts);
-                $ret[$pid] = $costInUsd/$usdRate ;
+                $ret[$pid] = $costInUsd / $usdRate;
             }
             return $ret;
         }
 
-        public function getAllProductsQuantity($partnerId  = false) {
-            
+        public function getAllProductsQuantity($partnerId = false) {
+
             $allProductQuantityInPurchaseOrders = PurchaseOrderLineManager::getInstance()->getAllProductCountInNonCancelledPurchaseOrders($partnerId);
             $allProductQuantityInSaleOrders = SaleOrderLineManager::getInstance()->getAllProductCountInNonCancelledSaleOrders($partnerId);
             $productQtyMappedByProductId = [];
-            foreach ($allProductQuantityInPurchaseOrders as $productId => $productQty) {
-                $productQtyMappedByProductId[$productId] = $productQty;
-            }
-            foreach ($allProductQuantityInSaleOrders as $productId => $productQty) {
-                if (!array_key_exists($productId, $productQtyMappedByProductId)) {
-                    $productQtyMappedByProductId[$productId] = 0;
+            if ($partnerId > 0) {
+                foreach ($allProductQuantityInSaleOrders as $productId => $productQty) {
+                    $productQtyMappedByProductId[$productId] = $productQty;
                 }
-                if ($partnerId == false)
-                $productQtyMappedByProductId[$productId] -= $productQty;
+            } else {
+                foreach ($allProductQuantityInPurchaseOrders as $productId => $productQty) {
+                    $productQtyMappedByProductId[$productId] = $productQty;
+                }
+            }
+            if ($partnerId > 0) {
+                foreach ($allProductQuantityInPurchaseOrders as $productId => $productQty) {
+                    if (!array_key_exists($productId, $productQtyMappedByProductId)) {
+                        $productQtyMappedByProductId[$productId] = 0;
+                    }
+                    $productQtyMappedByProductId[$productId] -= $productQty;
+                }
+                
+            } else {
+                foreach ($allProductQuantityInSaleOrders as $productId => $productQty) {
+                    if (!array_key_exists($productId, $productQtyMappedByProductId)) {
+                        $productQtyMappedByProductId[$productId] = 0;
+                    }
+                    $productQtyMappedByProductId[$productId] -= $productQty;
+                }
             }
             $ret = [];
             foreach ($productQtyMappedByProductId as $key => $r) {
