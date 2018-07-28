@@ -75,6 +75,7 @@ use ngs\framework\exceptions\NgsErrorException;
         public function cancelPayment($id, $note) {
             $paymentDto = $this->selectByPK($id);
             if (isset($paymentDto)) {
+                PartnerManager::getInstance()->setPartnerHidden($paymentDto->getPartnerId(), 0);
                 $paymentDto->setCancelled(1);
                 $paymentDto->setCancelNote($note);
                 $this->updateByPk($paymentDto);
@@ -89,6 +90,7 @@ use ngs\framework\exceptions\NgsErrorException;
                 $paymentDto->setCancelled(0);
                 $paymentDto->setCancelNote("");
                 $this->updateByPk($paymentDto);
+                PartnerManager::getInstance()->setPartnerHidden($paymentDto->getPartnerId(), 0);
                 return true;
             }
             return false;
@@ -117,6 +119,7 @@ use ngs\framework\exceptions\NgsErrorException;
             if (empty($paymentMethod)) {
                 throw new NgsErrorException("PaymentMethod does not exists with given id: " . $paymentMethodId);
             }
+            $partnerManager->setPartnerHidden($partnerId, 0);
             $dto = $this->createDto();
             $dto->setPartnerId($partnerId);
             $dto->setPaymentMethodId($paymentMethodId);
@@ -145,6 +148,7 @@ use ngs\framework\exceptions\NgsErrorException;
                 throw new NgsErrorException("PaymentMethod does not exists with given id: " . $paymentMethodId);
             }
             $dto = $this->selectByPK($id);
+            $partnerManager->setPartnerHidden($partnerId, 0);
             if ($dto) {
                 $dto->setPartnerId($partnerId);
                 $dto->setPaymentMethodId($paymentMethodId);

@@ -38,6 +38,7 @@ use crm\dal\mappers\SaleOrderMapper;
         public function cancelSaleOrder($id, $note) {
             $saleOrderDto = $this->selectByPK($id);
             if (isset($saleOrderDto)) {
+                PartnerManager::getInstance()->setPartnerHidden($saleOrderDto->getPartnerId(), 0);
                 $saleOrderDto->setCancelled(1);
                 $saleOrderDto->setCancelNote($note);
                 $this->updateByPk($saleOrderDto);
@@ -95,6 +96,7 @@ use crm\dal\mappers\SaleOrderMapper;
         public function restoreSaleOrder($id) {
             $saleOrderDto = $this->selectByPK($id);
             if (isset($saleOrderDto)) {
+                PartnerManager::getInstance()->setPartnerHidden($saleOrderDto->getPartnerId(), 0);
                 $saleOrderDto->setCancelled(0);
                 $saleOrderDto->setCancelNote("");
                 $this->updateByPk($saleOrderDto);

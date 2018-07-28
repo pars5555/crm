@@ -65,6 +65,8 @@ namespace crm\managers {
             } else {
                 $dto->setTotalProfit(0);
             }
+            $so = SaleOrderManager::getInstance()->selectByPK($saleOrderId);
+            PartnerManager::getInstance()->setPartnerHidden($so->getPartnerId(), 0);
             ProductManager::getInstance()->updateProductCostForOneUnit($productId);
             return $this->updateByPk($dto);
         }
@@ -90,6 +92,8 @@ namespace crm\managers {
             } else {
                 $dto->setTotalProfit(0);
             }
+            $so = SaleOrderManager::getInstance()->selectByPK($saleOrderId);
+            PartnerManager::getInstance()->setPartnerHidden($so->getPartnerId(), 0);
             ProductManager::getInstance()->updateProductCostForOneUnit($productId);
             return $this->insertDto($dto);
         }

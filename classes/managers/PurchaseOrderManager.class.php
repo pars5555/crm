@@ -161,6 +161,7 @@ namespace crm\managers {
 
         public function cancelPurchaseOrder($id, $note) {
             $purchaseOrderDto = $this->selectByPK($id);
+            PartnerManager::getInstance()->setPartnerHidden($purchaseOrderDto->getPartnerId(), 0);
             if (isset($purchaseOrderDto)) {
                 $purchaseOrderDto->setCancelled(1);
                 $purchaseOrderDto->setCancelNote($note);
@@ -172,6 +173,7 @@ namespace crm\managers {
 
         public function restorePurchaseOrder($id) {
             $purchaseOrderDto = $this->selectByPK($id);
+            PartnerManager::getInstance()->setPartnerHidden($purchaseOrderDto->getPartnerId(), 0);
             if (isset($purchaseOrderDto)) {
                 $purchaseOrderDto->setCancelled(0);
                 $purchaseOrderDto->setCancelNote("");
@@ -182,6 +184,7 @@ namespace crm\managers {
         }
 
         public function createPurchaseOrder($partnerId, $date, $paymentDeadlineDate, $note) {
+            PartnerManager::getInstance()->setPartnerHidden($purchaseOrderDto->getPartnerId(), 0);
             $dto = $this->createDto();
             $dto->setPartnerId($partnerId);
             $dto->setOrderDate($date);

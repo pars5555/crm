@@ -70,10 +70,12 @@ namespace crm\managers {
             $dto->setQuantity($quantity);
             $dto->setUnitPrice($unitPrice);
             $dto->setCurrencyId($currencyId);
-            $orderDate = PurchaseOrderManager::getInstance()->selectByPK($purchaseOrderId)->getOrderDate();
+            $po = PurchaseOrderManager::getInstance()->selectByPK($purchaseOrderId);
+            $orderDate = $po->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
             ProductManager::getInstance()->updateProductCostForOneUnit($productId);
+            PartnerManager::getInstance()->setPartnerHidden($po->getPartnerId(), 0);
             return $this->updateByPk($dto);
         }
 
@@ -84,10 +86,12 @@ namespace crm\managers {
             $dto->setQuantity($quantity);
             $dto->setUnitPrice($unitPrice);
             $dto->setCurrencyId($currencyId);
-            $orderDate = PurchaseOrderManager::getInstance()->selectByPK($purchaseOrderId)->getOrderDate();
+            $po = PurchaseOrderManager::getInstance()->selectByPK($purchaseOrderId);
+            $orderDate = $po->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
             ProductManager::getInstance()->updateProductCostForOneUnit($productId);
+            PartnerManager::getInstance()->setPartnerHidden($po->getPartnerId(), 0);
             return $this->insertDto($dto);
         }
 
