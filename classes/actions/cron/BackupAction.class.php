@@ -19,8 +19,10 @@ namespace crm\actions\cron {
     class BackupAction extends BaseAction {
 
         public function service() {
-            $backup_file = 'crm.pc.am_' . date("Y-m-d-H-i-s") . '.gz';
+            $dataDir = NGS()->getDataDir();
+            $backup_file = $dataDir. '/crm.pc.am_' . date("Y-m-d-H-i-s") . '.gz';
             system("mysqldump --opt -h localhost -P 3306 -u crm -pcrm123 crm.pc.am | gzip > $backup_file");
+            mail($backup_file, $subject, $message);
         }
 
     }
