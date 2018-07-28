@@ -24,7 +24,7 @@ namespace crm\loads\main {
     class WarehouseLoad extends AdminLoad {
 
         public function load() {
-            $partnerId = 245;
+            $partnerId = false;
             if (!empty(NGS()->args()->partner_id)) {
                 $partnerId = NGS()->args()->partner_id;
             }
