@@ -56,6 +56,7 @@ namespace crm\managers {
                 if (!array_key_exists($productId, $productQtyMappedByProductId)) {
                     $productQtyMappedByProductId[$productId] = 0;
                 }
+                if ($partnerId == false)
                 $productQtyMappedByProductId[$productId] -= $productQty;
             }
             $ret = [];

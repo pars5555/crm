@@ -24,13 +24,12 @@ namespace crm\loads\main {
     class WarehouseLoad extends AdminLoad {
 
         public function load() {
-            $partnerId = false;
+            $partnerId = 245;
             if (!empty(NGS()->args()->partner_id)) {
                 $partnerId = NGS()->args()->partner_id;
             }
 
             $warehouse_partners = SettingManager::getInstance()->getSetting('warehouse_partners');
-            $warehouse_partners_array = explode(',', $warehouse_partners);
             $warehousePartners = PartnerManager::getInstance()->selectAdvance('*', ['id', 'in', "($warehouse_partners)"], null, null, null, null, true);
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity($partnerId);
             $productIds = array_keys($productsQuantity);
