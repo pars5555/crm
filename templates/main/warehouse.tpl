@@ -3,6 +3,15 @@
     <div class="form-group" style="float: right">
         <a href="javascript:void(0);" id="export_csv"><img src="/img/csv.png" width="60"/></a>
     </div>
+    <div class="form-group">
+        <label class="label">Partner</label>
+        <select id="partner_select" data-no-wrap=true>
+            <option value="0" {if $ns.selected_partner_id == 0}selected{/if}>Select Partner...</option>
+            {foreach from=$ns.warehousePartners item=p}
+                <option value="{$p->getId()}" {if $ns.selected_partner_id == $p->getId()}selected{/if}>{$p->getName()}</option>
+            {/foreach}
+        </select>
+    </div>
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell">Id</span>

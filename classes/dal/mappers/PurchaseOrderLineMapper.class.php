@@ -72,13 +72,13 @@ namespace crm\dal\mappers {
             return $this->fetchRows($sqlQuery);
         }
 
-        public function getAllProductCountInNonCancelledPurchaseOrders($skipWarehousePartners = false, $partnersIds = []) {
+        public function getAllProductCountInNonCancelledPurchaseOrders($partnerId = false) {
             $sql = "SELECT product_id, SUM(quantity) AS `product_qty` FROM `%s` INNER JOIN  "
                     . " `purchase_orders` ON `purchase_order_id` = `purchase_orders`.`id` "
                     . "WHERE `purchase_orders`.`cancelled` = 0 %s GROUP by `product_id`";
             $skip = "";
-            if ($skipWarehousePartners) {
-                $skip = "AND `sale_orders`.partner_id not in ($partnersIds)";
+            if ($partnerId > 0) {
+                $skip = "AND purchase_orders.partner_id = $partnerId";
             }
             $sqlQuery = sprintf($sql, $this->getTableName(), $skip);
             $productIdQtyObjects = $this->fetchRows($sqlQuery);

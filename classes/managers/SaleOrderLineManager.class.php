@@ -130,8 +130,8 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function getAllProductCountInNonCancelledSaleOrders($skipWarehousePartners = false, $partnersIds = []) {
-            return $this->mapper->getAllProductCountInNonCancelledSaleOrders($skipWarehousePartners, $partnersIds);
+        public function getAllProductCountInNonCancelledSaleOrders($partnersId = false) {
+            return $this->mapper->getAllProductCountInNonCancelledSaleOrders($partnersId);
         }
 
         public function getTotalProfitSumInNonCancelledSaleOrders($startDate, $endDate) {
