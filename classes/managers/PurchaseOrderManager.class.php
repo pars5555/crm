@@ -184,7 +184,6 @@ namespace crm\managers {
         }
 
         public function createPurchaseOrder($partnerId, $date, $paymentDeadlineDate, $note) {
-            PartnerManager::getInstance()->setPartnerHidden($purchaseOrderDto->getPartnerId(), 0);
             $dto = $this->createDto();
             $dto->setPartnerId($partnerId);
             $dto->setOrderDate($date);
