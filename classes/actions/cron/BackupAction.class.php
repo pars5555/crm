@@ -19,15 +19,9 @@ namespace crm\actions\cron {
     class BackupAction extends BaseAction {
 
         public function service() {
-            $dbhost = '127.0.0.1:3036';
-            $dbuser = 'crm';
-            $dbpass = 'crm123';
             $backup_file = 'crm.pc.am_' . date("Y-m-d-H-i-s") . '.gz';
-            $command = "mysqldump --opt -h $dbhost -u $dbuser -p $dbpass " . "test_db | gzip > $backup_file";
-            var_dump($command);exit;
-            system($command);
+            system("mysqldump --opt -h localhost -P 3306 -u crm -pcrm123 crm.pc.am | gzip > $backup_file");
         }
-
 
     }
 
