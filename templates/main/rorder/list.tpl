@@ -21,7 +21,7 @@
             <span class="table-cell"> Delete </span>
         </div> 
         {foreach from=$ns.recipientOrders item=recipientOrder}
-            <div class="table-row" {if $recipientOrder->getCancelled() == 1}style="background: red"{/if}>
+            <div class="table-row" {if $recipientOrder->getCancelled() == 1}style="color: gray"{/if}>
                 <a class="table-cell" href="{$SITE_PATH}/rorder/{$recipientOrder->getId()}">
                     <span>{$recipientOrder->getId()} </span>
                 </a>

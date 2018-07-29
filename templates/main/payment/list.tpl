@@ -25,7 +25,7 @@
             <span class="table-cell"> Delete </span>
         </div> 
         {foreach from=$ns.payments item=payment}
-            <div class="table-row" {if $payment->getCancelled() == 1}style="background: red"{/if} href="{$SITE_PATH}/payment/{$payment->getId()}">
+            <div class="table-row" {if $payment->getCancelled() == 1}style="color: gray"{/if} href="{$SITE_PATH}/payment/{$payment->getId()}">
                 <a class="table-cell" href="{$SITE_PATH}/payment/{$payment->getId()}">
                     <span>{$payment->getId()} </span>
                 </a>

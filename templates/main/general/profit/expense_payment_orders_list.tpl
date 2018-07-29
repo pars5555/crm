@@ -8,7 +8,7 @@
             <span class="table-cell"> Note </span>
         </div> 
         {foreach from=$ns.expensePaymentOrders item=saleOrder}
-            <div class="table-row" {if $saleOrder->getCancelled() == 1}style="background: red"{/if}>
+            <div class="table-row" {if $saleOrder->getCancelled() == 1}style="color: gray"{/if}>
                 <a class="table-cell" href="{$SITE_PATH}/sale/{$saleOrder->getId()}">
                     <span>{$saleOrder->getId()} </span>
                 </a>
