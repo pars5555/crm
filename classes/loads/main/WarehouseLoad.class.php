@@ -38,8 +38,8 @@ namespace crm\loads\main {
             $products = ProductManager::getInstance()->getProductListFull(['id', 'in', $productIdsSql], 'name', 'ASC');
 
             $productIds = ProductManager::getDtosIdsArray($products);
-            $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
-            $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
+            $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds, $partnerId);
+            $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds, $partnerId);
             $usdRate = CurrencyRateManager::getInstance()->getCurrencyRate(1);
             $this->addParam('products', $products);
             $this->addParam('usd_rate', $usdRate);

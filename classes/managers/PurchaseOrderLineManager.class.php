@@ -104,7 +104,7 @@ namespace crm\managers {
         }
 
         public function getNonCancelledProductsPurchaseOrders($productIds) {
-            if (empty($productIds)){
+            if (empty($productIds)) {
                 return [];
             }
             $dtos = $this->mapper->getNonCancelledProductsPurchaseOrders($productIds);
@@ -115,8 +115,8 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function getProductsPurchaseOrders($productIds) {
-            if (empty($productIds)){
+        public function getProductsPurchaseOrders($productIds, $partnerId = false) {
+            if (empty($productIds)) {
                 return [];
             }
             $poLines = $this->mapper->getNonCancelledProductsPurchaseOrders($productIds);
@@ -129,7 +129,11 @@ namespace crm\managers {
             $allPurchaseOrdersIds = array_unique($allPurchaseOrdersIds);
             if (!empty($allPurchaseOrdersIds)) {
                 $idsSql = '(' . implode(',', $allPurchaseOrdersIds) . ')';
-                $pos = PurchaseOrderManager::getInstance()->selectAdvance('*', ['id', 'IN', $idsSql], null, null, null, null, true);
+                $where = ['id', 'IN', $idsSql];
+                if ($partnerId > 0) {
+                    $where = array_merge($where, ['AND', 'partner_id', '=', $partnerId]);
+                }
+                $pos = PurchaseOrderManager::getInstance()->selectAdvance('*', $where, null, null, null, null, true);
             }
 
 
@@ -143,10 +147,9 @@ namespace crm\managers {
                 }
                 $ret[$productId] = [];
                 foreach ($poIdsMappedByProductId[$productId] as $poId) {
-                    if (array_key_exists($poId, $pos)){
-                    $ret[$productId][] = $pos[$poId];
+                    if (array_key_exists($poId, $pos)) {
+                        $ret[$productId][] = $pos[$poId];
                     }
-                    
                 }
             }
             return $ret;
@@ -155,13 +158,12 @@ namespace crm\managers {
         public function getAllProductCountInNonCancelledPurchaseOrders($partnerId = false) {
             return $this->mapper->getAllProductCountInNonCancelledPurchaseOrders($partnerId);
         }
-        
+
         public function getAllProductPriceInNonCancelledPurchaseOrders() {
-            $rows =  $this->mapper->getAllProductPriceInNonCancelledPurchaseOrders();
+            $rows = $this->mapper->getAllProductPriceInNonCancelledPurchaseOrders();
             $ret = [];
             foreach ($rows as $productId => $productPriceInMainCurrency) {
-                if (!isset($ret[$productId]))
-                {
+                if (!isset($ret[$productId])) {
                     $ret[$productId] = 0;
                 }
                 $ret[$productId] += $productPriceInMainCurrency;

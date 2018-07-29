@@ -17,11 +17,15 @@
             <span class="table-cell">Id</span>
             <span class="table-cell">Name</span>
             <span class="table-cell">Model</span>
-            <span class="table-cell">Location</span>
-            <span class="table-cell">Uom</span>
+            {if $ns.selected_partner_id == 0}
+                <span class="table-cell">Location</span>
+                <span class="table-cell">Uom</span>
+            {/if}
             <span class="table-cell">Quantity</span>
-            <span class="table-cell">Price</span>
-            <span class="table-cell">Qty Checked</span>
+            {if $ns.selected_partner_id == 0}
+                <span class="table-cell">Price</span>
+                <span class="table-cell">Qty Checked</span>
+            {/if}
             <span class="table-cell">Purchase Orders</span>
             <span class="table-cell">Sale Orders</span>
             <span class="table-cell"> View </span>
@@ -32,11 +36,15 @@
                     <span class="table-cell" >{$product->getId()} </span> 
                     <span class="table-cell f_editable_cell" data-field-name="name">{$product->getName()} </span>
                     <span class="table-cell f_editable_cell" data-field-name="model">{$product->getModel()} </span>
-                    <span class="table-cell pre f_editable_cell" data-type="richtext"  data-field-name="location_note">{$product->getLocationNote()} </span>
-                    <span class="table-cell">{$product->getUomDto()->getName()}</span>
+                    {if $ns.selected_partner_id == 0}
+                        <span class="table-cell pre f_editable_cell" data-type="richtext"  data-field-name="location_note">{$product->getLocationNote()} </span>
+                        <span class="table-cell">{$product->getUomDto()->getName()}</span>
+                    {/if}
                     <span class="table-cell">{$ns.productsQuantity[$product->getId()]|default:'0'}</span>
-                    <span class="table-cell">{$ns.productsPrice[$product->getId()]|number_format:2}</span>
-                    <span class="table-cell "> <input class="f_qty_checked_checkbox" data-product_id="{$product->getId()}" type="checkbox" value="1" {if $product->getQtyChecked() ==1}checked{/if}/></span>
+                    {if $ns.selected_partner_id == 0}
+                        <span class="table-cell">{$ns.productsPrice[$product->getId()]|number_format:2}</span>
+                        <span class="table-cell "> <input class="f_qty_checked_checkbox" data-product_id="{$product->getId()}" type="checkbox" value="1" {if $product->getQtyChecked() ==1}checked{/if}/></span>
+                    {/if}
                     <span class="table-cell {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}tooltipster{/if}">
                         {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
                         <p style="display: none">

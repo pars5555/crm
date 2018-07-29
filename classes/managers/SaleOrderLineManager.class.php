@@ -142,7 +142,7 @@ namespace crm\managers {
             return $this->mapper->getAllNonCancelledExpenseSaleOrders($startDate, $endDate);
         }
 
-        public function getProductsSaleOrders($productIds) {
+        public function getProductsSaleOrders($productIds, $partnerId = false) {
             $soLines = [];
             if (!empty($productIds)) {
                 $soLines = $this->mapper->getNonCancelledProductsSaleOrders($productIds);
@@ -157,7 +157,11 @@ namespace crm\managers {
             $saleOrdersMappedById = [];
             if (!empty($allSaleOrdersIds)) {
                 $idsSql = '(' . implode(',', $allSaleOrdersIds) . ')';
-                $saleOrdersMappedById = SaleOrderManager::getInstance()->selectAdvance('*', ['id', 'IN', $idsSql], null, null, null, null, true);
+                $where = ['id', 'IN', $idsSql];
+                if ($partnerId > 0) {
+                    $where = array_merge($where, ['AND', 'partner_id', '=', $partnerId]);
+                }
+                $saleOrdersMappedById = SaleOrderManager::getInstance()->selectAdvance('*', $where, null, null, null, null, true);
             }
 
 
@@ -171,7 +175,9 @@ namespace crm\managers {
                 }
                 $ret[$productId] = [];
                 foreach ($soIdsMappedByProductId[$productId] as $soId) {
-                    $ret[$productId][] = $saleOrdersMappedById[$soId];
+                    if (array_key_exists($soId, $saleOrdersMappedById)) {
+                        $ret[$productId][] = $saleOrdersMappedById[$soId];
+                    }
                 }
             }
             return $ret;
