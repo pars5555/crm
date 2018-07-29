@@ -59,7 +59,7 @@ namespace crm\loads\main\purchase {
         }
 
         private function initFilters($limit) {
-            $where = [];
+            $where = ['deleted', '=', 0];
             //partner
             $selectedFilterPartnerId = 0;
             if (isset(NGS()->args()->prt)) {
@@ -67,6 +67,9 @@ namespace crm\loads\main\purchase {
             }
             $this->addParam('selectedFilterPartnerId', $selectedFilterPartnerId);
             if ($selectedFilterPartnerId > 0) {
+                if (!empty($where)) {
+                    $where[] = 'AND';
+                }
                 $where[] = 'partner_id';
                 $where[] = '=';
                 $where[] = $selectedFilterPartnerId;

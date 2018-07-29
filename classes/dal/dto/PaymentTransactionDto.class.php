@@ -33,7 +33,7 @@ namespace crm\dal\dto {
         // Map of DB value to Field value
         private $mapArray = array("id" => "id", "date" => "date", "payment_method_id" => "paymentMethodId",
             "partner_id" => "partnerId", "currency_id" => "currencyId", "amount" => "amount", "checked" => "checked"
-            , "cancelled" => "cancelled", "cancel_note" => "cancelNote", "note" => "note", "signature" => "signature",
+            , "cancelled" => "cancelled", "deleted" => "deleted", "cancel_note" => "cancelNote", "note" => "note", "signature" => "signature",
             "is_expense" => "isExpense", "paid" => "paid", "currency_rate" => "currencyRate", "created_at" => "createdAt"
         );
 

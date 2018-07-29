@@ -28,7 +28,7 @@ namespace crm\actions\main\payment {
                 $this->redirect('payment/list');
             }
             $paymentTransactionManager = PaymentTransactionManager::getInstance();
-            $paymentTransactionManager->deleteByPK($paymentId);
+            $paymentTransactionManager->updateField($paymentId, 'deleted', 1);
             $_SESSION['success_message'] = 'Payment Successfully deleted!';
             if (strpos($_SERVER['HTTP_REFERER'], 'payment/list') === false) {
                 $this->redirect('payment/list');

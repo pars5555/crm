@@ -67,19 +67,18 @@ namespace crm\managers {
         }
 
         public function deletePartnerFull($partnerId) {
-            $saleOrderDtosMappedById = SaleOrderManager::getInstance()->selectAdvance('id', ['partner_id', '=', $partnerId], null, null, null, null, true);
-            $purchaseOrderDtosMappedById = PurchaseOrderManager::getInstance()->selectAdvance('id', ['partner_id', '=', $partnerId], null, null, null, null, true);
-            if (!empty($saleOrderDtosMappedById)) {
-                $sqlSaleOrderIds = '(' . implode(',', array_keys($saleOrderDtosMappedById)) . ')';
-                SaleOrderLineManager::getInstance()->deleteAdvance(['sale_order_id', 'in', $sqlSaleOrderIds]);
+            $saleOrderDtos = SaleOrderManager::getInstance()->selectAdvance('id', ['partner_id', '=', $partnerId]);
+            $purchaseOrderDtos= PurchaseOrderManager::getInstance()->selectAdvance('id', ['partner_id', '=', $partnerId]);
+            $paymentOrderDtos = PaymentTransactionManager::getInstance()->selectAdvance('id', ['partner_id', '=', $partnerId]);
+            if (!empty($saleOrderDtos)) {
+                throw new \ngs\framework\exceptions\NgsErrorException('partner has sale orders related!');
             }
-            if (!empty($purchaseOrderDtosMappedById)) {
-                $sqlPurchaseOrderIds = '(' . implode(',', array_keys($purchaseOrderDtosMappedById)) . ')';
-                PurchaseOrderLineManager::getInstance()->deleteAdvance(['purchase_order_id', 'in', $sqlPurchaseOrderIds]);
+            if (!empty($purchaseOrderDtos)) {
+                throw new \ngs\framework\exceptions\NgsErrorException('partner has purchase orders related!');
             }
-            SaleOrderManager::getInstance()->deleteByField('partner_id', $partnerId);
-            PurchaseOrderManager::getInstance()->deleteByField('partner_id', $partnerId);
-            PaymentTransactionManager::getInstance()->deleteByField('partner_id', $partnerId);
+            if (!empty($paymentOrderDtos)) {
+                throw new \ngs\framework\exceptions\NgsErrorException('partner has payment orders related!');
+            }
             PartnerManager::getInstance()->deleteByPK($partnerId);
             return true;
         }

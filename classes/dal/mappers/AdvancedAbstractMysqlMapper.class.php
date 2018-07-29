@@ -50,7 +50,6 @@ namespace crm\dal\mappers {
             if (isset($limit) && $limit > 0) {
                 $sqlQuery .= ' LIMIT ' . $offset . ', ' . $limit;
             }
-            //var_dump($sqlQuery);exit;
             return $this->fetchRows($sqlQuery);
         }
 

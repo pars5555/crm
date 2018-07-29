@@ -28,7 +28,7 @@ namespace crm\actions\main\purchase {
                 $this->redirect('purchase/list');
             }
             $purchaseOrderManager = PurchaseOrderManager::getInstance();
-            $purchaseOrderManager->delete($purchaseOrderId);
+            $purchaseOrderManager->updateField($purchaseOrderId, 'deleted', 1);
             $_SESSION['success_message'] = 'Purchase Order Successfully deleted!';
             if (strpos($_SERVER['HTTP_REFERER'], 'purchase/list') === false) {
                 $this->redirect('purchase/list');

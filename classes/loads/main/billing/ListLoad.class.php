@@ -55,7 +55,7 @@ use NGS;
         }
 
         private function initFilters($limit) {
-            $where = ['1','=','1'];
+            $where = ['deleted', '=', 0];
             //partner
             $selectedFilterPartnerId = 0;
             if (isset(NGS()->args()->prt)) {
