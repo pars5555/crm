@@ -33,7 +33,7 @@
                 <span class="table-cell"> {$order->getPurseTotal()} </span>
                 <span class="table-cell"> {$order->getBuyerName()} </span>
                 <span class="table-cell" title="{$order->getStatusHistoryText()}"> {$order->getStatus()} </span>
-                <span class="table-cell" title="{$order->getAmazonOrderNumberText()}"> {$order->getAmazonOrderNumber()} </span>
+                <span class="table-cell" title="{$order->getAmazonOrderNumberText()}" {if $order->hasMoreThanOneAmazonOrder()} style="color:red;"{/if}> {$order->getAmazonOrderNumber()} </span>
                 <span class="table-cell"> {$order->getCreatedAt()} </span>
             </div>
         {/foreach}

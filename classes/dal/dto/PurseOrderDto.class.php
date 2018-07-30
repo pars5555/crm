@@ -61,6 +61,23 @@ namespace crm\dal\dto {
             return implode('&#013;', $ret);
         }
 
+        function hasMoreThanOneAmazonOrder() {
+            if (empty($this->histores)) {
+                return false;
+            }
+            $amazonOrderNumber = $this->getAmazonOrderNumber();
+            foreach ($this->histores as $history) {
+                $aon = trim($history->getAmazonOrderNumber());
+                if (!empty($amazonOrderNumber) && $amazonOrderNumber !== $aon) {
+                    return true;
+                }
+                if (!empty($aon)) {
+                    $amazonOrderNumber = $history->getAmazonOrderNumber();
+                }
+            }
+            return false;
+        }
+
     }
 
 }
