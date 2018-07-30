@@ -21,6 +21,7 @@
             <span class="table-cell"> Buyer </span>
             <span class="table-cell"> Status </span>
             <span class="table-cell"> amazon Order Number</span>
+            <span class="table-cell"> created </span>
         </div> 
         {foreach from=$ns.orders item=order}
             <div class="table-row">
@@ -33,6 +34,7 @@
                 <span class="table-cell"> {$order->getBuyerName()} </span>
                 <span class="table-cell" title="{$order->getStatusHistoryText()}"> {$order->getStatus()} </span>
                 <span class="table-cell" title="{$order->getAmazonOrderNumberText()}"> {$order->getAmazonOrderNumber()} </span>
+                <span class="table-cell"> {$order->getCreatedAt()} </span>
             </div>
         {/foreach}
     </div>
