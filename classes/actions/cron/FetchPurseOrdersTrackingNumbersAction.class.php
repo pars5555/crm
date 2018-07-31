@@ -49,7 +49,7 @@ namespace crm\actions\cron {
                     }
                 }
                 if (!empty($trackingNumber)) {
-                    PurseOrderManager::getInstance()->updateAdvanced($row->getId(), 'tracking_number', $trackingNumber);
+                    PurseOrderManager::getInstance()->updateField($row->getId(), 'tracking_number', $trackingNumber);
                     PurseOrderManager::getInstance()->updateField($row->getId(), 'shipping_carrier', $shippingCarrierName);
                     PurseOrderManager::getInstance()->updateField($row->getId(), 'updated_at', date('Y-m-d H:i:s'));
                 }
