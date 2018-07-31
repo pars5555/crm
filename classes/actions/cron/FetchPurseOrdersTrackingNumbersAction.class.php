@@ -61,7 +61,7 @@ namespace crm\actions\cron {
             $trackingHeadlineEl = $el->getElementsByTagName('h1');
             if ($trackingHeadlineEl->length > 0) {
                 $trackingHeadline = $trackingHeadlineEl->item(0)->nodeValue;
-                if (strpos('Shipped with', $trackingHeadline)) {
+                if (strpos('Shipped with', $trackingHeadline)!== false) {
                     $trackingHeadline = trim(str_replace('Shipped with', '', $trackingHeadline));
                     return trim($trackingHeadline);
                 }
