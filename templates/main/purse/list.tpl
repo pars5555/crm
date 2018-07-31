@@ -40,11 +40,11 @@
                      
                 </span>
                 <span class="table-cell">
-                    {if  strpos($order->getShippingCarrier(), 'usps') !== false}
+                    {if  strpos($order->getShippingCarrier()|lower, 'usps') !== false}
                         <a class="link" target="_black" href="https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1={$order->getTrackingNumber()}" > {$order->getTrackingNumber()}</a> 
-                    {elseif  strpos($order->getShippingCarrier(), 'ups') !== false}
+                    {elseif  strpos($order->getShippingCarrier()|lower, 'ups') !== false}
                         <a class="link" target="_black" href="https://wwwapps.ups.com/WebTracking/track?track=yes&trackNums={$order->getTrackingNumber()}&loc=en_am"> {$order->getTrackingNumber()}</a>
-                    {elseif  strpos($order->getShippingCarrier(), 'fedex') !== false}
+                    {elseif  strpos($order->getShippingCarrier()|lower, 'fedex') !== false}
                         <a class="link" target="_black" href="https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=1Z306A400395039227{$order->getTrackingNumber()}&cntry_code=us&locale=en_US"> {$order->getTrackingNumber()}</a> 
                     {else}
                         {$order->getTrackingNumber()}
