@@ -22,7 +22,7 @@ namespace crm\actions\cron {
     class FetchPurseOrdersTrackingNumbersAction extends BaseAction {
 
         public function service() {
-
+            set_time_limit(0);
             $rows = PurseOrderManager::getInstance()->getTrackingFetchNeededOrders();
             foreach ($rows as $row) {
                 $aon = $row->getAmazonOrderNumber();
