@@ -58,10 +58,13 @@ namespace crm\actions\cron {
         }
 
         private function getShippingCarrierName($el) {
-            $trackingHeadline = $el->getElementsByTagName('h1');
-            if (strpos('Shipped with', $trackingHeadline)){
-                $trackingHeadline = trim(str_replace('Shipped with', '', $trackingHeadline));
-                return trim($trackingHeadline);
+            $trackingHeadlineEl = $el->getElementsByTagName('h1');
+            if ($trackingHeadlineEl->length > 0) {
+                $trackingHeadline = $trackingHeadlineEl->item(0)->nodeValue;
+                if (strpos('Shipped with', $trackingHeadline)) {
+                    $trackingHeadline = trim(str_replace('Shipped with', '', $trackingHeadline));
+                    return trim($trackingHeadline);
+                }
             }
             return 'N/A';
         }
