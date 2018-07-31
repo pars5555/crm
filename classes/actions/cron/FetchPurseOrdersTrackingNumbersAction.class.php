@@ -50,6 +50,7 @@ namespace crm\actions\cron {
                 if (!empty($trackingNumber)) {
                     PurseOrderManager::getInstance()->updateField($row->getId(), 'tracking_number', $trackingNumber);
                 }
+                sleep(1);
             }
         }
 
