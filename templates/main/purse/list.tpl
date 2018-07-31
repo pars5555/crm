@@ -20,7 +20,8 @@
             <span class="table-cell"> Purse Total </span>
             <span class="table-cell"> Buyer </span>
             <span class="table-cell"> Status </span>
-            <span class="table-cell"> amazon Order Number</span>
+            <span class="table-cell"> amazon Order Number </span>
+            <span class="table-cell"> Tracking Number </span>
             <span class="table-cell"> changed </span>
             <span class="table-cell"> created </span>
         </div> 
@@ -35,6 +36,7 @@
                 <span class="table-cell"> {$order->getBuyerName()} </span>
                 <span class="table-cell" title="{$order->getStatusHistoryText()}"> {$order->getStatus()} </span>
                 <span class="table-cell" title="{$order->getAmazonOrderNumberText()}" {if $order->hasMoreThanOneAmazonOrder()} style="color:red;"{/if}> {$order->getAmazonOrderNumber()} </span>
+                <span class="table-cell"> {$order->getTrackingNumber()} </span>
                 <span class="table-cell"> {$order->getUpdatedAt()} </span>
                 <span class="table-cell"> {$order->getCreatedAt()} </span>
             </div>

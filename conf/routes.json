@@ -538,6 +538,10 @@
             "route": "cache_partner_debts"
         },
         {
+            "action": "actions.cron.fetch_purse_orders_tracking_numbers",
+            "route": "fetch_purse_orders_tracking_numbers"
+        },
+        {
             "action": "actions.cron.backup",
             "route": "backup"
         },

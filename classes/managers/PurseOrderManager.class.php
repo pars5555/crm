@@ -60,6 +60,10 @@ namespace crm\managers {
             }
         }
 
+        public function getTrackingFetchNeededOrders() {
+            return $this->selectAdvance('*' ,["length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND', "length(COALESCE(`tracking_number`, ''))", '<', 3]);
+        }
+        
         public function insertOrUpdateOrder($orderNumber, $productTitle, $orderStatus, $imgName, $amazonOrderNumber, $purseTotal, $buyerName) {
             $dtos = $this->selectByField('order_number', $orderNumber);
             if (!empty($dtos)) {
