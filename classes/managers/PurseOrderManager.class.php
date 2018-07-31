@@ -54,21 +54,25 @@ namespace crm\managers {
 
         public function archiveIfnotExists($orderNumbers) {
             $orderNumbersSql = "('" . implode("','", $orderNumbers) . "')";
-            $rows = $this->selectAdvance('id',['`order_number`', 'not in', $orderNumbersSql]);
+            $rows = $this->selectAdvance('id', ['`order_number`', 'not in', $orderNumbersSql]);
             foreach ($rows as $row) {
                 $this->updateField($row->getId(), 'hidden', 1);
             }
         }
 
         public function getTrackingFetchNeededOrders() {
-            return $this->selectAdvance('*' ,["length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND', "length(COALESCE(`tracking_number`, ''))", '<', 3]);
+            return $this->selectAdvance('*', ["length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND', "length(COALESCE(`tracking_number`, ''))", '<', 3]);
         }
-        
+
         public function insertOrUpdateOrder($orderNumber, $productTitle, $orderStatus, $imgName, $amazonOrderNumber, $purseTotal, $buyerName) {
             $dtos = $this->selectByField('order_number', $orderNumber);
             if (!empty($dtos)) {
                 $dto = $dtos[0];
                 $changed = $this->addHistoryIfOrderChanged($dto, $orderStatus, $amazonOrderNumber, $purseTotal, $buyerName);
+                $amazonOrderNumberChanged = $this->isAmazonOrderNumberCahnged($dto, $amazonOrderNumber);
+                if ($amazonOrderNumberChanged) {
+                    $dto->setTrackingNumber('');
+                }
                 $dto->setStatus($orderStatus);
                 $dto->setAmazonOrderNumber($amazonOrderNumber);
                 $dto->setPurseTotal($purseTotal);
@@ -93,6 +97,10 @@ namespace crm\managers {
                 $dto->setCreatedAt(date('Y-m-d H:i:s'));
                 return $this->insertDto($dto);
             }
+        }
+
+        private function isAmazonOrderNumberCahnged($dto, $amazonOrderNumber) {
+            return trim($dto->getAmazonOrderNumber()) !== trim($amazonOrderNumber);
         }
 
         private function addHistoryIfOrderChanged($dto, $orderStatus, $amazonOrderNumber, $purseTotal, $buyerName) {
