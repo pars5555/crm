@@ -1,5 +1,17 @@
 <div class="container warehouse--container">
-    <h1>Total: {$ns.total|number_format:2}</h1>
+    <h1>Total: 
+        {foreach from=$ns.total key=currencyId item=amount}
+            <span class="price">
+                {assign currencyDto $ns.currencies[$currencyId]}
+                {if $currencyDto->getSymbolPosition() == 'left'}
+                    {$currencyDto->getTemplateChar()}
+                {/if}
+                {$amount}
+                {if $currencyDto->getSymbolPosition() == 'right'}
+                    {$currencyDto->getTemplateChar()}
+                {/if}
+            </span>
+        {/foreach}</h1>
     <div class="form-group" style="float: right">
         <a href="javascript:void(0);" id="export_csv"><img src="/img/csv.png" width="60"/></a>
     </div>

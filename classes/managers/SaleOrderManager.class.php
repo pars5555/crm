@@ -200,6 +200,22 @@ use crm\dal\mappers\SaleOrderMapper;
             }
             return $ret;
         }
+        
+        public function getPartnerSaleOrdersTotal($partnerId) {
+            $where = ['cancelled', '=', 0, 'AND', 'partner_id', '=', $partnerId];
+            $sos = $this->getSaleOrdersFull($where);
+            $total = [];
+            foreach ($sos as $so) {
+                foreach ($so->getTotalAmount() as $currencyId => $amount) {
+                    if (!array_key_exists($currencyId, $total)) {
+                        $total[$currencyId] = 0;
+                    }
+                    $total[$currencyId] += $amount;
+                }
+            }
+            return $total;
+        }
+
 
         public function getSaleOrdersFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);

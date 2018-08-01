@@ -39,6 +39,21 @@ namespace crm\managers {
             return $this->getPurchaseOrdersFull(['partner_id', '=', $partnerId]);
         }
 
+        public function getPartnerPurchaseOrdersTotal($partnerId) {
+            $where = ['cancelled', '=', 0, 'AND', 'partner_id', '=', $partnerId];
+            $pos = $this->getPurchaseOrdersFull($where);
+            $total = [];
+            foreach ($pos as $po) {
+                foreach ($po->getTotalAmount() as $currencyId => $amount) {
+                    if (!array_key_exists($currencyId, $total)) {
+                        $total[$currencyId] = 0;
+                    }
+                    $total[$currencyId] += $amount;
+                }
+            }
+            return $total;
+        }
+
         public function getPartnersPurchaseOrders($partnerIds) {
             $rows = $this->getPurchaseOrdersFull(['partner_id', 'in', '(' . implode(',', $partnerIds) . ')']);
             $ret = array();

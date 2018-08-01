@@ -12,11 +12,14 @@
 namespace crm\loads\main {
 
     use crm\loads\AdminLoad;
+    use crm\managers\CurrencyManager;
     use crm\managers\CurrencyRateManager;
     use crm\managers\PartnerManager;
     use crm\managers\ProductManager;
     use crm\managers\PurchaseOrderLineManager;
+    use crm\managers\PurchaseOrderManager;
     use crm\managers\SaleOrderLineManager;
+    use crm\managers\SaleOrderManager;
     use crm\managers\SettingManager;
     use crm\managers\WarehouseManager;
     use NGS;
@@ -50,10 +53,17 @@ namespace crm\loads\main {
             $this->addParam('productsSaleOrder', $productsSaleOrders);
             $this->addParam('selected_partner_id', $partnerId);
             $this->addParam('warehousePartners', $warehousePartners);
+            $this->addParam('currencies', CurrencyManager::getInstance()->mapDtosById(CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1])));
 
-            $total = 0;
-            foreach ($productsQuantity as $pId => $qty) {
-                $total += floatval($productsPrice[$pId]) * floatval($qty);
+
+            $posTotals = PurchaseOrderManager::getInstance()->getPartnerPurchaseOrdersTotal($partnerId);
+            $sosTotals = SaleOrderManager::getInstance()->getPartnerSaleOrdersTotal($partnerId);
+            $total = [];
+            foreach ($sosTotals as $currencyId => $sosTotal) {
+                $total[$currencyId] = $sosTotal;
+                if (array_key_exists($currencyId, $posTotals)) {
+                    $total[$currencyId] -= $posTotals[$currencyId];
+                }
             }
             $this->addParam('total', $total);
         }
