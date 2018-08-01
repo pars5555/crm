@@ -30,7 +30,8 @@
                 <a class="table-cell" href="{$SITE_PATH}/purse/{$order->getId()}">
                     <span>{$order->getId()} </span>
                 </a>
-                <span class="table-cell"> {$order->getOrderNumber()} </span>
+                <span class="table-cell"> 
+                    <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a> 
                 <span class="table-cell"> {$order->getProductName()} </span>
                 <span class="table-cell"> {$order->getPurseTotal()} </span>
                 <span class="table-cell"> {$order->getBuyerName()} </span>
