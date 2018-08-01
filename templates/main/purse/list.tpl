@@ -32,13 +32,14 @@
                 </a>
                 <span class="table-cell"> 
                     <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a> 
+                </span>
                 <span class="table-cell"> {$order->getProductName()} </span>
                 <span class="table-cell"> {$order->getPurseTotal()} </span>
                 <span class="table-cell"> {$order->getBuyerName()} </span>
                 <span class="table-cell" title="{$order->getStatusHistoryText()}"> {$order->getStatus()} </span>
                 <span class="table-cell" title="{$order->getAmazonOrderNumberText()}" {if $order->hasMoreThanOneAmazonOrder()} style="color:red;"{/if}> 
                     <a class="link" target="_black" href="https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jnljnvjtqlspon&orderId={$order->getAmazonOrderNumber()}" > {$order->getAmazonOrderNumber()} </a> 
-                     
+
                 </span>
                 <span class="table-cell">
                     {if  strpos($order->getShippingCarrier()|lower, 'usps') !== false}
