@@ -44,35 +44,41 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function getAllProductsQuantity($partnerId = false) {
-
+        public function getWarehousePartnerProductsQuantity($partnerId) {
             $allProductQuantityInPurchaseOrders = PurchaseOrderLineManager::getInstance()->getAllProductCountInNonCancelledPurchaseOrders($partnerId);
             $allProductQuantityInSaleOrders = SaleOrderLineManager::getInstance()->getAllProductCountInNonCancelledSaleOrders($partnerId);
             $productQtyMappedByProductId = [];
-            if ($partnerId > 0) {
-                foreach ($allProductQuantityInSaleOrders as $productId => $productQty) {
-                    $productQtyMappedByProductId[$productId] = $productQty;
+            foreach ($allProductQuantityInSaleOrders as $productId => $productQty) {
+                $productQtyMappedByProductId[$productId] = $productQty;
+            }
+            foreach ($allProductQuantityInPurchaseOrders as $productId => $productQty) {
+                if (!array_key_exists($productId, $productQtyMappedByProductId)) {
+                    $productQtyMappedByProductId[$productId] = 0;
                 }
-            } else {
-                foreach ($allProductQuantityInPurchaseOrders as $productId => $productQty) {
-                    $productQtyMappedByProductId[$productId] = $productQty;
+                $productQtyMappedByProductId[$productId] -= $productQty;
+            }
+            $ret = [];
+            foreach ($productQtyMappedByProductId as $key => $r) {
+                if ($r > 0) {
+                    $ret[$key] = $r;
                 }
             }
-            if ($partnerId > 0) {
-                foreach ($allProductQuantityInPurchaseOrders as $productId => $productQty) {
-                    if (!array_key_exists($productId, $productQtyMappedByProductId)) {
-                        $productQtyMappedByProductId[$productId] = 0;
-                    }
-                    $productQtyMappedByProductId[$productId] -= $productQty;
+            return $ret;
+        }
+
+        public function getAllProductsQuantity() {
+
+            $allProductQuantityInPurchaseOrders = PurchaseOrderLineManager::getInstance()->getAllProductCountInNonCancelledPurchaseOrders();
+            $allProductQuantityInSaleOrders = SaleOrderLineManager::getInstance()->getAllProductCountInNonCancelledSaleOrders();
+            $productQtyMappedByProductId = [];
+            foreach ($allProductQuantityInPurchaseOrders as $productId => $productQty) {
+                $productQtyMappedByProductId[$productId] = $productQty;
+            }
+            foreach ($allProductQuantityInSaleOrders as $productId => $productQty) {
+                if (!array_key_exists($productId, $productQtyMappedByProductId)) {
+                    $productQtyMappedByProductId[$productId] = 0;
                 }
-                
-            } else {
-                foreach ($allProductQuantityInSaleOrders as $productId => $productQty) {
-                    if (!array_key_exists($productId, $productQtyMappedByProductId)) {
-                        $productQtyMappedByProductId[$productId] = 0;
-                    }
-                    $productQtyMappedByProductId[$productId] -= $productQty;
-                }
+                $productQtyMappedByProductId[$productId] -= $productQty;
             }
             $ret = [];
             foreach ($productQtyMappedByProductId as $key => $r) {

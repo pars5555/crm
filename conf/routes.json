@@ -528,6 +528,16 @@
             }
         }
     ],
+    "pwarehouse": [
+        {
+            "action": "loads.main.index",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.partner_warehouse"
+                }
+            }
+        }
+    ],
     "cron": [
         {
             "action": "actions.cron.get_currency_rates",

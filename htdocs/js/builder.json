@@ -99,6 +99,7 @@
                     "loads/main/general/ProfitChartSelectionThreeDataLoad.class.js",
                     "loads/main/general/CashboxLoad.class.js",
                     "loads/main/WarehouseLoad.class.js",
+                    "loads/main/PartnerWarehouseLoad.class.js",
                     "loads/main/warranty/IndexLoad.class.js",
                     "loads/main/warranty/ContentLoad.class.js"
                 ]

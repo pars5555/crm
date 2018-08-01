@@ -22,14 +22,7 @@ NGS.createLoad("crm.loads.main.warehouse", {
         $("#partner_select").chosen({
             search_contains: true
         });
-        this.initPartnerSelect();
-    },
-    initPartnerSelect: function () {
-        $('#partner_select').change(function () {
-            var partner_id = $(this).val();
-            NGS.load('crm.loads.main.warehouse', {partner_id: partner_id});
-        });
-    },
+    },   
     initQtyChecked: function () {
         $('.f_qty_checked_checkbox').change(function () {
             var product_id = $(this).data('product_id');
