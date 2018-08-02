@@ -167,15 +167,15 @@ use ngs\framework\exceptions\NgsErrorException;
         }
 
         public function getPartnerPaymentTransactions($partnerId) {
-            return $this->selectAdvance('*', ['partner_id', '=', $partnerId, 'AND', 'amount', '>', 0]);
+            return $this->selectAdvance('*', ['deleted', '=', 0, 'AND', 'partner_id', '=', $partnerId, 'AND', 'amount', '>', 0]);
         }
 
         public function getPartnerBillingTransactions($partnerId) {
-            return $this->selectAdvance('*', ['partner_id', '=', $partnerId, 'AND', 'amount', '<', 0]);
+            return $this->selectAdvance('*', ['deleted', '=', 0, 'AND', 'partner_id', '=', $partnerId, 'AND', 'amount', '<', 0]);
         }
 
         public function getPartnersPaymentTransactions($partnerIds) {
-            $rows = $this->selectAdvance('*', ['partner_id', 'in', '(' . implode(',', $partnerIds) . ')', 'and', 'amount', '>', '0']);
+            $rows = $this->selectAdvance('*', ['deleted', '=', 0, 'AND', 'partner_id', 'in', '(' . implode(',', $partnerIds) . ')', 'and', 'amount', '>', '0']);
             $ret = array();
             foreach ($partnerIds as $partnerId) {
                 $ret[$partnerId] = [];
@@ -187,7 +187,7 @@ use ngs\framework\exceptions\NgsErrorException;
         }
 
         public function getPartnersBillingTransactions($partnerIds) {
-            $rows = $this->selectAdvance('*', ['partner_id', 'in', '(' . implode(',', $partnerIds) . ')', 'and', 'amount', '<', '0']);
+            $rows = $this->selectAdvance('*', ['deleted', '=', 0, 'AND', 'partner_id', 'in', '(' . implode(',', $partnerIds) . ')', 'and', 'amount', '<', '0']);
             $ret = array();
             foreach ($partnerIds as $partnerId) {
                 $ret[$partnerId] = [];

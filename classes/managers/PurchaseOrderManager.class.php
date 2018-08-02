@@ -36,7 +36,7 @@ namespace crm\managers {
         }
 
         public function getPartnerPurchaseOrders($partnerId) {
-            return $this->getPurchaseOrdersFull(['partner_id', '=', $partnerId]);
+            return $this->getPurchaseOrdersFull(['deleted', '=', 0, 'AND', 'partner_id', '=', $partnerId]);
         }
 
         public function getPartnerPurchaseOrdersTotal($partnerId) {

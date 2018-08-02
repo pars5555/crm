@@ -186,11 +186,11 @@ use crm\dal\mappers\SaleOrderMapper;
         }
 
         public function getPartnerSaleOrders($partnerId) {
-            return $this->getSaleOrdersFull(['partner_id', '=', $partnerId]);
+            return $this->getSaleOrdersFull(['deleted', '=', 0, 'AND', 'partner_id', '=', $partnerId]);
         }
 
         public function getPartnersSaleOrders($partnerIds) {
-            $rows = $this->getSaleOrdersFull(['partner_id', 'in', '(' . implode(',', $partnerIds) . ')']);
+            $rows = $this->getSaleOrdersFull(['deleted', '=', 0, 'AND', 'partner_id', 'in', '(' . implode(',', $partnerIds) . ')']);
             $ret = array();
             foreach ($partnerIds as $partnerId) {
                 $ret[$partnerId] = [];
