@@ -35,27 +35,30 @@ namespace crm\loads\main\partner {
                 $where = array_merge($where, ['and', 'hidden', '=', 0]);
             }
             if (!empty($searchText)) {
-                $where = array_merge($where, ['AND','(', 'name', 'like', "'%$searchText%'"]);
+                $where = array_merge($where, ['AND', '(', 'name', 'like', "'%$searchText%'"]);
                 $where = array_merge($where, ['OR', 'phone', 'like', "'%$searchText%'", ')']);
             }
             $join = '';
-            $groupBy= '';
+            $groupBy = '';
             if ($selectedFilterHasDebt === 'yes') {
                 $join = 'LEFT JOIN partner_debt_cache on partner_debt_cache.partner_id=partners.id';
-                
-                $groupBy= 'GROUP BY partners.id';
-                $where = array_merge($where, ['and','partner_debt_cache.amount', '>', 0]);
+
+                $groupBy = 'GROUP BY partners.id';
+                $where = array_merge($where, ['and', 'partner_debt_cache.amount', '>', 0]);
             }
             if ($selectedFilterHasDebt === 'no') {
                 $join = 'LEFT JOIN partner_debt_cache on partner_debt_cache.partner_id=partners.id';
-                $groupBy= 'GROUP BY partners.id';
-                $where = array_merge($where, ['and','partner_debt_cache.amount', '<', 0]);
+                $groupBy = 'GROUP BY partners.id';
+                $where = array_merge($where, ['and', 'partner_debt_cache.amount', '<', 0]);
             }
             $partners = $partnerManager->selectAdvance('partners.*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit, false, $join, $groupBy);
             $partnerIds = $partnerManager->getDtosIdsArray($partners);
+            $partnersInitialDebt = [];
             $partnersSaleOrdersMappedByPartnerId = [];
             $partnersPurchaseOrdersMappedByPartnerId = [];
-            $partnersInitialDebt = [];
+            $partnersPaymentTransactionsMappedByPartnerId = [];
+            $partnersBillingTransactionsMappedByPartnerId = [];
+
             if (!empty($partnerIds)) {
                 $partnersSaleOrdersMappedByPartnerId = SaleOrderManager::getInstance()->getPartnersSaleOrders($partnerIds);
                 $partnersPurchaseOrdersMappedByPartnerId = PurchaseOrderManager::getInstance()->getPartnersPurchaseOrders($partnerIds);
