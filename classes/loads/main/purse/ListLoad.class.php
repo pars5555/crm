@@ -30,6 +30,7 @@ namespace crm\loads\main\purse {
                 $where = array_merge($where, ['AND', '(', 'product_name', 'like', "'%$searchText%'"]);
                 $where = array_merge($where, ['OR', 'order_number', 'like', "'%$searchText%'"]);
                 $where = array_merge($where, ['OR', 'amazon_order_number', 'like', "'%$searchText%'", ')']);
+                $where = array_merge($where, ['OR', 'tracking_number', 'like', "'%$searchText%'", ')']);
             }
             $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
