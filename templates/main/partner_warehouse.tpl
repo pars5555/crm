@@ -34,8 +34,8 @@
             <span class="table-cell"> View </span>
         </div> 
         {foreach from=$ns.products item=product}
-            {if isset($ns.productsQuantity[$product->getId()]) && abs($ns.productsQuantity[$product->getId()])}
-                <div data-id="{$product->getId()}" data-type="product" class="table-row" > 
+            {if isset($ns.productsQuantity[$product->getId()]) && abs($ns.productsQuantity[$product->getId()])>0.01}
+                <div data-id="{$product->getId()}" data-type="product" class="table-row"  {if $ns.productsQuantity[$product->getId()]<0}style="color:red"{/if}> 
                     <span class="table-cell" >{$product->getId()} </span> 
                     <span class="table-cell f_editable_cell" data-field-name="name">{$product->getName()} </span>
                     <span class="table-cell f_editable_cell" data-field-name="model">{$product->getModel()} </span>

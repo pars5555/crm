@@ -59,9 +59,7 @@ namespace crm\managers {
             }
             $ret = [];
             foreach ($productQtyMappedByProductId as $key => $r) {
-                if ($r > 0) {
-                    $ret[$key] = $r;
-                }
+                $ret[$key] = $r;
             }
             return $ret;
         }
