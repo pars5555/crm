@@ -44,6 +44,7 @@ namespace crm\actions\main\purse {
                 $orderNumbers[] = $orderNumber;
 
                 $productTitle = $img->getAttribute('title');
+                $productImage = $img->getAttribute('src');
 
                 $amazonOrderNumberElements = $el->getElementsByTagName('td')[3]->getElementsByTagName('small');
                 $amazonOrderNumber = "";
@@ -60,7 +61,7 @@ namespace crm\actions\main\purse {
                 $purseTotal = trim($el->getElementsByTagName('td')[4]->getElementsByTagName('span')->item(0)->nodeValue, ' $');
                 $orderStatus = $finder->query(".//*[contains(@class, 'status-lg')]", $el)[0]->nodeValue;
 
-                $result = \crm\managers\PurseOrderManager::getInstance()->insertOrUpdateOrder($orderNumber, $productTitle, $orderStatus, $imgName, $amazonOrderNumber, $purseTotal, $buyerName);
+                $result = \crm\managers\PurseOrderManager::getInstance()->insertOrUpdateOrder($orderNumber, $productTitle, $productImage, $orderStatus, $imgName, $amazonOrderNumber, $purseTotal, $buyerName);
                 if (!empty($result)) {
                     $changedOrNewOrders[] = $orderNumber;
                 }

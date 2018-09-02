@@ -16,6 +16,7 @@
         <div class="table_header_group">
             <span class="table-cell"> ID </span>
             <span class="table-cell"> Order Number </span>
+            <span class="table-cell"> Image </span>
             <span class="table-cell"> Product Name </span>
             <span class="table-cell"> Purse Total </span>
             <span class="table-cell"> Buyer </span>
@@ -32,6 +33,9 @@
                 </a>
                 <span class="table-cell"> 
                     <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a> 
+                </span>
+                <span class="table-cell"> 
+                    <img src="{$order->getProductImage()}" width="100"/> 
                 </span>
                 <span class="table-cell"> 
                     <a class="link" target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getProductName()}</a> 
