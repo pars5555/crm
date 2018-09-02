@@ -44,7 +44,10 @@ namespace crm\actions\main\purse {
                 $orderNumbers[] = $orderNumber;
 
                 $productTitle = $img->getAttribute('title');
-                $productImage = $img->getAttribute('src');
+                $productImage = explode('/', $img->getAttribute('src'));
+                $productImage = end($productImage);
+                
+                
 
                 $amazonOrderNumberElements = $el->getElementsByTagName('td')[3]->getElementsByTagName('small');
                 $amazonOrderNumber = "";

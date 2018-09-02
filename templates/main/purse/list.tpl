@@ -35,7 +35,7 @@
                     <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a> 
                 </span>
                 <span class="table-cell"> 
-                    <img src="{$order->getProductImage()}" width="100"/> 
+                    <img src="https://images-na.ssl-images-amazon.com/images/I/{$order->getProductImage()}" width="100"/> 
                 </span>
                 <span class="table-cell"> 
                     <a class="link" target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getProductName()}</a> 
