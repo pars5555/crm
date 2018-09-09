@@ -31,6 +31,21 @@ NGS.createLoad("crm.loads.main.purse.list", {
             });
         });
         this.initUpload();
+        this.initUpdate();
+        this.initHide();
+    },
+    initUpdate: function () {
+        $('.f_update_purse').click(function () {
+            var account = $(this).data('account_name');
+            NGS.action('crm.actions.main.purse.update_orders', {account_name: account});
+        });
+    },
+    initHide: function () {
+        $('.f_hide').click(function () {
+            var id = $(this).data('id');
+            NGS.action('crm.actions.main.purse.set_hidden', {id: id, hide:1});
+            $(this).closest('.table-row').remove();
+        });
     },
     initUpload: function () {
         jQuery('#upload_button').click(function () {

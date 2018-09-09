@@ -24,26 +24,15 @@ namespace crm\dal\dto {
         // Map of DB value to Field value
         private $mapArray = array("id" => "id", "order_number" => "orderNumber", "amazon_order_number" => "amazonOrderNumber",
             "tracking_number" => "trackingNumber", "amazon_total" => "amazonTotal", "buyer_name" => "buyerName",
-            "purse_total" => "purseTotal", "btc_rate" => "btcRate", "product_name" => "productName",
-            "quantity" => "quantity", "image_url" => "imageUrl", "status" => "status", "hidden" => 'hidden',
-            "updated_at" => "updatedAt", "created_at" => "createdAt");
+            "discount" => "discount", "serial_number" => "serial_number", "btc_rate" => "btcRate", "recipient_name" => "recipientName", "product_name" => "productName",
+            "quantity" => "quantity", "image_url" => "imageUrl", "shipping_carrier" => "shippingCarrier", "status" => "status", "note" => 'note',
+            "account_name" => "accountName", "created_at" => "createdAt", 'meta'=>'meta');
 
         // returns map array
         public function getMapArray() {
             return $this->mapArray;
         }
 
-        function getHistores() {
-            return $this->histores;
-        }
-
-        function setHistores($histores) {
-            $this->histores = $histores;
-        }
-
-        function addHistory($history) {
-            $this->histores[] = $history;
-        }
 
         function getStatusHistoryText() {
             $ret = [];

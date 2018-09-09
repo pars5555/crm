@@ -21,8 +21,11 @@ namespace crm\loads\main\purse {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 200;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterHidden, $searchText) = $this->initFilters($limit);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterHidden, $searchText) = $this->initFilters($limit);
             $where = ['1', '=', '1'];
+            if ($selectedFilterAccount !== 'purse_all') {
+                $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
+            }
             if ($selectedFilterHidden !== 'all') {
                 $where = array_merge($where, ['AND ', 'hidden', '=', 0]);
             }
@@ -30,13 +33,16 @@ namespace crm\loads\main\purse {
                 $where = array_merge($where, ['AND', '(', 'product_name', 'like', "'%$searchText%'"]);
                 $where = array_merge($where, ['OR', 'order_number', 'like', "'%$searchText%'"]);
                 $where = array_merge($where, ['OR', 'amazon_order_number', 'like', "'%$searchText%'"]);
+                $where = array_merge($where, ['OR', 'recipient_name', 'like', "'%$searchText%'"]);
+                $where = array_merge($where, ['OR', 'serial_number', 'like', "'%$searchText%'"]);
                 $where = array_merge($where, ['OR', 'tracking_number', 'like', "'%$searchText%'", ')']);
             }
             $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
             $pagesCount = ceil($count / $limit);
-            
+
             $this->addParam('changed_orders', NGS()->args()->changed_orders);
+            $this->addParam('count', $count);
             $this->addParam('pagesCount', $pagesCount);
             $this->addParam('orders', $orders);
         }
@@ -76,17 +82,24 @@ namespace crm\loads\main\purse {
                     $selectedFilterHidden = strtolower(NGS()->args()->hddn);
                 }
             }
+            $selectedFilterAccount = 'all';
+            if (isset(NGS()->args()->acc)) {
+                if (in_array(strtolower(NGS()->args()->acc), ['pars', 'info', 'checkout'])) {
+                    $selectedFilterAccount = strtolower(NGS()->args()->acc);
+                }
+            }
             $searchText = '';
             if (isset(NGS()->args()->st)) {
                 $searchText = trim(NGS()->args()->st);
             }
 
             $this->addParam('searchText', $searchText);
+            $this->addParam('selectedFilterAccount', $selectedFilterAccount);
             $this->addParam('selectedFilterHidden', $selectedFilterHidden);
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $selectedFilterHidden, $searchText];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterHidden ,$searchText];
         }
 
         public function getTemplate() {

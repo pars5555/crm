@@ -40,6 +40,7 @@ namespace ngs\framework\util {
         NGS()->getFileUtils()->sendFile($filePath, array("mimeType" => $this->getContentType(), "cache" => true));
         return;
       }
+      
       if (strpos($file, "devout") !== false) {
         $realFile = substr($file, strpos($file, "/") + 1);
         $realFile = realpath(NGS()->getPublicDir($module)."/".$realFile);

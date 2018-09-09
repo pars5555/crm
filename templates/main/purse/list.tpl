@@ -14,32 +14,44 @@
     {/if}
     <div class="table_striped">
         <div class="table_header_group">
+            <span class="table-cell"> Actions </span>
             <span class="table-cell"> ID </span>
             <span class="table-cell"> Order Number </span>
+            <span class="table-cell"> Recipient </span>
             <span class="table-cell"> Product Name </span>
-            <span class="table-cell"> Purse Total </span>
+            <span class="table-cell"> Amazon Total </span>
+            <span class="table-cell"> Discount </span>
             <span class="table-cell"> Buyer </span>
             <span class="table-cell"> Status </span>
+            <span class="table-cell"> Note </span>
+            <span class="table-cell"> S/N </span>
             <span class="table-cell"> amazon Order Number </span>
             <span class="table-cell"> Tracking Number </span>
             <span class="table-cell"> changed </span>
             <span class="table-cell"> created </span>
         </div> 
         {foreach from=$ns.orders item=order}
-            <div class="table-row">
+            <div class="table-row"  data-type="btc" data-id="{$order->getId()}" >
+                <span class="table-cell"> 
+                    <a href="javascript:void(0);" class="fa fa-eye-slash f_hide" data-id='{$order->getId()}'></a>
+                </span>
                 <a class="table-cell" href="{$SITE_PATH}/purse/{$order->getId()}">
                     <span>{$order->getId()} </span>
                 </a>
                 <span class="table-cell"> 
                     <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a> 
                 </span>
+                <span class="table-cell"> {$order->getRecipientName()} </span>
                 <span class="table-cell"> 
                     <a class="link" target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getProductName()}</a> 
                 </span>
-                <span class="table-cell"> {$order->getPurseTotal()} </span>
+                <span class="table-cell"> {$order->getAmazonTotal()} </span>
+                <span class="table-cell"> {$order->getDiscount()} </span>
                 <span class="table-cell"> {$order->getBuyerName()} </span>
-                <span class="table-cell" title="{$order->getStatusHistoryText()}"> {$order->getStatus()} </span>
-                <span class="table-cell" title="{$order->getAmazonOrderNumberText()}" {if $order->hasMoreThanOneAmazonOrder()} style="color:red;"{/if}> 
+                <span class="table-cell"> {$order->getStatus()} </span>
+                <span class="table-cell f_editable_cell" data-field-name="note"  > {$order->getNote()} </span>
+                <span class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </span>
+                <span class="table-cell"> 
                     <a class="link" target="_black" href="https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jnljnvjtqlspon&orderId={$order->getAmazonOrderNumber()}" > {$order->getAmazonOrderNumber()} </a> 
                 </span>
                 <span class="table-cell">

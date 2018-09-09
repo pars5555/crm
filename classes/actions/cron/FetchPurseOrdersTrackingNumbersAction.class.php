@@ -24,6 +24,7 @@ namespace crm\actions\cron {
         public function service() {
             set_time_limit(0);
             $rows = PurseOrderManager::getInstance()->getTrackingFetchNeededOrders();
+            $updated = 0;
             foreach ($rows as $row) {
                 $aon = $row->getAmazonOrderNumber();
                 $url = "https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jpmklqnukqppon&orderId=$aon";
@@ -49,12 +50,14 @@ namespace crm\actions\cron {
                     }
                 }
                 if (!empty($trackingNumber)) {
+                    $updated+=1;
                     PurseOrderManager::getInstance()->updateField($row->getId(), 'tracking_number', $trackingNumber);
                     PurseOrderManager::getInstance()->updateField($row->getId(), 'shipping_carrier', $shippingCarrierName);
                     PurseOrderManager::getInstance()->updateField($row->getId(), 'updated_at', date('Y-m-d H:i:s'));
                 }
                 sleep(1);
             }
+            $this->addParam('updated', $updated);
         }
 
         private function getShippingCarrierName($el) {
