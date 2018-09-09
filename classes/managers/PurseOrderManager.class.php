@@ -91,7 +91,7 @@ namespace crm\managers {
             return $this->selectAdvance(['id', 'amazon_order_number'], ["length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND', "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND', "length(COALESCE(`note`,''))", '<', 5, 'AND', "length(COALESCE(`serial_number`,''))", '<', 5]);
         }
 
-        public function insertOrUpdateOrder($orderNumber, $productTitle, $orderStatus, $imgName, $amazonOrderNumber, $purseTotal, $buyerName) {
+        public function insertOrUpdateOrder($orderNumber, $productTitle, $productImage, $orderStatus, $imgName, $amazonOrderNumber, $purseTotal, $buyerName) {
             $dtos = $this->selectByField('order_number', $orderNumber);
             if (!empty($dtos)) {
                 $dto = $dtos[0];
@@ -103,6 +103,7 @@ namespace crm\managers {
                 $dto->setStatus($orderStatus);
                 $dto->setAmazonOrderNumber($amazonOrderNumber);
                 $dto->setPurseTotal($purseTotal);
+                $dto->setProductImage($productImage);
                 $dto->setBuyerName($buyerName);
                 if ($changed) {
                     $dto->setUpdatedAt(date('Y-m-d H:i:s'));
@@ -115,6 +116,7 @@ namespace crm\managers {
                 $dto = $this->createDto();
                 $dto->setOrderNumber($orderNumber);
                 $dto->setProductName($productTitle);
+                $dto->setProductImage($productImage);
                 $dto->setStatus($orderStatus);
                 $dto->setImageUrl($imgName);
                 $dto->setAmazonOrderNumber($amazonOrderNumber);
