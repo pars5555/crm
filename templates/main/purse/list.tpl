@@ -18,6 +18,7 @@
             <span class="table-cell"> ID </span>
             <span class="table-cell"> Order Number </span>
             <span class="table-cell"> Recipient </span>
+            <span class="table-cell"> Img </span>
             <span class="table-cell"> Product Name </span>
             <span class="table-cell"> Amazon Total </span>
             <span class="table-cell"> Discount </span>
@@ -42,6 +43,7 @@
                     <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a> 
                 </span>
                 <span class="table-cell"> {$order->getRecipientName()} </span>
+                <span class="table-cell"> <img src="{$order->getImageUrl()}" width="100"/> </span>
                 <span class="table-cell"> 
                     <a class="link" target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getProductName()}</a> 
                 </span>
