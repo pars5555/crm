@@ -25,7 +25,7 @@ namespace crm\actions\main\purse {
             $accountName = NGS()->args()->account_name;
             $token = SettingManager::getInstance()->getSetting($accountName);
             $res = PurseOrderManager::getInstance()->getActiveOrders($token);
-            if (empty($res) || strpos(print_r($res, true), 'Invalid') !== false) {
+            if (empty($res) || strpos(print_r($res, true), 'Invalid') !== false|| strpos(print_r($res, true), 'Error') !== false) {
                 $this->addParam('success', false);
                 return;
             }
