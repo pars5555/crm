@@ -45,28 +45,28 @@ namespace crm\managers {
         }
 
         public function insertOrUpdateOrderFromPurseObject($accountName, $order) {
-            $dtos = $this->selectByField('order_number', $order->id);
+            $dtos = $this->selectByField('order_number', $order['id']);
             if (!empty($dtos)) {
                 $dto = $dtos[0];
             } else {
                 $dto = $this->createDto();
             }
-            $dto->setOrderNumber($order->id);
-            $dto->setStatus($order->state);
-            $dto->setProductName($order->items[0]->name);
-            $dto->setImageUrl($order->items[0]->images->small);
-            $dto->setQuantity($order->items[0]->quantity);
-            $dto->setAmazonOrderNumber($order->shipping->purchase_order);
-            $dto->setRecipientName($order->shipping->verbose->full_name);
-            $dto->setAmazonTotal($order->pricing->buyer_pays_fiat);
-            $dto->setBtcRate($order->pricing->market_exchange_rate->rate);
-            $dto->setDiscount(floatval($order->items[0]->discount_rate * 100));
+            $dto->setOrderNumber($order['id']);
+            $dto->setStatus($order['state']);
+            $dto->setProductName($order['items'][0]['name']);
+            $dto->setImageUrl($order['items'][0]['images']['small']);
+            $dto->setQuantity($order['items'][0]['quantity']);
+            $dto->setAmazonOrderNumber($order['shipping']['purchase_order']);
+            $dto->setRecipientName($order['shipping']['verbose']['full_name']);
+            $dto->setAmazonTotal($order['pricing']['buyer_pays_fiat']);
+            $dto->setBtcRate($order['pricing']['market_exchange_rate']['rate']);
+            $dto->setDiscount(floatval($order['items'][0]['discount_rate'] * 100));
             $dto->setAccountName($accountName);
             $dto->setMeta(json_encode($order));
-            if (isset($order->transaction) && isset($order->transaction->buyer)) {
-                $dto->setBuyerName($order->transaction->buyer->username);
+            if (isset($order['transaction']) && isset($order['transaction']['buyer'])) {
+                $dto->setBuyerName($order['transaction']['buyer']['username']);
             }
-            $dto->setCreatedAt(date('Y-m-d H:i:s', $order->created_at));
+            $dto->setCreatedAt(date('Y-m-d H:i:s', $order['created_at']));
             if (!empty($dtos)) {
                 $this->updateByPk($dto);
             } else {

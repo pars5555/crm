@@ -30,13 +30,10 @@ namespace crm\actions\main\purse {
                 $this->addParam('message', 'can not fetch active orders');
                 return;
             }
-            return;
             //$result = \crm\managers\PurseOrderManager::getInstance()->emptyAccount($accountName);
-            foreach ($res->results as $order) {
+            foreach ($res['results'] as $order) {
                 $result = \crm\managers\PurseOrderManager::getInstance()->insertOrUpdateOrderFromPurseObject($accountName, $order);
             }
-            
-            
             
             $res = PurseOrderManager::getInstance()->getInactiveOrders($token);
             if (empty($res)) {
