@@ -67,7 +67,7 @@
                         {$order->getTrackingNumber()}
                     {/if}
                     {if $order->getDeliveryDate()>0}
-                        <br/>delivered at: {$order->getDeliveryDate()}
+                        <br/><br/>delivered at: {$order->getDeliveryDate()}
                     {/if}
                 </span>
                 <span class="table-cell"> {$order->getUpdatedAt()} </span>
