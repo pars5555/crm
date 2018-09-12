@@ -45,6 +45,7 @@ namespace crm\loads\main\purse {
                 $where = array_merge($where, ['OR', 'tracking_number', 'like', "'%$searchText%'", ')']);
             }
             $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
             
             $ordersPuposedToNotReceivedToDestinationCounty = PurseOrderManager::getInstance()->getOrdersPuposedToNotReceivedToDestinationCounty($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             
@@ -54,7 +55,6 @@ namespace crm\loads\main\purse {
             }
             
             
-            $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
             $pagesCount = ceil($count / $limit);
 
             $this->addParam('total_puposed_to_not_received', $totalPuposedToNotReceived);
