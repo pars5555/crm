@@ -57,6 +57,7 @@ namespace crm\managers {
             $dto->setImageUrl($order['items'][0]['images']['small']);
             $dto->setQuantity($order['items'][0]['quantity']);
             $dto->setAmazonOrderNumber($order['shipping']['purchase_order']);
+            $dto->setAmazonOrderNumber($order['shipping']['delivery_date']);
             $dto->setRecipientName($order['shipping']['verbose']['full_name']);
             $dto->setAmazonTotal($order['pricing']['buyer_pays_fiat']);
             $dto->setBtcRate($order['pricing']['market_exchange_rate']['rate']);
