@@ -21,10 +21,17 @@ namespace crm\loads\main\purse {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 200;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterHidden, $searchText) = $this->initFilters($limit);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterHidden,$selectedFilterStatus, $searchText) = $this->initFilters($limit);
             $where = ['1', '=', '1'];
             if ($selectedFilterAccount !== 'purse_all') {
                 $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
+            }
+            $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered')";
+            if ($selectedFilterStatus === 'active') {
+                $where = array_merge($where, ['AND ', 'status', 'in', $activeStatusesSql]);
+            }
+            if ($selectedFilterStatus === 'inactive') {
+                $where = array_merge($where, ['AND ', 'status', 'not in', $activeStatusesSql]);
             }
             if ($selectedFilterHidden !== 'all') {
                 $where = array_merge($where, ['AND ', 'hidden', '=', 0]);
@@ -88,6 +95,12 @@ namespace crm\loads\main\purse {
                     $selectedFilterAccount = strtolower(NGS()->args()->acc);
                 }
             }
+            $selectedFilterStatus = 'active';
+            if (isset(NGS()->args()->stts)) {
+                if (in_array(strtolower(NGS()->args()->stts), ['all', 'active', 'inactive'])) {
+                    $selectedFilterStatus = strtolower(NGS()->args()->stts);
+                }
+            }
             $searchText = '';
             if (isset(NGS()->args()->st)) {
                 $searchText = trim(NGS()->args()->st);
@@ -96,10 +109,11 @@ namespace crm\loads\main\purse {
             $this->addParam('searchText', $searchText);
             $this->addParam('selectedFilterAccount', $selectedFilterAccount);
             $this->addParam('selectedFilterHidden', $selectedFilterHidden);
+            $this->addParam('selectedFilterStatus', $selectedFilterStatus);
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterHidden ,$searchText];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterHidden ,$selectedFilterStatus, $searchText];
         }
 
         public function getTemplate() {

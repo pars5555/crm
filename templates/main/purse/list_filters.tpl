@@ -30,6 +30,13 @@
             <option value="info" {if $ns.selectedFilterAccount == 'info'}selected{/if}>info@pcstore.am</option>
             <option value="checkout" {if $ns.selectedFilterAccount == 'checkout'}selected{/if}>checkoutarmenia@gmail.am</option>
         </select>
+        
+        <label>Status</label>
+        <select name="stts">
+            <option value="all" {if $ns.selectedFilterStatus == 'all'}selected{/if}>All</option>
+            <option value="active" {if $ns.selectedFilterStatus == 'active'}selected{/if}>Active</option>
+            <option value="inactive" {if $ns.selectedFilterStatus == 'inactive'}selected{/if}>Archive</option>
+        </select>
        
         
         <label>Show Hiddens</label>
