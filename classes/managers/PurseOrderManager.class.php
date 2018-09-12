@@ -58,6 +58,7 @@ namespace crm\managers {
             $dto->setQuantity($order['items'][0]['quantity']);
             $dto->setAmazonOrderNumber($order['shipping']['purchase_order']);
             $dto->setDeliveryDate($order['shipping']['delivery_date']);
+            $dto->setUnreadMassages($order['unread_messages']);
             $dto->setRecipientName($order['shipping']['verbose']['full_name']);
             $dto->setAmazonTotal($order['pricing']['buyer_pays_fiat']);
             $dto->setBtcRate($order['pricing']['market_exchange_rate']['rate']);

@@ -13,7 +13,7 @@
         <h2>following orders are changed or added, {$ns.changed_orders}</h2>
     {/if}
 
-    
+
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell"> Actions </span>
@@ -37,6 +37,9 @@
             <div class="table-row"  data-type="btc" data-id="{$order->getId()}" >
                 <span class="table-cell"> 
                     <a href="javascript:void(0);" class="fa fa-eye-slash f_hide" data-id='{$order->getId()}'></a>
+                    {if $order->getUnreadMessages() > 0}
+                    <span class="fa fa-envelope" style="color: red">{$order->getUnreadMessages()}</span>
+                    {/if}
                 </span>
                 <a class="table-cell" href="{$SITE_PATH}/purse/{$order->getId()}">
                     <span>{$order->getId()} </span>
