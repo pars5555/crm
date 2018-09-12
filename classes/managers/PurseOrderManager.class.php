@@ -141,6 +141,11 @@ namespace crm\managers {
             return false;
         }
 
+        public function getInactiveOrders($token) {
+            $headers = $this->getPurseOrdersHeader($token);
+            return json_decode($this->curl_get_contents('https://api.purse.io/api/v1/orders/me/inactive', $headers));
+        }
+        
         public function getActiveOrders($token) {
             $headers = $this->getPurseOrdersHeader($token);
             return json_decode($this->curl_get_contents('https://api.purse.io/api/v1/orders/me/active', $headers));
