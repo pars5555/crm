@@ -56,7 +56,7 @@
                 <span class="table-cell"> 
                     <a class="link" target="_black" href="https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jnljnvjtqlspon&orderId={$order->getAmazonOrderNumber()}" > {$order->getAmazonOrderNumber()} </a> 
                 </span>
-                <span class="table-cell">
+                <span class="table-cell" title="{$order->getDeliveryDate()}">
                     {if  strpos($order->getShippingCarrier()|lower, 'usps') !== false}
                         <a class="link" target="_black" href="https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1={$order->getTrackingNumber()}" > {$order->getTrackingNumber()}</a> 
                     {elseif  strpos($order->getShippingCarrier()|lower, 'ups') !== false}
