@@ -25,23 +25,26 @@ namespace crm\actions\main\purse {
             $accountName = NGS()->args()->account_name;
             $token = SettingManager::getInstance()->getSetting($accountName);
             $res = PurseOrderManager::getInstance()->getActiveOrders($token);
-            if (empty($res) || strpos(print_r($res, true), 'Invalid') !== false|| strpos(print_r($res, true), 'Error') !== false) {
+            if (empty($res)) {
                 $this->addParam('success', false);
                 $this->addParam('message', 'can not fetch active orders');
                 return;
             }
+            return;
             //$result = \crm\managers\PurseOrderManager::getInstance()->emptyAccount($accountName);
             foreach ($res->results as $order) {
                 $result = \crm\managers\PurseOrderManager::getInstance()->insertOrUpdateOrderFromPurseObject($accountName, $order);
             }
+            
+            
+            
             $res = PurseOrderManager::getInstance()->getInactiveOrders($token);
-            if (empty($res) || strpos(print_r($res, true), 'Invalid') !== false|| strpos(print_r($res, true), 'Error') !== false) {
+            if (empty($res)) {
                 $this->addParam('success', false);
                 $this->addParam('message', 'can not fetch inactive orders');
                 return;
             }
-            //$result = \crm\managers\PurseOrderManager::getInstance()->emptyAccount($accountName);
-            foreach ($res->results as $order) {
+            foreach ($res['results'] as $order) {
                 $result = \crm\managers\PurseOrderManager::getInstance()->insertOrUpdateOrderFromPurseObject($accountName, $order);
             }
         }

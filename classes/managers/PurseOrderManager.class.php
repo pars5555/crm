@@ -55,7 +55,7 @@ namespace crm\managers {
             $dto->setStatus($order->state);
             $dto->setProductName($order->items[0]->name);
             $dto->setImageUrl($order->items[0]->images->small);
-            $dto->setQuantity($order->items[0]->quantity);            
+            $dto->setQuantity($order->items[0]->quantity);
             $dto->setAmazonOrderNumber($order->shipping->purchase_order);
             $dto->setRecipientName($order->shipping->verbose->full_name);
             $dto->setAmazonTotal($order->pricing->buyer_pays_fiat);
@@ -143,12 +143,25 @@ namespace crm\managers {
 
         public function getInactiveOrders($token) {
             $headers = $this->getPurseOrdersHeader($token);
-            return json_decode($this->curl_get_contents('https://api.purse.io/api/v1/orders/me/inactive', $headers));
+            $rawData = $this->curl_get_contents('https://api.purse.io/api/v1/orders/me/inactive', $headers);
+            $listener = new \JsonStreamingParser\Listener\InMemoryListener();
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, $rawData);
+            rewind($stream);
+            try {
+                $parser = new \JsonStreamingParser\Parser($stream, $listener);
+                $parser->parse();
+                fclose($stream);
+            } catch (Exception $e) {
+                fclose($stream);
+                throw $e;
+            }
+            return $listener->getJson();
         }
-        
+
         public function getActiveOrders($token) {
             $headers = $this->getPurseOrdersHeader($token);
-            return json_decode($this->curl_get_contents('https://api.purse.io/api/v1/orders/me/active', $headers));
+            return json_decode($this->curl_get_contents('https://api.purse.io/api/v1/orders/me/active', $headers), true);
         }
 
         private function curl_get_contents($url, $headers = [], $cookie = '') {
