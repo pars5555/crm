@@ -1,0 +1,29 @@
+{
+    "name": "Sys Framework",
+    "description": "Sys Framework",
+    "keywords": [
+        "Sys",
+        "Php Framework"
+    ],
+    "homepage": "http://sysframework.com",
+    "type": "framework",
+    "license": [
+        "MIT"
+    ],
+    "support": {
+        "source": "https://github.com/pars5555/Sys-Framework"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/smsgatewayme/client-php.git"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.0",
+        "ext-curl": "*",        
+        "php-curl-class/php-curl-class": "*",
+        "salsify/json-streaming-parser": "*"
+    }
+
+}
