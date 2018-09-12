@@ -88,60 +88,6 @@ namespace crm\managers {
             return $ids;
         }
 
-        public function getTrackingFetchNeededOrders() {
-            return $this->selectAdvance(['id', 'amazon_order_number'], ["length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND', "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND', "length(COALESCE(`note`,''))", '<', 5, 'AND', "length(COALESCE(`serial_number`,''))", '<', 5]);
-        }
-
-        public function insertOrUpdateOrder($orderNumber, $productTitle, $productImage, $orderStatus, $imgName, $amazonOrderNumber, $purseTotal, $buyerName) {
-            $dtos = $this->selectByField('order_number', $orderNumber);
-            if (!empty($dtos)) {
-                $dto = $dtos[0];
-                $changed = $this->addHistoryIfOrderChanged($dto, $orderStatus, $amazonOrderNumber, $purseTotal, $buyerName);
-                $amazonOrderNumberChanged = $this->isAmazonOrderNumberCahnged($dto, $amazonOrderNumber);
-                if ($amazonOrderNumberChanged) {
-                    $dto->setTrackingNumber('');
-                }
-                $dto->setStatus($orderStatus);
-                $dto->setAmazonOrderNumber($amazonOrderNumber);
-                $dto->setPurseTotal($purseTotal);
-                $dto->setProductImage($productImage);
-                $dto->setBuyerName($buyerName);
-                if ($changed) {
-                    $dto->setUpdatedAt(date('Y-m-d H:i:s'));
-                }
-                $this->updateByPk($dto);
-                if ($changed) {
-                    return true;
-                }
-            } else {
-                $dto = $this->createDto();
-                $dto->setOrderNumber($orderNumber);
-                $dto->setProductName($productTitle);
-                $dto->setProductImage($productImage);
-                $dto->setStatus($orderStatus);
-                $dto->setImageUrl($imgName);
-                $dto->setAmazonOrderNumber($amazonOrderNumber);
-                $dto->setBuyerName($buyerName);
-                $dto->setPurseTotal($purseTotal);
-                $dto->setUpdatedAt(date('Y-m-d H:i:s'));
-                $dto->setCreatedAt(date('Y-m-d H:i:s'));
-                return $this->insertDto($dto);
-            }
-        }
-
-        private function isAmazonOrderNumberCahnged($dto, $amazonOrderNumber) {
-            return trim($dto->getAmazonOrderNumber()) !== trim($amazonOrderNumber);
-        }
-
-        private function addHistoryIfOrderChanged($dto, $orderStatus, $amazonOrderNumber, $purseTotal, $buyerName) {
-            if ($dto->getStatus() !== $orderStatus || $dto->getAmazonOrderNumber() !== $amazonOrderNumber ||
-                    intval($dto->getPurseTotal()) !== intval($purseTotal) || $dto->getBuyerName() !== $buyerName) {
-                PurseOrderHistoryManager::getInstance()->addRow($dto->getId(), $orderStatus, $amazonOrderNumber, $purseTotal);
-                return true;
-            }
-            return false;
-        }
-
         public function getInactiveOrders($token) {
             $headers = $this->getPurseOrdersHeader($token);
             $rawData = $this->curl_get_contents('https://api.purse.io/api/v1/orders/me/inactive', $headers);
