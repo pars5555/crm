@@ -21,12 +21,12 @@ namespace crm\loads\main\purse {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 200;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterHidden,$selectedFilterStatus, $searchText) = $this->initFilters($limit);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterHidden, $selectedFilterStatus, $searchText) = $this->initFilters($limit);
             $where = ['1', '=', '1'];
             if ($selectedFilterAccount !== 'purse_all') {
                 $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
             }
-            $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered')";
+            $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered', 'under_balance', 'accepted')";
             if ($selectedFilterStatus === 'active') {
                 $where = array_merge($where, ['AND ', 'status', 'in', $activeStatusesSql]);
             }
@@ -113,7 +113,7 @@ namespace crm\loads\main\purse {
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterHidden ,$selectedFilterStatus, $searchText];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterHidden, $selectedFilterStatus, $searchText];
         }
 
         public function getTemplate() {
