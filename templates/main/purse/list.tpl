@@ -12,6 +12,8 @@
     {if !empty($ns.changed_orders)}
         <h2>following orders are changed or added, {$ns.changed_orders}</h2>
     {/if}
+
+    
     <div class="table_striped">
         <div class="table_header_group">
             <span class="table-cell"> Actions </span>

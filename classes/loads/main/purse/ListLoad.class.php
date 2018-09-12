@@ -45,9 +45,20 @@ namespace crm\loads\main\purse {
                 $where = array_merge($where, ['OR', 'tracking_number', 'like', "'%$searchText%'", ')']);
             }
             $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            
+            $ordersPuposedToNotReceivedToDestinationCounty = PurseOrderManager::getInstance()->getOrdersPuposedToNotReceivedToDestinationCounty($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            
+            $totalPuposedToNotReceived = 0;
+            foreach ($ordersPuposedToNotReceivedToDestinationCounty as $order) {
+                $totalPuposedToNotReceived += floatval($order->getAmazonTotal());
+            }
+            
+            
             $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
             $pagesCount = ceil($count / $limit);
 
+            $this->addParam('total_puposed_to_not_received', $totalPuposedToNotReceived);
+            $this->addParam('not_received_orders_count', count($ordersPuposedToNotReceivedToDestinationCounty));
             $this->addParam('changed_orders', NGS()->args()->changed_orders);
             $this->addParam('count', $count);
             $this->addParam('pagesCount', $pagesCount);

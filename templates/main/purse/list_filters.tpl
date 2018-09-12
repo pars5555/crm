@@ -30,15 +30,15 @@
             <option value="info" {if $ns.selectedFilterAccount == 'info'}selected{/if}>info@pcstore.am</option>
             <option value="checkout" {if $ns.selectedFilterAccount == 'checkout'}selected{/if}>checkoutarmenia@gmail.am</option>
         </select>
-        
+
         <label>Status</label>
         <select name="stts">
             <option value="all" {if $ns.selectedFilterStatus == 'all'}selected{/if}>All</option>
             <option value="active" {if $ns.selectedFilterStatus == 'active'}selected{/if}>Active</option>
             <option value="inactive" {if $ns.selectedFilterStatus == 'inactive'}selected{/if}>Archive</option>
         </select>
-       
-        
+
+
         <label>Show Hiddens</label>
         <select name="hddn">
             <option value="all" {if $ns.selectedFilterHidden == 'all'}selected{/if}>All</option>
@@ -57,6 +57,12 @@
 <h2>
     Rows Count: {$count}
 </h2>
+<h4>
+    Total not received to recipient: {$total_puposed_to_not_received}
+</h4>
+<h4>
+    Total not received count: {$not_received_orders_count}
+</h4>
 <div class="form-group" style="float: right">
     <a id="upload_button"><img  style="max-width: 100px;max-height: 60px" src="{$SITE_PATH}/img/upload.png"/></a>
 
