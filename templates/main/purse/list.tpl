@@ -47,7 +47,7 @@
                 <span class="table-cell"> 
                     <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a> 
                 </span>
-                <span class="table-cell"> {$order->getRecipientName()} </span>
+                <span class="table-cell"> {$order->getRecipientName()} ({$order->getAccountName()})</span>
                 <span class="table-cell"> <img src="{$order->getImageUrl()}" width="100"/> </span>
                 <span class="table-cell"> 
                     <a class="link" target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getProductName()}</a> 
