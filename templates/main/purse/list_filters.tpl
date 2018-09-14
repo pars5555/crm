@@ -55,14 +55,17 @@
 <button class="button blue small inline f_update_purse" data-account_name='purse_info'>update Info</button>
 <button class="button blue small inline f_update_purse" data-account_name='purse_checkout'>update Checkout</button>
 <h2>
-    Rows Count: {$count}
+    Rows Count: {$ns.count}
 </h2>
 <h4>
-    Total not received to recipient: {$total_puposed_to_not_received}
+    Total not received to recipient: {$ns.total_puposed_to_not_received}
 </h4>
 <h4>
-    Total not received count: {$not_received_orders_count}
+    Total not received count: {$ns.not_received_orders_count}
 </h4>
+{if !empty($ns.searchText)}
+    Searched text corresponding not reeiev to recipient count:  {$ns.searchedItemPuposedCount}
+{/if}
 <div class="form-group" style="float: right">
     <a id="upload_button"><img  style="max-width: 100px;max-height: 60px" src="{$SITE_PATH}/img/upload.png"/></a>
 

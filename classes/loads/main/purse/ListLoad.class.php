@@ -46,21 +46,28 @@ namespace crm\loads\main\purse {
             }
             $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
-            
+
             $ordersPuposedToNotReceivedToDestinationCounty = PurseOrderManager::getInstance()->getOrdersPuposedToNotReceivedToDestinationCounty($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
-            
+
             $totalPuposedToNotReceived = 0;
+            $searchedItemCount = 0;
             foreach ($ordersPuposedToNotReceivedToDestinationCounty as $order) {
+                $productName = $order->getProductName();
+                if (!empty($searchText) &&  stripos($productName, $searchText) !== false) {
+                    $searchedItemCount += 1;
+                }
                 $totalPuposedToNotReceived += floatval($order->getAmazonTotal());
             }
-            
-            
+
+
             $pagesCount = ceil($count / $limit);
 
             $this->addParam('total_puposed_to_not_received', $totalPuposedToNotReceived);
             $this->addParam('not_received_orders_count', count($ordersPuposedToNotReceivedToDestinationCounty));
             $this->addParam('changed_orders', NGS()->args()->changed_orders);
             $this->addParam('count', $count);
+            $this->addParam('searchedItemPuposedCount', $searchedItemCount);
+            
             $this->addParam('pagesCount', $pagesCount);
             $this->addParam('orders', $orders);
         }
