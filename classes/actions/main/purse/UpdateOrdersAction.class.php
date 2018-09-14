@@ -25,9 +25,9 @@ namespace crm\actions\main\purse {
             $accountName = NGS()->args()->account_name;
             $token = SettingManager::getInstance()->getSetting($accountName);
             $res = PurseOrderManager::getInstance()->getActiveOrders($token);
-            if (empty($res)) {
+            if (empty($res) || !isset($res['results'])) {
                 $this->addParam('success', false);
-                $this->addParam('message', 'can not fetch active orders');
+                $this->addParam('message', print_r($res, true));
                 return;
             }
             //$result = \crm\managers\PurseOrderManager::getInstance()->emptyAccount($accountName);
@@ -36,9 +36,9 @@ namespace crm\actions\main\purse {
             }
             
             $res = PurseOrderManager::getInstance()->getInactiveOrders($token);
-            if (empty($res)) {
+            if (empty($res) || !isset($res['results'])) {
                 $this->addParam('success', false);
-                $this->addParam('message', 'can not fetch inactive orders');
+                $this->addParam('message', print_r($res, true));
                 return;
             }
             foreach ($res['results'] as $order) {
