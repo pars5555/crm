@@ -33,6 +33,22 @@ NGS.createLoad("crm.loads.main.purse.list", {
         this.initUpload();
         this.initUpdate();
         this.initHide();
+        this.initTrackingsSearch();
+        this.initExportTrackingsSearch();
+    },
+    initExportTrackingsSearch: function(){
+        $('#export_search').click(function(){
+            var  trackingNumbers = $('#tracking_numbers_input').val();
+            var params = {trackingNumbers :trackingNumbers};
+            var urlParams = $.param(params);
+            var actionUrl = '/dyn/main_purse/do_export_search_csv?';
+            $(this).attr('href', actionUrl + urlParams);
+        });
+    },
+    initTrackingsSearch: function(){
+        $('#find_trackings_button').click(function(){
+            $('#trackings_modalBox').addClass('is_active');
+        });
     },
     initUpdate: function () {
         $('.f_update_purse').click(function () {

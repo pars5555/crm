@@ -35,9 +35,50 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function findByTrackingNumbers($trackingNumbers) {
+            $trackingNumbers = array_map('trim', $trackingNumbers);
+
+            $notReceivedOrders = $this->selectAdvance(
+                    ['tracking_number', 'recipient_name', 'quantity', 'product_name',
+                'amazon_total', 'account_name'], ['hidden', '=', 0, 'AND',
+                'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 200]);
+            $notReceivedOrdersMappedByTracking = [];
+            foreach ($notReceivedOrders as $order) {
+                $trackingNumber = $order->getTrackingNumber();
+                if (strlen(trim($trackingNumber)) < 5) {
+                    continue;
+                }
+                $notReceivedOrdersMappedByTracking[$trackingNumber] = $order;
+            }
+            $notReceivedTrackings = array_keys($notReceivedOrdersMappedByTracking);
+
+            $ret = [];
+            foreach ($trackingNumbers as $tracking_number) {
+                if (empty($tracking_number)) {
+                    continue;
+                }
+                $index = $this->findTrackingInArray($tracking_number, $notReceivedTrackings);
+                if ($index >= 0) {
+                    $order = $notReceivedOrdersMappedByTracking[$notReceivedTrackings[$index]];
+                    $ret[$tracking_number] = $order;
+                }
+            }
+            return $ret;
+        }
+
+        private function findTrackingInArray($tracking, $trackingsArray) {
+            foreach ($trackingsArray as $key => $tr) {
+                if (strpos($tracking, $tr) !== false or strpos($tr, $tracking) !== false) {
+                    return $key;
+                }
+            }
+            return -1;
+        }
+
         public function emptyAccount($account) {
             $ids = $this->getTrackingFetchNeededOrdersRowIds();
             $idsSql = '(0)';
+
             if (!empty($ids)) {
                 $idsSql = '(' . implode(',', $ids) . ')';
             }
@@ -77,7 +118,8 @@ namespace crm\managers {
         }
 
         public function getOrdersPuposedToNotReceivedToDestinationCounty() {
-            return $this->selectAdvance('*', ['hidden', '=', 0, 'AND', 'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
+            return $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
+                        'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
                         'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', 13]);
         }
 

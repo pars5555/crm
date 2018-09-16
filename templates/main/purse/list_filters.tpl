@@ -67,11 +67,30 @@
     Searched text corresponding not reeiev to recipient count:  {$ns.searchedItemPuposedCount}
 {/if}
 <div class="form-group" style="float: right">
-    <a id="upload_button"><img  style="max-width: 100px;max-height: 60px" src="{$SITE_PATH}/img/upload.png"/></a>
+    <a id="find_trackings_button" class="button blue small inline">Find Trackngs</a>
+    <a id="upfindload_button"><img  style="max-width: 100px;max-height: 60px" src="{$SITE_PATH}/img/upload.png"/></a>
 
     <form id="upload_form" target="is2_upload_target" enctype="multipart/form-data" method="post"
           action="{$SITE_PATH}/dyn/main_purse/do_upload_html" style="width:0; height:0;visibility: none;border:none;">
         <input type="file" id="file_input" name="list_file" style="display:none">
     </form>
     <iframe name="is2_upload_target" style="width:0;height:0;border:0px solid #fff;display: none;"></iframe>
+</div>
+        
+        
+<div id="trackings_modalBox" class="modal modal-large">
+    <div class="modal-container">
+        <div class="modal-inner-container" >
+            <span class="modal-close">
+                <span class="close-icon1"></span>
+                <span class="close-icon2"></span>
+            </span>
+            <h1 class="modal-headline">Insert Trackings</h1>
+            <div class="modal-content observers-detail-modal-content" id="observer_details_container">
+                <textarea id="tracking_numbers_input" style="width: 100%; height: 100%; " rows="10"></textarea>
+                <a class="button blue" id="export_search" href="javascript:void(0);" target="_blank">Export Search Result</a>
+
+            </div>
+        </div>
+    </div>
 </div>
