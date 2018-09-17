@@ -37,7 +37,6 @@ namespace crm\managers {
 
         public function findByTrackingNumbers($trackingNumbers) {
             $trackingNumbers = array_map('trim', $trackingNumbers);
-
             $notReceivedOrders = $this->selectAdvance(
                     ['tracking_number', 'recipient_name', 'quantity', 'product_name',
                 'amazon_total', 'account_name'], ['hidden', '=', 0, 'AND',
@@ -68,7 +67,7 @@ namespace crm\managers {
 
         private function findTrackingInArray($tracking, $trackingsArray) {
             foreach ($trackingsArray as $key => $tr) {
-                if (strpos($tracking, $tr) !== false or strpos($tr, $tracking) !== false) {
+                if (stripos($tracking, $tr) !== false or stripos($tr, $tracking) !== false) {
                     return $key;
                 }
             }
