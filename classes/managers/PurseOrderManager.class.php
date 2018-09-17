@@ -44,10 +44,10 @@ namespace crm\managers {
             $notReceivedOrdersMappedByTracking = [];
             foreach ($notReceivedOrders as $order) {
                 $trackingNumber = $order->getTrackingNumber();
-                if (strlen(trim($trackingNumber)) < 5) {
+                if (strlen(strval(trim($trackingNumber))) < 5) {
                     continue;
                 }
-                $notReceivedOrdersMappedByTracking[$trackingNumber] = $order;
+                $notReceivedOrdersMappedByTracking[strval($trackingNumber)] = $order;
             }
             $notReceivedTrackings = array_keys($notReceivedOrdersMappedByTracking);
 
