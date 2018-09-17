@@ -22,7 +22,7 @@ namespace crm\actions\main\purse {
     class UpdateOrdersAction extends BaseAction {
 
         public function service() {
-            ini_set('memory_limit','2G');
+            ini_set('memory_limit','4G');
             set_time_limit(0);
             $accountName = NGS()->args()->account_name;
             $token = SettingManager::getInstance()->getSetting($accountName);
