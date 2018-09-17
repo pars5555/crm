@@ -34,7 +34,7 @@
             <span class="table-cell"> created </span>
         </div> 
         {foreach from=$ns.orders item=order}
-            <div class="table-row"  data-type="btc" data-id="{$order->getId()}" >
+            <div class="table-row" {if $order->getDeliveryDateDiffToNow()>15 and $order->getHidden()==0}style="background:  #e78f08"{/if}  data-type="btc" data-id="{$order->getId()}" >
                 <span class="table-cell"> 
                     <a href="javascript:void(0);" class="fa fa-eye-slash f_hide" data-id='{$order->getId()}'></a>
                     {if $order->getUnreadMessages() > 0}
