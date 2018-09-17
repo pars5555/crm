@@ -22,6 +22,7 @@ namespace crm\actions\main\purse {
     class UpdateOrdersAction extends BaseAction {
 
         public function service() {
+            set_time_limit(0);
             $accountName = NGS()->args()->account_name;
             $token = SettingManager::getInstance()->getSetting($accountName);
             $res = PurseOrderManager::getInstance()->getActiveOrders($token);
