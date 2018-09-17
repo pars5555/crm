@@ -129,7 +129,7 @@ namespace crm\managers {
         }
 
         private function getTrackingFetchNeededOrdersRowIds() {
-            $trackingFetchNeededOrders = $this->getTrackingFetchNeededOrders();
+            $trackingFetchNeededOrders = $this->getOrdersPuposedToNotReceivedToDestinationCounty();
             $ids = [];
             foreach ($trackingFetchNeededOrders as $order) {
                 $ids [] = $order->getId();
