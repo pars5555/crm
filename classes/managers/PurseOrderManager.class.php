@@ -111,6 +111,7 @@ namespace crm\managers {
             }
             $dto->setCreatedAt(date('Y-m-d H:i:s', $order['created_at']));
             if (!empty($dtos)) {
+                $dto->setUpdatedAt(date('Y-m-d H:i:s'));
                 $this->updateByPk($dto);
             } else {
                 $this->insertDto($dto);
