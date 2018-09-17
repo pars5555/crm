@@ -70,6 +70,9 @@ namespace crm\loads\main\purse {
             
             $this->addParam('pagesCount', $pagesCount);
             $this->addParam('orders', $orders);
+            
+            $btc_products_days_diff_for_delivery_date = intval(\crm\managers\SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
+            $this->addParam('btc_products_days_diff_for_delivery_date', $btc_products_days_diff_for_delivery_date);
         }
 
         private function initFilters($limit) {

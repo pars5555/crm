@@ -34,12 +34,19 @@ namespace crm\dal\dto {
         }
 
         public function getDeliveryDateDiffToNow() {
-            $delDate = new \DateTime($this->getDeliveryDate());
-            if ($this->getDeliveryDate() > 0) {
+            if ($this->getDeliveryDate() <= 0) {
                 return 0;
             }
-            $now = new \DateTime();
-            return intval($now->diff($delDate)->format("%a"));
+
+            $ddate = $this->getDeliveryDate();
+            $now = date('Y-m-d');
+            if ($this->getDeliveryDate() >= $now) {
+                return 0;
+            }
+            $date1 = date_create($ddate);
+            $date2 = date_create($now);
+            $diff = date_diff($date1, $date2);
+            return $diff->days;
         }
 
         function getStatusHistoryText() {
