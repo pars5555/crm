@@ -59,7 +59,7 @@ namespace crm\managers {
                 $index = $this->findTrackingInArray($tracking_number, $notReceivedTrackings);
                 if ($index >= 0) {
                     $order = $notReceivedOrdersMappedByTracking[$notReceivedTrackings[$index]];
-                    $ret[$tracking_number] = $order;
+                    $ret[$tracking_number] = new \crm\dal\dto\PurseOrderDto();
                 }
             }
             return $ret;
