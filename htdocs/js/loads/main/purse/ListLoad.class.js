@@ -35,6 +35,8 @@ NGS.createLoad("crm.loads.main.purse.list", {
         this.initHide();
         this.initTrackingsSearch();
         this.initExportTrackingsSearch();
+        this.initHideByTrackings();
+        this.initHideByTrackingsConfirm();
     },
     initExportTrackingsSearch: function(){
         $('#export_search').click(function(){
@@ -49,6 +51,19 @@ NGS.createLoad("crm.loads.main.purse.list", {
         $('#find_trackings_button').click(function(){
             $('#trackings_modalBox').addClass('is_active');
         });
+    },
+    initHideByTrackingsConfirm: function(){
+        $('#hide_by_trackings_confirm').click(function(){
+            var  trackingNumbers = $('#hide_by_trackings_input').val();
+            var params = {trackingNumbers :trackingNumbers};
+            NGS.action('crm.actions.main.purse.hide_by_trackings', params);
+        });
+    },
+    initHideByTrackings: function(){
+        $('#hide_by_trackings_button').click(function(){
+            $('#hide_by_trackings_modalBox').addClass('is_active');
+        });
+        
     },
     initUpdate: function () {
         $('.f_update_purse').click(function () {

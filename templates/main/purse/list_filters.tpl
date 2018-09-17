@@ -67,7 +67,8 @@
     Searched text corresponding not reeiev to recipient count:  {$ns.searchedItemPuposedCount}
 {/if}
 <div class="form-group" style="float: right">
-    <a id="find_trackings_button" class="button blue small inline">Find Trackngs</a>
+    <a id="hide_by_trackings_button" class="button blue small inline">Hide By Trackings</a>
+    <a id="find_trackings_button" class="button blue small inline">Find Trackings</a>
     <a id="upfindload_button"><img  style="max-width: 100px;max-height: 60px" src="{$SITE_PATH}/img/upload.png"/></a>
 
     <form id="upload_form" target="is2_upload_target" enctype="multipart/form-data" method="post"
@@ -89,6 +90,23 @@
             <div class="modal-content observers-detail-modal-content" id="observer_details_container">
                 <textarea id="tracking_numbers_input" style="width: 100%; height: 100%; " rows="10"></textarea>
                 <a class="button blue" id="export_search" href="javascript:void(0);" target="_blank">Export Search Result</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="hide_by_trackings_modalBox" class="modal modal-large">
+    <div class="modal-container">
+        <div class="modal-inner-container" >
+            <span class="modal-close">
+                <span class="close-icon1"></span>
+                <span class="close-icon2"></span>
+            </span>
+            <h1 class="modal-headline">Insert Trackings</h1>
+            <div class="modal-content observers-detail-modal-content" id="observer_details_container">
+                <textarea id="hide_by_trackings_input" style="width: 100%; height: 100%; " rows="10"></textarea>
+                <a class="button blue" id="hide_by_trackings_confirm" href="javascript:void(0);" >Confirm</a>
 
             </div>
         </div>

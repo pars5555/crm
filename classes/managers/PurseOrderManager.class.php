@@ -35,10 +35,10 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function findByTrackingNumbers($trackingNumbers) {
+        public function findByTrackingNumbers($trackingNumbers, $getNotFounds = true) {
             $trackingNumbers = array_map('trim', $trackingNumbers);
             $notReceivedOrders = $this->selectAdvance(
-                    ['tracking_number', 'recipient_name', 'quantity', 'product_name',
+                    ['id','tracking_number', 'recipient_name', 'quantity', 'product_name',
                 'amazon_total', 'account_name'], ['hidden', '=', 0, 'AND',
                 'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 200]);
             $notReceivedOrdersMappedByTracking = [];
@@ -62,7 +62,9 @@ namespace crm\managers {
                     $ret[$tracking_number] = $order;
                 }else
                 {
+                    if ($getNotFounds){
                     $ret[$tracking_number] = new \crm\dal\dto\PurseOrderDto();
+                    }
                 }
             }
             return $ret;
