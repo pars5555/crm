@@ -26,7 +26,7 @@ namespace crm\dal\dto {
             "delivery_date" => "deliveryDate", "tracking_number" => "trackingNumber", "amazon_total" => "amazonTotal", "buyer_name" => "buyerName",
             "discount" => "discount", "serial_number" => "serial_number", "btc_rate" => "btcRate", "recipient_name" => "recipientName", "product_name" => "productName",
             "quantity" => "quantity", "image_url" => "imageUrl", "shipping_carrier" => "shippingCarrier", "status" => "status", "note" => 'note',"unread_messages" => 'unreadMessages',
-            "account_name" => "accountName", "created_at" => "createdAt", 'meta'=>'meta');
+            "account_name" => "accountName", "created_at" => "createdAt", "updated_at" => "updatedAt", 'meta'=>'meta');
 
         // returns map array
         public function getMapArray() {
