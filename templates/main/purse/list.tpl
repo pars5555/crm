@@ -68,7 +68,7 @@
                     {elseif  strpos($order->getShippingCarrier()|lower, 'ups') !== false}
                         <a class="link" target="_black" href="https://wwwapps.ups.com/WebTracking/track?track=yes&trackNums={$order->getTrackingNumber()}&loc=en_am"> {$order->getTrackingNumber()}</a>
                     {elseif  strpos($order->getShippingCarrier()|lower, 'fedex') !== false}
-                        <a class="link" target="_black" href="https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=1Z306A400395039227{$order->getTrackingNumber()}&cntry_code=us&locale=en_US"> {$order->getTrackingNumber()}</a> 
+                        <a class="link" target="_black" href="https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber={$order->getTrackingNumber()}&cntry_code=us&locale=en_US"> {$order->getTrackingNumber()}</a> 
                     {else}
                         {$order->getTrackingNumber()}
                     {/if}
