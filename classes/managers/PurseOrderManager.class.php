@@ -67,7 +67,7 @@ namespace crm\managers {
 
         private function findTrackingInArray($tracking, $trackingsArray) {
             foreach ($trackingsArray as $key => $tr) {
-                if (stripos($tracking, $tr) !== false or stripos($tr, $tracking) !== false) {
+                if (stripos(strval($tracking), strval($tr)) !== false or stripos(strval($tr), strval($tracking)) !== false) {
                     return $key;
                 }
             }
