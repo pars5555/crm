@@ -22,8 +22,8 @@
             <span class="table-cell"> Recipient </span>
             <span class="table-cell"> Img </span>
             <span class="table-cell"> Product Name </span>
-            <span class="table-cell"> Amazon Total </span>
-            <span class="table-cell"> Discount </span>
+            <span class="table-cell"> Total </span>
+            <span class="table-cell"> % </span>
             <span class="table-cell"> Buyer </span>
             <span class="table-cell"> Status </span>
             <span class="table-cell"> Note </span>
@@ -37,6 +37,7 @@
             {$ns.btc_products_days_diff_for_delivery_date}
             <div class="table-row" {if $order->getDeliveryDateDiffToNow()>$ns.btc_products_days_diff_for_delivery_date and $order->getHidden()==0}style="background:  #e78f08"{/if}  data-type="btc" data-id="{$order->getId()}" >
                 <span class="table-cell"> 
+                    <a href="list.tpl"></a>
                     <a href="javascript:void(0);" class="fa fa-eye-slash f_hide" data-id='{$order->getId()}'></a>
                     {if $order->getUnreadMessages() > 0}
                     <span class="fa fa-envelope" style="color: red">{$order->getUnreadMessages()}</span>

@@ -23,7 +23,7 @@ namespace crm\actions\cron {
 
         public function service() {
             set_time_limit(0);
-            $rows = PurseOrderManager::getInstance()->getNotDeliveredToWarehouseOrdersThatHasTrackingNumber();
+            $rows = PurseOrderManager::getInstance()->getNotDeliveredToWarehouseOrdersThatHasNotTrackingNumber();
             $updated = 0;
             foreach ($rows as $row) {
                 $aon = $row->getAmazonOrderNumber();
