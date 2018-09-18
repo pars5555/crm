@@ -63,12 +63,8 @@
                     <a class="link" target="_black" href="https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jnljnvjtqlspon&orderId={$order->getAmazonOrderNumber()}" > {$order->getAmazonOrderNumber()} </a> 
                 </span>
                 <span class="table-cell">
-                    {if  strpos($order->getShippingCarrier()|lower, 'usps') !== false}
-                        <a class="link" target="_black" href="https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1={$order->getTrackingNumber()}" > {$order->getTrackingNumber()}</a> 
-                    {elseif  strpos($order->getShippingCarrier()|lower, 'ups') !== false}
-                        <a class="link" target="_black" href="https://wwwapps.ups.com/WebTracking/track?track=yes&trackNums={$order->getTrackingNumber()}&loc=en_am"> {$order->getTrackingNumber()}</a>
-                    {elseif  strpos($order->getShippingCarrier()|lower, 'fedex') !== false}
-                        <a class="link" target="_black" href="https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber={$order->getTrackingNumber()}&cntry_code=us&locale=en_US"> {$order->getTrackingNumber()}</a> 
+                    {if $order->getCarrierTrackingUrl() !== false}
+                        <a class="link" target="_black" href="{$order->getCarrierTrackingUrl()}" >{$order->getTrackingNumber()}</a> 
                     {else}
                         {$order->getTrackingNumber()}
                     {/if}

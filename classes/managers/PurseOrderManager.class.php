@@ -79,16 +79,7 @@ namespace crm\managers {
             return -1;
         }
 
-        public function emptyAccount($account) {
-            $ids = $this->getTrackingFetchNeededOrdersRowIds();
-            $idsSql = '(0)';
-
-            if (!empty($ids)) {
-                $idsSql = '(' . implode(',', $ids) . ')';
-            }
-            $this->deleteAdvance(['account_name', '=', "'$account'", 'AND', 'id', 'not in', $idsSql]);
-        }
-
+     
         public function insertOrUpdateOrderFromPurseObject($accountName, $order) {
             $dtos = $this->selectByField('order_number', $order['id']);
             if (!empty($dtos)) {
@@ -122,6 +113,15 @@ namespace crm\managers {
             }
         }
 
+        public function getNotDeliveredToWarehouseOrdersThatHasTrackingNumber() {
+            return $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
+                        'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
+                "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',         
+                "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND',
+                "length(COALESCE(`real_delivery_date`, ''))", '<', 3, 'AND',
+                ]);
+        }
+        
         public function getOrdersPuposedToNotReceivedToDestinationCounty() {
             return $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
                         'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
@@ -131,14 +131,14 @@ namespace crm\managers {
         public function getOrders($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             return $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit, true);
         }
-
-        private function getTrackingFetchNeededOrdersRowIds() {
-            $trackingFetchNeededOrders = $this->getOrdersPuposedToNotReceivedToDestinationCounty();
-            $ids = [];
-            foreach ($trackingFetchNeededOrders as $order) {
-                $ids [] = $order->getId();
-            }
-            return $ids;
+        
+        public function getTrackingFetchNeededOrders() {
+            return $this->selectAdvance(['id', 'amazon_order_number'], 
+                    ['hidden', '=', 0, 'AND',
+                        'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", "AND",
+                        "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND', 
+                        "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND', 
+                        "length(COALESCE(`serial_number`,''))", '<', 5]);
         }
 
         public function getInactiveOrders($token) {

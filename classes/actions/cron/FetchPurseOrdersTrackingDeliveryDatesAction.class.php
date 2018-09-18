@@ -19,11 +19,11 @@ namespace crm\actions\cron {
     use DOMDocument;
     use DOMXPath;
 
-    class FetchPurseOrdersTrackingNumbersAction extends BaseAction {
+    class FetchPurseOrdersTrackingDeliveryDatesAction extends BaseAction {
 
         public function service() {
             set_time_limit(0);
-            $rows = PurseOrderManager::getInstance()->getTrackingFetchNeededOrders();
+            $rows = PurseOrderManager::getInstance()->getNotDeliveredToWarehouseOrdersThatHasTrackingNumber();
             $updated = 0;
             foreach ($rows as $row) {
                 $aon = $row->getAmazonOrderNumber();

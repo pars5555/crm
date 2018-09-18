@@ -49,6 +49,22 @@ namespace crm\dal\dto {
             return $diff->days;
         }
 
+        public function getCarrierTrackingUrl() {
+            $trackingNumber = $this->getTrackingNumber();
+            if (strpos(strtolower($this->getShippingCarrier()),'usps') !== false)
+            {
+                return 'https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=' . $trackingNumber ;
+            }
+            if (strpos(strtolower($this->getShippingCarrier()), 'fedex') !== false)
+            {
+                return "https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=$trackingNumber&cntry_code=us&locale=en_US";
+            }
+            if (strpos(strtolower($this->getShippingCarrier()),'ups') !== false)
+            {
+                return "https://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=$trackingNumber&loc=en_am";
+            }
+            return false;
+        }
         function getStatusHistoryText() {
             $ret = [];
             foreach ($this->histores as $history) {
