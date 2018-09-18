@@ -125,6 +125,7 @@ namespace crm\managers {
         public function getOrdersPuposedToNotReceivedToDestinationCounty() {
             return $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
                         'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
+                        "length(COALESCE(`serial_number`,''))", '<', 2 , 'AND',
                         'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', 13]);
         }
 
