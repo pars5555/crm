@@ -50,7 +50,7 @@ namespace crm\actions\cron {
                     }
                 }
                 if (!empty($trackingNumber)) {
-                    $updated+=1;
+                    $updated += 1;
                     PurseOrderManager::getInstance()->updateField($row->getId(), 'tracking_number', $trackingNumber);
                     PurseOrderManager::getInstance()->updateField($row->getId(), 'shipping_carrier', $shippingCarrierName);
                     PurseOrderManager::getInstance()->updateField($row->getId(), 'updated_at', date('Y-m-d H:i:s'));
@@ -63,10 +63,12 @@ namespace crm\actions\cron {
         private function getShippingCarrierName($el) {
             $trackingHeadlineEl = $el->getElementsByTagName('h1');
             if ($trackingHeadlineEl->length > 0) {
-                $trackingHeadline = $trackingHeadlineEl->item(0)->nodeValue;
-                if (strpos($trackingHeadline, 'Shipped with')!== false) {
-                    $trackingHeadline = trim(str_replace('Shipped with', '', $trackingHeadline));
-                    return trim($trackingHeadline);
+                for ($index = 0; $index < $trackingHeadlineEl->length; $index++) {
+                    $trackingHeadline = $trackingHeadlineEl->item($index)->nodeValue;
+                    if (strpos($trackingHeadline, 'Shipped with') !== false) {
+                        $trackingHeadline = trim(str_replace('Shipped with', '', $trackingHeadline));
+                        return trim($trackingHeadline);
+                    }
                 }
             }
             return 'N/A';
