@@ -34,7 +34,6 @@
             <span class="table-cell"> created </span>
         </div> 
         {foreach from=$ns.orders item=order}
-            {$ns.btc_products_days_diff_for_delivery_date}
             <div class="table-row" {if $order->getDeliveryDateDiffToNow()>$ns.btc_products_days_diff_for_delivery_date and $order->getHidden()==0}style="background:  #e78f08"{/if}  data-type="btc" data-id="{$order->getId()}" >
                 <span class="table-cell"> 
                     <a href="list.tpl"></a>
