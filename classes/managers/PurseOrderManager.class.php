@@ -126,7 +126,7 @@ namespace crm\managers {
             return $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
                         'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
                         "length(COALESCE(`serial_number`,''))", '<', 2 , 'AND',
-                        'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', 13]);
+                        'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', intval(\crm\managers\SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'))]);
         }
 
         public function getOrders($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
