@@ -38,6 +38,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
         this.initHideByTrackings();
         this.initHideByTrackingsConfirm();
         this.initRefreshTracking();
+        this.initRefreshCarrierDeliveryDate();
     },
     initExportTrackingsSearch: function(){
         $('#export_search').click(function(){
@@ -90,7 +91,10 @@ NGS.createLoad("crm.loads.main.purse.list", {
         $('.f_refresh_carrier_delivery_details').click(function () {
             var id = $(this).data('id');
             NGS.action('crm.actions.main.purse.refresh_carrier_delivery_details', {id: id});
-            $(this).closest('.f_carrier_delivery_details').html('');
+            $(this).remove();
+            $('#carrier_delivery_details_'+id).html('');
+            $('#carrier_tracking_status_'+id).html('');
+            
         });
     },
     initUpload: function () {

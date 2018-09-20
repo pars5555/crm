@@ -91,24 +91,22 @@ namespace crm\managers {
         }
 
         public function fetchAndUpdateTrackingPageDetails($row) {
-            $url = $row->getCarrierTrackingUrl();
-            if (strpos($url, 'http') === false) {
+            $trackingNumber = $row->getTrackingNumber();
+            if (empty($trackingNumber) || strlen($trackingNumber) < 5) {
                 return false;
             }
-            $content = file_get_contents($url);
-            libxml_use_internal_errors(true);
-            $xmlDoc = new \DOMDocument();
-            $xmlDoc->loadHTML($content);
+
+            $shippingCarrier = strtolower($row->getShippingCarrier());
             $deliveryDate = false;
             $trackingStatus = false;
-            if (strpos(strtolower($row->getShippingCarrier()), 'usps') !== false) {
-                list($deliveryDate, $trackingStatus) = $this->fetchUspsPageDetails($xmlDoc);
+            if (strpos($shippingCarrier, 'usps') !== false) {
+                list($deliveryDate, $trackingStatus, $meta) = $this->fetchUspsPageDetails($trackingNumber);
             }
-            if (strpos(strtolower($row->getShippingCarrier()), 'fedex') !== false) {
-                list($deliveryDate, $trackingStatus) = $this->fetchUspsPageDetails($xmlDoc);
+            if (strpos($shippingCarrier, 'fedex') !== false) {
+                list($deliveryDate, $trackingStatus, $meta) = $this->fetchFedexPageDetails($trackingNumber);
             }
-            if (strpos(strtolower($row->getShippingCarrier()), 'ups') !== false) {
-                list($deliveryDate, $trackingStatus) = $this->fetchUspsPageDetails($xmlDoc);
+            if (strpos($shippingCarrier, 'ups') !== false) {
+                list($deliveryDate, $trackingStatus, $meta) = $this->fetchUpsPageDetails($trackingNumber);
             }
             if (!empty($deliveryDate)) {
                 $this->updateField($row->getId(), 'carrier_delivery_date', $deliveryDate);
@@ -187,26 +185,17 @@ namespace crm\managers {
         public function getNotDeliveredToWarehouseOrdersThatHasNotTrackingNumber() {
             return $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
                         'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
-                "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
-                "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND', 
-                "length(COALESCE(`real_delivery_date`, ''))", '<', 3, 'AND',
-                ]);
                         "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
                         "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND',
-                        "length(COALESCE(`real_delivery_date`, ''))", '<', 3, 'AND',
+                        "length(COALESCE(`real_delivery_date`, ''))", '<', 3
             ]);
         }
 
         public function getOrdersPuposedToNotReceivedToDestinationCounty() {
             return $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
                         'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
-                        "length(COALESCE(`serial_number`,''))", '<', 2 , 'AND',
                         "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
-                        'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', 13]);
-        }
-
-        public function getOrders($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
-            return $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit, true);
+                        'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'))]);
         }
 
         public function getTrackingFetchNeededOrders() {
@@ -215,6 +204,10 @@ namespace crm\managers {
                         "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
                         "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND',
                         "length(COALESCE(`serial_number`,''))", '<', 5]);
+        }
+
+        public function getOrders($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
+            return $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit, true);
         }
 
         public function getInactiveOrders($token) {
@@ -275,6 +268,27 @@ namespace crm\managers {
                 "pragma: no-cache",
                 "referer: https://purse.io/orders",
                 "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"];
+        }
+
+        public function fetchFedexPageDetails($trackingNumber) {
+            
+        }
+
+        public function fetchUspsPageDetails($trackingNumber) {
+            $uspsApiUserId = SettingManager::getInstance()->getSetting('usps_api_user_id');
+            $xml = file_get_contents('http://production.shippingapis.com/ShippingApi.dll?API=TrackV2&XML=%3CTrackFieldRequest%20USERID=%22' . $uspsApiUserId . '%22%3E%20%3CTrackID%20ID=%22' . $trackingNumber . '%22%3E%20%3C/TrackID%3E%20%3C/TrackFieldRequest%3E');
+            $object = simplexml_load_string($xml);
+            if (!isset($object->TrackInfo) || !isset($object->TrackInfo->TrackSummary)) {
+                return [null, null, null];
+            }
+            $event = $object->TrackInfo->TrackSummary->Event;
+            if (strpos(strtolower($event), 'delivered') !== false) {
+                $dateStr = $object->TrackInfo->TrackSummary->EventDate;
+                $date = \DateTime::createFromFormat("M j, Y", $dateStr)->format('Y-m-d');
+                return [$date, $event, json_encode($object)];
+            } else {
+                return [null, $event, json_encode($object)];
+            }
         }
 
     }

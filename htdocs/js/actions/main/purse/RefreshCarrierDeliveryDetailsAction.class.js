@@ -3,6 +3,7 @@ NGS.createAction("crm.actions.main.purse.refresh_carrier_delivery_details", {
     },
     afterAction: function (res) {
         
-        $('#tracking_' + res.id).html(html);
+        $('#carrier_delivery_details_' + res.id).html(res.delivery_date);
+        $('#carrier_tracking_status_' + res.id).html(res.status);
     }
 });

@@ -75,12 +75,10 @@
                     {if $order->getDeliveryDate()>0}
                         <br/><br/>delivered at: {$order->getDeliveryDate()}
                     {/if}
-                    {if $order->getCarrierDeliveryDate()>0}
-                        <div class="f_carrier_delivery_details" id="carrier_delivery_details_{$order->getId()}">
-                            <br/>carrier delivered at: {$order->getCarrierDeliveryDate()}
-                            <a href="javascript:void(0);" class="fa fa-refresh f_refresh_carrier_delivery" data-id='{$order->getId()}'></a>
-                        </div>
-                    {/if}
+                    <br/>
+                    <span id="carrier_tracking_status_{$order->getId()}">{$order->getCarrierTrackingStatus()}</span>:
+                    <span id="carrier_delivery_details_{$order->getId()}">{$order->getCarrierDeliveryDate()}</span>
+                    <a href="javascript:void(0);" class="fa fa-refresh f_refresh_carrier_delivery_details" data-id='{$order->getId()}'></a>
                 </span>
                 <span class="table-cell"> {$order->getUpdatedAt()} </span>
                 <span class="table-cell"> {$order->getCreatedAt()} </span>
