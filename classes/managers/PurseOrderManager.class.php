@@ -38,7 +38,7 @@ namespace crm\managers {
         public function findByTrackingNumbers($trackingNumbers, $getNotFounds = true) {
             $trackingNumbers = array_map('trim', $trackingNumbers);
             $notReceivedOrders = $this->selectAdvance(
-                    ['id','tracking_number', 'recipient_name', 'quantity', 'product_name',
+                    ['id', 'tracking_number', 'recipient_name', 'quantity', 'product_name',
                 'amazon_total', 'account_name'], ['hidden', '=', 0, 'AND',
                 'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 200]);
             $notReceivedOrdersMappedByTracking = [];
@@ -60,10 +60,9 @@ namespace crm\managers {
                 if ($index >= 0) {
                     $order = $notReceivedOrdersMappedByTracking[$notReceivedTrackings[$index]];
                     $ret[$tracking_number] = $order;
-                }else
-                {
-                    if ($getNotFounds){
-                    $ret[$tracking_number] = new \crm\dal\dto\PurseOrderDto();
+                } else {
+                    if ($getNotFounds) {
+                        $ret[$tracking_number] = new \crm\dal\dto\PurseOrderDto();
                     }
                 }
             }
@@ -79,7 +78,79 @@ namespace crm\managers {
             return -1;
         }
 
-     
+        private function getShippingCarrierName($el) {
+            $trackingHeadlineEl = $el->getElementsByTagName('h1');
+            if ($trackingHeadlineEl->length > 0) {
+                $trackingHeadline = $trackingHeadlineEl->item(0)->nodeValue;
+                if (strpos($trackingHeadline, 'Shipped with') !== false) {
+                    $trackingHeadline = trim(str_replace('Shipped with', '', $trackingHeadline));
+                    return trim($trackingHeadline);
+                }
+            }
+            return 'N/A';
+        }
+
+        public function fetchAndUpdateTrackingPageDetails($row) {
+            $url = $row->getCarrierTrackingUrl();
+            if (strpos($url, 'http') === false) {
+                return false;
+            }
+            $content = file_get_contents($url);
+            libxml_use_internal_errors(true);
+            $xmlDoc = new \DOMDocument();
+            $xmlDoc->loadHTML($content);
+            $deliveryDate = false;
+            $trackingStatus = false;
+            if (strpos(strtolower($row->getShippingCarrier()), 'usps') !== false) {
+                list($deliveryDate, $trackingStatus) = $this->fetchUspsPageDetails($xmlDoc);
+            }
+            if (strpos(strtolower($row->getShippingCarrier()), 'fedex') !== false) {
+                list($deliveryDate, $trackingStatus) = $this->fetchUspsPageDetails($xmlDoc);
+            }
+            if (strpos(strtolower($row->getShippingCarrier()), 'ups') !== false) {
+                list($deliveryDate, $trackingStatus) = $this->fetchUspsPageDetails($xmlDoc);
+            }
+            if (!empty($deliveryDate)) {
+                $this->updateField($row->getId(), 'carrier_delivery_date', $deliveryDate);
+                $this->updateField($row->getId(), 'updated_at', date('Y-m-d H:i:s'));
+            }
+            if (!empty($trackingStatus)) {
+                $this->updateField($row->getId(), 'carrier_tracking_status', $trackingStatus);
+                $this->updateField($row->getId(), 'updated_at', date('Y-m-d H:i:s'));
+            }
+        }
+
+        public function fetchAndUpdateTrackingDetails($row) {
+            $aon = $row->getAmazonOrderNumber();
+            $url = "https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jpmklqnukqppon&orderId=$aon";
+            $content = file_get_contents($url);
+
+            libxml_use_internal_errors(true);
+            $xmlDoc = new \DOMDocument();
+            $xmlDoc->loadHTML($content);
+            $finder = new \DOMXPath($xmlDoc);
+            $ordersRows = $finder->query("//*[contains(@class, 'cardContainer')]");
+
+            libxml_clear_errors();
+
+            $trackingNumber = false;
+            for ($i = 0; $i < $ordersRows->length; $i++) {
+                $el = $ordersRows->item($i);
+                $trackingLinks = $el->getElementsByTagName('a');
+                if ($trackingLinks->length > 0) {
+                    $trackingNumber = $trackingLinks->item(0)->nodeValue;
+                    $trackingNumber = trim(str_replace('Tracking ID', '', $trackingNumber));
+                    $shippingCarrierName = $this->getShippingCarrierName($el);
+                    break;
+                }
+            }
+            if (!empty($trackingNumber)) {
+                $this->updateField($row->getId(), 'tracking_number', $trackingNumber);
+                $this->updateField($row->getId(), 'shipping_carrier', $shippingCarrierName);
+                $this->updateField($row->getId(), 'updated_at', date('Y-m-d H:i:s'));
+            }
+        }
+
         public function insertOrUpdateOrderFromPurseObject($accountName, $order) {
             $dtos = $this->selectByField('order_number', $order['id']);
             if (!empty($dtos)) {
@@ -116,29 +187,28 @@ namespace crm\managers {
         public function getNotDeliveredToWarehouseOrdersThatHasNotTrackingNumber() {
             return $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
                         'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
-                "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
-                "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND', 
-                "length(COALESCE(`real_delivery_date`, ''))", '<', 3, 'AND',
-                ]);
+                        "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
+                        "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND',
+                        "length(COALESCE(`real_delivery_date`, ''))", '<', 3, 'AND',
+            ]);
         }
-        
+
         public function getOrdersPuposedToNotReceivedToDestinationCounty() {
             return $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
                         'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
-                        "length(COALESCE(`serial_number`,''))", '<', 2 , 'AND',
+                        "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
                         'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', 13]);
         }
 
         public function getOrders($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             return $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit, true);
         }
-        
+
         public function getTrackingFetchNeededOrders() {
-            return $this->selectAdvance(['id', 'amazon_order_number'], 
-                    ['hidden', '=', 0, 'AND',
+            return $this->selectAdvance(['id', 'amazon_order_number'], ['hidden', '=', 0, 'AND',
                         'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", "AND",
-                        "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND', 
-                        "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND', 
+                        "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
+                        "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND',
                         "length(COALESCE(`serial_number`,''))", '<', 5]);
         }
 

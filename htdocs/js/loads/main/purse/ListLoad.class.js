@@ -37,6 +37,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
         this.initExportTrackingsSearch();
         this.initHideByTrackings();
         this.initHideByTrackingsConfirm();
+        this.initRefreshTracking();
     },
     initExportTrackingsSearch: function(){
         $('#export_search').click(function(){
@@ -76,6 +77,20 @@ NGS.createLoad("crm.loads.main.purse.list", {
             var id = $(this).data('id');
             NGS.action('crm.actions.main.purse.set_hidden', {id: id, hide:1});
             $(this).closest('.table-row').remove();
+        });
+    },
+    initRefreshTracking: function () {
+        $('.f_refresh_tracking').click(function () {
+            var id = $(this).data('id');
+            NGS.action('crm.actions.main.purse.refresh_tracking', {id: id});
+            $(this).closest('.f_tracking').html('');
+        });
+    },
+    initRefreshCarrierDeliveryDate: function () {
+        $('.f_refresh_carrier_delivery_details').click(function () {
+            var id = $(this).data('id');
+            NGS.action('crm.actions.main.purse.refresh_carrier_delivery_details', {id: id});
+            $(this).closest('.f_carrier_delivery_details').html('');
         });
     },
     initUpload: function () {

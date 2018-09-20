@@ -39,7 +39,7 @@
                     <a href="list.tpl"></a>
                     <a href="javascript:void(0);" class="fa fa-eye-slash f_hide" data-id='{$order->getId()}'></a>
                     {if $order->getUnreadMessages() > 0}
-                    <span class="fa fa-envelope" style="color: red">{$order->getUnreadMessages()}</span>
+                        <span class="fa fa-envelope" style="color: red">{$order->getUnreadMessages()}</span>
                     {/if}
                 </span>
                 <a class="table-cell" href="{$SITE_PATH}/purse/{$order->getId()}">
@@ -63,13 +63,23 @@
                     <a class="link" target="_black" href="https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jnljnvjtqlspon&orderId={$order->getAmazonOrderNumber()}" > {$order->getAmazonOrderNumber()} </a> 
                 </span>
                 <span class="table-cell">
-                    {if $order->getCarrierTrackingUrl() !== false}
-                        <a class="link" target="_black" href="{$order->getCarrierTrackingUrl()}" >{$order->getTrackingNumber()}</a> 
-                    {else}
-                        {$order->getTrackingNumber()}
-                    {/if}
+                    <div class="f_tracking" id="tracking_{$order->getId()}">
+
+                        {if $order->getCarrierTrackingUrl() !== false}
+                            <a class="link" target="_black" href="{$order->getCarrierTrackingUrl()}" >{$order->getTrackingNumber()}</a> 
+                        {else}
+                            {$order->getTrackingNumber()}
+                        {/if}
+                        <a href="javascript:void(0);" class="fa fa-refresh f_refresh_tracking" data-id='{$order->getId()}'></a>
+                    </div>
                     {if $order->getDeliveryDate()>0}
                         <br/><br/>delivered at: {$order->getDeliveryDate()}
+                    {/if}
+                    {if $order->getCarrierDeliveryDate()>0}
+                        <div class="f_carrier_delivery_details" id="carrier_delivery_details_{$order->getId()}">
+                            <br/>carrier delivered at: {$order->getCarrierDeliveryDate()}
+                            <a href="javascript:void(0);" class="fa fa-refresh f_refresh_carrier_delivery" data-id='{$order->getId()}'></a>
+                        </div>
                     {/if}
                 </span>
                 <span class="table-cell"> {$order->getUpdatedAt()} </span>
