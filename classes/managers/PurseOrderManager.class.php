@@ -187,6 +187,10 @@ namespace crm\managers {
         public function getNotDeliveredToWarehouseOrdersThatHasNotTrackingNumber() {
             return $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
                         'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
+                "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
+                "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND', 
+                "length(COALESCE(`real_delivery_date`, ''))", '<', 3, 'AND',
+                ]);
                         "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
                         "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND',
                         "length(COALESCE(`real_delivery_date`, ''))", '<', 3, 'AND',
@@ -196,6 +200,7 @@ namespace crm\managers {
         public function getOrdersPuposedToNotReceivedToDestinationCounty() {
             return $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
                         'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
+                        "length(COALESCE(`serial_number`,''))", '<', 2 , 'AND',
                         "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
                         'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', 13]);
         }
