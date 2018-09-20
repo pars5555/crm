@@ -51,7 +51,7 @@
                 <span class="table-cell"> {$order->getRecipientName()} ({$order->getAccountName()|replace:'purse_':''})</span>
                 <span class="table-cell"> <img src="{$order->getImageUrl()}" width="100"/> </span>
                 <span class="table-cell"> 
-                    <a class="link" target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getProductName()}</a> 
+                    <a class="link" target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getQuantity()} x {$order->getProductName()}</a> 
                 </span>
                 <span class="table-cell"> {$order->getAmazonTotal()} </span>
                 <span class="table-cell"> {$order->getDiscount()} </span>
