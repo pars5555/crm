@@ -361,6 +361,15 @@
         },
         {
             "action": "loads.main.index",
+            "route": "checkout",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.purse.guest_list"
+                }
+            }
+        },
+        {
+            "action": "loads.main.index",
             "route": "[:id]",
             "constraints": {
                 "id": "[0-9]+"

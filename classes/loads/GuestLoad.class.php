@@ -15,13 +15,11 @@ namespace crm\loads {
 
     use crm\security\RequestGroups;
 
-    abstract class GuestLoad  extends AdminLoad {
+    abstract class GuestLoad extends NgsLoad {
 
         public function load() {
             
         }
-
-        
 
         public function getRequestGroup() {
             return RequestGroups::$guestRequest;
