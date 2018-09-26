@@ -1,7 +1,6 @@
 <div id="mainLeftPanel"  class="left--panel">
     <div class="left--panel--content">
         <h1 class="left--panel--title">
-            <span class="fontAwesome"></span>
             <span>
                 Pages
             </span>

@@ -1,0 +1,65 @@
+.header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+    height: 55px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10000;
+}
+
+.header .logo-container {
+    flex-grow: 1;
+}
+.header .logo {
+    font-family: nexa-medium, sans-serif;
+    font-size: 18px;
+    line-height: 10px;
+    vertical-align: sub;
+    display: inline-block;
+}
+
+.header a:not(:last-child) {
+    padding-right: 15px;
+}
+
+.header .menu-trigger {
+    width: 30px;
+    height: 18px;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.header .menu-trigger .bar,
+.header .menu-trigger .bar:before,
+.header .menu-trigger .bar:after {
+    content: "";
+    display: block;
+    border-bottom: 3px solid #000000;
+    position: absolute;
+    right: 0;
+}
+.header .menu-trigger .bar:before {
+    top: 7px;
+    width: 100%;
+}
+.header .menu-trigger .bar {
+    top: 0;
+    width: 100%;
+}
+.header .menu-trigger .bar:after {
+    top: 14px;
+    width: 70%;
+    transition: width .3s ease 0s;
+}
+
+.header .menu-trigger.menu_hidden .bar:after {
+    width: 100%;
+}

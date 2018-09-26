@@ -1,0 +1,8 @@
+.partner--list--container .csv {
+    flex-grow: 1;
+    text-align: right;
+}
+
+.partner--list--container .filters-group {
+    margin: 0;
+}

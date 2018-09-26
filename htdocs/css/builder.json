@@ -10,6 +10,7 @@
                     "skin.css",
                     "style.css",
                     "main.css",
+                    "header.css",
                     "left_panel.css",
                     "fonts.css",
                     "modal.css",
@@ -21,7 +22,10 @@
                     "tooltipster/themes/tooltipster-punk.css",
                     "tooltipster/themes/tooltipster-shadow.css",
                     "jquery.datetimepicker.css",
-                    "chosen.min.css"
+                    "chosen.min.css",
+
+                    "pages/general.css",
+                    "pages/partners.css"
                 ]
             }
         ]

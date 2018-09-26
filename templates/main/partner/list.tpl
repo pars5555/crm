@@ -9,10 +9,7 @@
     {/if}
 
     {include file="{ngs cmd=get_template_dir}/main/partner/list_filters.tpl"}
-    <div class="form-group" style="float: right">
-        <a href="javascript:void(0);" id="export_csv"><img src="/img/csv.png" width="60"/></a>
-    </div>
-    <a href="{$SITE_PATH}/partner/create"><img src="{$SITE_PATH}/img/add.png"/></a>
+
     <div class="table main-table">
         <table style="border-collapse: collapse;  width: 100%;border: 1px solid black">
             <tr>

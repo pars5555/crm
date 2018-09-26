@@ -1,57 +1,70 @@
 .left--panel {
-    display:table-cell;
-    width:300px;
-    min-width:250px;
-    vertical-align:top;
-    position: relative;
+    width: 282px;
+    min-width: 250px;
+    height: 100%;
+    max-height: 100%;
+    position: fixed;
+    left: 0;
+    top: 55px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    transition: left .3s ease 0s;
+}
 
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -ms-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;	
+.menu_hidden .left--panel {
+    left: -282px;
+    box-shadow: unset;
 }
-.left--panel .left--panel--content{
-    border-radius:3px;
-    overflow:hidden;
-    border:1px solid #E0E0E0;
+
+.left--panel .left--panel--content {
+    border: 1px solid #E0E0E0;
+    overflow: auto;
+    position: absolute;
+    width: 300px;
+    height: 100%;
+    max-height: 100%;
+    padding-bottom: 55px;
 }
-.left--panel .left--panel--title{
-    display:block;
-    background-color:#f7f7f7;
+
+.left--panel .left--panel--title {
+    display: block;
+    background-color: #f7f7f7;
     padding: 7px;
     font-size: 18px;
-    color:#555;
+    color: #555;
     font-weight: 600;
 }
-.left--panel .left--panel--title .glyphicon{
-    font-weight:500;
+
+.left--panel .left--panel--title .glyphicon {
+    font-weight: 500;
     margin-right: 3px;
 }
-.left--panel .left--panel--title span{
+
+.left--panel .left--panel--title span {
     vertical-align: middle;
 }
 
-
-.left--panel ul li a{
-    display:block;
+.left--panel ul li a {
+    display: block;
     padding: 5px;
     border-top: 1px solid #E0E0E0;
-    background-color:#fff;
+    background-color: #fff;
     font-size: 15px;
-    color:#333;
+    color: #333;
 
     -webkit-transition: background-color 0.3s ease;
     -moz-transition: background-color 0.3s ease;
     -o-transition: background-color 0.3s ease;
     transition: background-color 0.3s ease;
 }
-.left--panel ul li a.active{
-    color:#63B4FB;
-    font-weight:600;
+
+.left--panel ul li a.active {
+    color: #63B4FB;
+    font-weight: 600;
     font-size: 17px;
 }
-.left--panel ul li a:hover{
-    background-color:#63B4FB !important;
-    color:#fff;
+
+.left--panel ul li a:hover {
+    background-color: #63B4FB !important;
+    color: #fff;
 }

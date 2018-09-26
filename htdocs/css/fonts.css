@@ -17,3 +17,20 @@
     font-family: "ionicons";
     src: url("../../fonts/ionicons.ttf");
 }
+
+@font-face {
+    font-family: "nexa-light";
+    src: url("../../fonts/nexa/Nexa-Light.otf");
+}
+@font-face {
+    font-family: "nexa-regular";
+    src: url("../../fonts/nexa/NexaRegular.otf");
+}
+@font-face {
+    font-family: "nexa-medium";
+    src: url("../../fonts/nexa/Nexa-Bold.otf");
+}
+@font-face {
+    font-family: "nexa-bold";
+    src: url("../../fonts/nexa/NexaHeavy.otf");
+}

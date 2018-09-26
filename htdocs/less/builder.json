@@ -14,7 +14,9 @@
 			}, {
 				"output_file": "global_components.css",
 				"type": "components",
-				"files": []
+				"files": [
+					"components/general.less"
+				]
 			}, {
 				"output_file": "modules.css",
 				"type": "modules",

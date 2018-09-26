@@ -12,8 +12,9 @@ NGS.createLoad("crm.loads.main.index", {
         this.autocompleteSelect();
         this.checkbox();
         this.initCloseModal();
-        this.initEditableCells();        
-    },    
+        this.initEditableCells();
+        this.initLeftMenuTrigger();
+    },
     initEditableCells: function () {
         $('.f_editable_cell').dblclick(function () {
             var cellValues = $(this).text().trim();
@@ -94,6 +95,11 @@ NGS.createLoad("crm.loads.main.index", {
             checkbox.attr("checked", $(this).hasClass("checked"));
             checkbox.trigger('change');
         });
+    },
+    initLeftMenuTrigger: function () {
+        $("#leftMenuTrigger").on('click', function () {
+            $(this).toggleClass('menu_hidden');
+            $("#mainWrapper").toggleClass('menu_hidden');
+        })
     }
-
 });

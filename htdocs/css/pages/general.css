@@ -1,0 +1,47 @@
+.general--container .label {
+    display: block;
+    padding-left: 0;
+}
+.general--container .calendar-container {
+    display: inline-block;
+    vertical-align: top;
+    padding-right: 20px;
+    width: 33%;
+}
+
+.calendar-container .select_wrapper {
+    width: 100%;
+}
+.calendar-container .xdsoft_datetimepicker {
+    width: 100%;
+    padding: 0 8px;
+    max-width: 320px;
+    margin: 0 auto;
+}
+.calendar-container .xdsoft_datepicker {
+    width: 100%;
+    margin: 0;
+}
+
+.general--container .profit-calendars {
+    padding-top: 15px;
+}
+
+@media screen and (max-width: 768px) {
+    .general--container {
+        font-size: 0;
+    }
+    .general--container .calendar-container {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .general--container .main_title {
+        text-align: left;
+    }
+    .general--container .calendar-container {
+        width: 100%;
+        padding: 0;
+    }
+}
