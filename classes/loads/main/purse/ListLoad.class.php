@@ -125,7 +125,6 @@ namespace crm\loads\main\purse {
             $searchText = '';
             if (isset(NGS()->args()->st)) {
                 
-                $selectedFilterStatus = 'all';
                 $searchText = trim(NGS()->args()->st);
             }
 
