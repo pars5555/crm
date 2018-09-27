@@ -23,9 +23,9 @@ namespace crm\dal\dto {
         private $histores = [];
         // Map of DB value to Field value
         private $mapArray = array("id" => "id", "order_number" => "orderNumber", "amazon_order_number" => "amazonOrderNumber",
-            "delivery_date" => "deliveryDate","carrier_delivery_date" => "carrierDeliveryDate",
-            "carrier_tracking_status" => "carrierTrackingStatus", "tracking_number" => "trackingNumber", 
-            "amazon_total" => "amazonTotal", "buyer_name" => "buyerName",
+            "delivery_date" => "deliveryDate", "carrier_delivery_date" => "carrierDeliveryDate",
+            "carrier_tracking_status" => "carrierTrackingStatus", "tracking_number" => "trackingNumber",
+            "amazon_total" => "amazonTotal", "buyer_name" => "buyerName", "problematic" => "problematic",
             "discount" => "discount", "serial_number" => "serial_number", "btc_rate" => "btcRate", "recipient_name" => "recipientName", "product_name" => "productName",
             "quantity" => "quantity", "image_url" => "imageUrl", "shipping_carrier" => "shippingCarrier", "status" => "status", "note" => 'note', "unread_messages" => 'unreadMessages',
             "account_name" => "accountName", "created_at" => "createdAt", "updated_at" => "updatedAt", 'meta' => 'meta');
@@ -53,20 +53,18 @@ namespace crm\dal\dto {
 
         public function getCarrierTrackingUrl() {
             $trackingNumber = $this->getTrackingNumber();
-            if (strpos(strtolower($this->getShippingCarrier()),'usps') !== false)
-            {
-                return 'https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=' . $trackingNumber ;
+            if (strpos(strtolower($this->getShippingCarrier()), 'usps') !== false) {
+                return 'https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=' . $trackingNumber;
             }
-            if (strpos(strtolower($this->getShippingCarrier()), 'fedex') !== false)
-            {
+            if (strpos(strtolower($this->getShippingCarrier()), 'fedex') !== false) {
                 return "https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=$trackingNumber&cntry_code=us&locale=en_US";
             }
-            if (strpos(strtolower($this->getShippingCarrier()),'ups') !== false)
-            {
+            if (strpos(strtolower($this->getShippingCarrier()), 'ups') !== false) {
                 return "https://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=$trackingNumber&loc=en_am";
             }
             return false;
         }
+
         function getStatusHistoryText() {
             $ret = [];
             foreach ($this->histores as $history) {

@@ -47,6 +47,10 @@
 
         <label>Search</label>
         <input class="text" style="max-width: 200px;" type="text" name="st" value="{$ns.searchText}"/>
+        
+        <label>Problematic</label>
+        <input name="pr" type="checkbox" name="pr" {if $ns.problematic == 1}checked{/if} value="1"/>
+        
     </div>
 
 

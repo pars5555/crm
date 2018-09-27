@@ -34,12 +34,13 @@
             <span class="table-cell"> created </span>
         </div> 
         {foreach from=$ns.orders item=order}
-            <div class="table-row" {if $order->getHidden()==1}style="background: lightgray"{/if}{if $order->getDeliveryDateDiffToNow()>$ns.btc_products_days_diff_for_delivery_date and $order->getHidden()==0}style="background:  #e78f08"{/if}  data-type="btc" data-id="{$order->getId()}" >
+            <div class="table-row" {if $order->getHidden()==1}style="background: lightgray"{elseif $order->getProblematic()==1}style="background: orange"{/if}{if $order->getDeliveryDateDiffToNow()>$ns.btc_products_days_diff_for_delivery_date and $order->getHidden()==0}style="background:  #e78f08"{/if}  data-type="btc" data-id="{$order->getId()}" >
                 <span class="table-cell"> 
                     <a href="list.tpl"></a>
                     {if $order->getHidden()==0}
                         <a href="javascript:void(0);" class="fa fa-eye-slash f_hide" data-id='{$order->getId()}'></a>
                     {/if}
+                    <a href="javascript:void(0);" id="problematic_{$order->getId()}" class="fa fa fa-exclamation-triangle f_problematic" data-id='{$order->getId()}'></a>
                     {if $order->getUnreadMessages() > 0}
                         <span class="fa fa-envelope" style="color: red">{$order->getUnreadMessages()}</span>
                     {/if}

@@ -254,6 +254,20 @@ namespace crm\managers {
             curl_close($ch);
             return $data;
         }
+        
+        private function curl_post_contents($url, $params= []) {
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+            $data = curl_exec($ch);
+            curl_close($ch);
+            return $data;
+        }
 
         private function getPurseOrdersHeader($token) {
             return ["authority: api.purse.io",
@@ -271,7 +285,14 @@ namespace crm\managers {
         }
 
         public function fetchFedexPageDetails($trackingNumber) {
-            
+            $params = ['action'=>'trackpackages', 
+                    'data'=> '{"TrackPackagesRequest":{"appType":"WTRK","appDeviceType":"DESKTOP","supportHTML":true,"supportCurrentLocation":true,"uniqueKey":"","processingParameters":{},"trackingInfoList":[{"trackNumberInfo":{"trackingNumber":"'.$trackingNumber.'","trackingQualifier":"","trackingCarrier":""}}]}}',
+                    'format'=> 'json',
+                    'locale'=> 'en_US',
+                    'version'=> 1
+                ];
+            $json = $this->curl_post_contents('https://www.fedex.com/trackingCal/track', $params);
+            var_dump($json);exit;
         }
 
         public function fetchUspsPageDetails($trackingNumber) {

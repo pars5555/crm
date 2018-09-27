@@ -15,10 +15,13 @@ NGS.createLoad("crm.loads.main.purse.list", {
                 $('#productFilters').trigger('submit');
             }, 1000);
         }.bind(this));
-        $('#productFilters').find('select, checkbox').change(function () {
+        $('#productFilters').find('select').change(function () {
             $('#productFilters').trigger('submit');
         });
-
+        $('#productFilters').find('input[name="pr"]').change(function () {
+            $('#productFilters').trigger('submit');
+        });
+        
         $('.tooltipster').each(function () {
             var content = $(this).find('p').html();
             $(this).tooltipster({
@@ -33,6 +36,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
         this.initUpload();
         this.initUpdate();
         this.initHide();
+        this.initProblematic();
         this.initTrackingsSearch();
         this.initExportTrackingsSearch();
         this.initHideByTrackings();
@@ -78,6 +82,13 @@ NGS.createLoad("crm.loads.main.purse.list", {
             var id = $(this).data('id');
             NGS.action('crm.actions.main.purse.set_hidden', {id: id, hide:1});
             $(this).closest('.table-row').remove();
+        });
+    },
+    initProblematic: function () {
+        $('.f_problematic').click(function () {
+            var id = $(this).data('id');
+            NGS.action('crm.actions.main.purse.set_problematic', {id: id});
+            
         });
     },
     initRefreshTracking: function () {

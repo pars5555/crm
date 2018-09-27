@@ -30,9 +30,9 @@ NGS.createLoad("crm.loads.main.purse.guest_list", {
                 theme: 'tooltipster-shadow'
             });
         });       
-        this.initHide();
+      
         this.initTrackingsSearch();
-        this.initHideByTrackingsConfirm();
+        
         this.initRefreshTracking();
         this.initRefreshCarrierDeliveryDate();
     },   
@@ -41,19 +41,7 @@ NGS.createLoad("crm.loads.main.purse.guest_list", {
             $('#trackings_modalBox').addClass('is_active');
         });
     },
-    initUpdate: function () {
-        $('.f_update_purse').click(function () {
-            var account = $(this).data('account_name');
-            NGS.action('crm.actions.main.purse.update_orders', {account_name: account});
-        });
-    },
-    initHide: function () {
-        $('.f_hide').click(function () {
-            var id = $(this).data('id');
-            NGS.action('crm.actions.main.purse.set_hidden', {id: id, hide:1});
-            $(this).closest('.table-row').remove();
-        });
-    },
+    
     initRefreshTracking: function () {
         $('.f_refresh_tracking').click(function () {
             var id = $(this).data('id');

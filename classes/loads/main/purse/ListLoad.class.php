@@ -21,10 +21,13 @@ namespace crm\loads\main\purse {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 200;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterHidden, $selectedFilterStatus, $searchText) = $this->initFilters($limit);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterHidden, $selectedFilterStatus, $searchText, $problematic) = $this->initFilters($limit);
             $where = ['1', '=', '1'];
             if ($selectedFilterAccount !== 'purse_all') {
                 $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
+            }
+            if ($problematic == 1) {
+                $where = array_merge($where, ['AND ', 'problematic', '=', 1]);
             }
             $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered', 'under_balance', 'accepted')";
             if ($selectedFilterStatus === 'active') {
@@ -53,7 +56,7 @@ namespace crm\loads\main\purse {
             $searchedItemCount = 0;
             foreach ($ordersPuposedToNotReceivedToDestinationCounty as $order) {
                 $productName = $order->getProductName();
-                if (!empty($searchText) &&  stripos($productName, $searchText) !== false) {
+                if (!empty($searchText) && stripos($productName, $searchText) !== false) {
                     $searchedItemCount += intval($order->getQuantity());
                 }
                 $totalPuposedToNotReceived += floatval($order->getAmazonTotal());
@@ -67,10 +70,10 @@ namespace crm\loads\main\purse {
             $this->addParam('changed_orders', NGS()->args()->changed_orders);
             $this->addParam('count', $count);
             $this->addParam('searchedItemPuposedCount', $searchedItemCount);
-            
+
             $this->addParam('pagesCount', $pagesCount);
             $this->addParam('orders', $orders);
-            
+
             $btc_products_days_diff_for_delivery_date = intval(\crm\managers\SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             $this->addParam('btc_products_days_diff_for_delivery_date', $btc_products_days_diff_for_delivery_date);
         }
@@ -122,12 +125,17 @@ namespace crm\loads\main\purse {
                     $selectedFilterStatus = strtolower(NGS()->args()->stts);
                 }
             }
+            $problematic = 0;
+            if (isset(NGS()->args()->pr)) {
+                $problematic = intval(NGS()->args()->pr);
+            }
             $searchText = '';
             if (isset(NGS()->args()->st)) {
-                
+
                 $searchText = trim(NGS()->args()->st);
             }
 
+            $this->addParam('problematic', $problematic);
             $this->addParam('searchText', $searchText);
             $this->addParam('selectedFilterAccount', $selectedFilterAccount);
             $this->addParam('selectedFilterHidden', $selectedFilterHidden);
@@ -135,7 +143,7 @@ namespace crm\loads\main\purse {
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterHidden, $selectedFilterStatus, $searchText];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterHidden, $selectedFilterStatus, $searchText,$problematic];
         }
 
         public function getTemplate() {
