@@ -54,7 +54,7 @@ namespace crm\loads\main\purse {
             foreach ($ordersPuposedToNotReceivedToDestinationCounty as $order) {
                 $productName = $order->getProductName();
                 if (!empty($searchText) &&  stripos($productName, $searchText) !== false) {
-                    $searchedItemCount += 1;
+                    $searchedItemCount += intval($order->getQuantity());
                 }
                 $totalPuposedToNotReceived += floatval($order->getAmazonTotal());
             }

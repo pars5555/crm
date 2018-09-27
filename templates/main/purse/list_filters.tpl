@@ -64,7 +64,7 @@
     Total not received count: {$ns.not_received_orders_count}
 </h4>
 {if !empty($ns.searchText)}
-    Searched text corresponding not reeiev to recipient count:  {$ns.searchedItemPuposedCount}
+    Searched text corresponding not received to recipient count:  {$ns.searchedItemPuposedCount}
 {/if}
 <div class="form-group" style="float: right">
     <a id="hide_by_trackings_button" class="button blue small inline">Hide By Trackings</a>
