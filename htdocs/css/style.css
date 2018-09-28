@@ -31,9 +31,6 @@ img {
 /**************************************************************************************/
 /*                                         WRAPPER                                    */
 /**************************************************************************************/
-table tr {
-    border-bottom: 1pt solid black;
-}
 
 .wrapper {
     flex-grow: 1;
@@ -48,9 +45,7 @@ table tr {
 }
 
 .content {
-    padding-top: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 20px;
     flex-grow: 1;
 }
 
@@ -73,6 +68,46 @@ table tr {
     text-align: center;
     font-weight: 600;
     color: #63B4FB;
+}
+
+/*************************************** Table styles **************************************/
+.main-table {
+    max-width: 100%;
+    width: 100%;
+    overflow-x: auto;
+}
+.main-table table {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-collapse: collapse;
+    text-align: left;
+}
+.main-table th,
+.main-table td {
+    padding: 7px 10px;
+    font-size: 14px;
+}
+.main-table th {
+    padding: 10px;
+    font-family: nexa-regular, sans-serif;
+}
+.main-table td {
+    padding: 7px 10px;
+    font-family: nexa-light, sans-serif;
+}
+.main-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.main-table .link-cell {
+    padding: 0;
+}
+.main-table .link-cell a {
+    display: inline-block;
+    width: 100%;
+    padding: 7px 10px;
+}
+.main-table .icon-cell {
+    text-align: center;
 }
 
 /*************************************** Tab Title & Content Container **************************************/
@@ -483,6 +518,7 @@ select::-ms-expand {
 }
 .filters--form .form-group label {
     display: block;
+    margin-bottom: 3px;
 }
 
 .filter:not(:last-child) {

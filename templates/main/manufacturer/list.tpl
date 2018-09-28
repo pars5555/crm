@@ -9,26 +9,29 @@
     {/if}
 
     <a href="{$SITE_PATH}/manufacturer/create"><img src="{$SITE_PATH}/img/add.png"/></a>
-    <div class="table_striped">
-        <div class="table_header_group">
-            <span class="table-cell"> ID </span>
-            <span class="table-cell"> Name</span>
-            <span class="table-cell"> Link </span>
-            <span class="table-cell"> Edit </span>
-        </div> 
-        {foreach from=$ns.manufacturers item=manufacturer}
-            <div class="table-row">
-                <span class="table-cell">{$manufacturer->getId()} </span>
-                <span class="table-cell">{$manufacturer->getName()} </span>
-                <span class="table-cell"> {$manufacturer->getLink()} </span>
-                <a class="table-cell" href="{$SITE_PATH}/manufacturer/edit/{$manufacturer->getId()}">
-                    <span class="button_icon" title="Edit">
-                        <i class="fa fa-pencil"></i>
-                    </span>
-                </a>
-            </div>
-        {/foreach}
+
+    <div class="main-table">
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Link</th>
+                <th class="icon-cell">Edit</th>
+            </tr>
+            {foreach from=$ns.manufacturers item=manufacturer}
+                <tr>
+                    <td>{$manufacturer->getId()}</td>
+                    <td>{$manufacturer->getName()}</td>
+                    <td>{$manufacturer->getLink()}</td>
+                    <td class="icon-cell">
+                        <a href="{$SITE_PATH}/manufacturer/edit/{$manufacturer->getId()}">
+                            <span class="button_icon" title="Edit">
+                                <i class="fa fa-pencil"></i>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+            {/foreach}
+        </table>
     </div>
-
-
 </div>
