@@ -6,3 +6,24 @@
 .partner--list--container .filters-group {
     margin: 0;
 }
+
+.partner--list--container .id {
+    width: 40px;
+}
+
+.partner--list--container .email,
+.partner--list--container .phone,
+.partner--list--container .debt {
+    white-space: nowrap;
+}
+
+.partner--list--container .sale-orders,
+.partner--list--container .purchase-orders,
+.partner--list--container .payment-transactions,
+.partner--list--container .billing-transactions {
+    width: 110px;
+}
+
+.partner--list--container .all-deals {
+    width: 90px;
+}
