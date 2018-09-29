@@ -140,8 +140,12 @@ namespace crm\managers {
                 if ($trackingLinks->length > 0) {
                     $trackingNumber = $trackingLinks->item(0)->nodeValue;
                     $trackingNumber = trim(str_replace('Tracking ID', '', $trackingNumber));
-                    $shippingCarrierName = $this->getShippingCarrierName($el);
-                    break;
+                    if (preg_match('/\\d/', $trackingNumber) === 1) {
+                        $shippingCarrierName = $this->getShippingCarrierName($el);
+                        break;
+                    } else {
+                        $trackingNumber = '';
+                    }
                 }
             }
             if (!empty($trackingNumber)) {
