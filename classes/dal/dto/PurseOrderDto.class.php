@@ -25,7 +25,7 @@ namespace crm\dal\dto {
         private $mapArray = array("id" => "id", "order_number" => "orderNumber", "amazon_order_number" => "amazonOrderNumber",
             "delivery_date" => "deliveryDate", "carrier_delivery_date" => "carrierDeliveryDate",
             "carrier_tracking_status" => "carrierTrackingStatus", "tracking_number" => "trackingNumber",
-            "amazon_total" => "amazonTotal", "buyer_name" => "buyerName", "problematic" => "problematic",
+            "amazon_total" => "amazonTotal", "buyer_name" => "buyerName", "problematic" => "problematic","hidden" => "hidden",
             "discount" => "discount", "serial_number" => "serial_number", "btc_rate" => "btcRate", "recipient_name" => "recipientName", "product_name" => "productName",
             "quantity" => "quantity", "image_url" => "imageUrl", "shipping_carrier" => "shippingCarrier", "status" => "status", "note" => 'note', "unread_messages" => 'unreadMessages',
             "account_name" => "accountName", "created_at" => "createdAt", "updated_at" => "updatedAt", 'meta' => 'meta');
