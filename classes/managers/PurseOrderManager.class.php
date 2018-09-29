@@ -132,7 +132,7 @@ namespace crm\managers {
             $ps = $finder->query("//*[@id='primaryStatus']");
             if ($ps->length > 0)
             {
-                $primaryStatusText = $ps->item(0)->nodeValue;
+                $primaryStatusText = trim($ps->item(0)->nodeValue);
                 $this->updateField($row->getId(), 'amazon_primary_status_text', $primaryStatusText);
             }
             
