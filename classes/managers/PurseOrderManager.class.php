@@ -81,10 +81,12 @@ namespace crm\managers {
         private function getShippingCarrierName($el) {
             $trackingHeadlineEl = $el->getElementsByTagName('h1');
             if ($trackingHeadlineEl->length > 0) {
-                $trackingHeadline = $trackingHeadlineEl->item(0)->nodeValue;
-                if (strpos($trackingHeadline, 'Shipped with') !== false) {
-                    $trackingHeadline = trim(str_replace('Shipped with', '', $trackingHeadline));
-                    return trim($trackingHeadline);
+                for ($i = 0; $i < $trackingHeadlineEl->length; $i++) {
+                    $trackingHeadline = $trackingHeadlineEl->item($i)->nodeValue;
+                    if (strpos($trackingHeadline, 'Shipped with') !== false) {
+                        $trackingHeadline = trim(str_replace('Shipped with', '', $trackingHeadline));
+                        return trim($trackingHeadline);
+                    }
                 }
             }
             return 'N/A';
@@ -158,9 +160,9 @@ namespace crm\managers {
             }
             $dto->setOrderNumber($order['id']);
             $dto->setStatus($order['state']);
-            if ($order['state'] === 'canceled'){
+            if ($order['state'] === 'canceled') {
                 $dto->setHidden(1);
-            } 
+            }
             $dto->setProductName($order['items'][0]['name']);
             $dto->setImageUrl($order['items'][0]['images']['small']);
             $dto->setQuantity($order['items'][0]['quantity']);
@@ -257,8 +259,8 @@ namespace crm\managers {
             curl_close($ch);
             return $data;
         }
-        
-        private function curl_post_contents($url, $params= []) {
+
+        private function curl_post_contents($url, $params = []) {
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -288,14 +290,15 @@ namespace crm\managers {
         }
 
         public function fetchFedexPageDetails($trackingNumber) {
-            $params = ['action'=>'trackpackages', 
-                    'data'=> '{"TrackPackagesRequest":{"appType":"WTRK","appDeviceType":"DESKTOP","supportHTML":true,"supportCurrentLocation":true,"uniqueKey":"","processingParameters":{},"trackingInfoList":[{"trackNumberInfo":{"trackingNumber":"'.$trackingNumber.'","trackingQualifier":"","trackingCarrier":""}}]}}',
-                    'format'=> 'json',
-                    'locale'=> 'en_US',
-                    'version'=> 1
-                ];
+            $params = ['action' => 'trackpackages',
+                'data' => '{"TrackPackagesRequest":{"appType":"WTRK","appDeviceType":"DESKTOP","supportHTML":true,"supportCurrentLocation":true,"uniqueKey":"","processingParameters":{},"trackingInfoList":[{"trackNumberInfo":{"trackingNumber":"' . $trackingNumber . '","trackingQualifier":"","trackingCarrier":""}}]}}',
+                'format' => 'json',
+                'locale' => 'en_US',
+                'version' => 1
+            ];
             $json = $this->curl_post_contents('https://www.fedex.com/trackingCal/track', $params);
-            var_dump($json);exit;
+            var_dump($json);
+            exit;
         }
 
         public function fetchUspsPageDetails($trackingNumber) {
