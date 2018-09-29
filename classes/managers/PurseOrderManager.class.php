@@ -129,6 +129,14 @@ namespace crm\managers {
             $xmlDoc = new \DOMDocument();
             $xmlDoc->loadHTML($content);
             $finder = new \DOMXPath($xmlDoc);
+            $ps = $finder->query("//*[@id='primaryStatus']");
+            if ($ps->length > 0)
+            {
+                $primaryStatusText = $ps->item(0)->nodeValue;
+                $this->updateField($row->getId(), 'amazon_primary_status_text', $primaryStatusText);
+            }
+            
+            
             $ordersRows = $finder->query("//*[contains(@class, 'cardContainer')]");
 
             libxml_clear_errors();
@@ -148,6 +156,7 @@ namespace crm\managers {
                     }
                 }
             }
+            
             if (!empty($trackingNumber)) {
                 $this->updateField($row->getId(), 'tracking_number', $trackingNumber);
                 $this->updateField($row->getId(), 'shipping_carrier', $shippingCarrierName);
@@ -294,15 +303,11 @@ namespace crm\managers {
         }
 
         public function fetchFedexPageDetails($trackingNumber) {
-            $params = ['action' => 'trackpackages',
-                'data' => '{"TrackPackagesRequest":{"appType":"WTRK","appDeviceType":"DESKTOP","supportHTML":true,"supportCurrentLocation":true,"uniqueKey":"","processingParameters":{},"trackingInfoList":[{"trackNumberInfo":{"trackingNumber":"' . $trackingNumber . '","trackingQualifier":"","trackingCarrier":""}}]}}',
-                'format' => 'json',
-                'locale' => 'en_US',
-                'version' => 1
-            ];
-            $json = $this->curl_post_contents('https://www.fedex.com/trackingCal/track', $params);
-            var_dump($json);
-            exit;
+            
+        }
+        
+        public function fetchUpsPageDetails($trackingNumber) {
+            
         }
 
         public function fetchUspsPageDetails($trackingNumber) {
