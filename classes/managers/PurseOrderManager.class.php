@@ -160,7 +160,7 @@ namespace crm\managers {
             $dto->setStatus($order['state']);
             if ($order['state'] === 'canceled'){
                 $dto->setHidden(1);
-            }
+            } 
             $dto->setProductName($order['items'][0]['name']);
             $dto->setImageUrl($order['items'][0]['images']['small']);
             $dto->setQuantity($order['items'][0]['quantity']);
