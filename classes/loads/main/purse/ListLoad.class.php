@@ -27,7 +27,7 @@ namespace crm\loads\main\purse {
                 $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
             }
             if ($problematic == 1) {
-                $where = array_merge($where, ['AND ', 'problematic', '=', 1]);
+                $where = array_merge($where, ['AND ', 'problematic', '=', 1, 'OR', 'amazon_primary_status_text', 'like', "'%cancel%'" , 'OR', 'amazon_primary_status_text', 'like', "'%Was expected%'"]);
             }
             $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered', 'under_balance', 'accepted')";
             if ($selectedFilterStatus === 'active') {
