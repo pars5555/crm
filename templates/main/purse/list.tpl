@@ -80,7 +80,7 @@
                     {/if}
                     <br/>
                     <span id="carrier_tracking_status_{$order->getId()}">{$order->getCarrierTrackingStatus()}</span>:
-                    <span id="carrier_delivery_details_{$order->getId()}">{$order->getCarrierDeliveryDate()}</span>
+                    <span id="carrier_delivery_details_{$order->getId()}" style="color:#46AF04">{$order->getCarrierDeliveryDate()}</span>
                     <a href="javascript:void(0);" class="fa fa-refresh f_refresh_carrier_delivery_details" data-id='{$order->getId()}'></a>
                 </span>
                 <span class="table-cell"> {$order->getUpdatedAt()} </span>
