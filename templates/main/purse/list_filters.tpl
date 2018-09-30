@@ -47,10 +47,10 @@
 
         <label>Search</label>
         <input class="text" style="max-width: 200px;" type="text" name="st" value="{$ns.searchText}"/>
-        
+
         <label>Problematic</label>
         <input name="pr" type="checkbox" name="pr" {if $ns.problematic == 1}checked{/if} value="1"/>
-        
+
     </div>
 
 
@@ -61,16 +61,21 @@
 <h2>
     Rows Count: {$ns.count}
 </h2>
+{if isset($ns.total_puposed_to_not_received)}
 <h4>
     Total not received to recipient: {$ns.total_puposed_to_not_received}
 </h4>
+{/if}
+{if isset($ns.not_received_orders_count)}
 <h4>
     Total not received count: {$ns.not_received_orders_count}
 </h4>
+{/if}
 {if !empty($ns.searchText)}
     Searched text corresponding not received to recipient count:  {$ns.searchedItemPuposedCount}
 {/if}
 <div class="form-group" style="float: right">
+    <a id="not_registered_trackings_button" class="button blue small inline">Not Registered Trackings on destination Warehouse</a>
     <a id="hide_by_trackings_button" class="button blue small inline">Hide By Trackings</a>
     <a id="find_trackings_button" class="button blue small inline">Find Trackings</a>
     <a id="upfindload_button"><img  style="max-width: 100px;max-height: 60px" src="{$SITE_PATH}/img/upload.png"/></a>
@@ -81,8 +86,8 @@
     </form>
     <iframe name="is2_upload_target" style="width:0;height:0;border:0px solid #fff;display: none;"></iframe>
 </div>
-        
-        
+
+
 <div id="trackings_modalBox" class="modal modal-large">
     <div class="modal-container">
         <div class="modal-inner-container" >
@@ -111,6 +116,23 @@
             <div class="modal-content observers-detail-modal-content" id="observer_details_container">
                 <textarea id="hide_by_trackings_input" style="width: 100%; height: 100%; " rows="10"></textarea>
                 <a class="button blue" id="hide_by_trackings_confirm" href="javascript:void(0);" >Confirm</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="not_registered_trackings_modalBox" class="modal modal-large">
+    <div class="modal-container">
+        <div class="modal-inner-container" >
+            <span class="modal-close">
+                <span class="close-icon1"></span>
+                <span class="close-icon2"></span>
+            </span>
+            <h1 class="modal-headline">Insert All Registered Trackings in warehouses</h1>
+            <div class="modal-content observers-detail-modal-content" id="observer_details_container">
+                <textarea id="not_registered_trackings_input" style="width: 100%; height: 100%; " rows="10"></textarea>
+                <a class="button blue" id="not_registered_trackings_confirm" href="javascript:void(0);" >Confirm</a>
 
             </div>
         </div>

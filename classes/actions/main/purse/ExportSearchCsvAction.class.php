@@ -7,12 +7,12 @@ namespace crm\actions\main\purse {
     class ExportSearchCsvAction extends BaseAction {
 
         public function service() {
-            $strackingNumbersStr = trim(NGS()->args()->trackingNumbers);
-            $strackingNumbersStr = preg_replace('/\s+/', ';', $strackingNumbersStr);
-            $strackingNumbersStr = str_replace(',', ';', $strackingNumbersStr);
-            $strackingNumbersArray = explode(";", $strackingNumbersStr);
+            $trackingNumbersStr = trim(NGS()->args()->trackingNumbers);
+            $trackingNumbersStr = preg_replace('/\s+/', ';', $trackingNumbersStr);
+            $trackingNumbersStr = str_replace(',', ';', $trackingNumbersStr);
+            $trackingNumbersArray = explode(";", $trackingNumbersStr);
 
-            $rows = \crm\managers\PurseOrderManager::getInstance()->findByTrackingNumbers($strackingNumbersArray);
+            $rows = \crm\managers\PurseOrderManager::getInstance()->findByTrackingNumbers($trackingNumbersArray);
             $this->exportCsv($rows);
         }
 

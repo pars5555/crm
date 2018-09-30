@@ -37,10 +37,12 @@ NGS.createLoad("crm.loads.main.purse.list", {
         this.initUpdate();
         this.initHide();
         this.initProblematic();
+        this.initNotRegTrackings();
         this.initTrackingsSearch();
         this.initExportTrackingsSearch();
         this.initHideByTrackings();
         this.initHideByTrackingsConfirm();
+        this.initNotRegTrackingsConfirm();
         this.initRefreshTracking();
         this.initRefreshCarrierDeliveryDate();
     },
@@ -65,11 +67,22 @@ NGS.createLoad("crm.loads.main.purse.list", {
             NGS.action('crm.actions.main.purse.hide_by_trackings', params);
         });
     },
+    initNotRegTrackingsConfirm: function(){
+        $('#not_registered_trackings_confirm').click(function(){
+            var  trackingNumbers = $('#not_registered_trackings_input').val();
+            window.location.href = "/purse/list?roiw=" + trackingNumbers;
+        });
+    },
     initHideByTrackings: function(){
         $('#hide_by_trackings_button').click(function(){
             $('#hide_by_trackings_modalBox').addClass('is_active');
         });
         
+    },
+    initNotRegTrackings: function(){
+        $('#not_registered_trackings_button').click(function(){
+            $('#not_registered_trackings_modalBox').addClass('is_active');
+        });
     },
     initUpdate: function () {
         $('.f_update_purse').click(function () {

@@ -21,13 +21,13 @@ namespace crm\loads\main\purse {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 200;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterHidden, $selectedFilterStatus, $searchText, $problematic) = $this->initFilters($limit);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterHidden, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse) = $this->initFilters($limit);
             $where = ['1', '=', '1'];
             if ($selectedFilterAccount !== 'purse_all') {
                 $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
             }
             if ($problematic == 1) {
-                $where = array_merge($where, ['AND ', 'problematic', '=', 1, 'OR', 'amazon_primary_status_text', 'like', "'%cancel%'" , 'OR', 'amazon_primary_status_text', 'like', "'%Was expected%'"]);
+                $where = array_merge($where, ['AND ', 'problematic', '=', 1, 'OR', 'amazon_primary_status_text', 'like', "'%cancel%'", 'OR', 'amazon_primary_status_text', 'like', "'%Was expected%'"]);
             }
             $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered', 'under_balance', 'accepted')";
             if ($selectedFilterStatus === 'active') {
@@ -47,29 +47,34 @@ namespace crm\loads\main\purse {
                 $where = array_merge($where, ['OR', 'serial_number', 'like', "'%$searchText%'"]);
                 $where = array_merge($where, ['OR', 'tracking_number', 'like', "'%$searchText%'", ')']);
             }
-            $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
-            $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
+            if (!empty($regOrdersInWarehouse)) {
+                $orders = PurseOrderManager::getInstance()->getNotRegisteredOrdersInWarehouse($regOrdersInWarehouse);
+                $count = count($orders);
+            } else {
+                $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+                $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
+                $ordersPuposedToNotReceivedToDestinationCounty = PurseOrderManager::getInstance()->getOrdersPuposedToNotReceivedToDestinationCounty($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
 
-            $ordersPuposedToNotReceivedToDestinationCounty = PurseOrderManager::getInstance()->getOrdersPuposedToNotReceivedToDestinationCounty($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
-
-            $totalPuposedToNotReceived = 0;
-            $searchedItemCount = 0;
-            foreach ($ordersPuposedToNotReceivedToDestinationCounty as $order) {
-                $productName = $order->getProductName();
-                if (!empty($searchText) && stripos($productName, $searchText) !== false) {
-                    $searchedItemCount += intval($order->getQuantity());
+                $totalPuposedToNotReceived = 0;
+                $searchedItemCount = 0;
+                foreach ($ordersPuposedToNotReceivedToDestinationCounty as $order) {
+                    $productName = $order->getProductName();
+                    if (!empty($searchText) && stripos($productName, $searchText) !== false) {
+                        $searchedItemCount += intval($order->getQuantity());
+                    }
+                    $totalPuposedToNotReceived += floatval($order->getAmazonTotal());
                 }
-                $totalPuposedToNotReceived += floatval($order->getAmazonTotal());
+                $this->addParam('total_puposed_to_not_received', $totalPuposedToNotReceived);
+                $this->addParam('not_received_orders_count', count($ordersPuposedToNotReceivedToDestinationCounty));
+                $this->addParam('searchedItemPuposedCount', $searchedItemCount);
             }
+
 
 
             $pagesCount = ceil($count / $limit);
 
-            $this->addParam('total_puposed_to_not_received', $totalPuposedToNotReceived);
-            $this->addParam('not_received_orders_count', count($ordersPuposedToNotReceivedToDestinationCounty));
             $this->addParam('changed_orders', NGS()->args()->changed_orders);
             $this->addParam('count', $count);
-            $this->addParam('searchedItemPuposedCount', $searchedItemCount);
 
             $this->addParam('pagesCount', $pagesCount);
             $this->addParam('orders', $orders);
@@ -80,6 +85,16 @@ namespace crm\loads\main\purse {
 
         private function initFilters($limit) {
 
+            $regOrdersInWarehouse = [];
+            if (isset(NGS()->args()->roiw)) {
+                $regOrdersInWarehouseStr = trim(NGS()->args()->roiw);
+                if (!empty($regOrdersInWarehouseStr)) {
+                    $regOrdersInWarehouseStr = preg_replace('/\s+/', ';', $regOrdersInWarehouseStr);
+                    $regOrdersInWarehouseStr = str_replace(',', ';', $regOrdersInWarehouseStr);
+                    $regOrdersInWarehouse = explode(';', $regOrdersInWarehouseStr);
+                    $limit = 1000;
+                }
+            }
 
             //pageing
             $selectedFilterPage = 1;
@@ -135,15 +150,27 @@ namespace crm\loads\main\purse {
                 $searchText = trim(NGS()->args()->st);
             }
 
+
+            if (!empty($regOrdersInWarehouse)) {
+                $problematic = 0;
+                $searchText = '';
+                $selectedFilterAccount = '';
+                $selectedFilterHidden = 'no';
+                $selectedFilterStatus = 'all';
+                $offset = 0;
+                $selectedFilterPage = 1;
+            }
+
             $this->addParam('problematic', $problematic);
             $this->addParam('searchText', $searchText);
             $this->addParam('selectedFilterAccount', $selectedFilterAccount);
+            $this->addParam('notRegOrdersInWarehouse', $regOrdersInWarehouse);
             $this->addParam('selectedFilterHidden', $selectedFilterHidden);
             $this->addParam('selectedFilterStatus', $selectedFilterStatus);
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterHidden, $selectedFilterStatus, $searchText,$problematic];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterHidden, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse];
         }
 
         public function getTemplate() {

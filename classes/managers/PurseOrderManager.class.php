@@ -35,6 +35,33 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function getNotRegisteredOrdersInWarehouse($registeredTrackingNumbers) {
+            $registeredTrackingNumbers = array_map('trim', $registeredTrackingNumbers);
+            $ordersThatHasTrackingNumbers = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
+                'status', 'not in', "('open', 'under_balance', 'accepted', 'cancelled')", 'AND',
+                "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
+                "length(COALESCE(`tracking_number`, ''))", '>', 3
+            ]);
+            $existingOrdersMappedByTrackingNumbers = [];
+            foreach ($ordersThatHasTrackingNumbers as $order) {
+                $trackingNumber = $order->getTrackingNumber();
+                if (strlen(strval(trim($trackingNumber))) < 5) {
+                    continue;
+                }
+                $existingOrdersMappedByTrackingNumbers [strval($trackingNumber)] = $order;
+            }
+            $existingOrdersTrackingNumbers = array_keys($existingOrdersMappedByTrackingNumbers);
+            $ret = [];
+            foreach ($existingOrdersTrackingNumbers as $tracking_number) {
+                $index = $this->findTrackingInArray($tracking_number, $registeredTrackingNumbers);
+                if ($index === -1) {
+                    $order = $existingOrdersMappedByTrackingNumbers [$tracking_number];
+                    $ret[] = $order;
+                }
+            }
+            return $ret;
+        }
+
         public function findByTrackingNumbers($trackingNumbers, $getNotFounds = true) {
             $trackingNumbers = array_map('trim', $trackingNumbers);
             $notReceivedOrders = $this->selectAdvance(
@@ -130,13 +157,12 @@ namespace crm\managers {
             $xmlDoc->loadHTML($content);
             $finder = new \DOMXPath($xmlDoc);
             $ps = $finder->query("//*[@id='primaryStatus']");
-            if ($ps->length > 0)
-            {
+            if ($ps->length > 0) {
                 $primaryStatusText = trim($ps->item(0)->nodeValue);
                 $this->updateField($row->getId(), 'amazon_primary_status_text', $primaryStatusText);
             }
-            
-            
+
+
             $ordersRows = $finder->query("//*[contains(@class, 'cardContainer')]");
 
             libxml_clear_errors();
@@ -156,7 +182,7 @@ namespace crm\managers {
                     }
                 }
             }
-            
+
             if (!empty($trackingNumber)) {
                 $this->updateField($row->getId(), 'tracking_number', $trackingNumber);
                 $this->updateField($row->getId(), 'shipping_carrier', $shippingCarrierName);
@@ -305,7 +331,7 @@ namespace crm\managers {
         public function fetchFedexPageDetails($trackingNumber) {
             
         }
-        
+
         public function fetchUpsPageDetails($trackingNumber) {
             
         }
