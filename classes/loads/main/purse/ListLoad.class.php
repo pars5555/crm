@@ -57,11 +57,12 @@ namespace crm\loads\main\purse {
 
                 $totalPuposedToNotReceived = 0;
                 $searchedItemCount = 0;
+                $searchedItemCountThatHasTrackingNumber = 0;
                 foreach ($ordersPuposedToNotReceivedToDestinationCounty as $order) {
                     $productName = $order->getProductName();
                     if (!empty($searchText) && stripos($productName, $searchText) !== false) {
                         if (strlen($order->getTrackingNumber())>3){
-                            
+                            $searchedItemCountThatHasTrackingNumber +=intval($order->getQuantity());
                         }
                         $searchedItemCount += intval($order->getQuantity());
                     }
@@ -70,6 +71,7 @@ namespace crm\loads\main\purse {
                 $this->addParam('total_puposed_to_not_received', $totalPuposedToNotReceived);
                 $this->addParam('not_received_orders_count', count($ordersPuposedToNotReceivedToDestinationCounty));
                 $this->addParam('searchedItemPuposedCount', $searchedItemCount);
+                $this->addParam('searchedItemCountThatHasTrackingNumber', $searchedItemCountThatHasTrackingNumber);
             }
 
 
