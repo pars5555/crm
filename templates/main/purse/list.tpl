@@ -62,7 +62,7 @@
                 <span class="table-cell"> {$order->getStatus()} </span>
                 <span class="table-cell f_editable_cell" data-field-name="note"  > {$order->getNote()} </span>
                 <span class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </span>
-                <span class="table-cell"> 
+                <span class="table-cell f_editable_cell"  data-field-name="amazon_order_number"> 
                     <a class="link" target="_black" href="https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jnljnvjtqlspon&orderId={$order->getAmazonOrderNumber()}" > {$order->getAmazonOrderNumber()} </a> 
                     <br/>
                     {$order->getAmazonPrimaryStatusText()}
