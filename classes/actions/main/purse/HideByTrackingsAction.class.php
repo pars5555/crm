@@ -27,7 +27,9 @@ namespace crm\actions\main\purse {
             $strackingNumbersArray = explode(";", $strackingNumbersStr);
             $rows = \crm\managers\PurseOrderManager::getInstance()->findByTrackingNumbers($strackingNumbersArray, false);
             foreach ($rows as $row) {
-                PurseOrderManager::getInstance()->updateField($row->getId(), 'hidden', 1);
+                if ($row->getId() > 0){
+                    PurseOrderManager::getInstance()->updateField($row->getId(), 'hidden', 1);
+                }
             }
             
         }

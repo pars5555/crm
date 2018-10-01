@@ -72,7 +72,7 @@
 </h4>
 {/if}
 {if !empty($ns.searchText)}
-    Searched text corresponding not received to recipient count:  {$ns.searchedItemPuposedCount}
+    Searched text corresponding not received to recipient count:  {$ns.searchedItemPuposedCount} ({$ns.searchedItemCountThatHasTrackingNumber})
 {/if}
 <div class="form-group" style="float: right">
     <a id="not_registered_trackings_button" class="button blue small inline">Not Registered Trackings on destination Warehouse</a>
