@@ -38,7 +38,7 @@ namespace crm\managers {
         public function getNotRegisteredOrdersInWarehouse($registeredTrackingNumbers) {
             $registeredTrackingNumbers = array_map('trim', $registeredTrackingNumbers);
             $ordersThatHasTrackingNumbers = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
-                'status', 'not in', "('open', 'under_balance', 'accepted', 'cancelled')", 'AND',
+                'status', 'not in', "('open', 'under_balance', 'accepted', 'cancelled', 'under_balance.confirming')", 'AND',
                 "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
                 "length(COALESCE(`tracking_number`, ''))", '>', 3
             ]);

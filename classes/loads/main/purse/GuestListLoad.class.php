@@ -22,7 +22,7 @@ namespace crm\loads\main\purse {
             $limit = 200;
             list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterHidden, $selectedFilterStatus, $searchText) = $this->initFilters($limit);
                 $where = ['account_name', '=', "'purse_checkout'"];
-            $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered', 'under_balance', 'accepted')";
+            $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered', 'under_balance','under_balance.confirming', 'accepted')";
             if ($selectedFilterStatus === 'active') {
                 $where = array_merge($where, ['AND ', 'status', 'in', $activeStatusesSql]);
             }
