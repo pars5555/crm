@@ -10,51 +10,55 @@
 
     {include file="{ngs cmd=get_template_dir}/main/rorder/list_filters.tpl"}
     <a  href="{$SITE_PATH}/rorder/create"><img src="{$SITE_PATH}/img/new_order.png"/></a>
-    <div class="table_striped">
-        <div class="table_header_group">
-            <span class="table-cell"> ID </span>
-            <span class="table-cell"> Recipient </span>
-            <span class="table-cell"> Date</span>
-            <span class="table-cell"> Note </span>
-            <span class="table-cell"> View </span>
-            <span class="table-cell"> Edit </span>
-            <span class="table-cell"> Delete </span>
-        </div> 
-        {foreach from=$ns.recipientOrders item=recipientOrder}
-            <div class="table-row" {if $recipientOrder->getCancelled() == 1}style="color: gray"{/if}>
-                <a class="table-cell" href="{$SITE_PATH}/rorder/{$recipientOrder->getId()}">
-                    <span>{$recipientOrder->getId()} </span>
-                </a>
-                <span class="table-cell"> {$recipientOrder->getRecipientDto()->getName()} </span>
-                <span class="table-cell"> {$recipientOrder->getOrderDate()} </span>
-                <span class="table-cell"> {$recipientOrder->getNote()} </span>
-                <a class="table-cell view_item" href="{$SITE_PATH}/rorder/{$recipientOrder->getId()}">
-                    <span class="button_icon" title="View">
-                        <i class="fa fa-eye"></i>
-                    </span>
-                </a>
-               
-                
-                <a class="table-cell view_item" href="{$SITE_PATH}/rorder/edit/{$recipientOrder->getId()}">
-                    <span class="button_icon" title="Edit">
-                        <i class="fa fa-pencil"></i>
-                    </span>
-                </a>
-                {if $recipientOrder->getCancelled() == 1}
-                    <a class="table-cell deleteRecipientOrder"  href="{$SITE_PATH}/dyn/main_rorder/do_delete_recipient_order?id={$recipientOrder->getId()}">
-                        <span class="button_icon" title="delete">
-                            <i class="fa fa-trash-o"></i>
-                        </span>
-                    </a>
-                {else}
-                    <span class="table-cell" href="javascript:void(0);">
-                    </span>
-                {/if}
 
+    <div class="main-table">
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Recipient</th>
+                <th>Date</th>
+                <th>Note</th>
+                <th class="icon-cell">View</th>
+                <th class="icon-cell">Edit</th>
+                <th class="icon-cell">Delete</th>
+            </tr>
 
-                
-            </div>
-        {/foreach}
+            {foreach from=$ns.recipientOrders item=recipientOrder}
+                <tr {if $recipientOrder->getCancelled() == 1}style="color: gray"{/if}>
+                    <td class="link-cell id">
+                        <a href="{$SITE_PATH}/rorder/{$recipientOrder->getId()}">
+                            <span>{$recipientOrder->getId()} </span>
+                        </a>
+                    </td>
+                    <td>{$recipientOrder->getRecipientDto()->getName()}</td>
+                    <td>{$recipientOrder->getOrderDate()}</td>
+                    <td>{$recipientOrder->getNote()}</td>
+                    <td class="icon-cell">
+                        <a class="view_item" href="{$SITE_PATH}/rorder/{$recipientOrder->getId()}">
+                            <span class="button_icon" title="View">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                        </a>
+                    </td>
+                    <td class="icon-cell">
+                        <a class="view_item" href="{$SITE_PATH}/rorder/edit/{$recipientOrder->getId()}">
+                            <span class="button_icon" title="Edit">
+                                <i class="fa fa-pencil"></i>
+                            </span>
+                        </a>
+                    </td>
+                    <td class="icon-cell">
+                        {if $recipientOrder->getCancelled() == 1}
+                            <a class="deleteRecipientOrder"  href="{$SITE_PATH}/dyn/main_rorder/do_delete_recipient_order?id={$recipientOrder->getId()}">
+                                <span class="button_icon" title="delete">
+                                    <i class="fa fa-trash-o"></i>
+                                </span>
+                            </a>
+                        {else}
+                        {/if}
+                    </td>
+                </tr>
+            {/foreach}
+        </table>
     </div>
-
 </div>

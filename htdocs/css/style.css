@@ -385,12 +385,13 @@ select::-ms-expand {
 }
 
 .select_wrapper .text_autocomplete,
-.select_wrapper select {
+.select_wrapper select,
+.form-group .chosen-container .chosen-single {
     width: 100%;
-    background-color: transparent;
+    background: transparent;
     display: block;
     border: 1px solid #CCCCCC;
-    font-size: 14px;
+    border-radius: 0;
     padding: 7px 37px 3px 7px;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -398,7 +399,30 @@ select::-ms-expand {
     min-height: 34px;
     cursor: pointer;
     box-sizing: border-box;
+    box-shadow: none;
     font-family: nexa-light, sans-serif;
+    font-size: 14px;
+    line-height: 22px;
+    color: #333333;
+}
+.form-group .chosen-container {
+    width: 100% !important;
+}
+.form-group .chosen-container .chosen-drop {
+    border-radius: 0;
+}
+.chosen-container.chosen-container-active.chosen-with-drop .chosen-single {
+    background: transparent;
+    box-shadow: none;
+    border: 1px solid #CCCCCC;
+}
+
+.filters-group .csv {
+    flex-grow: 1;
+    text-align: right;
+}
+.filters-group .csv img {
+    width: 45px;
 }
 
 .select_wrapper .text_autocomplete {
