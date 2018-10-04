@@ -40,13 +40,15 @@
                 <option value="DESC" {if $ns.selectedFilterSortByAscDesc== 'DESC'}selected{/if}>DESC</option>
             </select>
         </div>
-        <div class="csv">
+        <div class="filter csv">
             <a href="javascript:void(0);" id="export_csv"><img src="/img/csv.png" width="45"/></a>
         </div>
-        <div class="add-new-btn">
-            <a href="{$SITE_PATH}/sale/create">
-                +
-            </a>
+        <div class="filter">
+            <div class="add-new-btn">
+                <a href="{$SITE_PATH}/sale/create">
+                    +
+                </a>
+            </div>
         </div>
     </div>
 </form>

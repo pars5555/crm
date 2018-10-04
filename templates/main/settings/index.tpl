@@ -6,11 +6,11 @@
                 <th> Value </th>
             </tr>
             {foreach from=$ns.rows item=row}
-                <tr class="table-row" data-id="{$row->getId()}" data-type="settings">
+                <tr data-id="{$row->getId()}" data-type="settings">
                     <td>{$row->getVar()}</td>
                     <td class="f_editable_cell"
                           data-field-name="value"
-                          style="word-break: break-all"
+                          style="word-break: break-all; min-width: 200px;"
                           data-type="settings">{$row->getValue()}</td>
                 </tr>
             {/foreach}

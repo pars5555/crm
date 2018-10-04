@@ -47,6 +47,7 @@ img {
 .content {
     padding: 20px;
     flex-grow: 1;
+    max-width: 100%;
 }
 
 .title {
@@ -68,6 +69,29 @@ img {
     text-align: center;
     font-weight: 600;
     color: #63B4FB;
+}
+
+@media screen and (max-width: 768px) {
+    .content {
+        padding: 15px;
+    }
+    .title {
+        font-size: 18px;
+    }
+    .main_title {
+        font-size: 25px;
+    }
+}
+@media screen and (max-width: 480px) {
+    .content {
+        padding: 10px;
+    }
+    .title {
+        font-size: 16px;
+    }
+    .main_title {
+        font-size: 22px;
+    }
 }
 
 /*************************************** Table styles **************************************/
@@ -307,12 +331,24 @@ img {
 
 /******************************************************************************/
 
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
 .clear {
     clear: both;
 }
 
 .space {
     height: 10px;
+}
+.text-right {
+    text-align: right;
+}
+.margin-auto {
+    margin: auto;
 }
 
 .doublespace {
@@ -423,6 +459,7 @@ select::-ms-expand {
 }
 .filters-group .csv img {
     width: 45px;
+    vertical-align: middle;
 }
 
 .select_wrapper .text_autocomplete {
@@ -539,12 +576,20 @@ select::-ms-expand {
 
 .filters--form .form-group.filters-group {
     display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
 }
 .filters--form .form-group label {
     display: block;
     margin-bottom: 3px;
 }
 
+.filter {
+    padding-bottom: 10px;
+}
+.filter.wide {
+    flex-grow: 1;
+}
 .filter:not(:last-child) {
     padding-right: 10px;
 }
@@ -616,6 +661,7 @@ select::-ms-expand {
 .button.small {
     padding: 5px 10px;
     font-size: 15px;
+    margin-bottom: 5px;
 }
 
 .add-new-btn {
@@ -629,7 +675,6 @@ select::-ms-expand {
     text-align: center;
     border: 2px solid #63B4FB;
     border-radius: 50%;
-    margin-left: 15px;
     overflow: hidden;
     cursor: pointer;
     transition: background-color .3s ease 0s, color .3s ease 0s;
@@ -715,6 +760,7 @@ select::-ms-expand {
 
 .inline-block {
     display: inline-block;
+    vertical-align: middle;
 }
 
 .pre {

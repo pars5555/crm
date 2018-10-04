@@ -1,10 +1,16 @@
 <div class="container all--list--container">
     <h1 class="main_title">All Deals</h1>
-    <div class="form-group">    
-        <label class="label">From </label>
-        {html_select_date prefix='startDate' start_year=2010 end_year=2020 field_order=YMD time=$ns.startDate}
-        <label class="label">To </label>
-        {html_select_date prefix='endDate' start_year=2010 end_year=2020 field_order=YMD time=$ns.endDate}
+    <div class="filters--form">
+        <div class="form-group filters-group">
+            <div class="filter group">
+                <label>From </label>
+                {html_select_date prefix='startDate' start_year=2010 end_year=2020 field_order=YMD time=$ns.startDate}
+            </div>
+            <div class="filter group">
+                <label>To </label>
+                {html_select_date prefix='endDate' start_year=2010 end_year=2020 field_order=YMD time=$ns.endDate}
+            </div>
+        </div>
     </div>
 
     <div class="main-table">
