@@ -72,7 +72,7 @@
                                     {$saleOrderLine->getCurrencyDto()->getTemplateChar()}
                                 </td>
                             </tr>
-                            <div class="saleOrderLineSerialNumbers" id="saleOrderLineSerialNumbersConteiner_{$saleOrderLine->getId()}" pol_id="{$saleOrderLine->getId()}">
+                            <tbody class="saleOrderLineSerialNumbers" id="saleOrderLineSerialNumbersConteiner_{$saleOrderLine->getId()}" pol_id="{$saleOrderLine->getId()}">
                                 {if array_key_exists($saleOrderLine->getId(), $polSerialNumbersDtos)}
                                     {foreach from=$polSerialNumbersDtos[$saleOrderLine->getId()] item=saleOrderLineSerialNumber}
                                         <tr>
@@ -90,8 +90,8 @@
                                         </tr>
                                     {/foreach}
                                 {/if}
-                            </div>
-                            <div class="snWarrantyNewLines">
+                            </tbody>
+                            <tbody class="snWarrantyNewLines">
                                 <tr>
                                     <td>
                                         <input class="text sn" type="text" placeholder="Serial Number"/>
@@ -105,7 +105,7 @@
                                         </a>
                                     </td>
                                 </tr>
-                            </div>
+                            </tbody>
                         {/foreach}
                     {/if}
                 </table>
@@ -115,7 +115,8 @@
             <a class="button blue" href="javascript:void(0);" id="submitForm">Save</a>
         </form>
 
-
+            <table>
+                
         <tr id="saleOrderLineSerialNumberRowTemplate" style="display: none">
             <td>
                 <input class="text sn" type="text"/>
@@ -129,5 +130,6 @@
                 </a>
             </td>
         </tr>
+            </table>
     {/if}
 </div>
