@@ -8,7 +8,13 @@
         {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
     {/if}
 
-    <a href="{$SITE_PATH}/manufacturer/create"><img src="{$SITE_PATH}/img/add.png"/></a>
+    <div class="filter text-right">
+        <div class="add-new-btn">
+            <a href="{$SITE_PATH}/manufacturer/create">
+                +
+            </a>
+        </div>
+    </div>
 
     <div class="main-table">
         <table>

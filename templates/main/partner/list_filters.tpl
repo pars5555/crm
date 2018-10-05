@@ -34,13 +34,15 @@
                 <option value="no" {if $ns.selectedFilterHasDebt == 'no'}selected{/if}>No</option>
             </select>
         </div>
-        <div class="csv">
+        <div class="filter csv">
             <a href="javascript:void(0);" class="inline-block" id="export_csv"><img src="/img/csv.png" width="45"/></a>
         </div>
-        <div class="add-new-btn">
-            <a href="{$SITE_PATH}/partner/create">
-                +
-            </a>
+        <div class="filter">
+            <div class="add-new-btn">
+                <a href="{$SITE_PATH}/partner/create">
+                    +
+                </a>
+            </div>
         </div>
     </div>
     {if $ns.pagesCount > 0}

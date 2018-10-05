@@ -1,6 +1,36 @@
 <form class="filters--form" id="recipientFilters" autocomplete="off" action="{$SITE_PATH}/recipient/list" method="GET">
+    <div class="form-group filters-group">
+        <div class="filter group">
+            <label>Sort by </label>
+            <select name="srt">
+                <option value="0" {if $ns.selectedFilterSortBy== 0}selected{/if}>None</option>
+                {foreach from=$ns.sortFields key=fieldName item=fieldDisplayName}
+                    <option value="{$fieldName}" {if $ns.selectedFilterSortBy === $fieldName}selected{/if}>{$fieldDisplayName}</option>
+                {/foreach}
+            </select>
+            <select name="ascdesc">
+                <option value="ASC" {if $ns.selectedFilterSortByAscDesc== 'ASC'}selected{/if}>ASC</option>
+                <option value="DESC" {if $ns.selectedFilterSortByAscDesc== 'DESC'}selected{/if}>DESC</option>
+            </select>
+        </div>
+        <div class="filter">
+            <label>Show Hiddens</label>
+            <select name="hddn">
+                <option value="all" {if $ns.selectedFilterHidden == 'all'}selected{/if}>All</option>
+                <option value="no" {if $ns.selectedFilterHidden == 'no'}selected{/if}>No</option>
+            </select>
+        </div>
+        <div class="filter wide text-right">
+            <div class="add-new-btn">
+                <a href="{$SITE_PATH}/recipient/create">
+                    +
+                </a>
+            </div>
+        </div>
+    </div>
+
     {if $ns.pagesCount > 0}
-        <div class="form-group">
+        <div class="form-group table-pagination">
             <label>Page</label>
             <select name="pg">
                 {for $p=1 to $ns.pagesCount}
@@ -9,22 +39,4 @@
             </select>
         </div>
     {/if}
-    <div class="form-group">
-        <label>Sort by </label>
-        <select name="srt">
-            <option value="0" {if $ns.selectedFilterSortBy== 0}selected{/if}>None</option>
-            {foreach from=$ns.sortFields key=fieldName item=fieldDisplayName}
-                <option value="{$fieldName}" {if $ns.selectedFilterSortBy === $fieldName}selected{/if}>{$fieldDisplayName}</option>
-            {/foreach}
-        </select>
-        <select name="ascdesc">
-            <option value="ASC" {if $ns.selectedFilterSortByAscDesc== 'ASC'}selected{/if}>ASC</option>
-            <option value="DESC" {if $ns.selectedFilterSortByAscDesc== 'DESC'}selected{/if}>DESC</option>
-        </select>
-        <label>Show Hiddens</label>
-        <select name="hddn">
-            <option value="all" {if $ns.selectedFilterHidden == 'all'}selected{/if}>All</option>
-            <option value="no" {if $ns.selectedFilterHidden == 'no'}selected{/if}>No</option>
-        </select>
-    </div>
 </form>

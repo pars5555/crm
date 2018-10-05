@@ -9,7 +9,6 @@
     {/if}
 
     {include file="{ngs cmd=get_template_dir}/main/sale/list_filters.tpl"}
-    <a href="{$SITE_PATH}/sale/create"><img src="{$SITE_PATH}/img/new_order.png"/></a>
     <div class="main-table">
         <table>
             <tr>

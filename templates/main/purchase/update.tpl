@@ -2,10 +2,10 @@
     <h1 class="main_title">Create Purchase Order</h1>
 
     {if isset($ns.error_message)}
-        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"}
     {/if}
     {if isset($ns.success_message)}
-        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
+        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"}
     {/if}
 
     {if isset($ns.purchaseOrder)}
@@ -41,16 +41,15 @@
                 <input class="datepicker" name ='payment_deadline' type="text" value="{$payment_deadline}"/>
             </div>
 
-    </div>
 
-    <div class="form-group">
-        <label class="label">Note</label>
-        <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
-    </div>
-    <input class="button blue" type="submit" value="Save"/>
-    <input type="hidden" name="id" value="{$ns.purchaseOrder->getId()}"/>
-</form>
-{else}
-    Wrong Purchase Order!
-{/if}
+            <div class="form-group">
+                <label class="label">Note</label>
+                <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
+            </div>
+            <input class="button blue" type="submit" value="Save"/>
+            <input type="hidden" name="id" value="{$ns.purchaseOrder->getId()}"/>
+        </form>
+    {else}
+        Wrong Purchase Order!
+    {/if}
 </div>
