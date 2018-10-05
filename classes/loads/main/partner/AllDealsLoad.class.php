@@ -21,15 +21,27 @@ namespace crm\loads\main\partner {
     use crm\security\RequestGroups;
     use NGS;
 
-    class AllDealsLoad  extends AdminLoad {
+    class AllDealsLoad extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
-            $partnerId = intval(NGS()->args()->id);
-            $partner = PartnerManager::getInstance()->selectbyPK($partnerId);
+            if (isset(NGS()->args()->id)) {
+                $partnerId = intval(NGS()->args()->id);
+                $partner = PartnerManager::getInstance()->selectByPK($partnerId);
+            }
+            if (isset(NGS()->args()->slug) && !empty(NGS()->args()->slug)) {
+                $partners  =  PartnerManager::getInstance()->selectByField('slug', NGS()->args()->slug);
+                $partner = $partners[0];
+                $partnerId = intval($partner->getId());
+            }
+            if (empty($partners))
+            {
+                echo 'partner not found';exit;                    
+            }
+            
             if ($partner) {
-                $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1],null, null, null, null, true));
+                $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], null, null, null, null, true));
                 $this->addParam('partner', $partner);
                 $partnerSaleOrders = SaleOrderManager::mapDtosById(SaleOrderManager::getInstance()->getPartnerSaleOrders($partnerId));
                 $partnerPurchaseOrders = PurchaseOrderManager::mapDtosById(PurchaseOrderManager::getInstance()->getPartnerPurchaseOrders($partnerId));
@@ -39,17 +51,23 @@ namespace crm\loads\main\partner {
                 $purchases = $this->mapByIdAndGivenField('purchase_', 'order_date', $partnerPurchaseOrders);
                 $paments = $this->mapByIdAndGivenField('payment_', 'date', $partnerPaymentTransactions);
                 $billings = $this->mapByIdAndGivenField('billing_', 'date', $partnerBillingTransactions);
-                $allDeals = $this->mergeAllDeals($sales, $purchases, $paments, $billings,$partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions);
+                $allDeals = $this->mergeAllDeals($sales, $purchases, $paments, $billings, $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions);
                 $this->addParam('allDeals', $allDeals);
                 $this->addParam('partnerSaleOrders', $partnerSaleOrders);
                 $this->addParam('partnerPurchaseOrders', $partnerPurchaseOrders);
                 $this->addParam('partnerPaymentTransactions', $partnerPaymentTransactions);
                 $this->addParam('partnerBillingTransactions', $partnerBillingTransactions);
-                
-                
-                CalculationManager::getInstance()->calculatePartnerAllDealesDebtHistory($partnerId, array_reverse ($allDeals, true));
-                
+
+
+                CalculationManager::getInstance()->calculatePartnerAllDealesDebtHistory($partnerId, array_reverse($allDeals, true));
             }
+        }
+
+        public function getRequestGroup() {
+            if (isset(NGS()->args()->id)) {
+                return RequestGroups::$adminRequest;
+            }
+            return RequestGroups::$guestRequest;
         }
 
         private function mergeAllDeals($sale, $purchase, $payment, $billing, $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions) {
@@ -78,7 +96,7 @@ namespace crm\loads\main\partner {
             }
             return $ret;
         }
-       
+
         private function mapByIdAndGivenField($keyPrefix, $fieldName, $partnerTransactions) {
             $ret = [];
             foreach ($partnerTransactions as $partnerTransaction) {
@@ -89,9 +107,8 @@ namespace crm\loads\main\partner {
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/partner/all_deals.tpl";
+        }
+
     }
-
-
-}
 
 }

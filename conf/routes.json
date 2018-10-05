@@ -503,6 +503,18 @@
         },
         {
             "action": "loads.main.index",
+            "route": "share/[:slug]",
+            "constraints": {
+                "slug": "[A-Za-z0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.partner.all_deals"
+                }
+            }
+        },
+        {
+            "action": "loads.main.index",
             "route": "[:id]",
             "constraints": {
                 "id": "[0-9]+"
