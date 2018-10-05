@@ -22,6 +22,11 @@ NGS.createLoad("crm.loads.main.index", {
             var type = $(this).data('type');
             var object_type = $(this).parent('div').data('type');
             var id = $(this).parent('div').data('id');
+            if (typeof object_type === 'undefined'){
+                object_type = $(this).parent('tr').data('type');
+                id = $(this).parent('tr').data('id');
+                
+            }
             if (type === 'richtext') {
                 var input = $('<textarea ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '">' + cellValues.htmlEncode() + '</textarea>')
             } else {

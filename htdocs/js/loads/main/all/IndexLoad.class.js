@@ -47,6 +47,11 @@ NGS.createLoad("crm.loads.main.all.index", {
             var cellFieldName = $(this).data('field-name');
             var id = $(this).parent('div').data('id');
             var object_type = $(this).parent('div').data('type');
+            if (typeof object_type === 'undefined'){
+                object_type = $(this).parent('tr').data('type');
+                id = $(this).parent('tr').data('id');
+                
+            }
             var input = $('<input ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '" type="text" value="' + cellValues.htmlEncode() + '"/>')
             $(this).html(input);
             var cellElement = $(this);
