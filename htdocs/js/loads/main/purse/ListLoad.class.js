@@ -94,7 +94,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
         $('.f_hide').click(function () {
             var id = $(this).data('id');
             NGS.action('crm.actions.main.purse.set_hidden', {id: id, hide:1});
-            $(this).closest('.table-row').remove();
+            $(this).closest('tr').remove();
         });
     },
     initProblematic: function () {
