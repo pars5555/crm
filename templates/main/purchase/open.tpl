@@ -162,7 +162,7 @@
     {/if}
 </div>
 
-
+<table style="display:none">
 <tr id="purchaseOrderLineTemplate" style="display:none">
     <td>
         <select class="purchaseOrderLinesSelectProduct" style="max-width: 500px" data-no-wrap="true">
@@ -191,3 +191,5 @@
         <input type="hidden" name="lines[]"/>
     </td>
 </tr>
+
+</table>
