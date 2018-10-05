@@ -12,7 +12,7 @@ namespace crm\actions {
         }
 
         public function getRequestGroup() {
-            return RequestGroups::$guestRequest;
+            return RequestGroups::$adminRequest;
         }
 
         protected function redirectToReferer() {
