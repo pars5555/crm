@@ -66,7 +66,7 @@
             <h2 class="title">Order Lines</h2>
 
             <div class="main-table">
-                <tableid="purchaseOrderLinesContainer">
+                <table id="purchaseOrderLinesContainer">
                     <tr class="table_header_group">
                         <th> Product </th>
                         <th> Quantity </th>
