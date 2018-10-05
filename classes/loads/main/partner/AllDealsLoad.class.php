@@ -35,7 +35,7 @@ namespace crm\loads\main\partner {
                 $partner = $partners[0];
                 $partnerId = intval($partner->getId());
             }
-            if (empty($partners))
+            if (empty($partner))
             {
                 echo 'partner not found';exit;                    
             }

@@ -19,7 +19,7 @@ namespace crm\security {
         public static $adminRequest = 1;
         public static $moderatorRequest = 3;
         public static $observerRequest = 5;
-        public static $guestRequest = 11;
+        public static $guestRequest = 18;
 
     }
 
