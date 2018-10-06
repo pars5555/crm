@@ -27,7 +27,7 @@ namespace crm\loads\main\recipient {
             $recipientManager = RecipientManager::getInstance();
             $where = ['1', '=', '1'];
             if ($selectedFilterHidden !== 'all') {
-                $where = array_merge($where, ['and', 'hidden', '=', 0]);
+                $where = array_merge($where, ['and', 'deleted', '=', 0]);
             }
             $join = '';
             $groupBy = '';

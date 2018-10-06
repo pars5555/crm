@@ -14,9 +14,14 @@
         <table>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
+                <th>First Name</th>
+                <th>Last Name</th>
                 <th>Email</th>
                 <th>Tel.</th>
+                <th>Ex Unit</th>
+                <th>St Unit</th>
+                <th>Doc Number</th>
+                <th>Doc Type</th>
                 <th>Favorite</th>
                 <th>Orders</th>
                 <th class="icon-cell">View</th>
@@ -31,9 +36,14 @@
                             <span>{$recipient->getId()} </span>
                         </a>
                     </td>
-                    <td>{$recipient->getName()}</td>
+                    <td>{$recipient->getFirstName()}</td>
+                    <td>{$recipient->getLastName()}</td>
                     <td>{$recipient->getEmail()}</td>
-                    <td style="white-space: nowrap"> {$recipient->getPhone()|replace:',':'</br>'} </td>
+                    <td style="white-space: nowrap"> {$recipient->getPhoneNumber()|replace:',':'</br>'} </td>
+                    <td>{$recipient->getExpressUnitAddress()}</td>
+                    <td>{$recipient->getStandardUnitAddress()}</td>
+                    <td>{$recipient->getDocumentNumber()}</td>
+                    <td>{$recipient->getDocumentType()}</td>
                     <td>
                         <input class="f_favorite_checkbox"
                                data-recipient_id="{$recipient->getId()}"
@@ -61,8 +71,8 @@
                         </a>
                     </td>
                     <td class="icon-cell">
-                        <input class="f_hidden_checkbox" data-recipient_id="{$recipient->getId()}" type="checkbox"
-                               value="1" {if $recipient->getHidden() ==1}checked{/if}/>
+                        <input class="f_deleted_checkbox" data-recipient_id="{$recipient->getId()}" type="checkbox"
+                               value="1" {if $recipient->getDeleted() ==1}checked{/if}/>
                     </td>
                 </tr>
             {/foreach}
