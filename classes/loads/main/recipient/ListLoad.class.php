@@ -23,10 +23,10 @@ namespace crm\loads\main\recipient {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 100;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterHidden, $selectedFilterHasDebt) = $this->initFilters($limit);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterDeleted, $selectedFilterHasDebt) = $this->initFilters($limit);
             $recipientManager = RecipientManager::getInstance();
             $where = ['1', '=', '1'];
-            if ($selectedFilterHidden !== 'all') {
+            if ($selectedFilterDeleted !== 'all') {
                 $where = array_merge($where, ['and', 'deleted', '=', 0]);
             }
             $join = '';
@@ -94,10 +94,10 @@ namespace crm\loads\main\recipient {
                     $selectedFilterSortByAscDesc = strtoupper(NGS()->args()->ascdesc);
                 }
             }
-            $selectedFilterHidden = 'no';
-            if (isset(NGS()->args()->hddn)) {
-                if (in_array(strtolower(NGS()->args()->hddn), ['all', 'no'])) {
-                    $selectedFilterHidden = strtolower(NGS()->args()->hddn);
+            $selectedFilterDeleted = 'no';
+            if (isset(NGS()->args()->del)) {
+                if (in_array(strtolower(NGS()->args()->del), ['all', 'no'])) {
+                    $selectedFilterDeleted = strtolower(NGS()->args()->del);
                 }
             }
 
@@ -109,11 +109,11 @@ namespace crm\loads\main\recipient {
             }
 
             $this->addParam('selectedFilterHasDebt', $selectedFilterHasDebt);
-            $this->addParam('selectedFilterHidden', $selectedFilterHidden);
+            $this->addParam('selectedFilterDeleted', $selectedFilterDeleted);
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $selectedFilterHidden, $selectedFilterHasDebt];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $selectedFilterDeleted, $selectedFilterHasDebt];
         }
 
         public function getTemplate() {

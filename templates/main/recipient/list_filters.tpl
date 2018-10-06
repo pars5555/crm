@@ -14,10 +14,10 @@
             </select>
         </div>
         <div class="filter">
-            <label>Show Hiddens</label>
-            <select name="hddn">
-                <option value="all" {if $ns.selectedFilterHidden == 'all'}selected{/if}>All</option>
-                <option value="no" {if $ns.selectedFilterHidden == 'no'}selected{/if}>No</option>
+            <label>Show Dleted</label>
+            <select name="del">
+                <option value="all" {if $ns.selectedFilterDeleted == 'all'}selected{/if}>All</option>
+                <option value="no" {if $ns.selectedFilterDeleted == 'no'}selected{/if}>No</option>
             </select>
         </div>
         <div class="filter wide text-right">

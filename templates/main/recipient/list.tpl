@@ -26,7 +26,7 @@
                 <th>Orders</th>
                 <th class="icon-cell">View</th>
                 <th class="icon-cell">Edit</th>
-                <th class="icon-cell">Hidden</th>
+                <th class="icon-cell">Deleted</th>
             </tr>
 
             {foreach from=$ns.recipients item=recipient}
