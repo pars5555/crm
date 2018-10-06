@@ -39,9 +39,9 @@
                     <td>
                         <a href="list.tpl"></a>
                         {if $order->getHidden()==0}
-                            <a href="javascript:void(0);" class="fa fa-eye-slash f_hide" data-id='{$order->getId()}'></a>
+                            <a href="javascript:void(0);" class="fa fa-eye-slash f_hide left" data-id='{$order->getId()}'></a>
                         {/if}
-                        <a href="javascript:void(0);" id="problematic_{$order->getId()}" class="fa fa fa-exclamation-triangle f_problematic" data-id='{$order->getId()}'></a>
+                        <a href="javascript:void(0);" id="problematic_{$order->getId()}" class="fa fa fa-exclamation-triangle f_problematic right" data-id='{$order->getId()}'></a>
                         {if $order->getUnreadMessages() > 0}
                             <span class="fa fa-envelope" style="color: red">{$order->getUnreadMessages()}</span>
                         {/if}
