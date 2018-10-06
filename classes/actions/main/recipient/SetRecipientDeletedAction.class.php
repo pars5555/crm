@@ -18,12 +18,12 @@ namespace crm\actions\main\recipient {
     use crm\managers\RecipientManager;
     use NGS;
 
-    class SetRecipientHiddenAction extends BaseAction {
+    class SetRecipientDeletedAction extends BaseAction {
 
         public function service() {
             $id = intval(NGS()->args()->recipient_id);
             $hidden = NGS()->args()->hidden;
-            RecipientManager::getInstance()->setRecipientHidden($id, $hidden);
+            RecipientManager::getInstance()->setRecipientDeleted($id, $hidden);
         }
 
     }

@@ -43,8 +43,8 @@ namespace crm\managers {
             return null;
         }
 
-        public function setRecipientHidden($id, $hidden) {
-            $this->mapper->updateField($id, 'hidden', $hidden);
+        public function setRecipientDeleted($id, $deleted) {
+            $this->mapper->updateField($id, 'deleted', $deleted);
         }
 
         public function setRecipientFavorite($id, $favorite) {
