@@ -23,7 +23,7 @@ namespace crm\dal\dto {
         private $histores = [];
         // Map of DB value to Field value
         private $mapArray = array("id" => "id", "order_number" => "orderNumber", "amazon_order_number" => "amazonOrderNumber",
-            "delivery_date" => "deliveryDate", "carrier_delivery_date" => "carrierDeliveryDate",
+            "delivery_date" => "deliveryDate", "carrier_delivery_date" => "carrierDeliveryDate", "unit_address" => "unitAddress",
             "carrier_tracking_status" => "carrierTrackingStatus", "tracking_number" => "trackingNumber",
             "amazon_total" => "amazonTotal", "buyer_name" => "buyerName", "problematic" => "problematic","hidden" => "hidden",
             "amazon_primary_status_text" => 'amazonPrimaryStatusText',

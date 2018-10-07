@@ -21,5 +21,24 @@ NGS.createLoad("crm.loads.main.recipient.list", {
 
             NGS.action('crm.actions.main.recipient.set_recipient_favorite', {recipient_id: recipient_id, favorite: favorite});
         });
+        this.initTooltip();
+    },
+    initTooltip: function () {
+        $(document).tooltip({
+            items: "[data-orders]",
+            track: true,
+            content: function () {
+                var element = $(this);
+                var data = element.data('orders');
+                var titleHtml = "";
+                $(data['orders']).each(function (index, order) {
+                    titleHtml += '<img width="50" src="' + order['image_url'] + '"/>' + '<span>$' +
+                            order['order_total'] + ' ' + 
+                            order['status'] + ' ' + 
+                            order['created_at'] + ' ' + '</span>' + "<br/><br/>";
+                }); 
+                return titleHtml;
+            }
+        });
     }
 });

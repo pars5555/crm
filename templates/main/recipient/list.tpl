@@ -51,10 +51,15 @@
                                {if $recipient->getFavorite() ==1}checked{/if}/>
                     </td>
                     <td>
-                        <a class="link"
+                        {if isset($ns.recipientsRecentOrdersMappedByRecipientId[$recipient->getId()])}
+                            {assign recipientOrders $ns.recipientsRecentOrdersMappedByRecipientId[$recipient->getId()]}
+
+                        <a class="link" data-orders='{$recipientOrders|@json_encode}'
                            href="{$SITE_PATH}/rorder/list?prt={$recipient->getId()}">
-                            {$ns.recipientsOrdersMappedByRecipientId[$recipient->getId()]|@count}
+                                {$recipientOrders['count']} ({$recipientOrders['total']})
+                                
                         </a>
+                        {/if}
                     </td>
                     <td class="icon-cell">
                         <a class="view_item" href="{$SITE_PATH}/recipient/{$recipient->getId()}">

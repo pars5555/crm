@@ -35,10 +35,47 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function getRecipientsRecentOrders($recipientIds) {
+            $recipients = RecipientManager::getInstance()->selectByPKs($recipientIds);
+            $expressUnitAddressesMappedByPartnerId = [];
+            $partnerIdMappedByExpressUnitAddresses = [];
+            foreach ($recipients as $recipient) {
+                $expressUnitAddress = $recipient->getExpressUnitAddress();
+                if (empty($expressUnitAddress)) {
+                    continue;
+                }
+                $expressUnitAddressesMappedByPartnerId[$recipient->getId()] = $expressUnitAddress;
+                $partnerIdMappedByExpressUnitAddresses[$expressUnitAddress] = $recipient->getId();
+            }
+            $unitAddressSql = "('" . implode("','", array_values($expressUnitAddressesMappedByPartnerId)) . "')";
+            $orders = $this->selectAdvance('*', ['status', '<>', "'canceled'", 'AND', 'unit_address', 'in', $unitAddressSql ,'AND', 'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 50]);
+            $recipientsRecentOrdersMappedByrecipientId = [];
+            foreach ($orders as $order) {
+                $unitAddress = $order->getUnitAddress();
+                $recipientId = $partnerIdMappedByExpressUnitAddresses[$expressUnitAddress];
+                if (!array_key_exists($recipientId, $recipientsRecentOrdersMappedByrecipientId)) {
+                    $recipientsRecentOrdersMappedByrecipientId[$recipientId] = [];
+                }
+                $recipientsRecentOrdersMappedByrecipientId[$recipientId][] = $order;
+            }
+            $ret = [];
+            foreach ($recipientsRecentOrdersMappedByrecipientId as $recId=> $recipientOrders) {
+                $total = 0;
+                $orders = [];
+                foreach ($recipientOrders as $order) {
+                    $total += $order->getAmazonTotal();
+                    $orders[] = ['created_at'=>explode(' ',$order->getCreatedAt())[0], 'status'=>$order->getStatus(), 'order_total'=>$order->getAmazonTotal(), 'image_url'=>$order->getImageUrl()];
+                }
+                
+                $ret[$recId] = ['total'=>$total,'count'=>count($recipientOrders), 'orders'=>$orders];
+            }
+            return $ret;
+        }
+
         public function getNotRegisteredOrdersInWarehouse($registeredTrackingNumbers) {
             $registeredTrackingNumbers = array_map('trim', $registeredTrackingNumbers);
             $ordersThatHasTrackingNumbers = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
-                'status', 'not in', "('open', 'under_balance', 'accepted', 'cancelled', 'under_balance.confirming')", 'AND',
+                'status', 'not in', "('open', 'under_balance', 'accepted', 'canceled', 'under_balance.confirming')", 'AND',
                 "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
                 "length(COALESCE(`tracking_number`, ''))", '>', 3
             ]);
@@ -206,6 +243,7 @@ namespace crm\managers {
             $dto->setImageUrl($order['items'][0]['images']['small']);
             $dto->setQuantity($order['items'][0]['quantity']);
             $dto->setAmazonOrderNumber($order['shipping']['purchase_order']);
+            $dto->setUnitAddress($order['shipping']['verbose']['street2']);
             $dto->setDeliveryDate($order['shipping']['delivery_date']);
             $dto->setUnreadMessages($order['unread_messages']);
             $dto->setRecipientName($order['shipping']['verbose']['full_name']);

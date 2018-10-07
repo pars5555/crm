@@ -54,7 +54,8 @@
                     <td>
                         <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a>
                     </td>
-                    <td> {$order->getRecipientName()} ({$order->getAccountName()|replace:'purse_':''})</td>
+                    <td> {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})</td>
+                    
                     <td> <img src="{$order->getImageUrl()}" width="100"/> </td>
                     <td>
                         <a class="link" target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getQuantity()} x {$order->getProductName()}</a>

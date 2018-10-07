@@ -85,13 +85,6 @@
     <a id="not_registered_trackings_button" class="button blue small inline">Not Registered Trackings on destination Warehouse</a>
     <a id="hide_by_trackings_button" class="button blue small inline">Hide By Trackings</a>
     <a id="find_trackings_button" class="button blue small inline">Find Trackings</a>
-    <a id="upfindload_button" class="inline-block"><img  style="max-width: 100px;max-height: 60px" src="{$SITE_PATH}/img/upload.png"/></a>
-
-    <form id="upload_form" target="is2_upload_target" enctype="multipart/form-data" method="post"
-          action="{$SITE_PATH}/dyn/main_purse/do_upload_html" style="width:0; height:0;visibility: none;border:none;">
-        <input type="file" id="file_input" name="list_file" style="display:none">
-    </form>
-    <iframe name="is2_upload_target" style="width:0;height:0;border:0px solid #fff;display: none;"></iframe>
 </div>
 
 

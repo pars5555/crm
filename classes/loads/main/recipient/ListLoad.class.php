@@ -34,12 +34,12 @@ namespace crm\loads\main\recipient {
 
             $recipients = $recipientManager->selectAdvance('recipients.*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit, false, $join, $groupBy);
             $recipientIds = $recipientManager->getDtosIdsArray($recipients);
-            $recipientsOrdersMappedByrecipientId = [];
+            $recipientsRecentOrdersMappedByrecipientId = [];
             if (!empty($recipientIds)) {
-                $recipientsOrdersMappedByrecipientId = RecipientOrderManager::getInstance()->getRecipientsOrders($recipientIds);
+                $recipientsRecentOrdersMappedByrecipientId = \crm\managers\PurseOrderManager::getInstance()->getRecipientsRecentOrders($recipientIds);
             }
 
-            $this->addParam('recipientsOrdersMappedByRecipientId', $recipientsOrdersMappedByrecipientId);
+            $this->addParam('recipientsRecentOrdersMappedByRecipientId', $recipientsRecentOrdersMappedByrecipientId);
 
             $this->addParam('recipients', $recipients);
             $count = RecipientManager::getInstance()->getLastSelectAdvanceRowsCount();
@@ -82,13 +82,13 @@ namespace crm\loads\main\recipient {
             //sorting
             $sortByFields = $this->getSortByFields();
             $this->addParam('sortFields', $sortByFields);
-            $selectedFilterSortBy = 0;
+            $selectedFilterSortBy = 'favorite';
             if (isset(NGS()->args()->srt)) {
                 if (array_key_exists(NGS()->args()->srt, $sortByFields)) {
                     $selectedFilterSortBy = NGS()->args()->srt;
                 }
             }
-            $selectedFilterSortByAscDesc = 'ASC';
+            $selectedFilterSortByAscDesc = 'DESC';
             if (isset(NGS()->args()->ascdesc)) {
                 if (in_array(strtoupper(NGS()->args()->ascdesc), ['ASC', 'DESC'])) {
                     $selectedFilterSortByAscDesc = strtoupper(NGS()->args()->ascdesc);
@@ -121,7 +121,7 @@ namespace crm\loads\main\recipient {
         }
 
         public function getSortByFields() {
-            return ['name' => 'Name', 'email' => 'Email'];
+            return ['favorite' => 'Favorite', 'first_name, last_name' => 'Name', 'email' => 'Email'];
         }
 
     }

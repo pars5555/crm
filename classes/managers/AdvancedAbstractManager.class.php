@@ -126,11 +126,14 @@ namespace crm\managers {
             }
 
             if (!empty($orderByFieldsArray)) {
+                if (!is_array($orderByFieldsArray)) {
+                    $orderByFieldsArray = array_map('trim', explode(',', $orderByFieldsArray));
+                }
                 $order = $orderByFieldsArray;
                 if (is_array($orderByFieldsArray)) {
-                    $order = implode('`, `', $orderByFieldsArray);
+                    $order = implode("` $orderByAscDesc, `", $orderByFieldsArray);
                 }
-                $order = 'ORDER BY `' . $order . '` ' . $orderByAscDesc;
+                $order = 'ORDER BY `' . $order . '`'. ' '. $orderByAscDesc;                
             }
             $this->lastSelectAdvanceWhere = $where;
             $this->lastSelectAdvanceLeftJoin = $leftJoin;
