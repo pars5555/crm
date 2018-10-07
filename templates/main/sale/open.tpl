@@ -140,7 +140,7 @@
         </form>
 
         {*                           ADD NEW SALE OREDER LINE                                 *}
-        <div class="main-table">
+        <div class="main-table has-dropdown">
             <table>
                 <tr>
                     <td>

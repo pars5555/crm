@@ -99,6 +99,10 @@ img {
     max-width: 100%;
     width: 100%;
     overflow-x: auto;
+    margin-bottom: 15px;
+}
+.main-table.has-dropdown {
+    overflow-x: visible;
 }
 .main-table table {
     width: 100%;
@@ -446,6 +450,7 @@ select::-ms-expand {
 }
 .form-group .chosen-container .chosen-drop {
     border-radius: 0;
+    z-index: 10000;
 }
 .chosen-container.chosen-container-active.chosen-with-drop .chosen-single {
     background: transparent;
