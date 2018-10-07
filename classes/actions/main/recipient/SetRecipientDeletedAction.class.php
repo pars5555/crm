@@ -22,8 +22,8 @@ namespace crm\actions\main\recipient {
 
         public function service() {
             $id = intval(NGS()->args()->recipient_id);
-            $hidden = NGS()->args()->hidden;
-            RecipientManager::getInstance()->setRecipientDeleted($id, $hidden);
+            $deleted = NGS()->args()->deleted;
+            RecipientManager::getInstance()->setRecipientDeleted($id, $deleted);
         }
 
     }

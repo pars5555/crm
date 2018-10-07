@@ -128,6 +128,7 @@
                     "actions/main/partner/GetPartnerDebtAction.class.js",
                     "actions/main/partner/SetPartnerHiddenAction.class.js",
                     "actions/main/recipient/SetRecipientDeletedAction.class.js",
+                    "actions/main/recipient/SetRecipientFavoriteAction.class.js",
                     "actions/main/product/SetProductHiddenAction.class.js",
                     "actions/main/product/SetProductQtyCheckedAction.class.js",
                     "actions/main/SetObjectCheckedAction.class.js",

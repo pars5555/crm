@@ -13,7 +13,7 @@ NGS.createLoad("crm.loads.main.recipient.list", {
             var recipient_id = $(this).data('recipient_id');
             var deleted = $(this).is(':checked') ? 1 : 0;
 
-            NGS.action('crm.actions.main.recipient.set_recipient_hidden', {recipient_id: recipient_id, deleted: deleted});
+            NGS.action('crm.actions.main.recipient.set_recipient_deleted', {recipient_id: recipient_id, deleted: deleted});
         });
         $('.f_favorite_checkbox').change(function () {
             var recipient_id = $(this).data('recipient_id');

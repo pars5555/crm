@@ -30,7 +30,7 @@
             </tr>
 
             {foreach from=$ns.recipients item=recipient}
-                <tr >
+                <tr style="{if $recipient->getDeleted() ==1}background:lightgrey{/if}">
                     <td class="link-cell id">
                         <a href="{$SITE_PATH}/recipient/{$recipient->getId()}">
                             <span>{$recipient->getId()} </span>
