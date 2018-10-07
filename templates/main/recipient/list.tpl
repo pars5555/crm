@@ -56,7 +56,7 @@
 
                         <a class="link" data-orders='{$recipientOrders|@json_encode}'
                            href="{$SITE_PATH}/rorder/list?prt={$recipient->getId()}">
-                                {$recipientOrders['count']} ({$recipientOrders['total']})
+                                {$recipientOrders['count']} (${$recipientOrders['total']})
                                 
                         </a>
                         {/if}
