@@ -32,7 +32,7 @@ NGS.createLoad("crm.loads.main.recipient.list", {
                 var data = element.data('orders');
                 var titleHtml = "";
                 $(data['orders']).each(function (index, order) {
-                    titleHtml += '<img width="50" src="' + order['image_url'] + '"/>' + '<span>$' +
+                    titleHtml += '<img width="30" src="' + order['image_url'] + '"/>' + '<span>$' +
                             order['order_total'] + ' ' + 
                             order['status'] + ' ' + 
                             order['created_at'] + ' ' + '</span>' + "<br/><br/>";

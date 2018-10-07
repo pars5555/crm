@@ -51,7 +51,7 @@ namespace crm\managers {
             $orders = $this->selectAdvance('*', ['status', '<>', "'canceled'", 'AND', 'unit_address', 'in', $unitAddressSql ,'AND', 'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 50]);
             $recipientsRecentOrdersMappedByrecipientId = [];
             foreach ($orders as $order) {
-                $unitAddress = $order->getUnitAddress();
+                $expressUnitAddress = $order->getUnitAddress();
                 $recipientId = $partnerIdMappedByExpressUnitAddresses[$expressUnitAddress];
                 if (!array_key_exists($recipientId, $recipientsRecentOrdersMappedByrecipientId)) {
                     $recipientsRecentOrdersMappedByrecipientId[$recipientId] = [];
