@@ -78,7 +78,7 @@
         </div>
 
 
-        <div class="form-group">
+        <div class="form-group wide">
             <label class="label">Note</label>
             <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
         </div>
@@ -90,7 +90,7 @@
             <input type="hidden" id="partnerDebtHidden"/>
         </div>
     </form>
-    <div id="signatureContainer" style="width: 500px;border: 1px solid gray;color:#0f60a7">
+    <div id="signatureContainer" style="width: 500px;border: 1px solid gray;color:#0f60a7; margin: 0 auto;">
         <span class="hidden">{$ns.req.signature}</span>
     </div>
     <a class="button clearSignature" >Clear</a>

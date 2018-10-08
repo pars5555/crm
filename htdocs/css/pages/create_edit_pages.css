@@ -1,0 +1,27 @@
+@media screen and (min-width: 768px) {
+    .sale--create--container,
+    .payment--create--container,
+    .billing--create--container,
+    .rorder--create--container,
+    .purchase--create--container {
+        font-size: 0;
+    }
+    .sale--create--container .form-group:not(.wide),
+    .payment--create--container .form-group:not(.wide),
+    .billing--create--container .form-group:not(.wide),
+    .rorder--create--container .form-group:not(.wide),
+    .purchase--create--container .form-group:not(.wide) {
+        display: inline-block;
+        vertical-align: top;
+        margin-top: 5px;
+        width: 50%;
+        font-size: 14px;
+    }
+}
+.sale--create--container label,
+.payment--create--container label,
+.billing--create--container label,
+.rorder--create--container label,
+.purchase--create--container label {
+    display: block;
+}

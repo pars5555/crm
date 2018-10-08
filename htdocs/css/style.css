@@ -778,31 +778,30 @@ select::-ms-expand {
     display: table;
     width: 100%;
     border-collapse: collapse;
-    text-align: center;
-    border: 1px solid #63b4fb;
+    border: 1px solid #ddd;
     word-break: break-all;
 }
 
 .table_striped .table_header_group .table-cell {
-    color: #63B4FB;
-    font-size: 17px;
-    border: 1px solid #63B4FB;
-    font-weight: 600;
     word-break: normal;
+    font-size: 14px;
+    padding: 10px;
+    font-family: nexa-regular, sans-serif;
 }
 
 .table_striped .table-row {
     display: table-row;
 }
 
-.table_striped .table-row:nth-child(odd) {
+.table_striped .table-row:nth-child(even) {
     background-color: #F9F9F9;
 }
 
 .table_striped .table-cell {
     display: table-cell;
     vertical-align: middle;
-    padding: 10px;
+    padding: 7px 10px;
+    font-family: nexa-light, sans-serif;
 }
 
 .table_row_group {
@@ -982,6 +981,22 @@ select::-ms-expand {
     font-weight: 600;
     padding: 0 10px;
     cursor: pointer;
+}
+
+/******************************** Date time picker ************************************/
+
+@media screen and (max-width: 480px) {
+    .container .form-group .xdsoft_datetimepicker {
+        padding-right: 3px;
+    }
+    .container .form-group .xdsoft_datepicker {
+        width: 218px;
+        margin-left: 3px;
+    }
+    .container .form-group .xdsoft_timepicker {
+        width: 50px;
+        margin-left: 3px;
+    }
 }
 
 /**************************************************************************************/

@@ -90,6 +90,6 @@
     {/if}
 </div>
 
-<div id="signatureContainer" style="width: 500px;color:#0f60a7;visibility: hidden">
+<div id="signatureContainer" style="width: 500px;color:#0f60a7;visibility: hidden; margin: 0 auto;">
     <span class="hidden">{$ns.billing->getSignature()}</span>
 </div>
