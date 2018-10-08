@@ -50,7 +50,7 @@
                 <input type="checkbox" name="isExpense" id="isExpenseCheckbox" value="1" {if $selectedIsExpense == 1}checked{/if}/>
             </div>
 
-            <div class="form-group">
+            <div class="form-group wide">
                 <label class="label">Note</label>
                 <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
             </div>

@@ -25,7 +25,8 @@
                     "chosen.min.css",
 
                     "pages/general.css",
-                    "pages/partners.css"
+                    "pages/partners.css",
+                    "pages/create_edit_pages.css"
                 ]
             }
         ]
