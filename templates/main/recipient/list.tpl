@@ -40,8 +40,8 @@
                     <td>{$recipient->getLastName()}</td>
                     <td>{$recipient->getEmail()}</td>
                     <td style="white-space: nowrap"> {$recipient->getPhoneNumber()|replace:',':'</br>'} </td>
-                    <td>{$recipient->getExpressUnitAddress()}</td>
-                    <td>{$recipient->getStandardUnitAddress()}</td>
+                    <td>{$recipient->getExpressUnitAddress()} {$recipient->getOnexExpressUnit()} {$recipient->getNovaExpressUnit()}</td>
+                    <td>{$recipient->getStandardUnitAddress()} {$recipient->getOnexStandardUnit()} {$recipient->getNovaStandardUnit()}</td>
                     <td>{$recipient->getDocumentNumber()}</td>
                     <td>{$recipient->getDocumentType()}</td>
                     <td>

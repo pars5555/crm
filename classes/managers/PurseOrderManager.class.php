@@ -37,17 +37,25 @@ namespace crm\managers {
 
         public function getRecipientsRecentOrders($recipientIds) {
             $recipients = RecipientManager::getInstance()->selectByPKs($recipientIds);
-            $expressUnitAddressesMappedByPartnerId = [];
             $partnerIdMappedByExpressUnitAddresses = [];
             foreach ($recipients as $recipient) {
                 $expressUnitAddress = $recipient->getExpressUnitAddress();
-                if (empty($expressUnitAddress)) {
+                $onexExpressUnit = $recipient->getOnexExpressUnit();
+                $novaExpressUnit = $recipient->getNovaExpressUnit();
+                if (empty($expressUnitAddress) && empty($onexExpressUnit) && empty($novaExpressUnit)) {
                     continue;
                 }
-                $expressUnitAddressesMappedByPartnerId[$recipient->getId()] = $expressUnitAddress;
-                $partnerIdMappedByExpressUnitAddresses[$expressUnitAddress] = $recipient->getId();
+                if (!empty($expressUnitAddress)){
+                    $partnerIdMappedByExpressUnitAddresses[$expressUnitAddress] = $recipient->getId();
+                }
+                if (!empty($onexExpressUnit)){
+                    $partnerIdMappedByExpressUnitAddresses[$onexExpressUnit] = $recipient->getId();
+                }
+                if (!empty($novaExpressUnit)){
+                    $partnerIdMappedByExpressUnitAddresses[$novaExpressUnit] = $recipient->getId();
+                }
             }
-            $unitAddressSql = "('" . implode("','", array_values($expressUnitAddressesMappedByPartnerId)) . "')";
+            $unitAddressSql = "('" . implode("','", array_keys($partnerIdMappedByExpressUnitAddresses)) . "')";
             $orders = $this->selectAdvance('*', ['status', '<>', "'canceled'", 'AND', 'unit_address', 'in', $unitAddressSql ,'AND', 'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 50]);
             $recipientsRecentOrdersMappedByrecipientId = [];
             foreach ($orders as $order) {

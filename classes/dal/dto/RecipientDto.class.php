@@ -28,8 +28,11 @@ namespace crm\dal\dto {
         // Map of DB value to Field value
         private $mapArray = array("id" => "id", 
             "first_name" => "firstName", "last_name"=>"lastName", 
-            "email" => "email", "document_number" => "documentNumber",  "document_type" => "documentType", "express_unit_address" => "expressUnitAddress",
-            "standard_unit_address" => "standardUnitAddress", "meta" => "meta", "address" => "address", "district" => "district", 
+            "email" => "email", "document_number" => "documentNumber",  "document_type" => "documentType", 
+            "express_unit_address" => "expressUnitAddress", "standard_unit_address" => "standardUnitAddress", 
+            "onex_express_unit" => "onexExpressUnit", "onex_standard_unit" => "onexStandardUnit", 
+            "nova_express_unit" => "novaExpressUnit", "nova_standard_unit" => "novaStandardUnit", 
+            "meta" => "meta", "address" => "address", "district" => "district", 
             "phone_number" => "phoneNumber", "favorite" => "favorite", "deleted" => "deleted");
 
         // returns map array
