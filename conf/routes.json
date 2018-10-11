@@ -549,6 +549,16 @@
             }
         }
     ],
+    "sharewarehouse": [
+        {
+            "action": "loads.main.guest_index",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.warehouse"
+                }
+            }
+        }
+    ],
     "pwarehouse": [
         {
             "action": "loads.main.index",

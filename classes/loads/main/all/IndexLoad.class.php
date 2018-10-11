@@ -20,7 +20,7 @@ namespace crm\loads\main\all {
     use crm\security\RequestGroups;
     use NGS;
 
-    class IndexLoad  extends AdminLoad {
+    class IndexLoad extends AdminLoad {
 
         public function load() {
             list($startDate, $endDate) = $this->getFormData();
@@ -31,7 +31,7 @@ namespace crm\loads\main\all {
                                 '<=', "DATE_ADD('$endDate' ,INTERVAL 1 DAY)"], ['order_date'], 'DESC'));
             $partnerPurchaseOrders = AdvancedAbstractManager::mapDtosById(PurchaseOrderManager::getInstance()->getPurchaseOrdersFull(
                                     ['cancelled', '=', 0, 'AND', 'order_date', '>=', "'" . $startDate . "'", 'AND', 'order_date',
-                                '<=', "DATE_ADD('$endDate' ,INTERVAL 1 DAY)" ], ['order_date'], 'DESC'));
+                                '<=', "DATE_ADD('$endDate' ,INTERVAL 1 DAY)"], ['order_date'], 'DESC'));
             $partnerPaymentTransactions = AdvancedAbstractManager::mapDtosById(PaymentTransactionManager::getInstance()->getPaymentListFull(
                                     ['cancelled', '=', 0, 'AND', 'amount', '>', 0, 'AND', 'date', '>=', "'" . $startDate . "'", 'AND', 'date',
                                 '<=', "DATE_ADD('$endDate' ,INTERVAL 1 DAY)"], ['date'], 'DESC'));
@@ -67,6 +67,10 @@ namespace crm\loads\main\all {
                 $endDate = "$endYear-$endmonth-$endDay";
             }
             return array($startDate, $endDate);
+        }
+
+        public function getRequestGroup() {
+            return RequestGroups::$guestRequest;
         }
 
         private function mergeAllDeals($sale, $purchase, $payment, $billing, $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions) {
