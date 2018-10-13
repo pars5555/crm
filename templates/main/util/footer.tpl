@@ -1,1 +1,1 @@
-footer
+&copy; crm.am {'Y'|date}, All rights reserved

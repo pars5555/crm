@@ -14,6 +14,7 @@
 
 .header .logo-container {
     flex-grow: 1;
+    white-space: nowrap;
 }
 .header .logo {
     font-family: nexa-medium, sans-serif;
@@ -23,7 +24,7 @@
     display: inline-block;
 }
 
-.header a:not(:last-child) {
+.header .languages a {
     padding-right: 15px;
 }
 
@@ -62,4 +63,30 @@
 
 .header .menu-trigger.menu_hidden .bar:after {
     width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    .header .menu-trigger .bar:after {
+        width: 100%;
+    }
+    .header .menu-trigger.menu_hidden .bar:after {
+        width: 70%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .header .menu-trigger {
+        margin-right: 10px;
+    }
+    .header .header-links {
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+    }
+    .header .languages {
+        padding-bottom: 5px;
+    }
+    .header .languages a:last-child {
+        padding-right: 0;
+    }
 }

@@ -3,9 +3,12 @@
     <a href="{$SITE_PATH}" class="logo">CRM.AM</a>
 </div>
 
-<a href="{$SITE_PATH}/language/en">en</a>
-<a href="{$SITE_PATH}/language/am">am</a>
-<a href="{$SITE_PATH}/language/ru">ru</a>
+<div class="header-links">
+    <span class="languages">
+        <a href="{$SITE_PATH}/language/en">en</a>
+        <a href="{$SITE_PATH}/language/am">am</a>
+        <a href="{$SITE_PATH}/language/ru">ru</a>
+    </span>
 
-
-<a href="{$SITE_PATH}/profit/visibility">profit visibility</a>
+    <a href="{$SITE_PATH}/profit/visibility">profit visibility</a>
+</div>

@@ -40,6 +40,11 @@ img {
     padding-top: 55px;
     transition: padding-left .3s ease 0s;
 }
+@media screen and (max-width: 768px) {
+    .wrapper {
+        padding-left: 0;
+    }
+}
 .wrapper.menu_hidden {
     padding-left: 0;
 }
@@ -69,6 +74,11 @@ img {
     text-align: center;
     font-weight: 600;
     color: #63B4FB;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
 }
 
 @media screen and (max-width: 768px) {

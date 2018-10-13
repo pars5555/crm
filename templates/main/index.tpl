@@ -16,9 +16,9 @@
                     {nest ns=content}
                 </div>
             </section>
-            {*<footer class="footer">*}
-                {*{include file="./util/footer.tpl"}*}
-            {*</footer>*}
+            <footer class="footer">
+                {include file="./util/footer.tpl"}
+            </footer>
         </div>
     </body>
 </html>
