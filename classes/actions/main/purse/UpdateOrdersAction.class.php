@@ -52,7 +52,7 @@ namespace crm\actions\main\purse {
             $res = PurseOrderManager::getInstance()->getActiveOrders($token);
             if (empty($res) || !isset($res['results'])) {
                 $this->addParam('success', false);
-                $this->addParam('message', 'Try again');
+                $this->addParam('message', 'Try again: active orders not fetched');
                 return;
             }
             foreach ($res['results'] as $order) {
@@ -62,7 +62,7 @@ namespace crm\actions\main\purse {
             $res = PurseOrderManager::getInstance()->getInactiveOrders($token);
             if (empty($res) || !isset($res['results'])) {
                 $this->addParam('success', false);
-                $this->addParam('message', 'Try again');
+                $this->addParam('message', 'Try again: inactive orders not fetched');
                 return;
             }
             foreach ($res['results'] as $order) {
