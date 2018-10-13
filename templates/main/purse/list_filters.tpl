@@ -39,6 +39,14 @@
             </select>
         </div>
         <div class="filter">
+            <label>Shipping Type</label>
+            <select name="sht">
+                <option value="all" {if $ns.selectedFilterShippingType == 'all'}selected{/if}>All</option>
+                <option value="express" {if $ns.selectedFilterShippingType == 'express'}selected{/if}>Express</option>
+                <option value="standard" {if $ns.selectedFilterShippingType == 'standard'}selected{/if}>Standard</option>
+            </select>
+        </div>
+        <div class="filter">
             <label>Show Hiddens</label>
             <select name="hddn">
                 <option value="all" {if $ns.selectedFilterHidden == 'all'}selected{/if}>All</option>

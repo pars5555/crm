@@ -26,7 +26,7 @@ namespace crm\dal\dto {
             "delivery_date" => "deliveryDate", "carrier_delivery_date" => "carrierDeliveryDate", "unit_address" => "unitAddress",
             "carrier_tracking_status" => "carrierTrackingStatus", "tracking_number" => "trackingNumber",
             "amazon_total" => "amazonTotal", "buyer_name" => "buyerName", "problematic" => "problematic","hidden" => "hidden",
-            "amazon_primary_status_text" => 'amazonPrimaryStatusText',
+            "amazon_primary_status_text" => 'amazonPrimaryStatusText', 'problem_solved' => 'problemSolved','shipping_type' => 'shipping_type', 
             "discount" => "discount", "serial_number" => "serial_number", "btc_rate" => "btcRate", "recipient_name" => "recipientName", "product_name" => "productName",
             "quantity" => "quantity", "image_url" => "imageUrl", "shipping_carrier" => "shippingCarrier", "status" => "status", "note" => 'note', "unread_messages" => 'unreadMessages',
             "account_name" => "accountName", "created_at" => "createdAt", "updated_at" => "updatedAt", 'meta' => 'meta');
@@ -36,21 +36,6 @@ namespace crm\dal\dto {
             return $this->mapArray;
         }
 
-        public function getDeliveryDateDiffToNow() {
-            if ($this->getDeliveryDate() <= 0) {
-                return 0;
-            }
-
-            $ddate = $this->getDeliveryDate();
-            $now = date('Y-m-d');
-            if ($this->getDeliveryDate() >= $now) {
-                return 0;
-            }
-            $date1 = date_create($ddate);
-            $date2 = date_create($now);
-            $diff = date_diff($date1, $date2);
-            return $diff->days;
-        }
 
         public function getCarrierTrackingUrl() {
             $trackingNumber = $this->getTrackingNumber();

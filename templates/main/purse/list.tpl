@@ -35,9 +35,8 @@
             </tr>
 
             {foreach from=$ns.orders item=order}
-                <tr {if $order->getHidden()==1}style="background: lightgray"{elseif $order->getProblematic()==1}style="background: orange"{/if}{if $order->getDeliveryDateDiffToNow()>$ns.btc_products_days_diff_for_delivery_date and $order->getHidden()==0}style="background:  #e78f08"{/if}  data-type="btc" data-id="{$order->getId()}" >
+                <tr {if $order->getHidden()==1}style="background: lightgray"{/if}  data-type="btc" data-id="{$order->getId()}" >
                     <td>
-                        <a href="list.tpl"></a>
                         {if $order->getHidden()==0}
                             <a href="javascript:void(0);" class="fa fa-eye-slash f_hide left" data-id='{$order->getId()}'></a>
                         {/if}
@@ -53,6 +52,8 @@
                     </td>
                     <td>
                         <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a>
+                        <br/>
+                        <span {if $order->getShippingType()=='standard'}style='color:red'{/if} >{$order->getShippingType()}</span>
                     </td>
                     <td> {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})</td>
                     

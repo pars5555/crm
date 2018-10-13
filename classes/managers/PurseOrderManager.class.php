@@ -268,7 +268,10 @@ namespace crm\managers {
             $dto->setImageUrl($order['items'][0]['images']['small']);
             $dto->setQuantity($order['items'][0]['quantity']);
             $dto->setAmazonOrderNumber($order['shipping']['purchase_order']);
-            $dto->setUnitAddress($order['shipping']['verbose']['street2']);
+            $unitAddress = trim($order['shipping']['verbose']['street2']);
+            $dto->setUnitAddress($unitAddress);
+            $shippingType = RecipientManager::getInstance()->getShippingTypeByUnitAddress($unitAddress);
+            $dto->setShippingType($shippingType);            
             $dto->setDeliveryDate($order['shipping']['delivery_date']);
             $dto->setUnreadMessages($order['unread_messages']);
             $dto->setRecipientName($order['shipping']['verbose']['full_name']);
@@ -298,9 +301,9 @@ namespace crm\managers {
             ]);
         }
 
-        public function getProblematicOrders() {
+        public function getProblematicOrders($where) {
             $days = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
-            return $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
+            return $this->selectAdvance('*', array_merge($where, ['AND', 
                         '(',
                             'problematic', '=', 1, 'OR', 'amazon_primary_status_text', 'like', "'%cancel%'", 'OR', 'amazon_primary_status_text', 'like', "'%Was expected%'",
                             'OR', "length(COALESCE(`unit_address`,''))", '<', 2, 'OR',
@@ -309,7 +312,7 @@ namespace crm\managers {
                                 "length(COALESCE(`serial_number`,''))", '<', 2, 'AND', 'ABS(DATEDIFF(`delivery_date`, date(now())))', '>=', $days,
                             ')',
                         ')'
-            ]);
+            ]));
         }
 
         public function getOrdersPuposedToNotReceivedToDestinationCounty() {

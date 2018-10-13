@@ -55,22 +55,38 @@ namespace crm\managers {
             return $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
         }
 
-        public function deleteRecipientFull($partnerId) {
-            $saleOrderDtosMappedById = SaleOrderManager::getInstance()->selectAdvance('id', ['partner_id', '=', $partnerId], null, null, null, null, true);
-            $orderDtosMappedById = RecipientOrderManager::getInstance()->selectAdvance('id', ['partner_id', '=', $partnerId], null, null, null, null, true);
-            if (!empty($saleOrderDtosMappedById)) {
-                $sqlSaleOrderIds = '(' . implode(',', array_keys($saleOrderDtosMappedById)) . ')';
-                SaleOrderLineManager::getInstance()->deleteAdvance(['sale_order_id', 'in', $sqlSaleOrderIds]);
+        public function getShippingTypeByUnitAddress($unitAddress) {
+            $unitAddress = trim($unitAddress);
+            if (empty($unitAddress)) {
+                return '';
             }
-            if (!empty($orderDtosMappedById)) {
-                $sqlOrderIds = '(' . implode(',', array_keys($orderDtosMappedById)) . ')';
-                RecipientOrderLineManager::getInstance()->deleteAdvance(['recipient_order_id', 'in', $sqlOrderIds]);
+            $rows = $this->selectAdvance('*', [
+                        'BINARY', 'express_unit_address', '=', "'$unitAddress'", 'OR',
+                        'BINARY', 'standard_unit_address', '=', "'$unitAddress'", 'OR',
+                        'BINARY', 'onex_express_unit', '=', "'$unitAddress'", 'OR',
+                        'BINARY', 'onex_standard_unit', '=', "'$unitAddress'", 'OR',
+                        'BINARY', 'nova_express_unit', '=', "'$unitAddress'", 'OR',
+                        'BINARY', 'nova_standard_unit', '=', "'$unitAddress'"
+            ]);
+            if (empty($rows))
+            {
+                return '';
             }
-            SaleOrderManager::getInstance()->deleteByField('partner_id', $partnerId);
-            RecipientOrderManager::getInstance()->deleteByField('partner_id', $partnerId);
-            PaymentTransactionManager::getInstance()->deleteByField('partner_id', $partnerId);
-            RecipientManager::getInstance()->deleteByPK($partnerId);
-            return true;
+            $row = $rows[0];
+            if (strtolower($row->getExpressUnitAddress()) === strtolower($unitAddress) ||
+                strtolower($row->getOnexExpressUnit()) === strtolower($unitAddress) ||
+                strtolower($row->getNovaExpressUnit()) === strtolower($unitAddress))
+            {
+                return 'express';
+            }
+            if (strtolower($row->getStandardUnitAddress()) === strtolower($unitAddress) ||
+                strtolower($row->getOnexStandardUnit()) === strtolower($unitAddress) ||
+                strtolower($row->getNovaStandardUnit()) === strtolower($unitAddress))
+            {
+                return 'standard';
+            }
+            return '';
+            
         }
 
         public function createRecipient($name, $email, $meta, $documents, $phone, $isFavorite) {
@@ -82,26 +98,6 @@ namespace crm\managers {
             $dto->setPhone($phone);
             $dto->setFavorite($isFavorite);
             return $this->insertDto($dto);
-        }
-
-        public function updateRecipient($id, $name, $email, $address, $phone, $initialDebts) {
-            $dto = $this->selectByPK($id);
-            if (isset($dto)) {
-                $dto->setName($name);
-                $dto->setEmail($email);
-                $dto->setAddress($address);
-                $dto->setPhone($phone);
-                $dto->setCreateDate(date('Y-m-d H:i:s'));
-                $ret = $this->updateByPk($dto);
-                RecipientInitialDebtManager::getInstance()->deleteByField('partner_id', $id);
-                if (!empty($initialDebts)) {
-                    foreach ($initialDebts as $initialDebt) {
-                        RecipientInitialDebtManager::getInstance()->addRow($id, $initialDebt->amount, $initialDebt->currency_id, $initialDebt->note);
-                    }
-                }
-                return $ret;
-            }
-            return false;
         }
 
     }

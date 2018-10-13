@@ -21,7 +21,7 @@ namespace crm\loads\main\purse {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 200;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterHidden, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse) = $this->initFilters($limit);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterHidden, $selectedFilterShippingType, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse) = $this->initFilters($limit);
             $where = ['1', '=', '1'];
             if ($selectedFilterAccount !== 'purse_all') {
                 $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
@@ -37,6 +37,9 @@ namespace crm\loads\main\purse {
             if ($selectedFilterHidden !== 'all') {
                 $where = array_merge($where, ['AND ', 'hidden', '=', 0]);
             }
+            if ($selectedFilterShippingType !== 'all') {
+                $where = array_merge($where, ['AND ', 'shipping_type', '=', "'$selectedFilterShippingType'"]);
+            }
             if (!empty($searchText)) {
                 $where = array_merge($where, ['AND', '(', 'product_name', 'like', "'%$searchText%'"]);
                 $where = array_merge($where, ['OR', 'order_number', 'like', "'%$searchText%'"]);
@@ -50,14 +53,11 @@ namespace crm\loads\main\purse {
                 $count = count($orders);
             } else {
                 if ($problematic == 1) {
-                    $orders = PurseOrderManager::getInstance()->getProblematicOrders();
+                    $orders = PurseOrderManager::getInstance()->getProblematicOrders($where);
                 } else {
                     $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
                 }
                 $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
-
-
-
 
                 $ordersPuposedToNotReceivedToDestinationCounty = PurseOrderManager::getInstance()->getOrdersPuposedToNotReceivedToDestinationCounty($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
 
@@ -159,6 +159,10 @@ namespace crm\loads\main\purse {
                     $selectedFilterStatus = strtolower(NGS()->args()->stts);
                 }
             }
+            $selectedFilterShippingType = 'all';
+            if (isset(NGS()->args()->sht)) {
+                $selectedFilterShippingType = strtolower(NGS()->args()->sht);
+            }
             $problematic = 0;
             if (isset(NGS()->args()->pr)) {
                 $problematic = intval(NGS()->args()->pr);
@@ -176,6 +180,7 @@ namespace crm\loads\main\purse {
                 $selectedFilterAccount = '';
                 $selectedFilterHidden = 'no';
                 $selectedFilterStatus = 'all';
+                $selectedFilterShippingType = 'all';
                 $offset = 0;
                 $selectedFilterPage = 1;
             }
@@ -186,10 +191,11 @@ namespace crm\loads\main\purse {
             $this->addParam('notRegOrdersInWarehouse', $regOrdersInWarehouse);
             $this->addParam('selectedFilterHidden', $selectedFilterHidden);
             $this->addParam('selectedFilterStatus', $selectedFilterStatus);
+            $this->addParam('selectedFilterShippingType', $selectedFilterShippingType);
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterHidden, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterHidden, $selectedFilterShippingType, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse];
         }
 
         public function getTemplate() {
