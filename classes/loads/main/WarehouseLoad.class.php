@@ -17,11 +17,13 @@ namespace crm\loads\main {
     use crm\managers\PurchaseOrderLineManager;
     use crm\managers\SaleOrderLineManager;
     use crm\managers\WarehouseManager;
+    use crm\security\RequestGroups;
     use NGS;
 
     class WarehouseLoad extends AdminLoad {
 
         public function load() {
+            
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity();
             $productsPrice = WarehouseManager::getInstance()->getAllProductsPrice(array_keys($productsQuantity));
             $products = ProductManager::getInstance()->getProductListFull([], 'name', 'ASC');
@@ -40,6 +42,10 @@ namespace crm\loads\main {
                 $total += floatval($productsPrice[$pId]) * floatval($qty);
             }
             $this->addParam('total', $total);
+        }
+
+        public function getRequestGroup() {
+            return RequestGroups::$guestRequest;
         }
 
         public function getTemplate() {

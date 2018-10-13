@@ -11,7 +11,9 @@
                 {include file="./util/header.tpl"}
             </header>
             <section class="wrapper" id="mainWrapper">
+                {if $ns.userType == $ns.userTypeAdmin}
                 {include file="./util/left_menu.tpl"}
+                {/if}
                 <div class="content" id="indexRightContent">
                     {nest ns=content}
                 </div>
