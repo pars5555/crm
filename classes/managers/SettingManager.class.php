@@ -56,11 +56,15 @@ use crm\dal\mappers\SettingMapper;
             }
         }
 
-        public function getSetting($var) {
+        public function getSetting($var, $default = null) {
             if (array_key_exists($var, $this->cache)) {
+                if (empty($this->cache[$var]) && !empty($default))
+                {
+                    return $default;
+                }
                 return $this->cache[$var];
             }
-            return null;
+            return $default;
         }
 
         private function cache() {

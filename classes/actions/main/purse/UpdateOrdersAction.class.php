@@ -26,6 +26,29 @@ namespace crm\actions\main\purse {
             set_time_limit(0);
             $accountName = NGS()->args()->account_name;
             $token = SettingManager::getInstance()->getSetting($accountName);
+            $userInfo = PurseOrderManager::getInstance()->getUserInfo($token);
+            if (empty($userInfo) || !isset($userInfo['email'])) {
+                $this->addParam('success', false);
+                $this->addParam('message', print_r($userInfo, true));
+                return;
+            }
+            $accountEmail = explode('@',trim($userInfo['email']))[0];
+            if (strpos($accountEmail, 'pars')!== false)
+            {
+                $settingVarName = 'purse_pars_meta';
+            }
+            if (strpos($accountEmail, 'checkout')!== false)
+            {
+                $settingVarName = 'purse_checkout_meta';
+            }
+            if (strpos($accountEmail, 'info')!== false)
+            {
+                $settingVarName = 'purse_info_meta';
+            }
+            SettingManager::getInstance()->setSetting($settingVarName, json_encode($userInfo));
+            
+            
+            
             $res = PurseOrderManager::getInstance()->getActiveOrders($token);
             if (empty($res) || !isset($res['results'])) {
                 $this->addParam('success', false);

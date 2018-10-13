@@ -70,9 +70,13 @@
         </div>
     {/if}
 </form>
-<button class="button blue small inline f_update_purse" data-account_name='purse_pars'>Pars ({$ns.parsUpdatedDate})</button>
-<button class="button blue small inline f_update_purse" data-account_name='purse_info'>Info ({$ns.infoUpdatedDate})</button>
-<button class="button blue small inline f_update_purse" data-account_name='purse_checkout'>Checkout ({$ns.checkoutUpdatedDate})</button>
+<button class="button blue small inline f_update_purse" data-account_name='purse_pars'>Pars ({$ns.parsUpdatedDate}) </br>{$ns.pars_btc_balance|default:'N/A'}</button>
+<button class="button blue small inline f_update_purse" data-account_name='purse_info'>Info ({$ns.infoUpdatedDate}) </br>{$ns.info_btc_balance|default:'N/A'}</button>
+<button class="button blue small inline f_update_purse" data-account_name='purse_checkout'>Checkout ({$ns.checkoutUpdatedDate}) </br>{$ns.checkout_btc_balance|default:'N/A'}</button>
+<br/>
+pars: {$ns.pars_btc_address|default:'N/A'}<br/>
+info: {$ns.info_btc_address|default:'N/A'}<br/>
+checkout: {$ns.checkout_btc_address|default:'N/A'}<br/>
 <h2>
     Rows Count: {$ns.count}
 </h2>

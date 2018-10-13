@@ -335,7 +335,7 @@ namespace crm\managers {
         }
 
         public function getInactiveOrders($token) {
-            $headers = $this->getPurseOrdersHeader($token);
+            $headers = $this->getPurseHeader($token);
             $rawData = $this->curl_get_contents('https://api.purse.io/api/v1/orders/me/inactive', $headers);
             $listener = new \JsonStreamingParser\Listener\InMemoryListener();
             $stream = fopen('php://memory', 'r+');
@@ -353,8 +353,13 @@ namespace crm\managers {
         }
 
         public function getActiveOrders($token) {
-            $headers = $this->getPurseOrdersHeader($token);
+            $headers = $this->getPurseHeader($token);
             return json_decode($this->curl_get_contents('https://api.purse.io/api/v1/orders/me/active', $headers), true);
+        }
+        
+        public function getUserInfo($token) {
+            $headers = $this->getPurseHeader($token);
+            return json_decode($this->curl_get_contents('https://api.purse.io/api/v1/users/me', $headers), true);
         }
 
         private function curl_get_contents($url, $headers = [], $cookie = '') {
@@ -393,10 +398,9 @@ namespace crm\managers {
             return $data;
         }
 
-        private function getPurseOrdersHeader($token) {
+        private function getPurseHeader($token) {
             return ["authority: api.purse.io",
                 "method: GET",
-                "path: /api/v1/orders/me/active",
                 "scheme: https",
                 "accept: application/json, text/javascript, */*; q=0.01",
                 "accept-language: en-US,en;q=0.9,hy;q=0.8",

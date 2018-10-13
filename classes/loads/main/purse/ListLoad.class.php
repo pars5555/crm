@@ -92,6 +92,25 @@ namespace crm\loads\main\purse {
 
             $btc_products_days_diff_for_delivery_date = intval(\crm\managers\SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             $this->addParam('btc_products_days_diff_for_delivery_date', $btc_products_days_diff_for_delivery_date);
+            
+            $purse_checkout_meta = json_decode(\crm\managers\SettingManager::getInstance()->getSetting('purse_checkout_meta', '{}'));
+            $purse_pars_meta = json_decode(\crm\managers\SettingManager::getInstance()->getSetting('purse_pars_meta', '{}'));
+            $purse_info_meta = json_decode(\crm\managers\SettingManager::getInstance()->getSetting('purse_info_meta', '{}'));
+            if (isset($purse_checkout_meta->wallet))
+            {
+                $this->addParam('checkout_btc_balance', round($purse_checkout_meta->wallet->BTC->balance->active, 3));
+                $this->addParam('checkout_btc_address', $purse_checkout_meta->wallet->BTC->legacy_address);
+            }
+            if (isset($purse_pars_meta->wallet))
+            {
+                $this->addParam('pars_btc_balance', round($purse_pars_meta->wallet->BTC->balance->active, 3));
+                $this->addParam('pars_btc_address', $purse_pars_meta->wallet->BTC->legacy_address);
+            }
+            if (isset($purse_info_meta->wallet))
+            {
+                $this->addParam('info_btc_balance', round($purse_info_meta->wallet->BTC->balance->active, 3));
+                $this->addParam('info_btc_address', $purse_info_meta->wallet->BTC->legacy_address);
+            }
 
 
             $parsUpdatedDate = PurseOrderManager::getInstance()->getAccountUpdatedDateString('purse_pars');
