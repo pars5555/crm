@@ -3,10 +3,10 @@ NGS.createAction("crm.actions.main.purse.set_problematic", {
     },
     afterAction: function (res) {
         if (res.problematic == 1) {
-            $('#problematic_' + res.id).closest('.table-row').css('background', 'orange');
+            $('#problematic_' + res.id).closest('tr').css('background', 'orange');
         } else
         {
-            $('#problematic_' + res.id).closest('.table-row').css('background', '');
+            $('#problematic_' + res.id).closest('tr').css('background', '');
 
         }
     }

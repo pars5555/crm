@@ -38,11 +38,16 @@
                 <tr {if $order->getHidden()==1}style="background: lightgray"{/if}  data-type="btc" data-id="{$order->getId()}" >
                     <td>
                         {if $order->getHidden()==0}
-                            <a href="javascript:void(0);" class="fa fa-eye-slash f_hide left" data-id='{$order->getId()}'></a>
+                            <a href="javascript:void(0);" class="fa fa-eye-slash fa-1x f_hide left" data-id='{$order->getId()}'></a>
                         {/if}
-                        <a href="javascript:void(0);" id="problematic_{$order->getId()}" class="fa fa fa-exclamation-triangle f_problematic right" data-id='{$order->getId()}'></a>
+                        <a href="javascript:void(0);" id="problematic_{$order->getId()}" class="fa fa-exclamation-triangle fa-1x f_problematic right" data-id='{$order->getId()}'></a>
+                        <br/>
                         {if $order->getUnreadMessages() > 0}
                             <span class="fa fa-envelope" style="color: red">{$order->getUnreadMessages()}</span>
+                        {/if}
+                        <br/>
+                        {if $ns.problematic == 1}
+                            <a href="javascript:void(0);" id="problem_solved_{$order->getId()}" class="fa fa-check-circle fa-2x f_problem_solved" data-id='{$order->getId()}'></a>
                         {/if}
                     </td>
                     <td>
@@ -56,7 +61,7 @@
                         <span {if $order->getShippingType()=='standard'}style='color:red'{/if} >{$order->getShippingType()}</span>
                     </td>
                     <td> {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})</td>
-                    
+
                     <td> <img src="{$order->getImageUrl()}" width="100"/> </td>
                     <td>
                         <a class="link" target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getQuantity()} x {$order->getProductName()}</a>
