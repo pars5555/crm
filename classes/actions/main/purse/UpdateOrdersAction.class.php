@@ -29,7 +29,7 @@ namespace crm\actions\main\purse {
             $userInfo = PurseOrderManager::getInstance()->getUserInfo($token);
             if (empty($userInfo) || !isset($userInfo['email'])) {
                 $this->addParam('success', false);
-                $this->addParam('message', print_r($userInfo, true));
+                $this->addParam('message', 'Update token');
                 return;
             }
             $accountEmail = explode('@',trim($userInfo['email']))[0];
@@ -52,10 +52,9 @@ namespace crm\actions\main\purse {
             $res = PurseOrderManager::getInstance()->getActiveOrders($token);
             if (empty($res) || !isset($res['results'])) {
                 $this->addParam('success', false);
-                $this->addParam('message', print_r($res, true));
+                $this->addParam('message', 'Try again');
                 return;
             }
-            //$result = \crm\managers\PurseOrderManager::getInstance()->emptyAccount($accountName);
             foreach ($res['results'] as $order) {
                 $result = \crm\managers\PurseOrderManager::getInstance()->insertOrUpdateOrderFromPurseObject($accountName, $order);
             }
@@ -63,7 +62,7 @@ namespace crm\actions\main\purse {
             $res = PurseOrderManager::getInstance()->getInactiveOrders($token);
             if (empty($res) || !isset($res['results'])) {
                 $this->addParam('success', false);
-                $this->addParam('message', print_r($res, true));
+                $this->addParam('message', 'Try again');
                 return;
             }
             foreach ($res['results'] as $order) {

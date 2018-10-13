@@ -4,7 +4,7 @@ NGS.createAction("crm.actions.main.purse.update_orders", {
     },
     afterAction: function (res) {
         if (res.success == false) {
-            alert('Update token');
+            alert(res.message);
         }else{
             window.location.reload();
         }
