@@ -112,14 +112,14 @@ namespace crm\managers {
             if (!empty($row)) {
                 $datetime = $row->getUpdatedAt();
                 list($date, $time) = explode(' ', $datetime);
-                
+
                 if ($date === date('Y-m-d')) {
                     return 'Today: ' . substr($time, 0, 5);
                 }
                 if ($date === date('Y-m-d', time() - 60 * 60 * 24)) {
                     return 'Yesteday: ' . substr($time, 0, 5);
                 }
-                return $date .' '. substr($time, 0, 5);
+                return $date . ' ' . substr($time, 0, 5);
             }
             return false;
         }
@@ -295,6 +295,20 @@ namespace crm\managers {
                         "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
                         "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND',
                         "length(COALESCE(`real_delivery_date`, ''))", '<', 3
+            ]);
+        }
+
+        public function getProblematicOrders() {
+            $days = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
+            return $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
+                        '(',
+                            'problematic', '=', 1, 'OR', 'amazon_primary_status_text', 'like', "'%cancel%'", 'OR', 'amazon_primary_status_text', 'like', "'%Was expected%'",
+                            'OR',
+                            '(',
+                                'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
+                                "length(COALESCE(`serial_number`,''))", '<', 2, 'AND', 'ABS(DATEDIFF(`delivery_date`, date(now())))', '>=', $days,
+                            ')',
+                        ')'
             ]);
         }
 

@@ -26,9 +26,7 @@ namespace crm\loads\main\purse {
             if ($selectedFilterAccount !== 'purse_all') {
                 $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
             }
-            if ($problematic == 1) {
-                $where = array_merge($where, ['AND ', 'problematic', '=', 1, 'OR', 'amazon_primary_status_text', 'like', "'%cancel%'", 'OR', 'amazon_primary_status_text', 'like', "'%Was expected%'"]);
-            }
+
             $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered', 'under_balance','under_balance.confirming', 'accepted')";
             if ($selectedFilterStatus === 'active') {
                 $where = array_merge($where, ['AND ', 'status', 'in', $activeStatusesSql]);
@@ -51,8 +49,16 @@ namespace crm\loads\main\purse {
                 $orders = PurseOrderManager::getInstance()->getNotRegisteredOrdersInWarehouse($regOrdersInWarehouse);
                 $count = count($orders);
             } else {
-                $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+                if ($problematic == 1) {
+                    $orders = PurseOrderManager::getInstance()->getProblematicOrders();
+                } else {
+                    $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+                }
                 $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
+
+
+
+
                 $ordersPuposedToNotReceivedToDestinationCounty = PurseOrderManager::getInstance()->getOrdersPuposedToNotReceivedToDestinationCounty($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
 
                 $totalPuposedToNotReceived = 0;
@@ -61,8 +67,8 @@ namespace crm\loads\main\purse {
                 foreach ($ordersPuposedToNotReceivedToDestinationCounty as $order) {
                     $productName = $order->getProductName();
                     if (!empty($searchText) && stripos($productName, $searchText) !== false) {
-                        if (strlen($order->getTrackingNumber())>3){
-                            $searchedItemCountThatHasTrackingNumber +=intval($order->getQuantity());
+                        if (strlen($order->getTrackingNumber()) > 3) {
+                            $searchedItemCountThatHasTrackingNumber += intval($order->getQuantity());
                         }
                         $searchedItemCount += intval($order->getQuantity());
                     }
@@ -86,8 +92,8 @@ namespace crm\loads\main\purse {
 
             $btc_products_days_diff_for_delivery_date = intval(\crm\managers\SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             $this->addParam('btc_products_days_diff_for_delivery_date', $btc_products_days_diff_for_delivery_date);
-            
-            
+
+
             $parsUpdatedDate = PurseOrderManager::getInstance()->getAccountUpdatedDateString('purse_pars');
             $infoUpdatedDate = PurseOrderManager::getInstance()->getAccountUpdatedDateString('purse_info');
             $checkoutUpdatedDate = PurseOrderManager::getInstance()->getAccountUpdatedDateString('purse_checkout');
