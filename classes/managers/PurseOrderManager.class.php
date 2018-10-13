@@ -45,18 +45,18 @@ namespace crm\managers {
                 if (empty($expressUnitAddress) && empty($onexExpressUnit) && empty($novaExpressUnit)) {
                     continue;
                 }
-                if (!empty($expressUnitAddress)){
+                if (!empty($expressUnitAddress)) {
                     $partnerIdMappedByExpressUnitAddresses[$expressUnitAddress] = $recipient->getId();
                 }
-                if (!empty($onexExpressUnit)){
+                if (!empty($onexExpressUnit)) {
                     $partnerIdMappedByExpressUnitAddresses[$onexExpressUnit] = $recipient->getId();
                 }
-                if (!empty($novaExpressUnit)){
+                if (!empty($novaExpressUnit)) {
                     $partnerIdMappedByExpressUnitAddresses[$novaExpressUnit] = $recipient->getId();
                 }
             }
             $unitAddressSql = "('" . implode("','", array_keys($partnerIdMappedByExpressUnitAddresses)) . "')";
-            $orders = $this->selectAdvance('*', ['status', '<>', "'canceled'", 'AND', 'unit_address', 'in', $unitAddressSql ,'AND', 'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 50]);
+            $orders = $this->selectAdvance('*', ['status', '<>', "'canceled'", 'AND', 'unit_address', 'in', $unitAddressSql, 'AND', 'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 50]);
             $recipientsRecentOrdersMappedByrecipientId = [];
             foreach ($orders as $order) {
                 $expressUnitAddress = $order->getUnitAddress();
@@ -67,15 +67,15 @@ namespace crm\managers {
                 $recipientsRecentOrdersMappedByrecipientId[$recipientId][] = $order;
             }
             $ret = [];
-            foreach ($recipientsRecentOrdersMappedByrecipientId as $recId=> $recipientOrders) {
+            foreach ($recipientsRecentOrdersMappedByrecipientId as $recId => $recipientOrders) {
                 $total = 0;
                 $orders = [];
                 foreach ($recipientOrders as $order) {
                     $total += $order->getAmazonTotal();
-                    $orders[] = ['created_at'=>explode(' ',$order->getCreatedAt())[0], 'status'=>$order->getStatus(), 'order_total'=>$order->getAmazonTotal(), 'image_url'=>$order->getImageUrl()];
+                    $orders[] = ['created_at' => explode(' ', $order->getCreatedAt())[0], 'status' => $order->getStatus(), 'order_total' => $order->getAmazonTotal(), 'image_url' => $order->getImageUrl()];
                 }
-                
-                $ret[$recId] = ['total'=>$total,'count'=>count($recipientOrders), 'orders'=>$orders];
+
+                $ret[$recId] = ['total' => $total, 'count' => count($recipientOrders), 'orders' => $orders];
             }
             return $ret;
         }
@@ -105,6 +105,23 @@ namespace crm\managers {
                 }
             }
             return $ret;
+        }
+
+        public function getAccountUpdatedDateString($accountName) {
+            $row = $this->selectOneByField('account_name', $accountName);
+            if (!empty($row)) {
+                $datetime = $row->getUpdatedAt();
+                list($date, $time) = explode(' ', $datetime);
+                
+                if ($date === date('Y-m-d')) {
+                    return 'Today: ' . substr($time, 0, 5);
+                }
+                if ($date === date('Y-m-d', time() - 60 * 60 * 24)) {
+                    return 'Yesteday: ' . substr($time, 0, 5);
+                }
+                return $date .' '. substr($time, 0, 5);
+            }
+            return false;
         }
 
         public function findByTrackingNumbers($trackingNumbers, $getNotFounds = true) {

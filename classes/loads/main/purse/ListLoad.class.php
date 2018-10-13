@@ -86,6 +86,14 @@ namespace crm\loads\main\purse {
 
             $btc_products_days_diff_for_delivery_date = intval(\crm\managers\SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             $this->addParam('btc_products_days_diff_for_delivery_date', $btc_products_days_diff_for_delivery_date);
+            
+            
+            $parsUpdatedDate = PurseOrderManager::getInstance()->getAccountUpdatedDateString('purse_pars');
+            $infoUpdatedDate = PurseOrderManager::getInstance()->getAccountUpdatedDateString('purse_info');
+            $checkoutUpdatedDate = PurseOrderManager::getInstance()->getAccountUpdatedDateString('purse_checkout');
+            $this->addParam('parsUpdatedDate', $parsUpdatedDate);
+            $this->addParam('infoUpdatedDate', $infoUpdatedDate);
+            $this->addParam('checkoutUpdatedDate', $checkoutUpdatedDate);
         }
 
         private function initFilters($limit) {

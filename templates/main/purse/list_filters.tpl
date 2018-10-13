@@ -62,9 +62,9 @@
         </div>
     {/if}
 </form>
-<button class="button blue small inline f_update_purse" data-account_name='purse_pars'>update Pars5555</button>
-<button class="button blue small inline f_update_purse" data-account_name='purse_info'>update Info</button>
-<button class="button blue small inline f_update_purse" data-account_name='purse_checkout'>update Checkout</button>
+<button class="button blue small inline f_update_purse" data-account_name='purse_pars'>Pars ({$ns.parsUpdatedDate})</button>
+<button class="button blue small inline f_update_purse" data-account_name='purse_info'>Info ({$ns.infoUpdatedDate})</button>
+<button class="button blue small inline f_update_purse" data-account_name='purse_checkout'>Checkout ({$ns.checkoutUpdatedDate})</button>
 <h2>
     Rows Count: {$ns.count}
 </h2>

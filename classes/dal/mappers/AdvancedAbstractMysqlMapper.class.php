@@ -24,6 +24,16 @@ namespace crm\dal\mappers {
             $sqlQuery = sprintf("SELECT * FROM `%s` WHERE `%s` = :value ", $this->getTableName(), $fieldName);
             return $this->fetchRows($sqlQuery, array("value" => $fieldValue));
         }
+        
+        public function selectOneByField($fieldName, $fieldValue) {
+            $sqlQuery = sprintf("SELECT * FROM `%s` WHERE `%s` = :value LIMIT 0, 1", $this->getTableName(), $fieldName);
+            $rows = $this->fetchRows($sqlQuery, array("value" => $fieldValue));
+            if (!empty($rows))
+            {
+                return $rows[0];
+            }
+            return false;
+        }
 
         public function deleteByField($fieldName, $fieldValue) {
             $sqlQuery = sprintf("DELETE FROM `%s` WHERE `%s` = :value ", $this->getTableName(), $fieldName);

@@ -44,6 +44,10 @@ namespace crm\managers {
         public function selectByField($fieldName, $fieldValue) {
             return $this->mapper->selectByField($fieldName, $fieldValue);
         }
+        
+        public function selectOneByField($fieldName, $fieldValue) {
+            return $this->mapper->selectOneByField($fieldName, $fieldValue);
+        }
 
         public function deleteByField($fieldName, $fieldValue) {
             return $this->mapper->deleteByField($fieldName, $fieldValue);
