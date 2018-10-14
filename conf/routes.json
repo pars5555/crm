@@ -575,6 +575,10 @@
             "route": "get_rates"
         },
         {
+            "action": "actions.cron.get_crypto_rates",
+            "route": "get_crypto_rates"
+        },
+        {
             "action": "actions.cron.cache_partner_debts",
             "route": "cache_partner_debts"
         },
