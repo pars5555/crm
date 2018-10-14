@@ -14,9 +14,6 @@ namespace crm\loads\main\rorder {
     use crm\loads\AdminLoad;
     use crm\managers\CurrencyManager;
     use crm\managers\RecipientManager;
-    use crm\managers\PaymentMethodManager;
-    use crm\managers\ProductManager;
-    use crm\managers\RecipientOrderManager;
     use NGS;
 
     class ListLoad  extends AdminLoad {
@@ -24,13 +21,12 @@ namespace crm\loads\main\rorder {
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
-            $this->addParam('payment_methods', PaymentMethodManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
             $this->addParam('recipients', RecipientManager::getInstance()->selectAdvance('*', [], ['name']));
-            $this->addParam('products', ProductManager::getInstance()->selectAdvance('*', [], ['name']));
 
             $limit = 100;
             list($where, $offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
-            $recipientOrders = RecipientOrderManager::getInstance()->getRecipientOrdersFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            
+            RecipientManager::getInstance();
             $this->addParam('recipientOrders', $recipientOrders);
             $count = RecipientOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($recipientOrders) == 0 && $count > 0) {
@@ -45,8 +41,8 @@ namespace crm\loads\main\rorder {
 
         private function redirectIncludedParamsExeptPaging() {
             $url = "purchase.list?";
-            if (isset(NGS()->args()->prt)) {
-                $url .= "prd=" . NGS()->args()->prt . '&';
+            if (isset(NGS()->args()->rcpt)) {
+                $url .= "rcpt=" . NGS()->args()->rcpt . '&';
             }
             if (isset(NGS()->args()->srt)) {
                 $url .= "srt=" . NGS()->args()->srt . '&';
@@ -61,8 +57,8 @@ namespace crm\loads\main\rorder {
             $where = [];
             //Recipient
             $selectedFilterRecipientId = 0;
-            if (isset(NGS()->args()->prt)) {
-                $selectedFilterRecipientId = intval(NGS()->args()->prt);
+            if (isset(NGS()->args()->rcpt)) {
+                $selectedFilterRecipientId = intval(NGS()->args()->rcpt);
             }
             $this->addParam('selectedFilterRecipientId', $selectedFilterRecipientId);
             if ($selectedFilterRecipientId > 0) {
@@ -71,19 +67,6 @@ namespace crm\loads\main\rorder {
                 $where[] = $selectedFilterRecipientId;
             }
 
-            $selectedFilterPaid = -1;
-            if (isset(NGS()->args()->paid)) {
-                $selectedFilterPaid = intval(NGS()->args()->paid);
-            }
-            $this->addParam('selectedFilterPaid', $selectedFilterPaid);
-            if ($selectedFilterPaid === 0 || $selectedFilterPaid === 1) {
-                if (!empty($where)) {
-                    $where[] = 'AND';
-                }
-                $where[] = 'paid';
-                $where[] = '=';
-                $where[] = "'" . $selectedFilterPaid . "'";
-            }
             //pageing
             $selectedFilterPage = 1;
             if (isset(NGS()->args()->pg)) {
@@ -122,7 +105,7 @@ namespace crm\loads\main\rorder {
 
 
         public function getSortByFields() {
-            return ['order_date' => 'Date', 'payment_deadline' => 'Payment Deadline'];
+            return ['order_date' => 'Date', 'id' => 'id'];
         }
 
     }

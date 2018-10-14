@@ -35,10 +35,10 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function getRecipientFull($partnerId) {
-            $partners = $this->getRecipientsFull(['id', '=', $partnerId]);
-            if (!empty($partners)) {
-                return $partners [0];
+        public function getRecipientFull($recipientId) {
+            $recipients = $this->getRecipientsFull(['id', '=', $recipientId]);
+            if (!empty($recipients)) {
+                return $recipients [0];
             }
             return null;
         }
@@ -61,31 +61,43 @@ namespace crm\managers {
                 return '';
             }
             $rows = $this->selectAdvance('*', [
-                        'BINARY', 'express_unit_address', '=', "'$unitAddress'", 'OR',
-                        'BINARY', 'standard_unit_address', '=', "'$unitAddress'", 'OR',
-                        'BINARY', 'onex_express_unit', '=', "'$unitAddress'", 'OR',
-                        'BINARY', 'onex_standard_unit', '=', "'$unitAddress'", 'OR',
-                        'BINARY', 'nova_express_unit', '=', "'$unitAddress'", 'OR',
-                        'BINARY', 'nova_standard_unit', '=', "'$unitAddress'"
+                'BINARY', 'express_unit_address', '=', "'$unitAddress'", 'OR',
+                'BINARY', 'standard_unit_address', '=', "'$unitAddress'", 'OR',
+                'BINARY', 'onex_express_unit', '=', "'$unitAddress'", 'OR',
+                'BINARY', 'onex_standard_unit', '=', "'$unitAddress'", 'OR',
+                'BINARY', 'nova_express_unit', '=', "'$unitAddress'", 'OR',
+                'BINARY', 'nova_standard_unit', '=', "'$unitAddress'"
             ]);
-            if (empty($rows))
-            {
+            if (empty($rows)) {
                 return '';
             }
             $row = $rows[0];
             if (strtolower($row->getExpressUnitAddress()) === strtolower($unitAddress) ||
-                strtolower($row->getOnexExpressUnit()) === strtolower($unitAddress) ||
-                strtolower($row->getNovaExpressUnit()) === strtolower($unitAddress))
-            {
+                    strtolower($row->getOnexExpressUnit()) === strtolower($unitAddress) ||
+                    strtolower($row->getNovaExpressUnit()) === strtolower($unitAddress)) {
                 return 'express';
             }
             if (strtolower($row->getStandardUnitAddress()) === strtolower($unitAddress) ||
-                strtolower($row->getOnexStandardUnit()) === strtolower($unitAddress) ||
-                strtolower($row->getNovaStandardUnit()) === strtolower($unitAddress))
-            {
+                    strtolower($row->getOnexStandardUnit()) === strtolower($unitAddress) ||
+                    strtolower($row->getNovaStandardUnit()) === strtolower($unitAddress)) {
                 return 'standard';
             }
             return '';
+        }
+
+        public function getRecipientUnitAddresses($recipintId, $sqlReady = false) {
+            $recipient = $this->selectByPK($recipintId);
+            $res = [$recipient->getExpressUnitAddress(), $recipient->getOnexExpressUnit(), $recipient->getNovaExpressUnit(),
+                $recipient->getStandardUnitAddress(), $recipient->getOnexStandardUnit(), $recipient->getNovaStandardUnit()];
+            $res = array_filter($res, function($value) {
+                $value = trim($value);
+                return !empty($value);
+            });
+            if (!$sqlReady)
+            {
+                return $res;                
+            }
+            return "('". implode("','", $res) . "')";
             
         }
 

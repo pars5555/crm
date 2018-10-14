@@ -21,7 +21,7 @@ namespace crm\loads\main\purse {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 200;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterHidden, $selectedFilterShippingType, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse) = $this->initFilters($limit);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterRecipientId, $selectedFilterHidden, $selectedFilterShippingType, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse) = $this->initFilters($limit);
             $where = ['1', '=', '1'];
             if ($selectedFilterAccount !== 'purse_all') {
                 $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
@@ -39,6 +39,10 @@ namespace crm\loads\main\purse {
             }
             if ($selectedFilterShippingType !== 'all') {
                 $where = array_merge($where, ['AND ', 'shipping_type', '=', "'$selectedFilterShippingType'"]);
+            }
+            if ($selectedFilterRecipientId > 0) {
+                $recipientUnitAddressesSql = \crm\managers\RecipientManager::getInstance()->getRecipientUnitAddresses($selectedFilterRecipientId, true);
+                $where = array_merge($where, ['AND ', 'unit_address', 'in', $recipientUnitAddressesSql]);
             }
             if (!empty($searchText)) {
                 $where = array_merge($where, ['AND', '(', 'product_name', 'like', "'%$searchText%'"]);
@@ -121,6 +125,11 @@ namespace crm\loads\main\purse {
             $this->addParam('checkoutUpdatedDate', $checkoutUpdatedDate);
             
             $this->addParam('btc_rate', \crm\managers\CryptoRateManager::getInstance()->getBtcRate());
+            
+            
+             $this->addParam('recipients', \crm\managers\RecipientManager::getInstance()->selectAdvance('*', [], ['first_name', 'last_name']));
+             
+            
         }
 
         private function initFilters($limit) {
@@ -150,13 +159,13 @@ namespace crm\loads\main\purse {
             //sorting
             $sortByFields = $this->getSortByFields();
             $this->addParam('sortFields', $sortByFields);
-            $selectedFilterSortBy = 0;
+            $selectedFilterSortBy = 'created_at';
             if (isset(NGS()->args()->srt)) {
                 if (array_key_exists(NGS()->args()->srt, $sortByFields)) {
                     $selectedFilterSortBy = NGS()->args()->srt;
                 }
             }
-            $selectedFilterSortByAscDesc = 'ASC';
+            $selectedFilterSortByAscDesc = 'DESC';
             if (isset(NGS()->args()->ascdesc)) {
                 if (in_array(strtoupper(NGS()->args()->ascdesc), ['ASC', 'DESC'])) {
                     $selectedFilterSortByAscDesc = strtoupper(NGS()->args()->ascdesc);
@@ -180,6 +189,10 @@ namespace crm\loads\main\purse {
                     $selectedFilterStatus = strtolower(NGS()->args()->stts);
                 }
             }
+            $selectedFilterRecipientId = 0;
+            if (isset(NGS()->args()->rcpt)) {
+                $selectedFilterRecipientId = intval(NGS()->args()->rcpt);
+            }
             $selectedFilterShippingType = 'all';
             if (isset(NGS()->args()->sht)) {
                 $selectedFilterShippingType = strtolower(NGS()->args()->sht);
@@ -202,12 +215,14 @@ namespace crm\loads\main\purse {
                 $selectedFilterHidden = 'no';
                 $selectedFilterStatus = 'all';
                 $selectedFilterShippingType = 'all';
+                $selectedFilterRecipientId = 0;
                 $offset = 0;
                 $selectedFilterPage = 1;
             }
 
             $this->addParam('problematic', $problematic);
             $this->addParam('searchText', $searchText);
+            $this->addParam('selectedFilterRecipientId', $selectedFilterRecipientId);
             $this->addParam('selectedFilterAccount', $selectedFilterAccount);
             $this->addParam('notRegOrdersInWarehouse', $regOrdersInWarehouse);
             $this->addParam('selectedFilterHidden', $selectedFilterHidden);
@@ -216,7 +231,7 @@ namespace crm\loads\main\purse {
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterHidden, $selectedFilterShippingType, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterRecipientId, $selectedFilterHidden, $selectedFilterShippingType, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse];
         }
 
         public function getTemplate() {
@@ -224,7 +239,7 @@ namespace crm\loads\main\purse {
         }
 
         public function getSortByFields() {
-            return ['status' => 'Status', 'updated_at' => 'Changed', 'buyer_name' => 'Buyer'];
+            return ['created_at' => 'Created Date','status' => 'Status', 'updated_at' => 'Changed', 'buyer_name' => 'Buyer'];
         }
 
     }

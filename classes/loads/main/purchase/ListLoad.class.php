@@ -47,7 +47,7 @@ namespace crm\loads\main\purchase {
         private function redirectIncludedParamsExeptPaging() {
             $url = "purchase.list?";
             if (isset(NGS()->args()->prt)) {
-                $url .= "prd=" . NGS()->args()->prt . '&';
+                $url .= "prt=" . NGS()->args()->prt . '&';
             }
             if (isset(NGS()->args()->srt)) {
                 $url .= "srt=" . NGS()->args()->srt . '&';

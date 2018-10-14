@@ -1,6 +1,15 @@
 <form class="filters--form" id="productFilters" autocomplete="off" action="{$SITE_PATH}/purse/list" method="GET">
     <div class="form-group filters-group">
         <div class="filter">
+            <label>Recipient</label>
+            <select name="rcpt" data-autocomplete="true">
+                <option value="0" {if $ns.selectedFilterRecipientId == 0}selected{/if}>All</option>
+                {foreach from=$ns.recipients item=p}
+                    <option value="{$p->getId()}" {if $ns.selectedFilterRecipientId == $p->getId()}selected{/if}>{$p->getFirstName()} {$p->getLastName()}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="filter">
             <label>Search</label>
             <div class="search-container">
                 <input class="text" style="max-width: 200px;" type="text" name="st" value="{$ns.searchText}"/>
