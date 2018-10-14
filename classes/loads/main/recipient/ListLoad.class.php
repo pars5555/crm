@@ -22,7 +22,7 @@ namespace crm\loads\main\recipient {
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
-            $limit = 100;
+            $limit = 1000;
             list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterDeleted, $selectedFilterHasDebt) = $this->initFilters($limit);
             $recipientManager = RecipientManager::getInstance();
             $where = ['1', '=', '1'];
