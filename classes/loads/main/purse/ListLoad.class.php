@@ -119,6 +119,8 @@ namespace crm\loads\main\purse {
             $this->addParam('parsUpdatedDate', $parsUpdatedDate);
             $this->addParam('infoUpdatedDate', $infoUpdatedDate);
             $this->addParam('checkoutUpdatedDate', $checkoutUpdatedDate);
+            
+            $this->addParam('btc_rate', \crm\managers\CryptoRateManager::getInstance()->getBtcRate());
         }
 
         private function initFilters($limit) {

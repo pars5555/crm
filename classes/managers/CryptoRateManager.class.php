@@ -44,6 +44,10 @@ namespace crm\managers {
             $dto->setCreatedAt(date('Y-m-d H:i:s'));
             return $this->insertDto($dto);
         }
+        
+        public function getBtcRate() {
+            return $this->selectAdvance('*', ['name', '=', "'BTC'"], 'id', 'DESC', 0, 1)[0]->getRate();
+        }
 
     }
 
