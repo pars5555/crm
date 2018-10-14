@@ -254,8 +254,11 @@ namespace crm\managers {
 
         public function insertOrUpdateOrderFromPurseObject($accountName, $order) {
             $dtos = $this->selectByField('order_number', $order['id']);
+            $prevStatus = '';
             if (!empty($dtos)) {
                 $dto = $dtos[0];
+                $prevStatus = $dto->getStatus();
+                
             } else {
                 $dto = $this->createDto();
             }
@@ -263,7 +266,7 @@ namespace crm\managers {
             $dto->setStatus($order['state']);
             if ($order['state'] === 'canceled') {
                 $dto->setHidden(1);
-            }
+            }            
             $dto->setProductName($order['items'][0]['name']);
             $dto->setImageUrl($order['items'][0]['images']['small']);
             $dto->setQuantity($order['items'][0]['quantity']);
@@ -288,7 +291,11 @@ namespace crm\managers {
                 $dto->setUpdatedAt(date('Y-m-d H:i:s'));
                 $this->updateByPk($dto);
             } else {
-                $this->insertDto($dto);
+                $id = $this->insertDto($dto);
+                $dto->setId($id);
+            }
+            if ($prevStatus != $order['state']) {
+                PurseOrderHistoryManager::getInstance()->addRow($dto->getId(), $order['state'], json_encode($order));
             }
         }
 
