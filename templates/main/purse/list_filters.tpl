@@ -70,9 +70,9 @@
         </div>
     {/if}
 </form>
-<button class="button blue small inline f_update_purse" data-account_name='purse_pars'>Pars ({$ns.parsUpdatedDate}) </br>{$ns.pars_btc_balance|default:'N/A'} ${$ns.btc_rate*$ns.pars_btc_balance}</button>
-<button class="button blue small inline f_update_purse" data-account_name='purse_info'>Info ({$ns.infoUpdatedDate}) </br>{$ns.info_btc_balance|default:'N/A'} ${$ns.btc_rate*$ns.info_btc_balance}</button>
-<button class="button blue small inline f_update_purse" data-account_name='purse_checkout'>Checkout ({$ns.checkoutUpdatedDate}) </br>{$ns.checkout_btc_balance|default:'N/A'} ${$ns.btc_rate*$ns.checkout_btc_balance}</button>
+<button class="button blue small inline f_update_purse" data-account_name='purse_pars'>Pars ({$ns.parsUpdatedDate}) </br>Ƀ{$ns.pars_btc_balance|default:'N/A'} ${($ns.btc_rate*$ns.pars_btc_balance)|number_format}</button>
+<button class="button blue small inline f_update_purse" data-account_name='purse_info'>Info ({$ns.infoUpdatedDate}) </br>Ƀ{$ns.info_btc_balance|default:'N/A'} ${($ns.btc_rate*$ns.info_btc_balance)|number_format}</button>
+<button class="button blue small inline f_update_purse" data-account_name='purse_checkout'>Checkout ({$ns.checkoutUpdatedDate}) </br>Ƀ{$ns.checkout_btc_balance|default:'N/A'} ${($ns.btc_rate*$ns.checkout_btc_balance)|number_format}</button>
 <br/>
 pars: {$ns.pars_btc_address|default:'N/A'}<br/>
 info: {$ns.info_btc_address|default:'N/A'}<br/>
