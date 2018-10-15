@@ -46,6 +46,8 @@ NGS.createLoad("crm.loads.main.purse.list", {
         this.initNotRegTrackingsConfirm();
         this.initRefreshTracking();
         this.initRefreshCarrierDeliveryDate();
+        this.initAddExternalOrder();
+        this.initAddExternalOrderConfirm();
     },
     initExportTrackingsSearch: function(){
         $('#export_search').click(function(){
@@ -59,6 +61,22 @@ NGS.createLoad("crm.loads.main.purse.list", {
     initTrackingsSearch: function(){
         $('#find_trackings_button').click(function(){
             $('#trackings_modalBox').addClass('is_active');
+        });
+    },
+    initAddExternalOrder: function(){
+        $('#add_external_order_button').click(function(){
+            $('#add_external_order_modalBox').addClass('is_active');
+        });
+    },
+    initAddExternalOrderConfirm: function(){
+        $('#add_external_order_confirm').click(function(){
+            var  unit_address = $('#external_order_unit_address_input').val();
+            var  url = $('#external_order_url_input').val();
+            var  qty = $('#external_order_qty_input').val();
+            var  price = $('#external_order_price_input').val();
+            var params = {url:url, qty:qty, price:price, unit_address:unit_address};
+            NGS.action('crm.actions.main.purse.add_external_order', params);
+            $(this).remove();
         });
     },
     initHideByTrackingsConfirm: function(){

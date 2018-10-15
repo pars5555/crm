@@ -78,6 +78,11 @@
             </select>
         </div>
     {/if}
+    <div class="filter">
+            <div class="add-new-btn">
+                <a id="add_external_order_button" >+</a>
+            </div>
+        </div>
 </form>
     <button class="button blue small inline f_update_purse" data-account_name='purse_pars'>Pars ({$ns.parsUpdatedDate}) </br><span style="color: #c77405">{$ns.pars_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.pars_btc_balance)|number_format}</button>
 <button class="button blue small inline f_update_purse" data-account_name='purse_info'>Info ({$ns.infoUpdatedDate}) </br><span style="color: #c77405">{$ns.info_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.info_btc_balance)|number_format}</button>
@@ -154,6 +159,35 @@ checkout: {$ns.checkout_btc_address|default:'N/A'}<br/>
             <div class="modal-content observers-detail-modal-content" id="observer_details_container">
                 <textarea id="not_registered_trackings_input" style="width: 100%; height: 100%; " rows="10"></textarea>
                 <a class="button blue" id="not_registered_trackings_confirm" href="javascript:void(0);" >Confirm</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="add_external_order_modalBox" class="modal modal-large">
+    <div class="modal-container">
+        <div class="modal-inner-container" >
+            <span class="modal-close">
+                <span class="close-icon1"></span>
+                <span class="close-icon2"></span>
+            </span>
+            <h1 class="modal-headline">Product Url</h1>
+            <div class="modal-content observers-detail-modal-content form-group" id="observer_details_container">
+                <label>Unit Address</label>
+                <input class="text"  id="external_order_unit_address_input" style="width: 100%" type="text"/>
+                <br/>
+                <label>Product Url</label>
+                <input class="text"  id="external_order_url_input" style="width: 100%" type="text"/>
+                <br/>
+                <label>Quantity</label>
+                <input class="text" id="external_order_qty_input" type="number"/>
+                <br/>
+                <label>Price</label>
+                <input class="text"  id="external_order_price_input" style="width: 100%" type="number"/>
+                <br/>
+                <a class="button blue" id="add_external_order_confirm" href="javascript:void(0);" >Confirm</a>
 
             </div>
         </div>

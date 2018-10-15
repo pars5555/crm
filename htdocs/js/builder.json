@@ -133,6 +133,7 @@
                     "actions/main/product/SetProductQtyCheckedAction.class.js",
                     "actions/main/SetObjectCheckedAction.class.js",
                     "actions/main/purse/UpdateOrdersAction.class.js",
+                    "actions/main/purse/AddExternalOrderAction.class.js",
                     "actions/main/purse/SetHiddenAction.class.js",
                     "actions/main/purse/SetProblematicAction.class.js",
                     "actions/main/purse/SetProblemSolvedAction.class.js",
