@@ -78,6 +78,13 @@
             </select>
         </div>
     {/if}
+    <div class="filter">
+            <div class="add-new-btn">
+                <a href="{$SITE_PATH}/sale/create">
+                    +
+                </a>
+            </div>
+        </div>
 </form>
     <button class="button blue small inline f_update_purse" data-account_name='purse_pars'>Pars ({$ns.parsUpdatedDate}) </br><span style="color: #c77405">{$ns.pars_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.pars_btc_balance)|number_format}</button>
 <button class="button blue small inline f_update_purse" data-account_name='purse_info'>Info ({$ns.infoUpdatedDate}) </br><span style="color: #c77405">{$ns.info_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.info_btc_balance)|number_format}</button>
