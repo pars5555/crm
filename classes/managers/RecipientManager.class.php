@@ -55,23 +55,30 @@ namespace crm\managers {
             return $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
         }
 
-        public function getShippingTypeByUnitAddress($unitAddress) {
-            $unitAddress = trim($unitAddress);
+        public function getRecipientByUnitAddress($unitAddress) {
             if (empty($unitAddress)) {
-                return '';
+                return false;
             }
             $rows = $this->selectAdvance('*', [
-                'BINARY', 'express_unit_address', '=', "'$unitAddress'", 'OR',
-                'BINARY', 'standard_unit_address', '=', "'$unitAddress'", 'OR',
-                'BINARY', 'onex_express_unit', '=', "'$unitAddress'", 'OR',
-                'BINARY', 'onex_standard_unit', '=', "'$unitAddress'", 'OR',
-                'BINARY', 'nova_express_unit', '=', "'$unitAddress'", 'OR',
-                'BINARY', 'nova_standard_unit', '=', "'$unitAddress'"
+                'lower', '(', 'express_unit_address',')', '=', 'lower','(', "'$unitAddress'", ')', 'OR',
+                'lower', '(', 'standard_unit_address',')', '=', 'lower','(', "'$unitAddress'",  ')', 'OR',
+                'lower', '(', 'onex_express_unit',')', '=', 'lower', '(',"'$unitAddress'",  ')', 'OR',
+                'lower', '(', 'onex_standard_unit',')', '=', 'lower','(',"'$unitAddress'",  ')', 'OR',
+                'lower', '(', 'nova_express_unit',')', '=', 'lower','(', "'$unitAddress'",  ')', 'OR',
+                'lower', '(', 'nova_standard_unit',')', '=', 'lower','(', "'$unitAddress'",  ')'
             ]);
             if (empty($rows)) {
+                return false;
+            }
+            return $rows[0];
+        }
+
+        public function getShippingTypeByUnitAddress($unitAddress) {
+            $unitAddress = trim($unitAddress);
+            $row = $this->getRecipientByUnitAddress($unitAddress);
+            if (empty($row)) {
                 return '';
             }
-            $row = $rows[0];
             if (strtolower($row->getExpressUnitAddress()) === strtolower($unitAddress) ||
                     strtolower($row->getOnexExpressUnit()) === strtolower($unitAddress) ||
                     strtolower($row->getNovaExpressUnit()) === strtolower($unitAddress)) {
@@ -93,12 +100,10 @@ namespace crm\managers {
                 $value = trim($value);
                 return !empty($value);
             });
-            if (!$sqlReady)
-            {
-                return $res;                
+            if (!$sqlReady) {
+                return $res;
             }
-            return "('". implode("','", $res) . "')";
-            
+            return "('" . implode("','", $res) . "')";
         }
 
         public function createRecipient($name, $email, $meta, $documents, $phone, $isFavorite) {

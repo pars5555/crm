@@ -46,13 +46,13 @@ namespace crm\managers {
                     continue;
                 }
                 if (!empty($expressUnitAddress)) {
-                    $partnerIdMappedByExpressUnitAddresses[$expressUnitAddress] = $recipient->getId();
+                    $partnerIdMappedByExpressUnitAddresses[strtolower($expressUnitAddress)] = $recipient->getId();
                 }
                 if (!empty($onexExpressUnit)) {
-                    $partnerIdMappedByExpressUnitAddresses[$onexExpressUnit] = $recipient->getId();
+                    $partnerIdMappedByExpressUnitAddresses[strtolower($onexExpressUnit)] = $recipient->getId();
                 }
                 if (!empty($novaExpressUnit)) {
-                    $partnerIdMappedByExpressUnitAddresses[$novaExpressUnit] = $recipient->getId();
+                    $partnerIdMappedByExpressUnitAddresses[strtolower($novaExpressUnit)] = $recipient->getId();
                 }
             }
             $unitAddressSql = "('" . implode("','", array_keys($partnerIdMappedByExpressUnitAddresses)) . "')";
@@ -60,7 +60,7 @@ namespace crm\managers {
             $recipientsRecentOrdersMappedByrecipientId = [];
             foreach ($orders as $order) {
                 $expressUnitAddress = $order->getUnitAddress();
-                $recipientId = $partnerIdMappedByExpressUnitAddresses[$expressUnitAddress];
+                $recipientId = $partnerIdMappedByExpressUnitAddresses[strtolower($expressUnitAddress)];
                 if (!array_key_exists($recipientId, $recipientsRecentOrdersMappedByrecipientId)) {
                     $recipientsRecentOrdersMappedByrecipientId[$recipientId] = [];
                 }
@@ -252,6 +252,25 @@ namespace crm\managers {
             }
         }
 
+        public function addExternalOrder($productName, $qty, $price, $unitAddress, $imageUrl) {
+            $dto = $this->createDto();
+            $dto->setProductName($productName);
+            $dto->setImageUrl($imageUrl);
+            $dto->setQuantity($qty);
+            $dto->setDiscount(0);
+            $dto->setAmazonTotal($price);
+            $dto->setAccountName('external');            
+            $dto->setStatus('shipping');            
+            $dto->setExternal(1);            
+            $dto->setUnitAddress($unitAddress);
+            $shippingType = RecipientManager::getInstance()->getShippingTypeByUnitAddress($unitAddress);
+            $recipient = RecipientManager::getInstance()->getRecipientByUnitAddress($unitAddress);
+            $dto->setShippingType($shippingType);
+            $dto->setRecipientName($recipient->getFirstName().' '. $recipient->getLastName());
+            $dto->setCreatedAt(date('Y-m-d H:i:s'));
+            return $this->insertDto($dto);
+        }
+        
         public function insertOrUpdateOrderFromPurseObject($accountName, $order) {
             $dtos = $this->selectByField('order_number', $order['id']);
             $prevStatus = '';
