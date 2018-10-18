@@ -108,13 +108,14 @@ footer {
 .main-table {
     max-width: 100%;
     width: 100%;
-    overflow-x: auto;
+    /*overflow-x: auto;*/
     margin-bottom: 15px;
 }
 .main-table.has-dropdown {
     overflow-x: visible;
 }
-.main-table table {
+.main-table table,
+.main-table .table_striped {
     width: 100%;
     border: 1px solid #ddd;
     border-collapse: collapse;
@@ -995,14 +996,11 @@ select::-ms-expand {
 
 /******************************** Date time picker ************************************/
 
+.form-group .xdsoft_datetimepicker .xdsoft_mounthpicker {
+    display: flex;
+    justify-content: space-between; 
+}
 @media screen and (max-width: 480px) {
-    .container .form-group .xdsoft_datetimepicker {
-        padding-right: 3px;
-    }
-    .container .form-group .xdsoft_datepicker {
-        width: 218px;
-        margin-left: 3px;
-    }
     .container .form-group .xdsoft_timepicker {
         width: 50px;
         margin-left: 3px;
