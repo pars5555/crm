@@ -22,7 +22,7 @@
                 <span class="table-cell">
                     Date :
                 </span>
-                <span class="table-cell">.left--panel
+                <span class="table-cell">
                     {$ns.purchaseOrder->getOrderDate()}
                 </span>
             </div>
