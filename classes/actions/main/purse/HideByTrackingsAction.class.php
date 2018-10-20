@@ -28,6 +28,7 @@ namespace crm\actions\main\purse {
             $rows = \crm\managers\PurseOrderManager::getInstance()->findByTrackingNumbers($strackingNumbersArray, false);
             foreach ($rows as $row) {
                 if ($row->getId() > 0){
+                    PurseOrderManager::getInstance()->updateField($row->getId(), 'hidden_at', date('Y-m-d H:i:s'));
                     PurseOrderManager::getInstance()->updateField($row->getId(), 'hidden', 1);
                 }
             }

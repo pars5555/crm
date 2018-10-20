@@ -29,7 +29,7 @@
                 <th> S/N </th>
                 <th> amazon Order Number </th>
                 <th> Tracking Number </th>
-                <th> changed </th>
+                <th> hidden At </th>
                 <th> created </th>
             </tr>
 
@@ -91,7 +91,7 @@
                         <span id="carrier_delivery_details_{$order->getId()}" style="color:#46AF04">{$order->getCarrierDeliveryDate()}</span>
                         <a href="javascript:void(0);" class="fa fa-refresh f_refresh_carrier_delivery_details" data-id='{$order->getId()}'></a>
                     </td>
-                    <td> {$order->getUpdatedAt()} </td>
+                    <td> {$order->getHiddenAt()} </td>
                     <td> {$order->getCreatedAt()} </td>
                 </tr>
             {/foreach}
