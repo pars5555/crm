@@ -29,7 +29,7 @@ namespace crm\dal\dto {
             "amazon_primary_status_text" => 'amazonPrimaryStatusText', 'problem_solved' => 'problemSolved','shipping_type' => 'shipping_type', 
             "discount" => "discount", "serial_number" => "serial_number", "btc_rate" => "btcRate", "recipient_name" => "recipientName", "product_name" => "productName",
             "quantity" => "quantity", "image_url" => "imageUrl", "shipping_carrier" => "shippingCarrier", "status" => "status", "note" => 'note', "unread_messages" => 'unreadMessages',
-            "account_name" => "accountName", "created_at" => "createdAt", "updated_at" => "updatedAt", 'meta' => 'meta',
+            "account_name" => "accountName", "created_at" => "createdAt", "updated_at" => "updatedAt", "hidden_at" => "hiddenAt", 'meta' => 'meta',
             'external' => 'external',
             'external_merchant_name' => 'externalMerchantName'
             );
