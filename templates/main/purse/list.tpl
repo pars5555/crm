@@ -17,7 +17,6 @@
         <table>
             <tr>
                 <th>Actions</th>
-                <th>ID</th>
                 <th>Order Number</th>
                 <th>Recipient</th>
                 <th>Img</th>
@@ -37,6 +36,7 @@
             {foreach from=$ns.orders item=order}
                 <tr {if $order->getHidden()==1}style="background: lightgray"{/if}  data-type="btc" data-id="{$order->getId()}" >
                     <td>
+                       {$order->getId()}<br/>
                         {if $order->getHidden()==0}
                             <a href="javascript:void(0);" class="fa fa-eye-slash fa-1x f_hide left" data-id='{$order->getId()}'></a>
                         {/if}
@@ -50,11 +50,7 @@
                             <a href="javascript:void(0);" id="problem_solved_{$order->getId()}" class="fa fa-check-circle fa-2x f_problem_solved" data-id='{$order->getId()}'></a>
                         {/if}
                     </td>
-                    <td>
-                        <a href="{$SITE_PATH}/purse/{$order->getId()}">
-                            <span>{$order->getId()} </span>
-                        </a>
-                    </td>
+                    
                     <td>
                         <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a>
                         <br/>
@@ -68,9 +64,9 @@
                     </td>
                     <td> {$order->getAmazonTotal()} </td>
                     <td> {$order->getDiscount()} </td>
-                    <td> {$order->getBuyerName()} </td>
+                    <td style="max-width: 70px;word-wrap: break-word"> {$order->getBuyerName()} </td>
                     <td> {$order->getStatus()} </td>
-                    <td class="table-cell f_editable_cell" data-field-name="note"  > {$order->getNote()} </td>
+                    <td class="table-cell f_editable_cell" data-field-name="note"  style="max-width: 70px"> {$order->getNote()} </td>
                     <td class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </td>
                     <td class="table-cell f_editable_cell"  data-field-name="amazon_order_number">
                         <a class="link" target="_black" href="https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jnljnvjtqlspon&orderId={$order->getAmazonOrderNumber()}" > {$order->getAmazonOrderNumber()} </a>
