@@ -14,6 +14,7 @@ NGS.createLoad("crm.loads.main.index", {
         this.initCloseModal();
         this.initEditableCells();
         this.initLeftMenuTrigger();
+        this.hideLeftMenuOnMobile();
     },
     initEditableCells: function () {
         $('.f_editable_cell').dblclick(function () {
@@ -106,5 +107,10 @@ NGS.createLoad("crm.loads.main.index", {
             $(this).toggleClass('menu_hidden');
             $("#mainWrapper").toggleClass('menu_hidden');
         })
+    },
+    hideLeftMenuOnMobile: function () {
+        if(window.outerWidth <= 768) {
+            $("#leftMenuTrigger").click();
+        }
     }
 });

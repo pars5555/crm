@@ -1,6 +1,6 @@
 <form class="filters--form" id="paymentFilters" autocomplete="off" action="{$SITE_PATH}/payment/list" method="GET">
     <div class="form-group filters-group">
-        <div class="filter">
+        <div class="filter search">
             <label>Search</label>
             <div class="search-container">
                 <input class="text" style="max-width: 200px;" type="text" name="st" value="{$ns.searchText}"/>

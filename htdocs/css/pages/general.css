@@ -27,12 +27,6 @@
     padding-top: 15px;
 }
 
-.chart-container {
-    height: 410px;
-    max-width: 100%;
-    overflow-y: auto;
-}
-
 @media screen and (max-width: 768px) {
     .general--container {
         font-size: 0;

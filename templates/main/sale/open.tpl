@@ -50,17 +50,22 @@
                 <input type="hidden" name="id" id="sale_order_id" value="{$ns.saleOrder->getId()}"/>
                 <div class="form-group">
                     <label class="label">Note</label>
-                    <textarea class="text" name="note"></textarea>
+                    <textarea class="text comment" name="note"></textarea>
                 </div>
-                <a class="button blue" id="cancelSaleOrderButton" href="javascript:void(0);">Cancel</a>
+                <div class="open-section-buttons">
+                    <a class="button blue" id="cancelSaleOrderButton" href="javascript:void(0);">Cancel</a>
+                    <a class="button blue" href="{$SITE_PATH}/dyn/main_billing/do_redirect?partnerId={$ns.saleOrder->getPartnerId()}&note=Billing for Sale Order No-{$ns.saleOrder->getId()}">Bill</a>
+                    <a class="button blue" href="{$SITE_PATH}/sale/warranty/{$ns.saleOrder->getId()}">Warranty</a>
+                </div>
             </form>
         {else}
-            <a class="table-cell"  href="{$SITE_PATH}/dyn/main_sale/do_restore_sale_order?id={$ns.saleOrder->getId()}">
-                <span class="button blue">Restore</span>
-            </a>
+            <div class="open-section-buttons">
+                <a class="button blue" href="{$SITE_PATH}/dyn/main_sale/do_restore_sale_order?id={$ns.saleOrder->getId()}">Restore</a>
+                <a class="button blue" href="{$SITE_PATH}/dyn/main_billing/do_redirect?partnerId={$ns.saleOrder->getPartnerId()}&note=Billing for Sale Order No-{$ns.saleOrder->getId()}">Bill</a>
+                <a class="button blue" href="{$SITE_PATH}/sale/warranty/{$ns.saleOrder->getId()}">Warranty</a>
+            </div>
         {/if}
-        <a class="button blue" href="{$SITE_PATH}/dyn/main_billing/do_redirect?partnerId={$ns.saleOrder->getPartnerId()}&note=Billing for Sale Order No-{$ns.saleOrder->getId()}">Bill</a>
-        <a class="button blue" href="{$SITE_PATH}/sale/warranty/{$ns.saleOrder->getId()}">Warranty</a>
+
         <div class="checkbox_container">
             <div class="checkbox f_checkbox">
                 <input type="checkbox" id="nonProfitCheckbox" {if $ns.saleOrder->getNonProfit()==1}checked{/if}/>

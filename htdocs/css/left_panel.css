@@ -17,8 +17,11 @@
     box-shadow: unset;
 }
 
-.left--panel .left--panel--content {
+.left--panel {
     border: 1px solid #E0E0E0;
+    background-color: #ffffff;
+}
+.left--panel .left--panel--content {
     overflow: auto;
     max-height: 100%;
     padding-bottom: 55px;
@@ -65,14 +68,4 @@
 .left--panel ul li a:hover {
     background-color: #63B4FB !important;
     color: #fff;
-}
-
-@media screen and (max-width: 768px) {
-    .left--panel {
-        left: -282px;
-    }
-
-    .menu_hidden .left--panel {
-        left: 0;
-    }
 }

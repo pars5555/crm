@@ -1,6 +1,6 @@
 <form class="filters--form" id="partnerFilters" autocomplete="off" action="{$SITE_PATH}/partner/list" method="GET">
     <div class="form-group filters-group">
-        <div class="filter">
+        <div class="filter search">
             <label>Search</label>
             <div class="search-container">
                 <input class="text" type="text" name="st" value="{$ns.searchText}"/>

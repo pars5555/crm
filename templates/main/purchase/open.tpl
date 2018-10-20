@@ -49,17 +49,21 @@
                 <input type="hidden" name="id" id="purchase_order_id" value="{$ns.purchaseOrder->getId()}"/>
                 <div class="form-group">
                     <label class="label">Note</label>
-                    <textarea class="text" name="note"></textarea>
+                    <textarea class="text comment" name="note"></textarea>
                 </div>
-                <a class="button blue" id="cancelPurchaseOrderButton" href="javascript:void(0);">Cancel</a>
+                <div class="open-section-buttons">
+                    <a class="button blue" id="cancelPurchaseOrderButton" href="javascript:void(0);">Cancel</a>
+                    <a class="button blue" href="{$SITE_PATH}/dyn/main_payment/do_redirect?partnerId={$ns.purchaseOrder->getPartnerId()}&note=Payment for Purchase Order No-{$ns.purchaseOrder->getId()}">Pay</a>
+                    <a class="button blue" href="{$SITE_PATH}/purchase/warranty/{$ns.purchaseOrder->getId()}">Warranty</a>
+                </div>
             </form>
         {else}
-            <a class="table-cell"  href="{$SITE_PATH}/dyn/main_purchase/do_restore_purchase_order?id={$ns.purchaseOrder->getId()}">
-                <span class="button blue">Restore</span>
-            </a>
+            <div class="open-section-buttons">
+                <a class="button blue" href="{$SITE_PATH}/dyn/main_purchase/do_restore_purchase_order?id={$ns.purchaseOrder->getId()}">Restore</a>
+                <a class="button blue" href="{$SITE_PATH}/dyn/main_payment/do_redirect?partnerId={$ns.purchaseOrder->getPartnerId()}&note=Payment for Purchase Order No-{$ns.purchaseOrder->getId()}">Pay</a>
+                <a class="button blue" href="{$SITE_PATH}/purchase/warranty/{$ns.purchaseOrder->getId()}">Warranty</a>
+            </div>
         {/if}
-         <a class="button blue" href="{$SITE_PATH}/dyn/main_payment/do_redirect?partnerId={$ns.purchaseOrder->getPartnerId()}&note=Payment for Purchase Order No-{$ns.purchaseOrder->getId()}">Pay</a>
-         <a class="button blue" href="{$SITE_PATH}/purchase/warranty/{$ns.purchaseOrder->getId()}">Warranty</a>
 
         <div class="checkbox_container">
             <div class="checkbox f_checkbox">
