@@ -23,7 +23,7 @@ namespace crm\actions\main\purse {
         public function service() {
             $id = intval(NGS()->args()->id);
             $hide = intval(NGS()->args()->hide);
-            PurseOrderManager::getInstance()->updateField($row->getId(), 'hidden_at', date('Y-m-d H:i:s'));
+            PurseOrderManager::getInstance()->updateField($id, 'hidden_at', date('Y-m-d H:i:s'));
             PurseOrderManager::getInstance()->updateField($id, 'hidden', $hide);
         }
 
