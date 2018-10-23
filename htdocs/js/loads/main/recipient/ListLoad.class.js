@@ -15,6 +15,11 @@ NGS.createLoad("crm.loads.main.recipient.list", {
 
             NGS.action('crm.actions.main.recipient.set_recipient_deleted', {recipient_id: recipient_id, deleted: deleted});
         });
+        $('.f_checked_checkbox').change(function () {
+            var recipient_id = $(this).data('recipient_id');
+            var checked = $(this).is(':checked') ? 1 : 0;
+            NGS.action('crm.actions.main.recipient.set_recipient_checked', {recipient_id: recipient_id, checked: checked});
+        });
         $('.f_favorite_checkbox').change(function () {
             var recipient_id = $(this).data('recipient_id');
             var favorite = $(this).is(':checked') ? 1 : 0;

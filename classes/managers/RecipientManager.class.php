@@ -46,6 +46,10 @@ namespace crm\managers {
         public function setRecipientDeleted($id, $deleted) {
             $this->mapper->updateField($id, 'deleted', $deleted);
         }
+        
+        public function setRecipientChecked($id, $checked) {
+            $this->mapper->updateField($id, 'checked', $checked);
+        }
 
         public function setRecipientFavorite($id, $favorite) {
             $this->mapper->updateField($id, 'favorite', $favorite);

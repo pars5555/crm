@@ -32,7 +32,7 @@ namespace crm\dal\dto {
             "express_unit_address" => "expressUnitAddress", "standard_unit_address" => "standardUnitAddress", 
             "onex_express_unit" => "onexExpressUnit", "onex_standard_unit" => "onexStandardUnit", 
             "nova_express_unit" => "novaExpressUnit", "nova_standard_unit" => "novaStandardUnit", 
-            "meta" => "meta", "address" => "address", "district" => "district", 
+            "meta" => "meta", "address" => "address", "district" => "district", "note" => "note",  "checked" => "checked",
             "phone_number" => "phoneNumber", "favorite" => "favorite", "deleted" => "deleted");
 
         // returns map array

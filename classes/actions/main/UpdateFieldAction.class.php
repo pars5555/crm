@@ -14,15 +14,16 @@
 
 namespace crm\actions\main {
 
-use crm\actions\BaseAction;
-use crm\managers\PaymentTransactionManager;
-use crm\managers\ProductManager;
-use crm\managers\PurchaseOrderManager;
-use crm\managers\PurseOrderManager;
-use crm\managers\SaleOrderManager;
-use crm\managers\SettingManager;
-use crm\managers\TranslationManager;
-use NGS;
+    use crm\actions\BaseAction;
+    use crm\managers\PaymentTransactionManager;
+    use crm\managers\ProductManager;
+    use crm\managers\PurchaseOrderManager;
+    use crm\managers\PurseOrderManager;
+    use crm\managers\RecipientManager;
+    use crm\managers\SaleOrderManager;
+    use crm\managers\SettingManager;
+    use crm\managers\TranslationManager;
+    use NGS;
 
     class UpdateFieldAction extends BaseAction {
 
@@ -53,6 +54,9 @@ use NGS;
                     break;
                 case 'btc':
                     $manager = PurseOrderManager::getInstance();
+                    break;
+                case 'recipient':
+                    $manager = RecipientManager::getInstance();
                     break;
             }
             $manager->updateField($id, $fieldName, $fieldValue);
