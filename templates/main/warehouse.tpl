@@ -1,34 +1,34 @@
 <div class="container warehouse--container">
     <h1 class="main_title">Warehouse</h1>
     {if $ns.userType == $ns.userTypeAdmin}
-    <h1 class="left">Total: {$ns.total|number_format:2}</h1>
-    <div class="filter csv right">
-        <a href="javascript:void(0);" class="inline-block" id="export_csv"><img src="/img/csv.png" width="45"/></a>
-    </div>
+        <h1 class="left">Total: {$ns.total|number_format:2}</h1>
+        <div class="filter csv right">
+            <a href="javascript:void(0);" class="inline-block" id="export_csv"><img src="/img/csv.png" width="45"/></a>
+        </div>
     {/if}
     <div class="clear"></div>
     <div class="main-table">
         <table>
             <tr>
                 <th>Id</th>
-                <th>Name</th>
+                <th style="min-width: 250px;">Name</th>
                 <th>Model</th>
-                    {if $ns.userType == $ns.userTypeAdmin}
+                {if $ns.userType == $ns.userTypeAdmin}
                     <th>Location</th>
-                        {*                <th>Uom</th>*}
+                    {*                <th>Uom</th>*}
                     <th>Quantity</th>
                     <th>Price</th>
                     <th>Qty Checked</th>
                     <th>Purchase Orders</th>
                     <th>Sale Orders</th>
                     <th class="icon-cell">View</th>
-                    {/if}
+                {/if}
             </tr>
             {foreach from=$ns.products item=product}
                 {if isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0}
                     <tr data-id="{$product->getId()}" data-type="product" {if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}>
                         <td>{$product->getId()}</td>
-                        <td data-field-name="name">{$product->getName()}</td>
+                        <td style="min-width: 250px;" data-field-name="name">{$product->getName()}</td>
                         <td data-field-name="model">{$product->getModel()}</td>
                         {if $ns.userType == $ns.userTypeAdmin}
                             <td class="pre f_editable_cell" data-type="richtext"  data-field-name="location_note">{$product->getLocationNote()} </td>

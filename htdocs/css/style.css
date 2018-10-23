@@ -21,6 +21,7 @@ body {
 .main-container {
     display: flex;
     flex-direction: column;
+    min-height: 100%;
 }
 
 img {
@@ -574,6 +575,9 @@ select::-ms-expand {
     width: calc(100% - 30px);
     transition: border-color .1s ease 0s;
 }
+.text.comment {
+    width: 100%;
+}
 
 .text.default_width {
     max-width: 270px;
@@ -619,7 +623,8 @@ select::-ms-expand {
     background-image: url("images/chosen-sprite@2x.png");
     background-repeat: no-repeat;
     background-size: 75px;
-    background-position: 125px -28px;
+    background-position: 100% -28px;
+    width: 100%;
 }
 .search-container input {
     background: transparent;
@@ -631,6 +636,12 @@ select::-ms-expand {
     margin: 15px 0;
     width: 100%;
     text-align: right;
+}
+
+@media screen and (max-width: 400px) {
+    .filter.search {
+        width: 100%;
+    }
 }
 
 .button {
@@ -829,7 +840,25 @@ select::-ms-expand {
     text-align: right;
 }
 
-/*************************** Pop Up Container **************************/
+.open-section-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0 20px;
+}
+.open-section-buttons .button {
+    margin: 0 3px;
+}
+
+@media screen and (max-width: 400px) {
+    .open-section-buttons {
+        flex-direction: column;
+    }
+    .open-section-buttons .button {
+        margin: 5px 0;
+    }
+}
+
+    /*************************** Pop Up Container **************************/
 
 .pop_up_container {
     width: 100%;

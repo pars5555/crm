@@ -56,7 +56,11 @@ namespace crm\managers {
                 }
             }
             $unitAddressSql = "('" . implode("','", array_keys($partnerIdMappedByExpressUnitAddresses)) . "')";
-            $orders = $this->selectAdvance('*', ['status', '<>', "'canceled'", 'AND', 'unit_address', 'in', $unitAddressSql, 'AND', 'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 50], 'id', 'desc');
+            $firstDayOfMonth = date('Y-m-1');
+            $orders = $this->selectAdvance('*', ['status', '<>', "'canceled'", 'AND', 
+                'unit_address', 'in', $unitAddressSql, 'AND', 
+                'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 50, 'AND', 
+                '(','hidden', '=', 0 ,'OR', 'hidden_at', '>=', "'$firstDayOfMonth'", ')'], 'id', 'desc');
             $recipientsRecentOrdersMappedByrecipientId = [];
             foreach ($orders as $order) {
                 $expressUnitAddress = $order->getUnitAddress();
