@@ -17,10 +17,30 @@ NGS.createLoad("crm.loads.main.sale.open", {
         this.initCancelSaleOrder();
         this.initBilledFunctionality();
         this.calculateTotal();
+        this.initSearch();
         this.initNonProfitFunctionality();
         $('#saleOrderLinesForm').on('change', 'input, select, checkbox', function () {
             this.calculateTotal();
         }.bind(this));
+    },
+     initSearch:function(){
+        $('#search_item').keyup(function () {
+            if (this.search_timout_handler > 0) {
+                window.clearTimeout(this.search_timout_handler);
+            }
+            this.search_timout_handler = window.setTimeout(function () {
+                $('.saleOrderLine').css({'background':''});
+                var searchText = $('#search_item').val().toLowerCase();
+                $('.saleOrderLine .saleOrderLinesSelectProduct').each(function(){
+                    if ($(this).attr('title').toLowerCase().includes(searchText))
+                    {
+                        $(this).closest('.saleOrderLine').css({'background':'blue'});
+                    }
+                });
+                $('#billingFilters').trigger('submit');
+            }, 200);
+        }.bind(this));
+       
     },
     calculateTotal: function () {
         var grandTotal = {};
