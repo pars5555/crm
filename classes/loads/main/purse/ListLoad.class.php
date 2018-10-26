@@ -45,13 +45,21 @@ namespace crm\loads\main\purse {
                 $where = array_merge($where, ['AND ', 'unit_address', 'in', $recipientUnitAddressesSql]);
             }
             if (!empty($searchText)) {
-                $where = array_merge($where, ['AND', '(', 'product_name', 'like', "'%$searchText%'"]);
-                $where = array_merge($where, ['OR', 'order_number', 'like', "'%$searchText%'"]);
-                $where = array_merge($where, ['OR', 'amazon_order_number', 'like', "'%$searchText%'"]);
-                $where = array_merge($where, ['OR', 'recipient_name', 'like', "'%$searchText%'"]);
-                $where = array_merge($where, ['OR', 'serial_number', 'like', "'%$searchText%'"]);
-                $where = array_merge($where, ['OR', 'buyer_name', 'like', "'%$searchText%'"]);
-                $where = array_merge($where, ['OR', 'tracking_number', 'like', "'%$searchText%'", ')']);
+                if (strpos($searchText, ' ') === false) {
+                    $where = array_merge($where, ['AND', '(', 'product_name', 'like', "'%$searchText%'"]);
+                    $where = array_merge($where, ['OR', 'order_number', 'like', "'%$searchText%'"]);
+                    $where = array_merge($where, ['OR', 'amazon_order_number', 'like', "'%$searchText%'"]);
+                    $where = array_merge($where, ['OR', 'recipient_name', 'like', "'%$searchText%'"]);
+                    $where = array_merge($where, ['OR', 'serial_number', 'like', "'%$searchText%'"]);
+                    $where = array_merge($where, ['OR', 'buyer_name', 'like', "'%$searchText%'"]);
+                    $where = array_merge($where, ['OR', 'tracking_number', 'like', "'%$searchText%'", ')']);
+                } else {
+                    $words = $parts = preg_split('/\s+/', $searchText);
+                    foreach ($words as $word) {
+                        $where = array_merge($where, ['AND', '(', 'product_name', 'like', "'%$word%'"]);
+                        $where = array_merge($where, ['OR', 'recipient_name', 'like', "'%$word%'", ')']);
+                    }
+                }
             }
             if (!empty($regOrdersInWarehouse)) {
                 $orders = PurseOrderManager::getInstance()->getNotRegisteredOrdersInWarehouse($regOrdersInWarehouse);
@@ -97,22 +105,19 @@ namespace crm\loads\main\purse {
 
             $btc_products_days_diff_for_delivery_date = intval(\crm\managers\SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             $this->addParam('btc_products_days_diff_for_delivery_date', $btc_products_days_diff_for_delivery_date);
-            
+
             $purse_checkout_meta = json_decode(\crm\managers\SettingManager::getInstance()->getSetting('purse_checkout_meta', '{}'));
             $purse_pars_meta = json_decode(\crm\managers\SettingManager::getInstance()->getSetting('purse_pars_meta', '{}'));
             $purse_info_meta = json_decode(\crm\managers\SettingManager::getInstance()->getSetting('purse_info_meta', '{}'));
-            if (isset($purse_checkout_meta->wallet))
-            {
+            if (isset($purse_checkout_meta->wallet)) {
                 $this->addParam('checkout_btc_balance', round($purse_checkout_meta->wallet->BTC->balance->active, 3));
                 $this->addParam('checkout_btc_address', $purse_checkout_meta->wallet->BTC->legacy_address);
             }
-            if (isset($purse_pars_meta->wallet))
-            {
+            if (isset($purse_pars_meta->wallet)) {
                 $this->addParam('pars_btc_balance', round($purse_pars_meta->wallet->BTC->balance->active, 3));
                 $this->addParam('pars_btc_address', $purse_pars_meta->wallet->BTC->legacy_address);
             }
-            if (isset($purse_info_meta->wallet))
-            {
+            if (isset($purse_info_meta->wallet)) {
                 $this->addParam('info_btc_balance', round($purse_info_meta->wallet->BTC->balance->active, 3));
                 $this->addParam('info_btc_address', $purse_info_meta->wallet->BTC->legacy_address);
             }
@@ -124,13 +129,11 @@ namespace crm\loads\main\purse {
             $this->addParam('parsUpdatedDate', $parsUpdatedDate);
             $this->addParam('infoUpdatedDate', $infoUpdatedDate);
             $this->addParam('checkoutUpdatedDate', $checkoutUpdatedDate);
-            
+
             $this->addParam('btc_rate', \crm\managers\CryptoRateManager::getInstance()->getBtcRate());
-            
-            
-             $this->addParam('recipients', \crm\managers\RecipientManager::getInstance()->selectAdvance('*', [], ['first_name', 'last_name']));
-             
-            
+
+
+            $this->addParam('recipients', \crm\managers\RecipientManager::getInstance()->selectAdvance('*', [], ['first_name', 'last_name']));
         }
 
         private function initFilters($limit) {
@@ -240,7 +243,7 @@ namespace crm\loads\main\purse {
         }
 
         public function getSortByFields() {
-            return ['created_at' => 'Created Date','status' => 'Status', 'updated_at' => 'Changed', 'buyer_name' => 'Buyer'];
+            return ['created_at' => 'Created Date', 'status' => 'Status', 'updated_at' => 'Changed', 'buyer_name' => 'Buyer'];
         }
 
     }
