@@ -1,4 +1,5 @@
 NGS.createLoad("crm.loads.main.purchase.open", {
+    search_timout_handler:0,
     getContainer: function () {
         return "initialLoad";
     },
@@ -16,7 +17,27 @@ NGS.createLoad("crm.loads.main.purchase.open", {
         this.initPurchaseOrderLineRemoveFunctionallity();
         this.initCancelPurchaseOrder();
         this.initPaidFunctionality();
+        this.initSearch();
 
+    },
+    initSearch:function(){
+        $('#search_item').keyup(function () {
+            if (this.search_timout_handler > 0) {
+                window.clearTimeout(this.search_timout_handler);
+            }
+            this.search_timout_handler = window.setTimeout(function () {
+                $('.purchaseOrderLine').css({'background':''});
+                var searchText = $('#search_item').val().toLowerCase();
+                $('.purchaseOrderLine .purchaseOrderLinesSelectProduct').each(function(){
+                    if ($(this).attr('title').toLowerCase().includes(searchText))
+                    {
+                        $(this).closest('.purchaseOrderLine').css({'background':'blue'});
+                    }
+                });
+                $('#billingFilters').trigger('submit');
+            }, 200);
+        }.bind(this));
+       
     },
     initPaidFunctionality: function () {
         $('#paidCheckbox').change(function () {

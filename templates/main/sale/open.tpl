@@ -81,67 +81,69 @@
 
         <form id="saleOrderLinesForm" method="POST" action="{$SITE_PATH}/dyn/main_sale/do_save_sale_order_lines">
             <h2 class="title">Order Lines</h2>
-
-            <div class="main-table">
-                <table id="saleOrderLinesContainer">
-                    <tr>
-                        <th> Product </th>
-                        <th> Quantity </th>
-                        <th> Unit Price </th>
-                        <th> Currency </th>
-                        <th> Total </th>
-                        <th> Profit </th>
-                        <th> Delete </th>
-                    </tr>
-                    {if $ns.saleOrder->getSaleOrderLinesDtos()|@count > 0}
-                        {assign saleOrderLines $ns.saleOrder->getSaleOrderLinesDtos()}
-                        {foreach from=$saleOrderLines item=saleOrderLine}
-                            <tr class="saleOrderLine" line_id="{$saleOrderLine->getId()}" >
-                                <td>
-                                    {foreach from=$ns.products item=p}
-                                        {if $p->getId() == $saleOrderLine->getProductId()}
-                                            {assign productName $p->getName()}
-                                        {/if}
-                                    {/foreach}
-                                    <select class="saleOrderLinesSelectProduct" title="{$productName}" style="max-width: 500px" disabled>
+            <label>Search</label>
+            <input id="search_item" type="text" class="text"/>
+            <div class="table_striped" id="purchaseOrderLinesContainer">
+                <div class="main-table">
+                    <table id="saleOrderLinesContainer">
+                        <tr>
+                            <th> Product </th>
+                            <th> Quantity </th>
+                            <th> Unit Price </th>
+                            <th> Currency </th>
+                            <th> Total </th>
+                            <th> Profit </th>
+                            <th> Delete </th>
+                        </tr>
+                        {if $ns.saleOrder->getSaleOrderLinesDtos()|@count > 0}
+                            {assign saleOrderLines $ns.saleOrder->getSaleOrderLinesDtos()}
+                            {foreach from=$saleOrderLines item=saleOrderLine}
+                                <tr class="saleOrderLine" line_id="{$saleOrderLine->getId()}" >
+                                    <td>
                                         {foreach from=$ns.products item=p}
-                                            <option value="{$p->getId()}" {if $p->getId() == $saleOrderLine->getProductId()}selected{/if}>{$p->getName()}</option>
+                                            {if $p->getId() == $saleOrderLine->getProductId()}
+                                                {assign productName $p->getName()}
+                                            {/if}
                                         {/foreach}
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text" value="{$saleOrderLine->getQuantity()}"/>
-                                </td>
-                                <td>
-                                    <input type="number" step="0.01" min="0.01" class="saleOrderLinesSelectUnitPrice text" value="{$saleOrderLine->getUnitPrice()}"/>
-                                </td>
-                                <td>
-                                    <select class="saleOrderLinesSelectCurrency">
-                                        {foreach from=$ns.currencies item=c}
-                                            <option value="{$c->getId()}" iso="{$c->getIso()}" symbol="{$c->getTemplateChar()}" position="{$c->getSymbolPosition()}" {if $c->getId() == $saleOrderLine->getCurrencyId()}selected{/if}>
-                                                {$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})
-                                            </option>
-                                        {/foreach}
-                                    </select>
-                                </td>
-                                <td>
-                                    <span class="saleOrderLinesTotal"></span>
-                                </td>
-                                <td>
-                                    {$saleOrderLine->getTotalProfit()}
-                                </td>
-                                <td>
-                                    <a class="button_icon removeSaleOrderLine" title="delete">
-                                        <i class="fa fa-trash-o"></i>
-                                    </a>
-                                    <input type="hidden" name="lines[]"/>
-                                </td>
-                            </tr>
-                        {/foreach}
-                    {/if}
-                </table>
-            </div>
-            <input type="hidden" value="{$ns.saleOrder->getId()}" name="sale_order_id"/>
+                                        <select class="saleOrderLinesSelectProduct" title="{$productName}" style="max-width: 500px" disabled>
+                                            {foreach from=$ns.products item=p}
+                                                <option value="{$p->getId()}" {if $p->getId() == $saleOrderLine->getProductId()}selected{/if}>{$p->getName()}</option>
+                                            {/foreach}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="number" step="0.1"  min="0.1" class="saleOrderLinesSelectQuantity text" value="{$saleOrderLine->getQuantity()}"/>
+                                    </td>
+                                    <td>
+                                        <input type="number" step="0.01" min="0.01" class="saleOrderLinesSelectUnitPrice text" value="{$saleOrderLine->getUnitPrice()}"/>
+                                    </td>
+                                    <td>
+                                        <select class="saleOrderLinesSelectCurrency">
+                                            {foreach from=$ns.currencies item=c}
+                                                <option value="{$c->getId()}" iso="{$c->getIso()}" symbol="{$c->getTemplateChar()}" position="{$c->getSymbolPosition()}" {if $c->getId() == $saleOrderLine->getCurrencyId()}selected{/if}>
+                                                    {$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})
+                                                </option>
+                                            {/foreach}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <span class="saleOrderLinesTotal"></span>
+                                    </td>
+                                    <td>
+                                        {$saleOrderLine->getTotalProfit()}
+                                    </td>
+                                    <td>
+                                        <a class="button_icon removeSaleOrderLine" title="delete">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                        <input type="hidden" name="lines[]"/>
+                                    </td>
+                                </tr>
+                            {/foreach}
+                        {/if}
+                    </table>
+                </div>
+                <input type="hidden" value="{$ns.saleOrder->getId()}" name="sale_order_id"/>
         </form>
 
         {*                           ADD NEW SALE OREDER LINE                                 *}
@@ -208,7 +210,7 @@
             {foreach from=$ns.currencies item=c}
                 <option value="{$c->getId()}" iso="{$c->getIso()}" symbol="{$c->getTemplateChar()}" position="{$c->getSymbolPosition()}" >
                     {$c->getName()} ({$c->getIso()} {$c->getTemplateChar()})</option>
-            {/foreach}
+                {/foreach}
         </select>
     </div>
     <div class="table-cell">

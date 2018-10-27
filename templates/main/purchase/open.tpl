@@ -74,6 +74,8 @@
 
         <form id="purchaseOrderLinesForm" method="POST" action="{$SITE_PATH}/dyn/main_purchase/do_save_purchase_order_lines">
             <h2 class="title">Order Lines</h2>
+            <label>Search</label>
+            <input id="search_item" type="text" class="text"/>
             <div class="table_striped" id="purchaseOrderLinesContainer">
                 <div class="table_header_group">
                     <span class="table-cell"> Product </span>
