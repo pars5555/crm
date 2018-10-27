@@ -347,10 +347,15 @@ namespace crm\managers {
         }
 
         public function getOrdersPuposedToNotReceivedToDestinationCounty() {
-            return $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
-                        'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
+            $rows1 = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
+                        'status', 'in', "('shipping', 'shipped', 'accepted')", 'AND',
                         "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
                         'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'))]);
+            $rows2 = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
+                        'status', 'in', "('feedback', 'finished',  'partially_delivered', 'delivered')", 'AND',
+                        "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
+                        'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 30]);
+            return array_merge($rows1, $rows2);
         }
 
         public function getTrackingFetchNeededOrders() {
