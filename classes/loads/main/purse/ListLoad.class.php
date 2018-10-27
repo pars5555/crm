@@ -53,6 +53,7 @@ namespace crm\loads\main\purse {
                     $where = array_merge($where, ['OR', 'serial_number', 'like', "'%$searchText%'"]);
                     $where = array_merge($where, ['OR', 'buyer_name', 'like', "'%$searchText%'"]);
                     $where = array_merge($where, ['OR', 'tracking_number', 'like', "'%$searchText%'", ')']);
+                    $words = [$searchText];
                 } else {
                     $words = $parts = preg_split('/\s+/', $searchText);
                     foreach ($words as $word) {
@@ -79,11 +80,20 @@ namespace crm\loads\main\purse {
                 $searchedItemCountThatHasTrackingNumber = 0;
                 foreach ($ordersPuposedToNotReceivedToDestinationCounty as $order) {
                     $productName = $order->getProductName();
-                    if (!empty($searchText) && stripos($productName, $searchText) !== false) {
-                        if (strlen($order->getTrackingNumber()) > 3) {
-                            $searchedItemCountThatHasTrackingNumber += intval($order->getQuantity());
+                    if (!empty($searchText)) {
+                        $allWordsAreinProductTitle = true;
+                        foreach ($words as $word) {
+                            if (stripos($productName, $word) === false) {
+                                $allWordsAreinProductTitle = false;
+                                break;
+                            }
                         }
-                        $searchedItemCount += intval($order->getQuantity());
+                        if ($allWordsAreinProductTitle) {
+                            if (strlen($order->getTrackingNumber()) > 3) {
+                                $searchedItemCountThatHasTrackingNumber += intval($order->getQuantity());
+                            }
+                            $searchedItemCount += intval($order->getQuantity());
+                        }
                     }
                     $totalPuposedToNotReceived += floatval($order->getAmazonTotal());
                 }
