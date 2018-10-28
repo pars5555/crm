@@ -104,6 +104,10 @@ namespace crm\loads\main\general {
             foreach ($partners as $partner) {
                 $partnerIds[] = $partner->getId();
             }
+            if (empty($partnerIds))
+            {
+                return 0;
+            }
             $partnersSaleOrdersMappedByPartnerId = SaleOrderManager::getInstance()->getPartnersSaleOrders($partnerIds);
             $partnersPurchaseOrdersMappedByPartnerId = PurchaseOrderManager::getInstance()->getPartnersPurchaseOrders($partnerIds);
             $partnersPaymentTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersPaymentTransactions($partnerIds);
