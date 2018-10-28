@@ -25,7 +25,7 @@
     </div>
     <div class="main-table">
         <table>
-            <tr class="table_header_group">
+            <thead class="table_header_group">
                 <th>Id</th>
                 <th>Name</th>
                 <th>Model</th>
@@ -33,7 +33,7 @@
                 <th>Purchase Orders</th>
                 <th>Sale Orders</th>
                 <th> View </th>
-            </tr>
+        </thead>
             {foreach from=$ns.products item=product}
                 {if isset($ns.productsQuantity[$product->getId()]) && abs($ns.productsQuantity[$product->getId()])>0.01}
                     <tr data-id="{$product->getId()}" data-type="product" {if $ns.productsQuantity[$product->getId()]<0}style="color:red"{/if}>
