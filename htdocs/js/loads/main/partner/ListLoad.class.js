@@ -1,5 +1,5 @@
 NGS.createLoad("crm.loads.main.partner.list", {
-    search_timout_handler:null,
+    search_timout_handler: null,
     getContainer: function () {
         return "initialLoad";
     },
@@ -23,6 +23,12 @@ NGS.createLoad("crm.loads.main.partner.list", {
             var hidden = $(this).is(':checked') ? 1 : 0;
 
             NGS.action('crm.actions.main.partner.set_partner_hidden', {partner_id: partner_id, hidden: hidden});
+        });
+        $('.f_included_in_capital_checkbox').change(function () {
+            var partner_id = $(this).data('partner_id');
+            var included_in_capital = $(this).is(':checked') ? 1 : 0;
+
+            NGS.action('crm.actions.main.partner.set_partner_included_in_capital', {partner_id: partner_id, included_in_capital: included_in_capital});
         });
         this.initExportCsv();
     },

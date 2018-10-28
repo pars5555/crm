@@ -3,6 +3,7 @@
         <script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['corechart']}]}"></script>
     {/literal} 
     <h1 class="main_title">General</h1>
+    <h1>Capital: {$ns.capital|number_format:2}<h1/><br/><br/><br/>
     <div id="cashboxCalculationContainer">
         {nest ns=cashboxCalculation}
     </div>

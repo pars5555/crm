@@ -73,7 +73,7 @@ namespace crm\loads\main\purse {
                 }
                 $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
 
-                $ordersPuposedToNotReceivedToDestinationCounty = PurseOrderManager::getInstance()->getOrdersPuposedToNotReceivedToDestinationCounty($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+                $ordersPuposedToNotReceivedToDestinationCounty = PurseOrderManager::getInstance()->getOrdersPuposedToNotReceivedToDestinationCounty();
 
                 $totalPuposedToNotReceived = 0;
                 $searchedItemCount = 0;

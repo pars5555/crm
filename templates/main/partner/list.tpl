@@ -14,6 +14,7 @@
         <table>
             <tr>
                 <th>Id</th>
+                <th>Incl. in Capital</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Tel.</th>
@@ -33,6 +34,11 @@
                         <a class="table-cell" href="{$SITE_PATH}/partner/{$partner->getId()}">
                             <span>{$partner->getId()} </span>
                         </a>
+                    </td>
+                    <td class="hide-check icon-cell">
+                        <input class="f_included_in_capital_checkbox"
+                               data-partner_id="{$partner->getId()}"
+                               type="checkbox" value="1" {if $partner->getIncludedInCapital() ==1}checked{/if}/>
                     </td>
                     <td class="name">{$partner->getName()}</td>
                     <td class="email">{$partner->getEmail()}</td>

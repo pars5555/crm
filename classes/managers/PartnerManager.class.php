@@ -43,6 +43,11 @@ namespace crm\managers {
             return null;
         }
         
+        public function setPartnerIncludedInCapital($id, $hidden) {
+            $this->mapper->updateField($id, 'included_in_capital', $hidden);
+            
+        }
+        
         public function setPartnerHidden($id, $hidden) {
             $this->mapper->updateField($id, 'hidden', $hidden);
             
