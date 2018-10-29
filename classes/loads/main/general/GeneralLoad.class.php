@@ -33,10 +33,10 @@ namespace crm\loads\main\general {
             $partnerWarehouseTotal = $this->getPartnerWarehausesTotalAmount();
             
             $this->addParam('partnerDebtTotal', $partnerDebtTotal);
-            $this->addParam('$warehouseTotal', $warehouseTotal);
-            $this->addParam('$purseTotal', $purseTotal);
-            $this->addParam('$purseBalanceTotal', $purseBalanceTotal);
-            $this->addParam('$partnerWarehouseTotal', $partnerWarehouseTotal);
+            $this->addParam('warehouseTotal', $warehouseTotal);
+            $this->addParam('purseTotal', $purseTotal);
+            $this->addParam('purseBalanceTotal', $purseBalanceTotal);
+            $this->addParam('partnerWarehouseTotal', $partnerWarehouseTotal);
             $this->addParam('capital', $warehouseTotal + $purseTotal + $purseBalanceTotal + $partnerWarehouseTotal + $partnerDebtTotal);
         }
 
