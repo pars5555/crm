@@ -6,8 +6,8 @@
     <h1>Capital: {$ns.capital|number_format:2}<h1/>  
         partnerDebtTotal: {$partnerDebtTotal}, 
         warehouseTotal: {$warehouseTotal}, 
-        purseTotal, {$purseTotal},
-        purseBalanceTotal, {$purseBalanceTotal},
+        btcProductsTotal, {$purseTotal},
+        btcBalancesTotal, {$purseBalanceTotal},
         partnerWarehouseTotal, {$partnerWarehouseTotal})<br/><br/><br/>
     <div id="cashboxCalculationContainer">
         {nest ns=cashboxCalculation}
