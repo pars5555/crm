@@ -15,7 +15,6 @@ namespace crm\loads\main\general {
     use crm\managers\CurrencyManager;
     use crm\managers\PaymentTransactionManager;
     use crm\managers\SettingManager;
-    use crm\security\RequestGroups;
     use NGS;
 
     class CashboxLoad  extends AdminLoad {

@@ -31,13 +31,16 @@ namespace crm\loads\main\general {
             $purseTotal = $this->getPurseTotalUsdAmount();
             $purseBalanceTotal = $this->getPurseBalancesTotalAmount();
             $partnerWarehouseTotal = $this->getPartnerWarehausesTotalAmount();
+            $cashboxTotal = $this->getCashboxTotalUsdAmount();
             
+            
+            $this->addParam("cashboxTotal", $cashboxTotal);
             $this->addParam('partnerDebtTotal', $partnerDebtTotal);
             $this->addParam('warehouseTotal', $warehouseTotal);
             $this->addParam('purseTotal', $purseTotal);
             $this->addParam('purseBalanceTotal', $purseBalanceTotal);
             $this->addParam('partnerWarehouseTotal', $partnerWarehouseTotal);
-            $this->addParam('capital', $warehouseTotal + $purseTotal + $purseBalanceTotal + $partnerWarehouseTotal + $partnerDebtTotal);
+            $this->addParam('capital', $warehouseTotal + $purseTotal + $purseBalanceTotal + $partnerWarehouseTotal + $partnerDebtTotal + $cashboxTotal);
         }
 
         public function getDefaultLoads() {
@@ -132,6 +135,13 @@ namespace crm\loads\main\general {
             }
             $usdRate = floatval(\crm\managers\CurrencyRateManager::getInstance()->getCurrencyRate(1));
             return $totalUsd + $totalAmd / $usdRate;
+        }
+
+        public function getCashboxTotalUsdAmount() {
+            $cashboxUsd = -PaymentTransactionManager::getInstance()->getNonCancelledPaymentOrdersByCurrency(date('Y-m-d'), 1);
+            $cashboxAmd = -PaymentTransactionManager::getInstance()->getNonCancelledPaymentOrdersByCurrency(date('Y-m-d'), 2);
+            $usdRate = floatval(\crm\managers\CurrencyRateManager::getInstance()->getCurrencyRate(1));
+            return $cashboxUsd + $cashboxAmd / $usdRate;
         }
 
     }

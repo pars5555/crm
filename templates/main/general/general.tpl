@@ -8,6 +8,7 @@
         warehouseTotal: {$warehouseTotal|number_format:2}, 
         btcProductsTotal, {$purseTotal|number_format:2},
         btcBalancesTotal, {$purseBalanceTotal|number_format:2},
+        cashboxTotal, {$cashboxTotal|number_format:2},
         partnerWarehouseTotal, {$partnerWarehouseTotal|number_format:2})<br/><br/><br/>
     <div id="cashboxCalculationContainer">
         {nest ns=cashboxCalculation}
