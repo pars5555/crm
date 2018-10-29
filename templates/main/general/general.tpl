@@ -3,7 +3,7 @@
         <script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['corechart']}]}"></script>
     {/literal} 
     <h1 class="main_title">General</h1>
-    <h1>Capital: {$ns.capital|number_format:2}<h1/>  
+    <h1>Capital: {$ns.capital|number_format:2}</h1>  
         partnerDebtTotal: {$partnerDebtTotal|number_format:2}, 
         warehouseTotal: {$warehouseTotal|number_format:2}, 
         btcProductsTotal, {$purseTotal|number_format:2},
