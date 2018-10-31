@@ -81,7 +81,9 @@
                             {else}
                                 {$order->getTrackingNumber()}
                             {/if}
-                            <a href="javascript:void(0);" class="fa fa-refresh f_refresh_tracking" data-id='{$order->getId()}'></a>
+                            {if $order->getExternal() == 0}
+                                <a href="javascript:void(0);" class="fa fa-refresh f_refresh_tracking" data-id='{$order->getId()}'></a>
+                            {/if}
                         </div>
                         {if $order->getDeliveryDate()>0}
                             <br/><br/>delivered at: {$order->getDeliveryDate()}
