@@ -66,7 +66,7 @@
                     <td> {$order->getDiscount()} </td>
                     <td style="max-width: 70px;word-wrap: break-word"> {$order->getBuyerName()} </td>
                     <td> {$order->getStatus()} </td>
-                    <td class="table-cell f_editable_cell" data-field-name="note"  style="max-width: 70px"> {$order->getNote()} </td>
+                    <td class="table-cell f_editable_cell" data-field-name="note"  style="min-width: 100px"> {$order->getNote()} </td>
                     <td class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </td>
                     <td class="table-cell f_editable_cell"  data-field-name="amazon_order_number">
                         <a class="link" target="_black" href="https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jnljnvjtqlspon&orderId={$order->getAmazonOrderNumber()}" > {$order->getAmazonOrderNumber()} </a>
