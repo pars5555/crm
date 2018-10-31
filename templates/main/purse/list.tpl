@@ -73,7 +73,7 @@
                         <br/>
                         {$order->getAmazonPrimaryStatusText()}
                     </td>
-                    <td>
+                    <td class="{if $order->getExternal() == 1}f_editable_cell{/if}" data-field-name="tracking_number" >
                         <div class="f_tracking" id="tracking_{$order->getId()}">
 
                             {if $order->getCarrierTrackingUrl() !== false}
