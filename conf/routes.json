@@ -535,6 +535,10 @@
             "route": "get_crypto_rates"
         },
         {
+            "action": "actions.cron.calc_capital",
+            "route": "calc_capital"
+        },
+        {
             "action": "actions.cron.cache_partner_debts",
             "route": "cache_partner_debts"
         },

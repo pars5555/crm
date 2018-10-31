@@ -348,9 +348,18 @@ namespace crm\managers {
 
         public function getOrdersPuposedToNotReceivedToDestinationCounty() {
             $rows1 = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
+                '(',
+                    '(',
                         'status', 'in', "('shipping', 'shipped', 'accepted')", 'AND',
                         "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
-                        'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'))]);
+                        'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date')),
+                    ')', 'OR', 'account_name', '=', "'external'",
+                ')'
+                
+                
+                ]);
+            
+            //if delivery date in none
             $rows2 = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
                         'status', 'in', "('feedback', 'finished',  'partially_delivered', 'delivered')", 'AND',
                         "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
