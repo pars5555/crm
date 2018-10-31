@@ -268,9 +268,11 @@ namespace crm\managers {
             $dto->setExternal(1);            
             $dto->setUnitAddress($unitAddress);
             $shippingType = RecipientManager::getInstance()->getShippingTypeByUnitAddress($unitAddress);
-            $recipient = RecipientManager::getInstance()->getRecipientByUnitAddress($unitAddress);
             $dto->setShippingType($shippingType);
-            $dto->setRecipientName($recipient->getFirstName().' '. $recipient->getLastName());
+            $recipient = RecipientManager::getInstance()->getRecipientByUnitAddress($unitAddress);
+            if (!empty($recipient)){
+                $dto->setRecipientName($recipient->getFirstName().' '. $recipient->getLastName());
+            }
             $dto->setCreatedAt(date('Y-m-d H:i:s'));
             return $this->insertDto($dto);
         }
