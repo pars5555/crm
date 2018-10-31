@@ -357,8 +357,6 @@ namespace crm\managers {
                         'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date')),
                     ')', 'OR', 'account_name', '=', "'external'",
                 ')'
-                
-                
                 ]);
             
             //if delivery date in none
