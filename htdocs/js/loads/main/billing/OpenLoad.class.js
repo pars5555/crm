@@ -10,7 +10,7 @@ NGS.createLoad("crm.loads.main.billing.open", {
         $('#cancelBillingButton').click(function () {
             if (confirm("Are you sure you want to cancel the billing?!"))
             {
-                $(this).parent('form').trigger('submit');
+                $(this).closest('form').trigger('submit');
             }
         });
     },

@@ -9,7 +9,7 @@ NGS.createLoad("crm.loads.main.partner.open", {
       $('#deletePartnerButton').click(function () {
             if (confirm("Are you sure you want to delete partner? It will delete all transactions related to this partner."))
             {
-                $(this).parent('form').trigger('submit');
+                $(this).closest('form').trigger('submit');
             }
         });
     }

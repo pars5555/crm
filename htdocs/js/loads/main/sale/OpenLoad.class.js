@@ -84,7 +84,7 @@ NGS.createLoad("crm.loads.main.sale.open", {
         $('#cancelSaleOrderButton').click(function () {
             if (confirm("Are you sure you want to cancel the Sale Order?!"))
             {
-                $(this).parent('form').trigger('submit');
+                $(this).closest('form').trigger('submit');
             }
         });
     },

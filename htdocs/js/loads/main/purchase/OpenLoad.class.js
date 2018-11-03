@@ -55,7 +55,7 @@ NGS.createLoad("crm.loads.main.purchase.open", {
         $('#cancelPurchaseOrderButton').click(function () {
             if (confirm("Are you sure you want to cancel the Purchase Order?!"))
             {
-                $(this).parent('form').trigger('submit');
+                $(this).closest('form').trigger('submit');
             }
         });
     },
