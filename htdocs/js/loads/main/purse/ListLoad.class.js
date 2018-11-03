@@ -36,6 +36,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
         this.initUpload();
         this.initUpdate();
         this.initHide();
+        this.initDelete();
         this.initProblematic();
         this.initSolveProblematic();
         this.initNotRegTrackings();
@@ -121,6 +122,13 @@ NGS.createLoad("crm.loads.main.purse.list", {
             var id = $(this).data('id');
             NGS.action('crm.actions.main.purse.set_problematic', {id: id});
             
+        });
+    },
+    initDelete: function () {
+        $('.f_delete').click(function () {
+            var id = $(this).data('id');
+            $(this).closest('tr').remove();
+            NGS.action('crm.actions.main.purse.delete', {id: id});
         });
     },
     initSolveProblematic: function () {
