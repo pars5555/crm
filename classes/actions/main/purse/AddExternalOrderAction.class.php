@@ -25,7 +25,7 @@ namespace crm\actions\main\purse {
             $url = trim(NGS()->args()->url);
             $qty = intval(NGS()->args()->qty);
             $price = floatval(NGS()->args()->price);
-            $html = file_get_contents($url);
+            $html = $this->curl_get_contents($url);
             $productName = $this->get_title($html);
             if (empty($productName)) {
                 $productName = $url;
@@ -33,15 +33,45 @@ namespace crm\actions\main\purse {
             $imageUrl = $this->extractImagesFromWebPage($html);
             PurseOrderManager::getInstance()->addExternalOrder($productName, $qty, $price, $unitAddress, $imageUrl);
         }
+        
+        private function curl_get_contents($url, $headers = [], $cookie = '') {
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_HTTPGET, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($ch, CURLOPT_ENCODING, "");
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+            curl_setopt($ch, CURLOPT_REFERER, 'https://crm.pc.am');
+            if (!empty($headers)) {
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            }
+            if (!empty($cookie)) {
+                curl_setopt($ch, CURLOPT_COOKIE, $cookie);
+            }
+            $data = curl_exec($ch);
+            curl_close($ch);
+            return $data;
+        }
 
         function extractImagesFromWebPage($html) {
             $dom = new \DOMDocument();
             if (@$dom->loadHTML($html)) {
-                // Extracting the specified elements from the web page
-                @$elements = $dom->getElementsByTagName('img');
-                return $elements[0]->getAttribute('src');
+                $element = $dom->getElementById('landingImage');
+                if (!empty($element)){
+                    return $element->getAttribute('src');
+                }
+                $finder = new \DOMXPath($dom);
+                $ordersRows = $finder->query("//*[contains(@class, 'mainSlide')]");
+                if ($ordersRows->length > 0)
+                {
+                    return $ordersRows->item(0)->getElementsByTagName('img')->item(0)->getAttribute('src');
+                }
+                
             }
-            return FALSE;
+            return false;
         }
 
         public function get_title($content) {
