@@ -33,7 +33,7 @@ namespace crm\actions\main\purse {
             $imageUrl = $this->extractImagesFromWebPage($html);
             PurseOrderManager::getInstance()->addExternalOrder($productName, $qty, $price, $unitAddress, $imageUrl);
         }
-        
+
         private function curl_get_contents($url, $headers = [], $cookie = '') {
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_HTTPGET, true);
@@ -60,25 +60,26 @@ namespace crm\actions\main\purse {
             $dom = new \DOMDocument();
             if (@$dom->loadHTML($html)) {
                 $element = $dom->getElementById('landingImage');
-                if (!empty($element)){
+                if (!empty($element)) {
                     return $element->getAttribute('src');
                 }
                 $finder = new \DOMXPath($dom);
                 $ordersRows = $finder->query("//*[contains(@class, 'mainSlide')]");
-                if ($ordersRows->length > 0)
-                {
+                if ($ordersRows->length > 0) {
                     return $ordersRows->item(0)->getElementsByTagName('img')->item(0)->getAttribute('src');
                 }
-                
             }
             return false;
         }
 
         public function get_title($content) {
-            
+
             if (strlen($content) > 0) {
                 $content = trim(preg_replace('/\s+/', ' ', $content)); // supports line breaks inside <title>
-                preg_match("/\<title\>(.*)\<\/title\>/i", $content, $title); // ignore case
+                $res = preg_match("/<title>(.*)\<\/title>/siU", $content, $title); // ignore case
+                if (!$res) {
+                    return 'No title';
+                }
                 return $title[1];
             }
         }
