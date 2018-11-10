@@ -74,6 +74,20 @@ namespace crm\actions\main\purse {
 
         public function get_title($content) {
 
+            $dom = new \DOMDocument();
+            if (@$dom->loadHTML($content)) {
+                $element = $dom->getElementById('productTitle');
+                if (!empty($element)) {
+                    return $this->DOMinnerHTML($element);
+                }
+            }
+            
+            $finder = new \DOMXPath($dom);
+            $ordersRows = $finder->query("//*[contains(@itemprop, 'name')]");
+            if ($ordersRows ->length > 0)
+            {
+                return $this->DOMinnerHTML($ordersRows[0]);
+            }
             if (strlen($content) > 0) {
                 $content = trim(preg_replace('/\s+/', ' ', $content)); // supports line breaks inside <title>
                 $res = preg_match("/<title>(.*)\<\/title>/siU", $content, $title); // ignore case
@@ -84,6 +98,18 @@ namespace crm\actions\main\purse {
             }
         }
 
+        private function DOMinnerHTML(\DOMElement $element) {
+            $innerHTML = "";
+            $children = $element->childNodes;
+
+            foreach ($children as $child) {
+                $innerHTML .= $element->ownerDocument->saveHTML($child);
+            }
+
+            return $innerHTML;
+        }
+
     }
 
 }
+    
