@@ -61,7 +61,7 @@ namespace crm\actions\main\purse {
             if (@$dom->loadHTML($html)) {
                 $element = $dom->getElementById('landingImage');
                 if (!empty($element)) {
-                    return $element->getAttribute('src');
+                    return key(json_decode($element->getAttribute('data-a-dynamic-image')));
                 }
                 $finder = new \DOMXPath($dom);
                 $ordersRows = $finder->query("//*[contains(@class, 'mainSlide')]");
