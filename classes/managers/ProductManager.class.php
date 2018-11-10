@@ -80,9 +80,10 @@ namespace crm\managers {
             $dto->setModel($model);
             $dto->setManufacturerId($manufacturerId);
             $dto->setUomId($uomId);
-            $product = $this->insertDto($dto);
-            ProductManager::getInstance()->findAndSetProoductImageFromPurseOrders($product, PurseOrderManager::getInstance()->selectAdvance(['id', 'product_name', 'image_url'], [], [], "", null, null, false, "", 'GROUP BY product_name'));
-            return $product;
+            $id = $this->insertDto($dto);
+            $dto->setId($id);
+            $this->findAndSetProoductImageFromPurseOrders($dto, PurseOrderManager::getInstance()->selectAdvance(['id', 'product_name', 'image_url'], [], [], "", null, null, false, "", 'GROUP BY product_name'));
+            return $id;
         }
 
         public function updateProduct($id, $name, $model, $manufacturerId, $uomId) {
