@@ -535,6 +535,10 @@
             "route": "get_crypto_rates"
         },
         {
+            "action": "actions.cron.set_products_images",
+            "route": "set_products_images"
+        },
+        {
             "action": "actions.cron.calc_capital",
             "route": "calc_capital"
         },

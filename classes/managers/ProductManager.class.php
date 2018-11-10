@@ -40,9 +40,25 @@ namespace crm\managers {
         public function setProductHidden($id, $hidden) {
             $this->mapper->updateField($id, 'hidden', $hidden);
         }
-        
+
         public function setProductQtyChecked($id, $qty_checked) {
             $this->mapper->updateField($id, 'qty_checked', $qty_checked);
+        }
+
+        public function findAndSetProoductImageFromPurseOrders($product, $allOrders) {
+            $maxPercent = 0;
+            $productImage = "";
+            foreach ($allOrders as $order) {
+                $percent = 0;
+                similar_text($product->getName(), $order->getProductName(), $percent);
+                if ($percent > $maxPercent) {
+                    $maxPercent = $percent;
+                    $productImage = $order->getImageUrl();
+                }
+            }
+            if ($maxPercent > 78) {
+                $this->updateField($product->getId(), 'image_url', $productImage);
+            }
         }
 
         public function safeDeleteProduct($productId) {
@@ -64,7 +80,9 @@ namespace crm\managers {
             $dto->setModel($model);
             $dto->setManufacturerId($manufacturerId);
             $dto->setUomId($uomId);
-            return $this->insertDto($dto);
+            $product = $this->insertDto($dto);
+            ProductManager::getInstance()->findAndSetProoductImageFromPurseOrders($product, PurseOrderManager::getInstance()->selectAdvance(['id', 'product_name', 'image_url'], [], [], "", null, null, false, "", 'GROUP BY product_name'));
+            return $product;
         }
 
         public function updateProduct($id, $name, $model, $manufacturerId, $uomId) {
@@ -177,7 +195,7 @@ namespace crm\managers {
                 $ret += $qty * $unitPrice;
                 $totalQty += $qty;
             }
-            return $ret/$totalQty;
+            return $ret / $totalQty;
         }
 
         private function subtracPurchaseOrderLinesByProductSaleOrders($productPurchaseOrderLines, $productSaleOrderLines) {

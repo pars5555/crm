@@ -11,6 +11,8 @@
         <table>
             <tr>
                 <th>Id</th>
+                <th>Image</th>
+                
                 <th style="min-width: 250px;">Name</th>
                 <th>Model</th>
                 {if $ns.userType == $ns.userTypeAdmin}
@@ -28,6 +30,7 @@
                 {if isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0}
                     <tr data-id="{$product->getId()}" data-type="product" {if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}>
                         <td>{$product->getId()}</td>
+                        <td> <img src="{$product->getImageUrl()}" width="100"/> </td>
                         <td style="min-width: 250px;" data-field-name="name">{$product->getName()}</td>
                         <td data-field-name="model">{$product->getModel()}</td>
                         {if $ns.userType == $ns.userTypeAdmin}

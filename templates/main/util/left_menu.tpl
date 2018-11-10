@@ -14,6 +14,7 @@
             <li><a {if $ns.loadName=='billing'}class="active"{/if} href="{$SITE_PATH}/billing/list?srt=date&ascdesc=DESC">Billing Order</a></li>
             <li><a {if $ns.loadName=='all'}class="active"{/if} href="{$SITE_PATH}/all">All Deals</a></li>
             <li><a {if $ns.loadName=='warehouse'}class="active"{/if} href="{$SITE_PATH}/warehouse">Warehouse</a></li>
+            <li><a {if $ns.loadName=='rwarehouses'}class="active"{/if} href="{$SITE_PATH}/rwarehouse">Real Warehouses</a></li>
             <li><a {if $ns.loadName=='pwarehouse'}class="active"{/if} href="{$SITE_PATH}/pwarehouse">Partner Warehouse</a></li>
             <li><a {if $ns.loadName=='product'}class="active"{/if} href="{$SITE_PATH}/product/list">Products</a></li>
             <li><a {if $ns.loadName=='manufacturer'}class="active"{/if} href="{$SITE_PATH}/manufacturer/list">Manufacturers</a></li>
