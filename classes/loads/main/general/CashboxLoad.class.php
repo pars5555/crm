@@ -27,7 +27,7 @@ namespace crm\loads\main\general {
             $paymentTransactionManager = PaymentTransactionManager::getInstance();
             $nonCancelledPaymentOrdersByCurrency = $paymentTransactionManager->getNonCancelledPaymentOrdersByCurrency($date, $curr);
             $cashboxAmount = -$nonCancelledPaymentOrdersByCurrency;
-            $this->addParam("amount", $cashboxAmount);
+            $this->addParam("amount", $cashboxAmount);            
         }
 
         private function getFormData() {

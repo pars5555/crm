@@ -13,6 +13,7 @@ NGS.createLoad("crm.loads.main.index", {
         this.checkbox();
         this.initCloseModal();
         this.initEditableCells();
+        this.initSettingEditableCells();
         this.initLeftMenuTrigger();
         this.hideLeftMenuOnMobile();
     },
@@ -45,6 +46,35 @@ NGS.createLoad("crm.loads.main.index", {
                 $(this).off();
                 NGS.action('crm.actions.main.UpdateField',
                         {'id': id, 'object_type': object_type,
+                            'field_name': fielldName,
+                            "field_value": value},
+                        function (ret) {
+                            cellElement.html(ret.value);
+                        });
+            });
+        });
+    },
+    initSettingEditableCells: function () {
+        $('.f_editable_setting_field').dblclick(function () {
+            var cellValues = $(this).text().trim();
+            var cellFieldName = $(this).data('field-name');
+            var type = $(this).data('type');
+            if (type === 'richtext') {
+                var input = $('<textarea ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%;min-width:150px;min-height:50px" data-id="' + id + '" data-field-name="' + cellFieldName + '">' + cellValues.htmlEncode() + '</textarea>')
+            } else {
+                var input = $('<input ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '" type="text" value="' + cellValues.htmlEncode() + '"/>')
+            }
+            $(this).html(input);
+            var cellElement = $(this);
+            input.focus();
+            input.blur(function () {
+                var id = $(this).data('id');
+                var fielldName = $(this).data('field-name');
+                var value = $(this).val().trim();
+                cellElement.html(value);
+                $(this).off();
+                NGS.action('crm.actions.main.UpdateField',
+                        {'id': id, 'object_type': 'settings',
                             'field_name': fielldName,
                             "field_value": value},
                         function (ret) {

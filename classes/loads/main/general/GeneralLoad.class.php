@@ -32,6 +32,10 @@ namespace crm\loads\main\general {
             $this->addParam('purseBalanceTotal', $purseBalanceTotal);
             $this->addParam('partnerWarehouseTotal', $partnerWarehouseTotal);
             $this->addParam('capital', $warehouseTotal + $purseTotal + $purseBalanceTotal + $partnerWarehouseTotal + $partnerDebtTotal + $cashboxTotal);
+            
+            $this->addParam("capital_external_debts", SettingManager::getInstance()->getSetting('capital_external_debts'));
+            $this->addParam("capital_external_debts_note", SettingManager::getInstance()->getSetting('capital_external_debts_note'));
+            $this->addParam("capital_external_btc", SettingManager::getInstance()->getSetting('capital_external_btc'));
         }
 
         public function getDefaultLoads() {
