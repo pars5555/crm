@@ -24,10 +24,10 @@ NGS.createLoad("crm.loads.main.index", {
             var type = $(this).data('type');
             var object_type = $(this).parent('div').data('type');
             var id = $(this).parent('div').data('id');
-            if (typeof object_type === 'undefined'){
+            if (typeof object_type === 'undefined') {
                 object_type = $(this).parent('tr').data('type');
                 id = $(this).parent('tr').data('id');
-                
+
             }
             if (type === 'richtext') {
                 var input = $('<textarea ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%;min-width:150px;min-height:50px" data-id="' + id + '" data-field-name="' + cellFieldName + '">' + cellValues.htmlEncode() + '</textarea>')
@@ -60,21 +60,20 @@ NGS.createLoad("crm.loads.main.index", {
             var cellFieldName = $(this).data('field-name');
             var type = $(this).data('type');
             if (type === 'richtext') {
-                var input = $('<textarea ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%;min-width:150px;min-height:50px" data-id="' + id + '" data-field-name="' + cellFieldName + '">' + cellValues.htmlEncode() + '</textarea>')
+                var input = $('<textarea ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%;min-width:150px;min-height:50px"  data-field-name="' + cellFieldName + '">' + cellValues.htmlEncode() + '</textarea>')
             } else {
-                var input = $('<input ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '" type="text" value="' + cellValues.htmlEncode() + '"/>')
+                var input = $('<input ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%" data-field-name="' + cellFieldName + '" type="text" value="' + cellValues.htmlEncode() + '"/>')
             }
             $(this).html(input);
             var cellElement = $(this);
             input.focus();
             input.blur(function () {
-                var id = $(this).data('id');
                 var fielldName = $(this).data('field-name');
                 var value = $(this).val().trim();
                 cellElement.html(value);
                 $(this).off();
                 NGS.action('crm.actions.main.UpdateField',
-                        {'id': id, 'object_type': 'settings',
+                        {'object_type': 'settings_name',
                             'field_name': fielldName,
                             "field_value": value},
                         function (ret) {
@@ -139,7 +138,7 @@ NGS.createLoad("crm.loads.main.index", {
         })
     },
     hideLeftMenuOnMobile: function () {
-        if(window.outerWidth <= 768) {
+        if (window.outerWidth <= 768) {
             $("#leftMenuTrigger").click();
         }
     }

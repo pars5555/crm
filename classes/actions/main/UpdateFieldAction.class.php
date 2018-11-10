@@ -50,6 +50,7 @@ namespace crm\actions\main {
                     $manager = ProductManager::getInstance();
                     break;
                 case 'settings':
+                case 'settings_name':
                     $manager = SettingManager::getInstance();
                     break;
                 case 'btc':
@@ -58,6 +59,13 @@ namespace crm\actions\main {
                 case 'recipient':
                     $manager = RecipientManager::getInstance();
                     break;
+            }
+            if ($objectType === 'settings_name'){
+                $manager->setSetting($fieldName, $fieldValue);
+                $this->addParam('value', $fieldValue);
+                $capitalData = json_decode(SettingManager::getInstance()->getSetting('capital_data', '{}'), true);
+                $capitalData[$fieldName] = $fieldValue;
+                return;
             }
             $manager->updateField($id, $fieldName, $fieldValue);
             $valueAfterSave = $manager->selectByPk($id);
