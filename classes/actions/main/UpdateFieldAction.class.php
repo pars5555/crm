@@ -65,6 +65,7 @@ namespace crm\actions\main {
                 $this->addParam('value', $fieldValue);
                 $capitalData = json_decode(SettingManager::getInstance()->getSetting('capital_data', '{}'), true);
                 $capitalData[$fieldName] = $fieldValue;
+                SettingManager::getInstance()->setSetting('capital_data', json_encode($capitalData));
                 return;
             }
             $manager->updateField($id, $fieldName, $fieldValue);
