@@ -1,5 +1,11 @@
 <form class="filters--form" id="recipientFilters" autocomplete="off" action="{$SITE_PATH}/recipient/list" method="GET">
     <div class="form-group filters-group">
+         <div class="filter search">
+            <label>Search</label>
+            <div class="search-container">
+                <input class="text" style="max-width: 200px;" type="text" name="st" value="{$ns.searchText}"/>
+            </div>
+        </div>
         <div class="filter group">
             <label>Sort by </label>
             <select name="srt">

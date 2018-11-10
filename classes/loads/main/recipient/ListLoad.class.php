@@ -23,9 +23,25 @@ namespace crm\loads\main\recipient {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 1000;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterDeleted, $selectedFilterHasDebt) = $this->initFilters($limit);
-            $recipientManager = RecipientManager::getInstance();
+            list($offset, $searchText, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterDeleted, $selectedFilterHasDebt) = $this->initFilters($limit);
+
             $where = ['1', '=', '1'];
+            if (!empty($searchText)) {
+                $words = preg_split('/\s+/', $searchText);
+                foreach ($words as $word) {
+                    $where = array_merge($where, ['AND', '(', 'first_name', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'last_name', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'express_unit_address', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'standard_unit_address', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'onex_express_unit', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'onex_standard_unit', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'nova_express_unit', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'nova_standard_unit', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'note', 'like', "'%$word%'", ')']);
+                }
+            }
+
+            $recipientManager = RecipientManager::getInstance();
             if ($selectedFilterDeleted !== 'all') {
                 $where = array_merge($where, ['and', 'deleted', '=', 0]);
             }
@@ -108,12 +124,19 @@ namespace crm\loads\main\recipient {
                 }
             }
 
+            $searchText = '';
+            if (isset(NGS()->args()->st)) {
+
+                $searchText = trim(NGS()->args()->st);
+            }
+
+            $this->addParam('searchText', $searchText);
             $this->addParam('selectedFilterHasDebt', $selectedFilterHasDebt);
             $this->addParam('selectedFilterDeleted', $selectedFilterDeleted);
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $selectedFilterDeleted, $selectedFilterHasDebt];
+            return [$offset, $searchText, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $selectedFilterDeleted, $selectedFilterHasDebt];
         }
 
         public function getTemplate() {
