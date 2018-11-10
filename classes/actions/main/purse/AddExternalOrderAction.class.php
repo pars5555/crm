@@ -106,7 +106,7 @@ namespace crm\actions\main\purse {
                 $innerHTML .= $element->ownerDocument->saveHTML($child);
             }
 
-            return $innerHTML;
+            return trim($innerHTML);
         }
 
     }
