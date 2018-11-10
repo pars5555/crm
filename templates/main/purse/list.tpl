@@ -40,7 +40,7 @@
                         {if $order->getHidden()==0}
                             <a href="javascript:void(0);" class="fa fa-eye-slash fa-1x f_hide left" data-id='{$order->getId()}'></a>
                         {/if}
-                        <a href="javascript:void(0);" id="problematic_{$order->getId()}" class="fa fa-exclamation-triangle fa-1x f_problematic right" data-id='{$order->getId()}'></a>
+                        <a href="javascript:void(0);" {if $ns.problematic == 1}style="color: red"{/if} id="problematic_{$order->getId()}" class="fa fa-exclamation-triangle fa-1x f_problematic right" data-id='{$order->getId()}'></a>
                         <br/>
                         {if $order->getUnreadMessages() > 0}
                             <span class="fa fa-envelope" style="color: red">{$order->getUnreadMessages()}</span>
