@@ -56,6 +56,14 @@
             </select>
         </div>
         <div class="filter">
+            <label>Type (Ex/BTC)</label>
+            <select name="tp">
+                <option value="all" {if $ns.orderType == 'all'}selected{/if}>All</option>
+                <option value="external" {if $ns.orderType == 'external'}selected{/if}>External</option>
+                <option value="btc" {if $ns.orderType == 'btc'}selected{/if}>Btc</option>
+            </select>
+        </div>
+        <div class="filter">
             <label>Show Hiddens</label>
             <select name="hddn">
                 <option value="all" {if $ns.selectedFilterHidden == 'all'}selected{/if}>All</option>

@@ -21,7 +21,7 @@ namespace crm\loads\main\purse {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 200;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterRecipientId, $selectedFilterHidden, $selectedFilterShippingType, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse) = $this->initFilters($limit);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterRecipientId, $selectedFilterHidden, $selectedFilterShippingType, $orderType, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse) = $this->initFilters($limit);
             $where = ['1', '=', '1'];
             if ($selectedFilterAccount !== 'purse_all') {
                 $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
@@ -39,6 +39,10 @@ namespace crm\loads\main\purse {
             }
             if ($selectedFilterShippingType !== 'all') {
                 $where = array_merge($where, ['AND ', 'shipping_type', '=', "'$selectedFilterShippingType'"]);
+            }
+            if ($orderType !== 'all') {
+                $orderTypeVal = $orderType == 'external' ? 1 : 0;
+                $where = array_merge($where, ['AND ', 'external', '=', $orderTypeVal]);
             }
             if ($selectedFilterRecipientId > 0) {
                 $recipientUnitAddressesSql = \crm\managers\RecipientManager::getInstance()->getRecipientUnitAddresses($selectedFilterRecipientId, true);
@@ -208,6 +212,10 @@ namespace crm\loads\main\purse {
             if (isset(NGS()->args()->rcpt)) {
                 $selectedFilterRecipientId = intval(NGS()->args()->rcpt);
             }
+            $orderType = 'all';
+            if (isset(NGS()->args()->tp)) {
+                $orderType = strtolower(NGS()->args()->tp);
+            }
             $selectedFilterShippingType = 'all';
             if (isset(NGS()->args()->sht)) {
                 $selectedFilterShippingType = strtolower(NGS()->args()->sht);
@@ -230,6 +238,7 @@ namespace crm\loads\main\purse {
                 $selectedFilterHidden = 'no';
                 $selectedFilterStatus = 'all';
                 $selectedFilterShippingType = 'all';
+                $orderType = 'all';
                 $selectedFilterRecipientId = 0;
                 $offset = 0;
                 $selectedFilterPage = 1;
@@ -243,10 +252,11 @@ namespace crm\loads\main\purse {
             $this->addParam('selectedFilterHidden', $selectedFilterHidden);
             $this->addParam('selectedFilterStatus', $selectedFilterStatus);
             $this->addParam('selectedFilterShippingType', $selectedFilterShippingType);
+            $this->addParam('orderType', $orderType);
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterRecipientId, $selectedFilterHidden, $selectedFilterShippingType, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterRecipientId, $selectedFilterHidden, $selectedFilterShippingType, $orderType, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse];
         }
 
         public function getTemplate() {

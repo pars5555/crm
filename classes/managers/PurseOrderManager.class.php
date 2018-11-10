@@ -57,10 +57,10 @@ namespace crm\managers {
             }
             $unitAddressSql = "('" . implode("','", array_keys($partnerIdMappedByExpressUnitAddresses)) . "')";
             $firstDayOfMonth = date('Y-m-1');
-            $orders = $this->selectAdvance('*', ['status', '<>', "'canceled'", 'AND', 
-                'unit_address', 'in', $unitAddressSql, 'AND', 
-                'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 50, 'AND', 
-                '(','hidden', '=', 0 ,'OR', 'hidden_at', '>=', "'$firstDayOfMonth'", ')'], 'id', 'desc');
+            $orders = $this->selectAdvance('*', ['status', '<>', "'canceled'", 'AND',
+                'unit_address', 'in', $unitAddressSql, 'AND',
+                'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 50, 'AND',
+                '(', 'hidden', '=', 0, 'OR', 'hidden_at', '>=', "'$firstDayOfMonth'", ')'], 'id', 'desc');
             $recipientsRecentOrdersMappedByrecipientId = [];
             foreach ($orders as $order) {
                 $expressUnitAddress = $order->getUnitAddress();
@@ -226,6 +226,9 @@ namespace crm\managers {
             if ($ps->length > 0) {
                 $primaryStatusText = trim($ps->item(0)->nodeValue);
                 $this->updateField($row->getId(), 'amazon_primary_status_text', $primaryStatusText);
+                if (strpos($primaryStatusText, 'cancel') !== false && $row->getExternal() == 1) {
+                    $this->updateField($row->getId(), 'hidden', 1);
+                }
             }
 
 
@@ -263,27 +266,26 @@ namespace crm\managers {
             $dto->setQuantity($qty);
             $dto->setDiscount(0);
             $dto->setAmazonTotal($price);
-            $dto->setAccountName('external');            
-            $dto->setStatus('shipping');            
-            $dto->setExternal(1);            
+            $dto->setAccountName('external');
+            $dto->setStatus('shipping');
+            $dto->setExternal(1);
             $dto->setUnitAddress($unitAddress);
             $shippingType = RecipientManager::getInstance()->getShippingTypeByUnitAddress($unitAddress);
             $dto->setShippingType($shippingType);
             $recipient = RecipientManager::getInstance()->getRecipientByUnitAddress($unitAddress);
-            if (!empty($recipient)){
-                $dto->setRecipientName($recipient->getFirstName().' '. $recipient->getLastName());
+            if (!empty($recipient)) {
+                $dto->setRecipientName($recipient->getFirstName() . ' ' . $recipient->getLastName());
             }
             $dto->setCreatedAt(date('Y-m-d H:i:s'));
             return $this->insertDto($dto);
         }
-        
+
         public function insertOrUpdateOrderFromPurseObject($accountName, $order) {
             $dtos = $this->selectByField('order_number', $order['id']);
             $prevStatus = '';
             if (!empty($dtos)) {
                 $dto = $dtos[0];
                 $prevStatus = $dto->getStatus();
-                
             } else {
                 $dto = $this->createDto();
             }
@@ -291,7 +293,7 @@ namespace crm\managers {
             $dto->setStatus($order['state']);
             if ($order['state'] === 'canceled') {
                 $dto->setHidden(1);
-            }            
+            }
             $dto->setProductName($order['items'][0]['name']);
             $dto->setImageUrl($order['items'][0]['images']['small']);
             $dto->setQuantity($order['items'][0]['quantity']);
@@ -299,7 +301,7 @@ namespace crm\managers {
             $unitAddress = trim($order['shipping']['verbose']['street2']);
             $dto->setUnitAddress($unitAddress);
             $shippingType = RecipientManager::getInstance()->getShippingTypeByUnitAddress($unitAddress);
-            $dto->setShippingType($shippingType);            
+            $dto->setShippingType($shippingType);
             $dto->setDeliveryDate($order['shipping']['delivery_date']);
             $dto->setUnreadMessages($order['unread_messages']);
             $dto->setRecipientName($order['shipping']['verbose']['full_name']);
@@ -337,13 +339,13 @@ namespace crm\managers {
             $days = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             return $this->selectAdvance('*', array_merge($where, ['AND', 'problem_solved', '=', '0', 'AND',
                         '(',
-                            'problematic', '=', 1, 'OR', 'amazon_primary_status_text', 'like', "'%cancel%'", 'OR', 'amazon_primary_status_text', 'like', "'%Was expected%'",
-                            'OR', "length(COALESCE(`unit_address`,''))", '<', 2, 'OR',
-                            "`shipping_type`", 'not in', "('express', 'standard')", 'OR',
-                            '(',
-                                'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
-                                "length(COALESCE(`serial_number`,''))", '<', 2, 'AND', 'ABS(DATEDIFF(`delivery_date`, date(now())))', '>=', $days,
-                            ')',
+                        'problematic', '=', 1, 'OR', 'amazon_primary_status_text', 'like', "'%cancel%'", 'OR', 'amazon_primary_status_text', 'like', "'%Was expected%'",
+                        'OR', "length(COALESCE(`unit_address`,''))", '<', 2, 'OR',
+                        "`shipping_type`", 'not in', "('express', 'standard')", 'OR',
+                        '(',
+                        'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
+                        "length(COALESCE(`serial_number`,''))", '<', 2, 'AND', 'ABS(DATEDIFF(`delivery_date`, date(now())))', '>=', $days,
+                        ')',
                         ')'
             ]));
         }
@@ -351,19 +353,19 @@ namespace crm\managers {
         public function getOrdersPuposedToNotReceivedToDestinationCounty() {
             $rows1 = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
                 '(',
-                    '(',
-                        'status', 'in', "('shipping', 'shipped', 'accepted')", 'AND',
-                        "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
-                        'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date')),
-                    ')', 'OR', 'account_name', '=', "'external'",
+                '(',
+                'status', 'in', "('shipping', 'shipped', 'accepted')", 'AND',
+                "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
+                'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date')),
+                ')', 'OR', 'account_name', '=', "'external'",
                 ')'
-                ]);
-            
+            ]);
+
             //if delivery date in none
             $rows2 = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
-                        'status', 'in', "('feedback', 'finished',  'partially_delivered', 'delivered')", 'AND',
-                        "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
-                        'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 30]);
+                'status', 'in', "('feedback', 'finished',  'partially_delivered', 'delivered')", 'AND',
+                "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
+                'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 30]);
             return array_merge($rows1, $rows2);
         }
 
@@ -401,7 +403,7 @@ namespace crm\managers {
             $headers = $this->getPurseHeader($token);
             return json_decode($this->curl_get_contents('https://api.purse.io/api/v1/orders/me/active', $headers), true);
         }
-        
+
         public function getUserInfo($token) {
             $headers = $this->getPurseHeader($token);
             return json_decode($this->curl_get_contents('https://api.purse.io/api/v1/users/me', $headers), true);
