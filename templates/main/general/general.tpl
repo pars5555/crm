@@ -17,7 +17,7 @@
         external debts $: <span class="f_editable_setting_field" data-field-name="capital_external_debts">{$ns.capital_external_debts|number_format:2}</span>
     </div>
     <div>
-        note: <span class="f_editable_setting_field" data-field-name="capital_external_debts_not">{$ns.capital_external_debts_note|default:"External Debt Note"}</span>
+        note: <span class="f_editable_setting_field" data-field-name="capital_external_debts_note">{$ns.capital_external_debts_note|default:"External Debt Note"}</span>
     </div>
     <div>
         Bitpay btc $: <span class="f_editable_setting_field" data-field-name="capital_external_btc">{$ns.capital_external_btc|number_format:2}</span>
