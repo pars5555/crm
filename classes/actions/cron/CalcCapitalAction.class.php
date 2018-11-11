@@ -36,15 +36,14 @@ namespace crm\actions\cron {
             $purseBalanceTotal = $this->getPurseBalancesTotalAmount();
             $partnerWarehouseTotal = $this->getPartnerWarehausesTotalAmount();
             $cashboxTotal = $this->getCashboxTotalUsdAmount();
-            $data = [
-                'partner_debt_total' => round($partnerDebtTotal, 2),
-                'warehouse_total' => round($warehouseTotal),
-                'purse_total' => round($purseTotal),
-                'purse_balance_total' => round($purseBalanceTotal),
-                'partner_warehouse_total' => round($partnerWarehouseTotal),
-                'cashbox_total' => round($cashboxTotal),
-            ];
-            SettingManager::getInstance()->setSetting('capital_data', json_encode($data));
+            $capitalData = json_decode(SettingManager::getInstance()->getSetting('capital_data', '{}'), true);
+            $capitalData['partner_debt_total'] = round($partnerDebtTotal, 2);
+            $capitalData['warehouse_total'] =  round($warehouseTotal);
+            $capitalData['purse_total'] = round($purseTotal);
+            $capitalData['purse_balance_total'] = round($purseBalanceTotal);
+            $capitalData['partner_warehouse_total'] = round($partnerWarehouseTotal);
+            $capitalData['cashbox_total'] = round($cashboxTotal);
+            SettingManager::getInstance()->setSetting('capital_data', json_encode($capitalData));
         }
 
         private function getPurseTotalUsdAmount() {
