@@ -370,7 +370,7 @@ namespace crm\managers {
         }
 
         public function getTrackingFetchNeededOrders() {
-            return $this->selectAdvance(['id', 'amazon_order_number'], ['hidden', '=', 0, 'AND',
+            return $this->selectAdvance(['id', 'amazon_order_number', 'external'], ['hidden', '=', 0, 'AND',
                         'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", "AND",
                         "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
                         "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND',
