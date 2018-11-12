@@ -48,14 +48,14 @@ namespace crm\managers {
         public function updateSaleOrderLine($saleOrderId, $id, $productId, $quantity, $unitPrice, $currencyId) {
             $unitPrice = floatval($unitPrice);
             $quantity = floatval($quantity);
-            $dto = $this->selectByPK($id);
+            $dto = $this->selectByPk($id);
             $dto->setProductId($productId);
             $dto->setQuantity($quantity);
             $dto->setUnitPrice($unitPrice);
             $dto->setCurrencyId($currencyId);
             $productUnitCostInBaseCurrency = ProductManager::getInstance()->calculateProductCost($productId, $quantity, $saleOrderId);
             $dto->setUnitCost(json_encode($productUnitCostInBaseCurrency));
-            $saleOrderDto = SaleOrderManager::getInstance()->selectByPK($saleOrderId);
+            $saleOrderDto = SaleOrderManager::getInstance()->selectByPk($saleOrderId);
             $orderDate = $saleOrderDto->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
@@ -65,7 +65,7 @@ namespace crm\managers {
             } else {
                 $dto->setTotalProfit(0);
             }
-            $so = SaleOrderManager::getInstance()->selectByPK($saleOrderId);
+            $so = SaleOrderManager::getInstance()->selectByPk($saleOrderId);
             PartnerManager::getInstance()->setPartnerHidden($so->getPartnerId(), 0);
             ProductManager::getInstance()->updateProductCostForOneUnit($productId);
             return $this->updateByPk($dto);
@@ -82,7 +82,7 @@ namespace crm\managers {
             $dto->setCurrencyId($currencyId);
             $productUnitCostInBaseCurrency = ProductManager::getInstance()->calculateProductCost($productId, $quantity);
             $dto->setUnitCost(json_encode($productUnitCostInBaseCurrency));
-            $saleOrderDto = SaleOrderManager::getInstance()->selectByPK($saleOrderId);
+            $saleOrderDto = SaleOrderManager::getInstance()->selectByPk($saleOrderId);
             $orderDate = $saleOrderDto->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
@@ -92,7 +92,7 @@ namespace crm\managers {
             } else {
                 $dto->setTotalProfit(0);
             }
-            $so = SaleOrderManager::getInstance()->selectByPK($saleOrderId);
+            $so = SaleOrderManager::getInstance()->selectByPk($saleOrderId);
             PartnerManager::getInstance()->setPartnerHidden($so->getPartnerId(), 0);
             ProductManager::getInstance()->updateProductCostForOneUnit($productId);
             return $this->insertDto($dto);

@@ -147,7 +147,7 @@ namespace crm\managers {
         }
 
         public function setPaid($id, $paid) {
-            $recipientOrderDto = $this->selectByPK($id);
+            $recipientOrderDto = $this->selectByPk($id);
             if (isset($recipientOrderDto)) {
                 $recipientOrderDto->setPaid($paid);
                 if ($paid == 1) {
@@ -160,7 +160,7 @@ namespace crm\managers {
         }
 
         public function cancelRecipientOrder($id, $note) {
-            $recipientOrderDto = $this->selectByPK($id);
+            $recipientOrderDto = $this->selectByPk($id);
             if (isset($recipientOrderDto)) {
                 $recipientOrderDto->setCancelled(1);
                 $recipientOrderDto->setCancelNote($note);
@@ -171,7 +171,7 @@ namespace crm\managers {
         }
 
         public function restoreRecipientOrder($id) {
-            $recipientOrderDto = $this->selectByPK($id);
+            $recipientOrderDto = $this->selectByPk($id);
             if (isset($recipientOrderDto)) {
                 $recipientOrderDto->setCancelled(0);
                 $recipientOrderDto->setCancelNote("");
@@ -190,7 +190,7 @@ namespace crm\managers {
         }
 
         public function updateRecipientOrder($id, $recipientId, $date, $note) {
-            $dto = $this->selectByPK($id);
+            $dto = $this->selectByPk($id);
             if ($dto) {
                 $dto->setRecipientId($recipientId);
                 $dto->setOrderDate($date);

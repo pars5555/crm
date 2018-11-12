@@ -97,7 +97,7 @@ namespace crm\managers {
         }
 
         public function getRecipientUnitAddresses($recipintId, $sqlReady = false) {
-            $recipient = $this->selectByPK($recipintId);
+            $recipient = $this->selectByPk($recipintId);
             $res = [$recipient->getExpressUnitAddress(), $recipient->getOnexExpressUnit(), $recipient->getNovaExpressUnit(),
                 $recipient->getStandardUnitAddress(), $recipient->getOnexStandardUnit(), $recipient->getNovaStandardUnit()];
             $res = array_filter($res, function($value) {

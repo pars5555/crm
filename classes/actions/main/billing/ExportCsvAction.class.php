@@ -13,7 +13,7 @@ namespace crm\actions\main\billing {
             $where = ['amount', '<', 0, 'and', 'cancelled', '=', 0, 'and', 'date', '>=', "'$startDate'", 'and', 'date', '<=', "'$endDate 23:59:59'"];
             $partnerDto = null;
             if ($partnerId > 0) {
-                $partnerDto = \crm\managers\PartnerManager::getInstance()->selectByPK($partnerId);
+                $partnerDto = \crm\managers\PartnerManager::getInstance()->selectByPk($partnerId);
                 $where = array_merge($where, ['and', 'partner_id', '=', $partnerId]);
             }
             $rows = \crm\managers\PaymentTransactionManager::getInstance()->getPaymentListFull($where, 'date', "DESC");

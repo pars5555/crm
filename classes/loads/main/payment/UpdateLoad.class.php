@@ -27,7 +27,7 @@ namespace crm\loads\main\payment {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $id = intval(NGS()->args()->id);
-            $paymentOrder = PaymentTransactionManager::getInstance()->selectByPK($id);
+            $paymentOrder = PaymentTransactionManager::getInstance()->selectByPk($id);
             if ($paymentOrder) {
                 if (!isset($_SESSION['action_request'])) {
                     $_SESSION['action_request'] = [

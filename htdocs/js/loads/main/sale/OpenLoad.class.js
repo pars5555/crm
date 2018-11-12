@@ -18,29 +18,37 @@ NGS.createLoad("crm.loads.main.sale.open", {
         this.initBilledFunctionality();
         this.calculateTotal();
         this.initSearch();
+        this.initWarehouses();
         this.initNonProfitFunctionality();
         $('#saleOrderLinesForm').on('change', 'input, select, checkbox', function () {
             this.calculateTotal();
         }.bind(this));
     },
-     initSearch:function(){
+    initWarehouses: function () {
+        $(document).on("click",".f_warehouse_select", function (event) {
+            event.preventDefault();
+            $("#product_warehouses_container").removeClass('hidden');
+            $("#product_warehouses_container").css({top: event.pageY + "px", left: event.pageX + "px"});
+        });
+    },
+    initSearch: function () {
         $('#search_item').keyup(function () {
             if (this.search_timout_handler > 0) {
                 window.clearTimeout(this.search_timout_handler);
             }
             this.search_timout_handler = window.setTimeout(function () {
-                $('.saleOrderLine').css({'background':''});
+                $('.saleOrderLine').css({'background': ''});
                 var searchText = $('#search_item').val().toLowerCase();
-                $('.saleOrderLine .saleOrderLinesSelectProduct').each(function(){
+                $('.saleOrderLine .saleOrderLinesSelectProduct').each(function () {
                     if ($(this).attr('title').toLowerCase().includes(searchText))
                     {
-                        $(this).closest('.saleOrderLine').css({'background':'blue'});
+                        $(this).closest('.saleOrderLine').css({'background': 'blue'});
                     }
                 });
                 $('#billingFilters').trigger('submit');
             }, 200);
         }.bind(this));
-       
+
     },
     calculateTotal: function () {
         var grandTotal = {};
@@ -97,6 +105,7 @@ NGS.createLoad("crm.loads.main.sale.open", {
         $('#saleOrderLineProductId').change(function () {
             var product_id = $('#saleOrderLineProductId').val();
             NGS.action('crm.actions.main.sale.get_product_count', {product_id: product_id});
+            NGS.load('crm.loads.main.sale.product_warehouses', {product_id: product_id});            
         });
 
         $('#addSaleOrderLineButton').click(function () {

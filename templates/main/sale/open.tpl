@@ -174,6 +174,11 @@
                         </select>
                     </td>
                     <td>
+                        <a class="button_icon f_warehouse_select" href="javascript:void(0);" id="addSaleOrderLineButton" title="Warehouses">
+                            <i class="fa fa-home"></i>
+                        </a>
+                    </td>
+                    <td>
                         <a class="button_icon" href="javascript:void(0);" id="addSaleOrderLineButton" title="Add">
                             <i class="fa fa-plus-circle"></i>
                         </a>
@@ -190,6 +195,8 @@
     {/if}
 </div>
 
+
+<div class="hidden" id="product_warehouses_container" style="position: absolute"></div>
 
 <div class="table-row" id="saleOrderLineTemplate" style="display:none">
     <div class="table-cell">
@@ -214,7 +221,14 @@
         </select>
     </div>
     <div class="table-cell">
+        <span class="saleOrderLinesWarehouse"></span>
+    </div>
+        
+    <div class="table-cell">
         <span class="saleOrderLinesTotal"></span>
+    </div>
+    <div class="table-cell">
+        <span class="saleOrderLinesProfit"></span>
     </div>
     <div class="table-cell">
         <a class="button_icon removeSaleOrderLine" title="delete">

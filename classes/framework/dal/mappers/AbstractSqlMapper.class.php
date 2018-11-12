@@ -317,7 +317,7 @@ namespace ngs\framework\dal\mappers {
 		 * @param object $id
 		 * @return
 		 */
-		public function selectByPK($id) {
+		public function selectByPk($id) {
 			$sqlQuery = sprintf("SELECT * FROM %s WHERE %s = :id ", $this->getTableName(), $this->getPKFieldName());
 			return $this->fetchRow($sqlQuery, array("id" => $id));
 		}

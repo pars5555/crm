@@ -73,7 +73,7 @@ use ngs\framework\exceptions\NgsErrorException;
         }
 
         public function cancelPayment($id, $note) {
-            $paymentDto = $this->selectByPK($id);
+            $paymentDto = $this->selectByPk($id);
             if (isset($paymentDto)) {
                 PartnerManager::getInstance()->setPartnerHidden($paymentDto->getPartnerId(), 0);
                 $paymentDto->setCancelled(1);
@@ -85,7 +85,7 @@ use ngs\framework\exceptions\NgsErrorException;
         }
 
         public function undoCancelPayment($id) {
-            $paymentDto = $this->selectByPK($id);
+            $paymentDto = $this->selectByPk($id);
             if (isset($paymentDto)) {
                 $paymentDto->setCancelled(0);
                 $paymentDto->setCancelNote("");
@@ -110,12 +110,12 @@ use ngs\framework\exceptions\NgsErrorException;
             }
 
             $partnerManager = PartnerManager::getInstance();
-            $partner = $partnerManager->selectByPK($partnerId);
+            $partner = $partnerManager->selectByPk($partnerId);
             if (empty($partner)) {
                 throw new NgsErrorException("Partner does not exists with given id: " . $partnerId);
             }
             $paymentMethodManager = PaymentMethodManager::getInstance();
-            $paymentMethod = $paymentMethodManager->selectByPK($paymentMethodId);
+            $paymentMethod = $paymentMethodManager->selectByPk($paymentMethodId);
             if (empty($paymentMethod)) {
                 throw new NgsErrorException("PaymentMethod does not exists with given id: " . $paymentMethodId);
             }
@@ -138,16 +138,16 @@ use ngs\framework\exceptions\NgsErrorException;
 
         public function updatePaymentOrder($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $note, $signature = "[]", $paid = true, $isExpense = false) {
             $partnerManager = PartnerManager::getInstance();
-            $partner = $partnerManager->selectByPK($partnerId);
+            $partner = $partnerManager->selectByPk($partnerId);
             if (empty($partner)) {
                 throw new NgsErrorException("Partner does not exists with given id: " . $partnerId);
             }
             $paymentMethodManager = PaymentMethodManager::getInstance();
-            $paymentMethod = $paymentMethodManager->selectByPK($paymentMethodId);
+            $paymentMethod = $paymentMethodManager->selectByPk($paymentMethodId);
             if (empty($paymentMethod)) {
                 throw new NgsErrorException("PaymentMethod does not exists with given id: " . $paymentMethodId);
             }
-            $dto = $this->selectByPK($id);
+            $dto = $this->selectByPk($id);
             $partnerManager->setPartnerHidden($partnerId, 0);
             if ($dto) {
                 $dto->setPartnerId($partnerId);

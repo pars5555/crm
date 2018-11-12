@@ -22,7 +22,7 @@ namespace crm\actions\main\purse {
 
         public function service() {
             $id = intval(NGS()->args()->id);
-            $row = PurseOrderManager::getInstance()->selectByPK($id);
+            $row = PurseOrderManager::getInstance()->selectByPk($id);
             if ($row->getProblematic() == 1) {
                 PurseOrderManager::getInstance()->updateField($id, 'problematic', 0);
                 $this->addParam('problematic', 0);

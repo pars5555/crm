@@ -22,9 +22,9 @@ namespace crm\actions\main\purse {
 
         public function service() {
             $id = intval(NGS()->args()->id);
-            $order = PurseOrderManager::getInstance()->selectByPK($id);
+            $order = PurseOrderManager::getInstance()->selectByPk($id);
             PurseOrderManager::getInstance()->fetchAndUpdateTrackingPageDetails($order);
-            $order = PurseOrderManager::getInstance()->selectByPK($id);
+            $order = PurseOrderManager::getInstance()->selectByPk($id);
             
             $this->addParam('id', $id);
             $this->addParam('delivery_date', trim($order->getCarrierDeliveryDate()));

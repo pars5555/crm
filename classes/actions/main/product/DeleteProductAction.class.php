@@ -28,7 +28,7 @@ namespace crm\actions\main\product {
                 $this->redirect('product/list');
             }
             $productManager = ProductManager::getInstance();
-            $productDto = $productManager->selectByPK($productId);
+            $productDto = $productManager->selectByPk($productId);
             if (!isset($productDto)) {
                 $_SESSION['error_message'] = 'Product with ID ' . NGS()->args()->id . ' does not exists.';
                 $this->redirect('product/list');

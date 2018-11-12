@@ -27,7 +27,7 @@ namespace crm\actions\main\partner {
                 new NgsErrorException('Missing Partner ID!');
             }
             $partner_id = intval(NGS()->args()->partner_id);
-            $partnerDto = PartnerManager::getInstance()->selectByPK($partner_id);
+            $partnerDto = PartnerManager::getInstance()->selectByPk($partner_id);
             if (!isset($partnerDto)) {
                 new NgsErrorException('Partner does not exist with given ID: ' . NGS()->args()->partner_id);
             }

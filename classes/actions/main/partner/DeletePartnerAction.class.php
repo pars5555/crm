@@ -28,7 +28,7 @@ use NGS;
                 $this->redirect('partner/list');
             }
             $partnerManager = PartnerManager::getInstance();
-            $partnerDto = $partnerManager->selectByPK($partnerId);
+            $partnerDto = $partnerManager->selectByPk($partnerId);
             if (!isset($partnerDto)) {
                 $_SESSION['error_message'] = 'Partner with ID ' . NGS()->args()->id . ' does not exists.';
                 $this->redirect('partner/list');

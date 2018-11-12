@@ -51,7 +51,7 @@ namespace crm\actions\main\purchase {
                     PurchaseOrderLineManager::getInstance()->deleteByField('purchase_order_id', $purchaseOrderId);
                 }
             } catch (InsufficientProductException $exc) {
-                $product = \crm\managers\ProductManager::getInstance()->selectByPK($exc->getProductId());
+                $product = \crm\managers\ProductManager::getInstance()->selectByPk($exc->getProductId());
                 $productInfo = $product->getId();
                 if (isset($product)) {
                     $productInfo = $product->getName() . " (" . $product->getId() . ")";

@@ -28,7 +28,7 @@ use NGS;
                 $this->redirect('purchase/list');
             }
             $purchaseOrderManager = PurchaseOrderManager::getInstance();
-            $purchaseOrderDto = $purchaseOrderManager->selectByPK($purchaseOrderId);
+            $purchaseOrderDto = $purchaseOrderManager->selectByPk($purchaseOrderId);
             if (!isset($purchaseOrderDto)) {
                 $_SESSION['error_message'] = 'Purchase Order with ID ' . NGS()->args()->id . ' does not exists.';
                 $this->redirect('purchase/list');

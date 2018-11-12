@@ -30,7 +30,7 @@ namespace crm\actions\main\purchase {
                 $this->redirect('purchase/list');
             }
             $purchaseOrderManager = PurchaseOrderManager::getInstance();
-            $purchaseOrderDto = $purchaseOrderManager->selectByPK($purchaseOrderId);
+            $purchaseOrderDto = $purchaseOrderManager->selectByPk($purchaseOrderId);
             if (!isset($purchaseOrderDto)) {
                 $_SESSION['error_message'] = 'Purchase Order with ID ' . NGS()->args()->id . ' does not exists.';
                 $this->redirect('purchase/list');
@@ -46,7 +46,7 @@ namespace crm\actions\main\purchase {
                 $_SESSION['success_message'] = 'Purchase Order Successfully cancelled!';
             } catch (InsufficientProductException $exc) {
                 $purchaseOrderManager->restorePurchaseOrder($purchaseOrderId);
-                $productDto = ProductManager::getInstance()->selectByPK($exc->getProductId());
+                $productDto = ProductManager::getInstance()->selectByPk($exc->getProductId());
                 $_SESSION['error_message'] = $productDto->getName() . ' product insufficient!';
             }
             $this->redirectToReferer();

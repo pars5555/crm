@@ -22,7 +22,7 @@ namespace crm\loads\main\manufacturer {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $id = intval(NGS()->args()->id);
-            $manufacturer = ManufacturerManager::getInstance()->selectByPK($id);
+            $manufacturer = ManufacturerManager::getInstance()->selectByPk($id);
             if (isset($manufacturer)) {
                 if (!isset($_SESSION['action_request'])) {
                     $_SESSION['action_request'] = ['name' => $manufacturer->getName(), 'link' => $manufacturer->getLink()];

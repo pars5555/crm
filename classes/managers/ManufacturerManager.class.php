@@ -43,7 +43,7 @@ namespace crm\managers {
         }
 
         public function updateManufacturer($id, $name, $link) {
-            $dto = $this->selectByPK($id);
+            $dto = $this->selectByPk($id);
             if ($dto) {
                 $dto->setName($name);
                 $dto->setLink($link);

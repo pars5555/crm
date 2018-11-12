@@ -162,7 +162,7 @@ namespace crm\managers {
         }
 
         public function setPaid($id, $paid) {
-            $purchaseOrderDto = $this->selectByPK($id);
+            $purchaseOrderDto = $this->selectByPk($id);
             if (isset($purchaseOrderDto)) {
                 $purchaseOrderDto->setPaid($paid);
                 if ($paid == 1) {
@@ -175,7 +175,7 @@ namespace crm\managers {
         }
 
         public function cancelPurchaseOrder($id, $note) {
-            $purchaseOrderDto = $this->selectByPK($id);
+            $purchaseOrderDto = $this->selectByPk($id);
             PartnerManager::getInstance()->setPartnerHidden($purchaseOrderDto->getPartnerId(), 0);
             if (isset($purchaseOrderDto)) {
                 $purchaseOrderDto->setCancelled(1);
@@ -187,7 +187,7 @@ namespace crm\managers {
         }
 
         public function restorePurchaseOrder($id) {
-            $purchaseOrderDto = $this->selectByPK($id);
+            $purchaseOrderDto = $this->selectByPk($id);
             PartnerManager::getInstance()->setPartnerHidden($purchaseOrderDto->getPartnerId(), 0);
             if (isset($purchaseOrderDto)) {
                 $purchaseOrderDto->setCancelled(0);
@@ -208,7 +208,7 @@ namespace crm\managers {
         }
 
         public function updatePurchaseOrder($id, $partnerId, $date, $paymentDeadlineDate, $note) {
-            $dto = $this->selectByPK($id);
+            $dto = $this->selectByPk($id);
             if ($dto) {
                 $dto->setPartnerId($partnerId);
                 $dto->setOrderDate($date);

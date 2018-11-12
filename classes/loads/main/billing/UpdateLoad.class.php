@@ -27,7 +27,7 @@ use NGS;
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $id = intval(NGS()->args()->id);
-            $billingOrder = PaymentTransactionManager::getInstance()->selectByPK($id);
+            $billingOrder = PaymentTransactionManager::getInstance()->selectByPk($id);
             if ($billingOrder) {
                 if (!isset($_SESSION['action_request'])) {
                     $_SESSION['action_request'] = [

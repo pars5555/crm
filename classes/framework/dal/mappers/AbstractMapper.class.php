@@ -191,7 +191,7 @@ namespace ngs\framework\dal\mappers {
 		 * @param object $id
 		 * @return
 		 */
-		public abstract function selectByPK($id);
+		public abstract function selectByPk($id);
 
 		/**
 		 * Deletes the row by primary key

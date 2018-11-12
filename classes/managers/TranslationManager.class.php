@@ -124,7 +124,7 @@ use crm\dal\mappers\TranslationMapper;
         }
 
         public function updateRow($id, $en, $am, $ru) {
-            $dto = $this->selectByPK($id);
+            $dto = $this->selectByPk($id);
             if ($dto) {
                 $dto->setPhraseEn($en);
                 $dto->setPhraseAm($am);

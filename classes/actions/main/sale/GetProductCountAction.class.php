@@ -26,7 +26,7 @@ namespace crm\actions\main\sale {
                 new NgsErrorException('Missing Product ID!');
             }
             $product_id = intval(NGS()->args()->product_id);
-            $productDto = ProductManager::getInstance()->selectByPK($product_id);
+            $productDto = ProductManager::getInstance()->selectByPk($product_id);
             if (!isset($productDto)) {
                 new NgsErrorException('Product does not exist with given ID: ' . NGS()->args()->product_id);
             }

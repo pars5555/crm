@@ -43,12 +43,18 @@ namespace crm\managers {
             }
             $porductsQty = [];
             foreach ($rows as $row) {
-                if (!isset($porductsQty[intval($row->getWareHouseId())])) {
-                    $porductsQty[intval($row->getWareHouseId())] = 0;
+                if (!isset($porductsQty[intval($row->getProductId())])) {
+                    $porductsQty[intval($row->getProductId())]  = 0;
                 }
-                $porductsQty[intval($row->getWareHouseId())] += floatval($row->getQuantity());
+                $porductsQty[intval($row->getProductId())] += floatval($row->getQuantity());
             }
-            return $porductsQty;
+            $productDtos = ProductManager::getInstance()->selectByPKs(array_keys($porductsQty), true);
+            $ret = [];
+            foreach ($porductsQty as $productId => $qty) {
+                $ret[$productId] = ["qty" => $qty, 'product'=>$productDtos[$productId]];
+            }
+            
+            return $ret;
         }
 
     }

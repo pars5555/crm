@@ -13,7 +13,7 @@ namespace crm\actions\main\sale {
             $where = ['cancelled', '=', 0, 'and', 'order_date', '>=', "'$startDate'", 'and', 'order_date', '<=', "'$endDate 23:59:59'"];
             $partnerDto = null;
             if ($partnerId > 0) {
-                $partnerDto = \crm\managers\PartnerManager::getInstance()->selectByPK($partnerId);
+                $partnerDto = \crm\managers\PartnerManager::getInstance()->selectByPk($partnerId);
                 $where = array_merge($where, ['and', 'partner_id', '=', $partnerId]);
             }
             $rows = \crm\managers\SaleOrderManager::getInstance()->getSaleOrdersFull($where, 'order_date', "DESC");

@@ -27,7 +27,7 @@ namespace crm\actions\main\recipient {
                 new NgsErrorException('Missing Recipient ID!');
             }
             $recipient_id = intval(NGS()->args()->recipient_id);
-            $recipientDto = RecipientManager::getInstance()->selectByPK($recipient_id);
+            $recipientDto = RecipientManager::getInstance()->selectByPk($recipient_id);
             if (!isset($recipientDto)) {
                 new NgsErrorException('Recipient does not exist with given ID: ' . NGS()->args()->recipient_id);
             }

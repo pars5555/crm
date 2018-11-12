@@ -65,12 +65,12 @@ namespace crm\managers {
         }
 
         public function updatePurchaseOrderLine($purchaseOrderId, $id, $productId, $quantity, $unitPrice, $currencyId) {
-            $dto = $this->selectByPK($id);
+            $dto = $this->selectByPk($id);
             $dto->setProductId($productId);
             $dto->setQuantity($quantity);
             $dto->setUnitPrice($unitPrice);
             $dto->setCurrencyId($currencyId);
-            $po = PurchaseOrderManager::getInstance()->selectByPK($purchaseOrderId);
+            $po = PurchaseOrderManager::getInstance()->selectByPk($purchaseOrderId);
             $orderDate = $po->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
@@ -86,7 +86,7 @@ namespace crm\managers {
             $dto->setQuantity($quantity);
             $dto->setUnitPrice($unitPrice);
             $dto->setCurrencyId($currencyId);
-            $po = PurchaseOrderManager::getInstance()->selectByPK($purchaseOrderId);
+            $po = PurchaseOrderManager::getInstance()->selectByPk($purchaseOrderId);
             $orderDate = $po->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);

@@ -28,7 +28,7 @@ namespace crm\actions\main\manufacturer {
                 $this->redirect('manufacturer/list');
             }
             $manufacturerManager = ManufacturerManager::getInstance();
-            $partnerDto = $manufacturerManager->selectByPK($manufacturerId);
+            $partnerDto = $manufacturerManager->selectByPk($manufacturerId);
             if (!isset($partnerDto)) {
                 $_SESSION['error_message'] = 'Manufacturer with ID ' . NGS()->args()->id . ' does not exists.';
                 $this->redirect('manufacturer/list');

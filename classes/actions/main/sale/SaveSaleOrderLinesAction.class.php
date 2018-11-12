@@ -53,7 +53,7 @@ namespace crm\actions\main\sale {
                 SaleOrderManager::getInstance()->commitTransaction();
             } catch (InsufficientProductException $exc) {
                 SaleOrderManager::getInstance()->rollbackTransaction();
-                $product = \crm\managers\ProductManager::getInstance()->selectByPK($exc->getProductId());
+                $product = \crm\managers\ProductManager::getInstance()->selectByPk($exc->getProductId());
                 $productInfo = $product->getId();
                 if (isset($product)) {
                     $productInfo = $product->getName() . " (" . $product->getId() . ")";

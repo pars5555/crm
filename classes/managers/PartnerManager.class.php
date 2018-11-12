@@ -99,7 +99,7 @@ namespace crm\managers {
         }
 
         public function updatePartner($id, $name, $email, $address, $phone, $initialDebts) {
-            $dto = $this->selectByPK($id);
+            $dto = $this->selectByPk($id);
             if (isset($dto)) {
                 $dto->setName($name);
                 $dto->setEmail($email);

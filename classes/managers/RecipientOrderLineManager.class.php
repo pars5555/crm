@@ -65,12 +65,12 @@ namespace crm\managers {
         }
 
         public function updateRecipientOrderLine($recipientOrderId, $id, $productId, $quantity, $unitPrice, $currencyId) {
-            $dto = $this->selectByPK($id);
+            $dto = $this->selectByPk($id);
             $dto->setProductId($productId);
             $dto->setQuantity($quantity);
             $dto->setUnitPrice($unitPrice);
             $dto->setCurrencyId($currencyId);
-            $orderDate = RecipientOrderManager::getInstance()->selectByPK($recipientOrderId)->getOrderDate();
+            $orderDate = RecipientOrderManager::getInstance()->selectByPk($recipientOrderId)->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
             ProductManager::getInstance()->updateProductCostForOneUnit($productId);
@@ -84,7 +84,7 @@ namespace crm\managers {
             $dto->setQuantity($quantity);
             $dto->setUnitPrice($unitPrice);
             $dto->setCurrencyId($currencyId);
-            $orderDate = RecipientOrderManager::getInstance()->selectByPK($recipientOrderId)->getOrderDate();
+            $orderDate = RecipientOrderManager::getInstance()->selectByPk($recipientOrderId)->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
             ProductManager::getInstance()->updateProductCostForOneUnit($productId);

@@ -87,7 +87,7 @@ namespace ngs\framework\dal\mappers {
 		 * @param object $id
 		 * @return
 		 */
-		public function selectByPK($id) {
+		public function selectByPk($id) {
 
 		}
 

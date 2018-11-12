@@ -26,7 +26,7 @@ namespace crm\loads\main\sale {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $id = intval(NGS()->args()->id);
-            $saleOrder = SaleOrderManager::getInstance()->selectByPK($id);
+            $saleOrder = SaleOrderManager::getInstance()->selectByPk($id);
             if ($saleOrder) {
                 if (!isset($_SESSION['action_request'])) {
                     $_SESSION['action_request'] = [

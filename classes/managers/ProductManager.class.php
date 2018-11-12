@@ -87,7 +87,7 @@ namespace crm\managers {
         }
 
         public function updateProduct($id, $name, $model, $manufacturerId, $uomId) {
-            $dto = $this->selectByPK($id);
+            $dto = $this->selectByPk($id);
             if ($dto) {
                 $dto->setName($name);
                 $dto->setModel($model);
@@ -131,7 +131,7 @@ namespace crm\managers {
         public function calculateProductCost($productId, $productSaleQty, $saleOrderId = 0) {
             $date = null;
             if ($saleOrderId > 0) {
-                $so = SaleOrderManager::getInstance()->selectByPK($saleOrderId);
+                $so = SaleOrderManager::getInstance()->selectByPk($saleOrderId);
                 if (!$so) {
                     throw new NgsErrorException('Sale Order does not exist! id: ' . $saleOrderId);
                 }
@@ -148,7 +148,7 @@ namespace crm\managers {
 
         public function updateProductCostForOneUnit($productId) {
             $productUnitCostInBaseCurrency = ProductManager::getInstance()->calculateProductCost($productId, 1, 0);
-            $productDto = ProductManager::getInstance()->selectByPK($productId);
+            $productDto = ProductManager::getInstance()->selectByPk($productId);
             $productDto->setUnitCost($this->calculateProductTotalCost($productUnitCostInBaseCurrency));
             ProductManager::getInstance()->updateByPK($productDto);
         }

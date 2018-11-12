@@ -53,8 +53,8 @@ namespace crm\managers {
             return $this->mapper->deleteByField($fieldName, $fieldValue);
         }
 
-        public function selectByPK($pk) {
-            return $this->mapper->selectByPK($pk);
+        public function selectByPk($pk) {
+            return $this->mapper->selectByPk($pk);
         }
 
         public function selectByPKs($pks, $mapByIds = False) {

@@ -28,7 +28,7 @@ namespace crm\actions\main\billing {
                 $this->redirect('billing/list');
             }
             $paymentTransactionManager = PaymentTransactionManager::getInstance();
-            $billingDto = $paymentTransactionManager->selectByPK($billingId);
+            $billingDto = $paymentTransactionManager->selectByPk($billingId);
             if (!isset($billingDto)) {
                 $_SESSION['error_message'] = 'Billing with ID ' . NGS()->args()->id . ' does not exists.';
                 $this->redirect('billing/list');

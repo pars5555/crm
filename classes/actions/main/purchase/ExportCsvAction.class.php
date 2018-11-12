@@ -17,7 +17,7 @@ namespace crm\actions\main\purchase {
             $where = ['cancelled', '=', 0, 'and', 'order_date', '>=', "'$startDate'", 'and', 'order_date', '<=', "'$endDate 23:59:59'"];
             $partnerDto = null;
             if ($partnerId > 0) {
-                $partnerDto = PartnerManager::getInstance()->selectByPK($partnerId);
+                $partnerDto = PartnerManager::getInstance()->selectByPk($partnerId);
                 $where = array_merge($where, ['and', 'partner_id', '=', $partnerId]);
             }
             $rows = PurchaseOrderManager::getInstance()->getPurchaseOrdersFull($where, 'order_date', "DESC");

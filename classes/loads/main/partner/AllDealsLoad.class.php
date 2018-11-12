@@ -28,7 +28,7 @@ namespace crm\loads\main\partner {
             $this->initSuccessMessages();
             if (isset(NGS()->args()->id)) {
                 $partnerId = intval(NGS()->args()->id);
-                $partner = PartnerManager::getInstance()->selectByPK($partnerId);
+                $partner = PartnerManager::getInstance()->selectByPk($partnerId);
             }
             if (isset(NGS()->args()->slug) && !empty(NGS()->args()->slug)) {
                 $partners  =  PartnerManager::getInstance()->selectByField('slug', NGS()->args()->slug);

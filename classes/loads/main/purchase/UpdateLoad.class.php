@@ -26,7 +26,7 @@ namespace crm\loads\main\purchase {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $id = intval(NGS()->args()->id);
-            $purchaseOrder = PurchaseOrderManager::getInstance()->selectByPK($id);
+            $purchaseOrder = PurchaseOrderManager::getInstance()->selectByPk($id);
             if ($purchaseOrder) {
                 if (!isset($_SESSION['action_request'])) {
                     $_SESSION['action_request'] = [

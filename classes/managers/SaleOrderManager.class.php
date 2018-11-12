@@ -36,7 +36,7 @@ use crm\dal\mappers\SaleOrderMapper;
         }
 
         public function cancelSaleOrder($id, $note) {
-            $saleOrderDto = $this->selectByPK($id);
+            $saleOrderDto = $this->selectByPk($id);
             if (isset($saleOrderDto)) {
                 PartnerManager::getInstance()->setPartnerHidden($saleOrderDto->getPartnerId(), 0);
                 $saleOrderDto->setCancelled(1);
@@ -48,7 +48,7 @@ use crm\dal\mappers\SaleOrderMapper;
         }
 
         public function setBilled($id, $billed) {
-            $saleOrderDto = $this->selectByPK($id);
+            $saleOrderDto = $this->selectByPk($id);
             if (isset($saleOrderDto)) {
                 $saleOrderDto->setBilled($billed);
                 if ($billed == 1) {
@@ -62,7 +62,7 @@ use crm\dal\mappers\SaleOrderMapper;
 
         public function setNonProfit($id, $nonProfit) {
             $nonProfit = intval($nonProfit);
-            $saleOrderDto = $this->selectByPK($id);
+            $saleOrderDto = $this->selectByPk($id);
             if (isset($saleOrderDto)) {
                 $saleOrderDto->setNonProfit($nonProfit);
                 $this->updateByPk($saleOrderDto);
@@ -94,7 +94,7 @@ use crm\dal\mappers\SaleOrderMapper;
         }
 
         public function restoreSaleOrder($id) {
-            $saleOrderDto = $this->selectByPK($id);
+            $saleOrderDto = $this->selectByPk($id);
             if (isset($saleOrderDto)) {
                 PartnerManager::getInstance()->setPartnerHidden($saleOrderDto->getPartnerId(), 0);
                 $saleOrderDto->setCancelled(0);
@@ -174,7 +174,7 @@ use crm\dal\mappers\SaleOrderMapper;
         }
 
         public function updateSaleOrder($id, $partnerId, $date, $billingDeadlineDate, $isExpense, $note) {
-            $dto = $this->selectByPK($id);
+            $dto = $this->selectByPk($id);
             if ($dto) {
                 $dto->setPartnerId($partnerId);
                 $dto->setOrderDate($date);

@@ -28,7 +28,7 @@ use NGS;
                 $this->redirect('sale/list');
             }
             $saleOrderManager = SaleOrderManager::getInstance();
-            $saleOrderDto = $saleOrderManager->selectByPK($saleOrderId);
+            $saleOrderDto = $saleOrderManager->selectByPk($saleOrderId);
             if (!isset($saleOrderDto)) {
                 $_SESSION['error_message'] = 'Sale Order with ID ' . NGS()->args()->id . ' does not exists.';
                 $this->redirect('sale/list');

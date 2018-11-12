@@ -25,7 +25,7 @@ namespace crm\loads\main\product {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $id = intval(NGS()->args()->id);
-            $product = ProductManager::getInstance()->selectByPK($id);
+            $product = ProductManager::getInstance()->selectByPk($id);
             if ($product) {
                 $this->addParam('product', $product);
                 if (!isset($_SESSION['action_request'])) {

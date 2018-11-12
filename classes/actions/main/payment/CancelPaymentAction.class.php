@@ -29,7 +29,7 @@ namespace crm\actions\main\payment {
                 $this->redirect('payment/list');
             }
             $paymentTransactionManager = PaymentTransactionManager::getInstance();
-            $paymentDto = $paymentTransactionManager->selectByPK($paymentId);
+            $paymentDto = $paymentTransactionManager->selectByPk($paymentId);
             if (!isset($paymentDto)) {
                 $_SESSION['error_message'] = 'Payment with ID ' . NGS()->args()->id . ' does not exists.';
                 $this->redirect('payment/list');
