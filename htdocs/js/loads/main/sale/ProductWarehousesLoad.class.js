@@ -6,6 +6,5 @@ NGS.createLoad("crm.loads.main.sale.product_warehouses", {
 
     },
     afterLoad: function () {
-        alert(1);
     }
 });
