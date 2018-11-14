@@ -11,35 +11,35 @@
 
 namespace crm\loads\main\product {
 
-use crm\loads\AdminLoad;
-use crm\managers\ProductManager;
-use crm\managers\PurchaseOrderLineManager;
-use crm\managers\SaleOrderLineManager;
-use crm\security\RequestGroups;
-use NGS;
+    use crm\loads\AdminLoad;
+    use crm\managers\PartnerManager;
+    use crm\managers\ProductManager;
+    use crm\managers\PurchaseOrderLineManager;
+    use crm\managers\SaleOrderLineManager;
+    use NGS;
 
-    class ListLoad  extends AdminLoad {
+    class ListLoad extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 100;
             list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterHidden, $searchText) = $this->initFilters($limit);
-            $where = ['1', '=','1'];
+            $where = ['1', '=', '1'];
             if ($selectedFilterHidden !== 'all') {
-                $where = array_merge($where, ['AND ','hidden', '=', 0]);
+                $where = array_merge($where, ['AND ', 'hidden', '=', 0]);
             }
             if (!empty($searchText)) {
-                $where = array_merge($where, ['AND','(', 'name', 'like', "'%$searchText%'"]);
+                $where = array_merge($where, ['AND', '(', 'name', 'like', "'%$searchText%'"]);
                 $where = array_merge($where, ['OR', 'model', 'like', "'%$searchText%'", ')']);
             }
             $products = ProductManager::getInstance()->getProductListFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $productIds = ProductManager::getDtosIdsArray($products);
-            $productsPurchaseOrder = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
-            $productsSaleOrder = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
-            
-            $this->addParam('productsPurchaseOrder', $productsPurchaseOrder);
-            $this->addParam('productsSaleOrder', $productsSaleOrder);
+            $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
+            $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
+
+            $this->addParam('productsPurchaseOrder', $productsPurchaseOrders);
+            $this->addParam('productsSaleOrder', $productsSaleOrders);
             $this->addParam('products', $products);
             $count = ProductManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($products) == 0 && $count > 0) {
@@ -47,6 +47,21 @@ use NGS;
             }
             $pagesCount = ceil($count / $limit);
             $this->addParam('pagesCount', $pagesCount);
+
+            $partnerIds = [];
+            foreach ($productsSaleOrders as $sos) {
+                foreach ($sos as $so) {
+                    $partnerIds[] = intval($so->getPartnerId());
+                }
+            }
+            foreach ($productsPurchaseOrders as $pos) {
+                foreach ($pos as $po) {
+                    $partnerIds[] = intval($po->getPartnerId());
+                }
+            }
+            $partnerIdsSql = implode(',', array_unique($partnerIds));
+            $partnersMappedByIds = PartnerManager::getInstance()->selectAdvance(['name', 'id'], ['id', 'in', "($partnerIdsSql)"], null, null, null, null, true);
+            $this->addParam('partnersMappedByIds', $partnersMappedByIds);
         }
 
         private function redirectIncludedParamsExeptPaging() {
@@ -111,7 +126,6 @@ use NGS;
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/product/list.tpl";
         }
-
 
         public function getSortByFields() {
             return ['name' => 'Name', 'model' => 'Model'];
