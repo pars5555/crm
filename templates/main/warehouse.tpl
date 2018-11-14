@@ -46,9 +46,9 @@
                             <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}">
                                 {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
                                 <p style="display: none">
-                                    {foreach from=$ns.productsPurchaseOrder[$product->getId()] item=productPurchaseOrders}
-                                        <a href="{$SITE_PATH}/purchase/{$productPurchaseOrders->getId()}">
-                                            &#8470; {$productPurchaseOrders->getId()} ({$productPurchaseOrders->getOrderDate()})
+                                    {foreach from=$ns.productsPurchaseOrder[$product->getId()] item=productPurchaseOrder}
+                                        <a href="{$SITE_PATH}/purchase/{$productPurchaseOrder->getId()}">
+                                            &#8470; {$productPurchaseOrder->getId()} ({$productPurchaseOrder->getOrderDate()|truncate:10:""} {$partnersMappedByIds[$productPurchaseOrder->getPartnerId()]->getName()})
                                         </a> <br>
                                     {/foreach}
                                 </p>
@@ -56,9 +56,9 @@
                             <td {if $ns.productsSaleOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
                                 {$ns.productsSaleOrder[$product->getId()]|@count} Sale order(s)
                                 <p style="display: none">
-                                    {foreach from=$ns.productsSaleOrder[$product->getId()] item=productSaleOrders}
-                                        <a href="{$SITE_PATH}/sale/{$productSaleOrders->getId()}">
-                                            &#8470; {$productSaleOrders->getId()} ({$productSaleOrders->getOrderDate()})
+                                    {foreach from=$ns.productsSaleOrder[$product->getId()] item=productSaleOrder}
+                                        <a href="{$SITE_PATH}/sale/{$productSaleOrder->getId()}">
+                                            &#8470; {$productSaleOrder->getId()} ({$productSaleOrder->getOrderDate()|truncate:10:""}  {$partnersMappedByIds[$productSaleOrder->getPartnerId()]->getName()})
                                         </a> <br>
                                     {/foreach}
                                 </p>

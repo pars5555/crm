@@ -13,6 +13,7 @@ namespace crm\loads\main {
 
     use crm\loads\AdminLoad;
     use crm\managers\CurrencyRateManager;
+    use crm\managers\PartnerManager;
     use crm\managers\ProductManager;
     use crm\managers\PurchaseOrderLineManager;
     use crm\managers\SaleOrderLineManager;
@@ -23,13 +24,26 @@ namespace crm\loads\main {
     class WarehouseLoad extends AdminLoad {
 
         public function load() {
-            
+
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity();
             $productsPrice = WarehouseManager::getInstance()->getAllProductsPrice(array_keys($productsQuantity));
             $products = ProductManager::getInstance()->getProductListFull([], 'name', 'ASC');
             $productIds = ProductManager::getDtosIdsArray($products);
             $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
             $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
+            $partnerIds = [];
+            foreach ($productsSaleOrders as $sos) {
+                foreach ($sos as $so) {
+                    $partnerIds[] = intval($so->getPartnerId());
+                }
+            }
+            foreach ($productsPurchaseOrders as $pos) {
+                foreach ($pos as $po) {
+                    $partnerIds[] = intval($po->getPartnerId());
+                }
+            }
+            $partnerIdsSql = implode(',', array_unique($partnerIds));
+            $partnersMappedByIds = PartnerManager::getInstance()->selectAdvance(['name', 'id'], ['id', 'in', "($partnerIdsSql)"], null, null, null, null, true);
             $usdRate = CurrencyRateManager::getInstance()->getCurrencyRate(1);
             $this->addParam('products', $products);
             $this->addParam('usd_rate', $usdRate);
@@ -37,6 +51,7 @@ namespace crm\loads\main {
             $this->addParam('productsPrice', $productsPrice);
             $this->addParam('productsPurchaseOrder', $productsPurchaseOrders);
             $this->addParam('productsSaleOrder', $productsSaleOrders);
+            $this->addParam('partnersMappedByIds', $partnersMappedByIds);
             $total = 0;
             foreach ($productsQuantity as $pId => $qty) {
                 $total += floatval($productsPrice[$pId]) * floatval($qty);
