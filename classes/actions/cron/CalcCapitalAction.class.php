@@ -44,6 +44,7 @@ namespace crm\actions\cron {
             $capitalData['partner_warehouse_total'] = round($partnerWarehouseTotal);
             $capitalData['cashbox_total'] = round($cashboxTotal);
             SettingManager::getInstance()->setSetting('capital_data', json_encode($capitalData));
+            \crm\managers\CapitalHistoryManager::getInstance()->addRow();
         }
 
         private function getPurseTotalUsdAmount() {
