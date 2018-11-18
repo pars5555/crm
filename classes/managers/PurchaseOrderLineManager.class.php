@@ -55,6 +55,11 @@ namespace crm\managers {
             }
             return $rows;
         }
+        
+        public function replaceProductId($productId, $replaceProductId) {
+            return $this->mapper->updateAdvance(['product_id','=', $productId], ['product_id'=>$replaceProductId]);
+            
+        }
 
         public function deleteWhereIdNotIdIds($purchaseOrderId, $ids) {
             $dtos = $this->selectByField('purchase_order_id', $purchaseOrderId);

@@ -1,6 +1,6 @@
 <div class="container product--open--container">
     <h1 class="main_title">Product View</h1>
-    
+
     {if isset($ns.error_message)}
         {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
@@ -67,4 +67,11 @@
     <a class="button blue deleteProductButton"  href="{$SITE_PATH}/dyn/main_product/do_delete_product?id={$product->getId()}">
         <span>delete</span>
     </a>
+    <a class="button blue mergeAndDeleteProductButton"  href="javascript:void(0);" data-id='{$product->getId()}'>
+        <span>Merge And Delete</span>
+    </a>
+</div>
+
+<div id="prepare_merge_modalBox" class="modal modal-large">
+
 </div>
