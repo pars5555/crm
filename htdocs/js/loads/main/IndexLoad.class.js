@@ -83,7 +83,7 @@ NGS.createLoad("crm.loads.main.index", {
         });
     },
     initCloseModal: function () {
-        $('.modal .modal-close').click(function () {
+        $(document).on('click','.modal .modal-close',function () {
             $(this).closest('.modal').removeClass('is_active');
         });
     },

@@ -45,6 +45,46 @@ namespace crm\managers {
             $this->mapper->updateField($id, 'qty_checked', $qty_checked);
         }
 
+        public function getMostSimilarProduct($name) {
+            $products = ProductManager::getInstance()->selectAll();
+            $maxPercent = 0;
+            $selectedProduct = null;
+            $allProductSortBySimilatity = [];
+            foreach ($products as $product) {
+                $percent = 0;
+                similar_text($product->getName(), $name, $percent);
+                if (!isset($allProductSortBySimilatity[$percent])) {
+                    $allProductSortBySimilatity[$percent] = [];
+                }
+                $allProductSortBySimilatity[$percent][] = $product;
+                if ($percent > $maxPercent) {
+                    $maxPercent = $percent;
+                    $selectedProduct = $product;
+                }
+            }
+            
+            krsort($allProductSortBySimilatity);
+            if ($maxPercent > 78) {
+                return [$selectedProduct, $this->array_flatten($allProductSortBySimilatity)];
+            }
+            return [null, $this->array_flatten($allProductSortBySimilatity)];
+        }
+
+        private function array_flatten($array) {
+            if (!is_array($array)) {
+                return FALSE;
+            }
+            $result = array();
+            foreach ($array as $value) {
+                if (is_array($value)) {
+                    $result = array_merge($result, $this->array_flatten($value));
+                } else {
+                    $result[] = $value;
+                }
+            }
+            return $result;
+        }
+
         public function findAndSetProoductImageFromPurseOrders($product, $allOrders) {
             $maxPercent = 0;
             $productImage = "";

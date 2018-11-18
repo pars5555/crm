@@ -21,7 +21,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
         $('#productFilters').find('input[name="pr"]').change(function () {
             $('#productFilters').trigger('submit');
         });
-        
+
         $('.tooltipster').each(function () {
             var content = $(this).find('p').html();
             $(this).tooltipster({
@@ -50,57 +50,57 @@ NGS.createLoad("crm.loads.main.purse.list", {
         this.initAddExternalOrder();
         this.initAddExternalOrderConfirm();
     },
-    initExportTrackingsSearch: function(){
-        $('#export_search').click(function(){
-            var  trackingNumbers = $('#tracking_numbers_input').val();
-            var params = {trackingNumbers :trackingNumbers};
+    initExportTrackingsSearch: function () {
+        $('#export_search').click(function () {
+            var trackingNumbers = $('#tracking_numbers_input').val();
+            var params = {trackingNumbers: trackingNumbers};
             var urlParams = $.param(params);
             var actionUrl = '/dyn/main_purse/do_export_search_csv?';
             $(this).attr('href', actionUrl + urlParams);
         });
     },
-    initTrackingsSearch: function(){
-        $('#find_trackings_button').click(function(){
+    initTrackingsSearch: function () {
+        $('#find_trackings_button').click(function () {
             $('#trackings_modalBox').addClass('is_active');
         });
     },
-    initAddExternalOrder: function(){
-        $('#add_external_order_button').click(function(){
+    initAddExternalOrder: function () {
+        $('#add_external_order_button').click(function () {
             $('#add_external_order_modalBox').addClass('is_active');
         });
     },
-    initAddExternalOrderConfirm: function(){
-        $('#add_external_order_confirm').click(function(){
-            var  unit_address = $('#external_order_unit_address_input').val();
-            var  url = $('#external_order_url_input').val();
-            var  qty = $('#external_order_qty_input').val();
-            var  price = $('#external_order_price_input').val();
-            var params = {url:url, qty:qty, price:price, unit_address:unit_address};
+    initAddExternalOrderConfirm: function () {
+        $('#add_external_order_confirm').click(function () {
+            var unit_address = $('#external_order_unit_address_input').val();
+            var url = $('#external_order_url_input').val();
+            var qty = $('#external_order_qty_input').val();
+            var price = $('#external_order_price_input').val();
+            var params = {url: url, qty: qty, price: price, unit_address: unit_address};
             NGS.action('crm.actions.main.purse.add_external_order', params);
             $(this).remove();
         });
     },
-    initHideByTrackingsConfirm: function(){
-        $('#hide_by_trackings_confirm').click(function(){
-            var  trackingNumbers = $('#hide_by_trackings_input').val();
-            var params = {trackingNumbers :trackingNumbers};
+    initHideByTrackingsConfirm: function () {
+        $('#hide_by_trackings_confirm').click(function () {
+            var trackingNumbers = $('#hide_by_trackings_input').val();
+            var params = {trackingNumbers: trackingNumbers};
             NGS.action('crm.actions.main.purse.hide_by_trackings', params);
         });
     },
-    initNotRegTrackingsConfirm: function(){
-        $('#not_registered_trackings_confirm').click(function(){
-            var  trackingNumbers = $('#not_registered_trackings_input').val();
+    initNotRegTrackingsConfirm: function () {
+        $('#not_registered_trackings_confirm').click(function () {
+            var trackingNumbers = $('#not_registered_trackings_input').val();
             window.location.href = "/purse/list?roiw=" + trackingNumbers;
         });
     },
-    initHideByTrackings: function(){
-        $('#hide_by_trackings_button').click(function(){
+    initHideByTrackings: function () {
+        $('#hide_by_trackings_button').click(function () {
             $('#hide_by_trackings_modalBox').addClass('is_active');
         });
-        
+
     },
-    initNotRegTrackings: function(){
-        $('#not_registered_trackings_button').click(function(){
+    initNotRegTrackings: function () {
+        $('#not_registered_trackings_button').click(function () {
             $('#not_registered_trackings_modalBox').addClass('is_active');
         });
     },
@@ -113,15 +113,14 @@ NGS.createLoad("crm.loads.main.purse.list", {
     initHide: function () {
         $('.f_hide').click(function () {
             var id = $(this).data('id');
-            NGS.action('crm.actions.main.purse.set_hidden', {id: id, hide:1});
-            $(this).closest('tr').remove();
+            NGS.load('crm.loads.main.purse.prepare_hidden', {id: id});
         });
     },
     initProblematic: function () {
         $('.f_problematic').click(function () {
             var id = $(this).data('id');
             NGS.action('crm.actions.main.purse.set_problematic', {id: id});
-            
+
         });
     },
     initDelete: function () {
@@ -135,7 +134,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
         $('.f_problem_solved').click(function () {
             var id = $(this).data('id');
             NGS.action('crm.actions.main.purse.set_problem_solved', {id: id});
-            
+
         });
     },
     initRefreshTracking: function () {
@@ -150,9 +149,9 @@ NGS.createLoad("crm.loads.main.purse.list", {
             var id = $(this).data('id');
             NGS.action('crm.actions.main.purse.refresh_carrier_delivery_details', {id: id});
             $(this).remove();
-            $('#carrier_delivery_details_'+id).html('');
-            $('#carrier_tracking_status_'+id).html('');
-            
+            $('#carrier_delivery_details_' + id).html('');
+            $('#carrier_tracking_status_' + id).html('');
+
         });
     },
     initUpload: function () {

@@ -139,6 +139,10 @@ checkout: {$ns.checkout_btc_address|default:'N/A'}<br/>
     </div>
 </div>
 
+<div id="hide_modalBox" class="modal modal-large">
+    
+</div>
+
 <div id="hide_by_trackings_modalBox" class="modal modal-large">
     <div class="modal-container">
         <div class="modal-inner-container" >

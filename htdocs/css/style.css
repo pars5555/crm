@@ -583,6 +583,13 @@ select::-ms-expand {
     max-width: 270px;
 }
 
+.text.width100{
+    width: 100px;
+}
+.text.inline{
+    display: inline;
+}
+
 .text:focus {
     border-color: #66afe9;
 }
