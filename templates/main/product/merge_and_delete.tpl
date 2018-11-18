@@ -4,10 +4,10 @@
             <span class="close-icon1"></span>
             <span class="close-icon2"></span>
         </span>
-        <h1 class="modal-headline">Receive Item</h1>
+        <h1 class="modal-headline">Merge And Delete</h1>
         <form class="modal-content" method="GET" action="{$SITE_PATH}/dyn/main_product/do_merge_and_delete_product">
             original name: {$ns.product->getName()}<br/><br/>
-            corresponding item: 
+            merge to item: 
             <select name="dst_id" id='dst_product_id' style="max-width: 700px" data-autocomplete="true" data-no-wrap="true">
                 <option value="0">Select Product...</option>
                 {foreach from=$ns.products item=p}
