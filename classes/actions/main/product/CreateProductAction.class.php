@@ -23,13 +23,13 @@ namespace crm\actions\main\product {
 
         public function service() {
             try {
-                list($name, $model, $manufacturerId, $uomId) = $this->getFormData();
+                list($name, $model, $manufacturerId, $uomId, $weight) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            $productId = ProductManager::getInstance()->createProduct($name, $model, $manufacturerId, $uomId);
+            $productId = ProductManager::getInstance()->createProduct($name, $model, $manufacturerId, $uomId, $weight);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Product Successfully created!';
             $this->redirect('product/create');
@@ -42,9 +42,13 @@ namespace crm\actions\main\product {
             if (isset(NGS()->args()->model)) {
                 $model = NGS()->args()->model;
             }
+            $weight = 0;
+            if (isset(NGS()->args()->weight)) {
+                $weight = floatval(NGS()->args()->weight);
+            }
             $uomId = intval(NGS()->args()->uomId);
             $manufacturerId = intval(NGS()->args()->manufacturerId);
-            return array($name, $model, $manufacturerId, $uomId);
+            return array($name, $model, $manufacturerId, $uomId, $weight);
         }
 
         private function validateFormData() {

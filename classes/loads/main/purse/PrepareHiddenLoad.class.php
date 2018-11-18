@@ -26,13 +26,21 @@ namespace crm\loads\main\purse {
             $order = PurseOrderManager::getInstance()->selectByPk($id);
 
             $meta = json_decode($order->getMeta());
+            if (empty($meta) || !isset($meta->items) || empty($meta)) {
+                $meta = new \stdClass();
+                $product = new \stdClass();
+                $product->name = $order->getProductName();
+                $product->quantity= $order->getQuantity();
+                $product->fiat_price= $order->getAmazonTotal();
+                $meta->items = [$product];
+            }
             $ret = [];
             foreach ($meta->items as $item) {
                 $name = $item->name;
                 $quantity = $item->quantity;
                 $price = floatval($item->fiat_price) / intval(max($quantity, 1));
                 list($product, $allProductSortBySimilatity) = ProductManager::getInstance()->getMostSimilarProduct($name);
-                $ret[] = ['product_list'=>$allProductSortBySimilatity ,'product' => $product, 'actual_name' => $name, 'quantity' => $quantity, 'purchase_price' => $price];
+                $ret[] = ['product_list' => $allProductSortBySimilatity, 'product' => $product, 'actual_name' => $name, 'quantity' => $quantity, 'purchase_price' => $price];
             }
             $this->addParam('data', $ret);
             $this->addParam('purse_order_id', $id);

@@ -26,7 +26,8 @@ NGS.createLoad("crm.loads.main.purse.prepare_hidden", {
             var price = $(this).find('.f_purchase_item_price').val();
             var weight = $(this).find('.f_purchase_item_weight').val();
             var quantity = $(this).find('.f_purchase_item_quantity').val();
-            products.push({product_id: productId, price: price, weight: weight, quantity: quantity});
+            var name = $(this).find('.f_purchase_item_name').val();
+            products.push({product_id: productId, name: name,price: price, weight: weight, quantity: quantity});
         });
         var id = $('#purse_order_id').val();
         NGS.action('crm.actions.main.purse.set_hidden_and_create_purchase', {id: id, products: JSON.stringify(products)});

@@ -16,6 +16,7 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Model</th>
+                <th>Weight</th>
                 <th>Manufacturer</th>
                 <th>Uom</th>
                 <th>Purchase Orders</th>
@@ -33,6 +34,7 @@
                     </td>
                     <td>{$product->getName()}</td>
                     <td>{$product->getModel()}</td>
+                    <td>{$product->getUnitWeight()|number_format:2}</td>
                     <td>{$product->getManufacturerDto()->getName()}</td>
                     <td>{$product->getUomDto()->getName()}</td>
                     <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>

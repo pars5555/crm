@@ -62,7 +62,7 @@ namespace crm\managers {
                     $selectedProduct = $product;
                 }
             }
-            
+
             krsort($allProductSortBySimilatity);
             if ($maxPercent > 78) {
                 return [$selectedProduct, $this->array_flatten($allProductSortBySimilatity)];
@@ -114,25 +114,31 @@ namespace crm\managers {
             return True;
         }
 
-        public function createProduct($name, $model, $manufacturerId, $uomId) {
+        public function updateProductWeight($productId, $weight) {
+            return $this->mapper->updateField($productId, 'unit_weight', $weight);
+        }
+
+        public function createProduct($name, $model, $manufacturerId = 1, $uomId = 1, $weight = 0.1) {
             $dto = $this->createDto();
             $dto->setName($name);
             $dto->setModel($model);
             $dto->setManufacturerId($manufacturerId);
             $dto->setUomId($uomId);
+            $dto->setUnitWeight($weight);
             $id = $this->insertDto($dto);
             $dto->setId($id);
             $this->findAndSetProoductImageFromPurseOrders($dto, PurseOrderManager::getInstance()->selectAdvance(['id', 'product_name', 'image_url'], [], [], "", null, null, false, "", 'GROUP BY product_name'));
             return $id;
         }
 
-        public function updateProduct($id, $name, $model, $manufacturerId, $uomId) {
+        public function updateProduct($id, $name, $model, $manufacturerId = 1, $uomId = 1, $weight = 0) {
             $dto = $this->selectByPk($id);
             if ($dto) {
                 $dto->setName($name);
                 $dto->setModel($model);
                 $dto->setManufacturerId($manufacturerId);
                 $dto->setUomId($uomId);
+                $dto->setUnitWeight($weight);
                 return $this->updateByPk($dto);
             }
             return false;

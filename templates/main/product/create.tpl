@@ -19,6 +19,10 @@
             <input class="text" type="text" name="model" value="{$ns.req.model|default:''}"/>
         </div>
         <div class="form-group">
+            <label class="label">Unit Weight</label>
+            <input class="text" type="text" name="weight" value="{$ns.req.weight|default:''}"/>
+        </div>
+        <div class="form-group">
             <label class="label">Manufacturer</label>
             <select name="manufacturerId">
                 {if isset($ns.req.manufacturerId)}
