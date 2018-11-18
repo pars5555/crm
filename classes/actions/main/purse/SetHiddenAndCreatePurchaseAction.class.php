@@ -29,12 +29,15 @@ namespace crm\actions\main\purse {
             $products = json_decode(NGS()->args()->products);
             $partnerId = SettingManager::getInstance()->getSetting('external_supplier_partner_id');
             $external_1kg_shipping_cost = floatval(SettingManager::getInstance()->getSetting('external_1kg_shipping_cost'));
-            $poId = PurchaseOrderManager::getInstance()->createPurchaseOrder(
-                    $partnerId, date('Y-m-d H:i:s'), date('Y-m-d'), 'Purchase order for external order id: ' . $id, 1);
+            $poId = false;
             foreach ($products as $product) {
                 $productId = intval($product->product_id);
                 if ($productId == -1) {
                     continue;
+                }
+                if (!$poId){
+                    $poId = PurchaseOrderManager::getInstance()->createPurchaseOrder(
+                        $partnerId, date('Y-m-d H:i:s'), date('Y-m-d'), 'Purchase order for external order id: ' . $id, 1, $id);
                 }
                 if ($productId == 0) {
                     $productId = ProductManager::getInstance()->createProduct(

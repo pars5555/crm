@@ -48,7 +48,9 @@ namespace crm\managers {
             $productDtos = ProductManager::getInstance()->selectByPKs($productIds, true);
             $currencyDtos = CurrencyManager::getInstance()->selectByPKs($currencyIds, true);
             foreach ($rows as $row) {
-                $row->setProductDto($productDtos[$row->getProductId()]);
+                if (isset($productDtos[$row->getProductId()])){
+                    $row->setProductDto($productDtos[$row->getProductId()]);
+                }
                 $row->setCurrencyDto($currencyDtos[$row->getCurrencyId()]);
             }
             return $rows;

@@ -198,13 +198,14 @@ namespace crm\managers {
             return false;
         }
 
-        public function createPurchaseOrder($partnerId, $date, $paymentDeadlineDate, $note, $paid = 0) {
+        public function createPurchaseOrder($partnerId, $date, $paymentDeadlineDate, $note, $paid = 0, $purseOrderId = 0) {
             $dto = $this->createDto();
             $dto->setPartnerId($partnerId);
             $dto->setOrderDate($date);
             $dto->setPaymentDeadline($paymentDeadlineDate);
             $dto->setPaid($paid);
             $dto->setNote($note);
+            $dto->setPurseOrderId($purseOrderId);
             return $this->insertDto($dto);
         }
 
