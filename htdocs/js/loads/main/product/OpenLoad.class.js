@@ -13,5 +13,9 @@ NGS.createLoad("crm.loads.main.product.open", {
             }
             return false;
         });
+        $('.mergeAndDeleteProductButton').click(function () {
+            var id = $(this).data('id');
+            NGS.load('crm.loads.main.product.prepare_merge', {id: id});
+        });
     }
 });

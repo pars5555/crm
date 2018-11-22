@@ -45,6 +45,11 @@ namespace crm\managers {
             return true;
         }
 
+        public function replaceProductId($productId, $replaceProductId) {
+            return $this->mapper->updateAdvance(['product_id','=', $productId], ['product_id'=>$replaceProductId]);
+            
+        }
+        
         public function updateSaleOrderLine($saleOrderId, $id, $productId, $quantity, $unitPrice, $currencyId) {
             $unitPrice = floatval($unitPrice);
             $quantity = floatval($quantity);

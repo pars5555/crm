@@ -48,10 +48,17 @@ namespace crm\managers {
             $productDtos = ProductManager::getInstance()->selectByPKs($productIds, true);
             $currencyDtos = CurrencyManager::getInstance()->selectByPKs($currencyIds, true);
             foreach ($rows as $row) {
-                $row->setProductDto($productDtos[$row->getProductId()]);
+                if (isset($productDtos[$row->getProductId()])){
+                    $row->setProductDto($productDtos[$row->getProductId()]);
+                }
                 $row->setCurrencyDto($currencyDtos[$row->getCurrencyId()]);
             }
             return $rows;
+        }
+        
+        public function replaceProductId($productId, $replaceProductId) {
+            return $this->mapper->updateAdvance(['product_id','=', $productId], ['product_id'=>$replaceProductId]);
+            
         }
 
         public function deleteWhereIdNotIdIds($purchaseOrderId, $ids) {

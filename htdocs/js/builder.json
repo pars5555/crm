@@ -72,6 +72,7 @@
                     "loads/main/product/CreateLoad.class.js",
                     "loads/main/product/UpdateLoad.class.js",
                     "loads/main/product/SearchListLoad.class.js",
+                    "loads/main/product/PrepareMergeLoad.class.js",
                     "loads/main/sale/OpenLoad.class.js",
                     "loads/main/sale/ListLoad.class.js",
                     "loads/main/sale/ProductWarehousesLoad.class.js",

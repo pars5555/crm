@@ -62,6 +62,40 @@ namespace crm\dal\mappers {
             }
             return $this->fetchRows($sqlQuery);
         }
+        
+        public function updateAdvance($where, $fieldsValuesMapArray) {
+            $where = $this->getWhereSubQueryByFilters($where);
+            $subQuerySetValues = "";
+            foreach ($fieldsValuesMapArray as $fieldName => $fieldValue) {
+                $subQuerySetValues .= "`$fieldName` = :$fieldName ,";
+            }
+            $subQuerySetValues = trim($subQuerySetValues);
+            $subQuerySetValues = trim($subQuerySetValues, ',');
+            
+            $sqlQuery = sprintf("UPDATE %s SET %s %s ", $this->getTableName(), $subQuerySetValues, $where);
+            $res = $this->dbms->prepare($sqlQuery);
+            if ($res) {
+                $res->execute($fieldsValuesMapArray);
+                return $res->rowCount();
+            }
+            return null;
+        }
+        
+        private function getWhereSubQueryByFilters($filters) {
+            if (empty($filters)) {
+                return "";
+            }
+            $where = "WHERE ";
+            foreach ($filters as $filter) {
+                $strToLowerFilter = strtolower(trim($filter));
+                if (in_array($strToLowerFilter, [')', '(', 'and', 'or', '<', '<=', '<>', '=', '>', '>=', 'is', 'null', 'not'])) {
+                    $where .= ' ' . strtoupper($strToLowerFilter) . ' ';
+                } else {
+                    $where .= ' ' . $filter . ' ';
+                }
+            }
+            return $where;
+        }
 
         public function deleteAdvance($where) {
             $sqlQuery = sprintf("DELETE FROM `%s` %s", $this->getTableName(), $where);
