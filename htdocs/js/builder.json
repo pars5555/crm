@@ -140,6 +140,7 @@
                     "actions/main/purse/SetProblematicAction.class.js",
                     "actions/main/purse/SetProblemSolvedAction.class.js",
                     "actions/main/purse/RefreshTrackingAction.class.js",
+                    "actions/main/purse/RefreshRecipientAction.class.js",
                     "actions/main/purse/RefreshCarrierDeliveryDetailsAction.class.js",
                     "actions/main/purse/HideByTrackingsAction.class.js",
                     "actions/main/UpdateFieldAction.class.js"

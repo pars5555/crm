@@ -59,7 +59,11 @@
                         <br/>
                         <span {if $order->getShippingType()=='standard'}style='color:red'{/if} >{$order->getShippingType()}</span>
                     </td>
-                    <td> {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})</td>
+                    <td> 
+                        {if not $order->getRecipientName()}
+                            <a href="javascript:void(0);" class="fa fa-refresh f_refresh_recipient" data-id='{$order->getId()}'></a>
+                        {/if}
+                        {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})</td>
 
                     <td> <img src="{$order->getImageUrl()}" width="100"/> </td>
                     <td>

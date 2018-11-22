@@ -46,6 +46,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
         this.initHideByTrackingsConfirm();
         this.initNotRegTrackingsConfirm();
         this.initRefreshTracking();
+        this.initRefreshRecipient();
         this.initRefreshCarrierDeliveryDate();
         this.initAddExternalOrder();
         this.initAddExternalOrderConfirm();
@@ -142,6 +143,14 @@ NGS.createLoad("crm.loads.main.purse.list", {
             var id = $(this).data('id');
             NGS.action('crm.actions.main.purse.refresh_tracking', {id: id});
             $(this).closest('.f_tracking').html('');
+        });
+    },
+    initRefreshRecipient: function () {
+        $('.f_refresh_recipient').click(function () {
+            var id = $(this).data('id');
+            NGS.action('crm.actions.main.purse.refresh_recipient', {id: id}, function(){
+                window.location.reload();
+            });
         });
     },
     initRefreshCarrierDeliveryDate: function () {
