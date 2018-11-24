@@ -57,6 +57,8 @@ namespace crm\loads\main {
                 $total += floatval($productsPrice[$pId]) * floatval($qty);
             }
             $this->addParam('total', $total);
+            
+            $this->addParam('showprofit', isset($_COOKIE['showprofit']) ? $_COOKIE['showprofit'] : 0);
         }
 
         public function getRequestGroup() {
