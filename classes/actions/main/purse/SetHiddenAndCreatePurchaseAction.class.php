@@ -26,6 +26,7 @@ namespace crm\actions\main\purse {
 
         public function service() {
             $id = intval(NGS()->args()->id);
+            $tax = floatval(NGS()->args()->tax);
             $products = json_decode(NGS()->args()->products);
             $partnerId = SettingManager::getInstance()->getSetting('external_supplier_partner_id');
             $external_1kg_shipping_cost = floatval(SettingManager::getInstance()->getSetting('external_1kg_shipping_cost'));
@@ -46,7 +47,7 @@ namespace crm\actions\main\purse {
                     ProductManager::getInstance()->updateProductWeight($productId, floatval($product->weight));
                 }
                 $shippingPriceForOneUnit = $external_1kg_shipping_cost * floatval($product->weight);
-                $unitPrice = floatval($product->price) + $shippingPriceForOneUnit;
+                $unitPrice = floatval($product->price) + $shippingPriceForOneUnit + $tax;
                 PurchaseOrderLineManager::getInstance()->createPurchaseOrderLine(
                         $poId, $productId, $product->quantity, $unitPrice, 1);
             }
