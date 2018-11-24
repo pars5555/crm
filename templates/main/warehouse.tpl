@@ -20,6 +20,7 @@
                     {*                <th>Uom</th>*}
                     <th>Quantity</th>
                     <th>Price</th>
+                    <th>Stock Price</th>
                     <th>Qty Checked</th>
                     <th>Purchase Orders</th>
                     <th>Sale Orders</th>
@@ -38,12 +39,13 @@
                             {*                        <td>{$product->getUomDto()->getName()}</td>*}
                             <td>{$ns.productsQuantity[$product->getId()]|default:'0'}</td>
                             <td>{$ns.productsPrice[$product->getId()]|number_format:2}</td>
+                            <td class="f_editable_cell" data-field-name="stock_price">{$product->getStockPrice()|number_format:2}</td>                            
                             <td class="icon-cell">
                                 <input class="f_qty_checked_checkbox"
                                        data-product_id="{$product->getId()}" type="checkbox"
                                        value="1" {if $product->getQtyChecked() ==1}checked{/if}/>
                             </td>
-                            <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}">
+                            <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
                                 {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
                                 <p style="display: none">
                                     {foreach from=$ns.productsPurchaseOrder[$product->getId()] item=productPurchaseOrder}
