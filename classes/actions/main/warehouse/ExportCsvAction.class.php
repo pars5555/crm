@@ -33,12 +33,12 @@ namespace crm\actions\main\warehouse {
             $output = fopen('php://output', 'w');
             fputs($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
-            fputcsv($output, ['Item Name', 'Model', 'Uom', 'Quantity', 'Price']);
+            fputcsv($output, ['Item Name', 'Model', 'Uom', 'Quantity', 'Price', 'Stock Price']);
             fputcsv($output, ['']);
             foreach ($products as $product) {
                 if (isset($productsQuantity[$product->getId()]) && $productsQuantity[$product->getId()] > 0) {
                     fputcsv($output, [$product->getName(), $product->getModel(), $product->getUomDto()->getName(),
-                        $productsQuantity[$product->getId()] ?: 0, round($productsPrice[$product->getId()], 2)]);
+                        $productsQuantity[$product->getId()] ?: 0, round($productsPrice[$product->getId()], 2), $product->getStockPrice()]);
                 }
             }
             exit;
