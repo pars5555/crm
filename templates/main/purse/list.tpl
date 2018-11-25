@@ -20,6 +20,7 @@
                 <th>Order Number</th>
                 <th>Recipient</th>
                 <th>Img</th>
+                <th> Qty </th>
                 <th> Product Name </th>
                 <th> Total </th>
                 <th> % </th>
@@ -66,8 +67,9 @@
                         {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})</td>
 
                     <td> <img src="{$order->getImageUrl()}" width="100"/> </td>
+                    <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="quantity"> {$order->getQuantity()} </td>
                     <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="product_name">
-                        <a class="link " target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getQuantity()} x {$order->getProductName()}</a>
+                        <a class="link " target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getProductName()}</a>
                     </td>
                     <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="amazon_total"> {$order->getAmazonTotal()} </td>
                     <td> {$order->getDiscount()} </td>
