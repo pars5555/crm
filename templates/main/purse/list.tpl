@@ -66,10 +66,10 @@
                         {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})</td>
 
                     <td> <img src="{$order->getImageUrl()}" width="100"/> </td>
-                    <td>
-                        <a class="link" target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getQuantity()} x {$order->getProductName()}</a>
+                    <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="product_name">
+                        <a class="link " target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getQuantity()} x {$order->getProductName()}</a>
                     </td>
-                    <td> {$order->getAmazonTotal()} </td>
+                    <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="amazon_total"> {$order->getAmazonTotal()} </td>
                     <td> {$order->getDiscount()} </td>
                     <td style="max-width: 70px;word-wrap: break-word"> {$order->getBuyerName()} </td>
                     <td> {$order->getStatus()} </td>
