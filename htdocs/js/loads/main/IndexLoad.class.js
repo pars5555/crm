@@ -18,7 +18,7 @@ NGS.createLoad("crm.loads.main.index", {
         this.hideLeftMenuOnMobile();
     },
     initEditableCells: function () {
-        $('.f_editable_cell').dblclick(function () {
+        $(document).on('dblclick', '.f_editable_cell', function () {
             var cellValues = $(this).text().trim();
             var cellFieldName = $(this).data('field-name');
             var type = $(this).data('type');
