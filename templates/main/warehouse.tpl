@@ -1,12 +1,9 @@
 <div class="container warehouse--container">
     <h1 class="main_title">Warehouse</h1>
     {if $ns.userType == $ns.userTypeAdmin}
-        <div>
-            <h1 class="left">Total: {$ns.total|number_format:2}</h1>
-        </div>
-        <div>
-            <h2 class="left">Total Stock: {$ns.total_stock|number_format:2}</h2>
-        </div>
+        <h1 class="left">Total: {$ns.total|number_format:2}</h1>
+        <br/><br/>
+        <h2 class="left">Total Stock: {$ns.total_stock|number_format:2}</h2>
         <div class="filter csv right">
             <a href="javascript:void(0);" class="inline-block" id="export_csv"><img src="/img/csv.png" width="45"/></a>
         </div>
