@@ -162,7 +162,7 @@ namespace crm\managers {
             }
             $ret = [];
             foreach ($rows as $row) {
-               $re[$row->getId()] = $row; 
+               $ret[$row->getId()] = $row; 
             }
             return $ret;
         }
