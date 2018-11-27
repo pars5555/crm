@@ -42,6 +42,7 @@
                         <td class="f_editable_cell" data-field-name="name">{$product->getName()} </td>
                         <td class="f_editable_cell" data-field-name="model">{$product->getModel()} </td>
                         <td>{$ns.productsQuantity[$product->getId()]|default:'0'}</td>
+                        <td class="f_editable_cell" data-field-name="stock_price">{$product->getStockPrice()|number_format:2}</td>  
                         <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
                             {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
                             <p style="display: none">
@@ -62,7 +63,6 @@
                                 {/foreach}
                             </p>
                         </td>
-                        <td class="f_editable_cell" data-field-name="stock_price">aaa{$product->getStockPrice()|number_format:2}</td>  
                         <td class="icon-cell">
                             <a href="{$SITE_PATH}/product/{$product->getId()}">
                                 <span class="button_icon" title="View">
