@@ -53,12 +53,13 @@ namespace crm\loads\main {
             $this->addParam('productsSaleOrder', $productsSaleOrders);
             $this->addParam('partnersMappedByIds', $partnersMappedByIds);
             $total = 0;
+            $totalStock = 0;
             foreach ($productsQuantity as $pId => $qty) {
                 $total += floatval($productsPrice[$pId]) * floatval($qty);
                 $productStockPrice = $productsMappedById[$pId]->getStockPrice();
-                if ($productStockPrice>0){
+                if ($productStockPrice > 0) {
                     $productStockPrice = floatval($productsPrice[$pId]);
-            }
+                }
                 $totalStock += floatval($productStockPrice) * floatval($qty);
             }
             $this->addParam('total', $total);
