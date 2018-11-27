@@ -1,8 +1,12 @@
 <div class="container warehouse--container">
     <h1 class="main_title">Warehouse</h1>
     {if $ns.userType == $ns.userTypeAdmin}
-        <h1 class="left">Total: {$ns.total|number_format:2}</h1><br/>
-        <h2 class="left">Total Stock: {$ns.total_stock|number_format:2}</h2>
+        <div>
+            <h1 class="left">Total: {$ns.total|number_format:2}</h1>
+        </div>
+        <div>
+            <h2 class="left">Total Stock: {$ns.total_stock|number_format:2}</h2>
+        </div>
         <div class="filter csv right">
             <a href="javascript:void(0);" class="inline-block" id="export_csv"><img src="/img/csv.png" width="45"/></a>
         </div>
@@ -13,22 +17,22 @@
             <tr>
                 <th>Id</th>
                 <th>Image</th>
-                
+
                 <th style="min-width: 250px;">Name</th>
                 <th>Model</th>
-                {if $ns.userType == $ns.userTypeAdmin}
+                    {if $ns.userType == $ns.userTypeAdmin}
                     <th>Location</th>
-                    {*                <th>Uom</th>*}
+                        {*                <th>Uom</th>*}
                     <th>Quantity</th>
-                    {if $ns.showprofit == 1}
+                        {if $ns.showprofit == 1}
                         <th>Price</th>
-                    {/if }
+                        {/if }
                     <th>Stock Price</th>
                     <th>Qty Checked</th>
                     <th>Purchase Orders</th>
                     <th>Sale Orders</th>
                     <th class="icon-cell">View</th>
-                {/if}
+                    {/if}
             </tr>
             {foreach from=$ns.products item=product}
                 {if isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0}
