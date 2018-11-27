@@ -62,7 +62,7 @@
                                 {/foreach}
                             </p>
                         </td>
-                        <td class="f_editable_cell" data-field-name="stock_price">{$product->getStockPrice()|number_format:2}</td>  
+                        <td class="f_editable_cell" data-field-name="stock_price">aaa{$product->getStockPrice()|number_format:2}</td>  
                         <td class="icon-cell">
                             <a href="{$SITE_PATH}/product/{$product->getId()}">
                                 <span class="button_icon" title="View">
