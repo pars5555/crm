@@ -30,6 +30,7 @@
                 <th>Name</th>
                 <th>Model</th>
                 <th>Quantity</th>
+                <th>Stock Price</th>
                 <th>Purchase Orders</th>
                 <th>Sale Orders</th>
                 <th> View </th>
@@ -61,6 +62,7 @@
                                 {/foreach}
                             </p>
                         </td>
+                        <td class="f_editable_cell" data-field-name="stock_price">{$product->getStockPrice()|number_format:2}</td>  
                         <td class="icon-cell">
                             <a href="{$SITE_PATH}/product/{$product->getId()}">
                                 <span class="button_icon" title="View">
