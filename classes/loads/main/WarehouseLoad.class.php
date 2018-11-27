@@ -27,8 +27,8 @@ namespace crm\loads\main {
 
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity();
             $productsPrice = WarehouseManager::getInstance()->getAllProductsPrice(array_keys($productsQuantity));
-            $products = ProductManager::getInstance()->getProductListFull([], 'name', 'ASC');
-            $productIds = ProductManager::getDtosIdsArray($products);
+            $productsMappedById = ProductManager::getInstance()->getProductListFull([], 'name', 'ASC');
+            $productIds = array_keys($productsMappedById);
             $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
             $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
             $partnerIds = [];
@@ -45,7 +45,7 @@ namespace crm\loads\main {
             $partnerIdsSql = implode(',', array_unique($partnerIds));
             $partnersMappedByIds = PartnerManager::getInstance()->selectAdvance(['name', 'id'], ['id', 'in', "($partnerIdsSql)"], null, null, null, null, true);
             $usdRate = CurrencyRateManager::getInstance()->getCurrencyRate(1);
-            $this->addParam('products', $products);
+            $this->addParam('products', $productsMappedById);
             $this->addParam('usd_rate', $usdRate);
             $this->addParam('productsQuantity', $productsQuantity);
             $this->addParam('productsPrice', $productsPrice);
@@ -55,8 +55,14 @@ namespace crm\loads\main {
             $total = 0;
             foreach ($productsQuantity as $pId => $qty) {
                 $total += floatval($productsPrice[$pId]) * floatval($qty);
+                $productStockPrice = $productsMappedById[$pId]->getStockPrice();
+                if ($productStockPrice>0){
+                    $productStockPrice = floatval($productsPrice[$pId]);
+                }
+                $totalStock += floatval($productStockPrice) * floatval($qty);
             }
             $this->addParam('total', $total);
+            $this->addParam('total_stock', $totalStock);
         }
 
         public function getRequestGroup() {

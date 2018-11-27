@@ -160,7 +160,11 @@ namespace crm\managers {
                 $row->setUomDto($uomDtos[$row->getUomId()]);
                 $row->setManufacturerDto($manufacturerDtos[$row->getManufacturerId()]);
             }
-            return $rows;
+            $ret = [];
+            foreach ($rows as $row) {
+               $re[$row->getId()] = $row; 
+            }
+            return $ret;
         }
 
         public function calculateProductQuantityInStock($productId) {
