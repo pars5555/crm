@@ -30,6 +30,7 @@
                 <th>Name</th>
                 <th>Model</th>
                 <th>Quantity</th>
+                <th>Stock Price</th>
                 <th>Purchase Orders</th>
                 <th>Sale Orders</th>
                 <th> View </th>
@@ -41,6 +42,7 @@
                         <td class="f_editable_cell" data-field-name="name">{$product->getName()} </td>
                         <td class="f_editable_cell" data-field-name="model">{$product->getModel()} </td>
                         <td>{$ns.productsQuantity[$product->getId()]|default:'0'}</td>
+                        <td class="f_editable_cell" data-field-name="stock_price">{$product->getStockPrice()|number_format:2}</td>  
                         <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
                             {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
                             <p style="display: none">

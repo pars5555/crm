@@ -58,11 +58,12 @@ namespace crm\loads\main {
                 $productStockPrice = $productsMappedById[$pId]->getStockPrice();
                 if ($productStockPrice>0){
                     $productStockPrice = floatval($productsPrice[$pId]);
-                }
+            }
                 $totalStock += floatval($productStockPrice) * floatval($qty);
             }
             $this->addParam('total', $total);
             $this->addParam('total_stock', $totalStock);
+            $this->addParam('showprofit', isset($_COOKIE['showprofit']) ? $_COOKIE['showprofit'] : 0);
         }
 
         public function getRequestGroup() {

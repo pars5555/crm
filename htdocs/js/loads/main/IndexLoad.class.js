@@ -18,7 +18,7 @@ NGS.createLoad("crm.loads.main.index", {
         this.hideLeftMenuOnMobile();
     },
     initEditableCells: function () {
-        $('.f_editable_cell').dblclick(function () {
+        $(document).on('dblclick', '.f_editable_cell', function () {
             var cellValues = $(this).text().trim();
             var cellFieldName = $(this).data('field-name');
             var type = $(this).data('type');
@@ -55,7 +55,7 @@ NGS.createLoad("crm.loads.main.index", {
         });
     },
     initSettingEditableCells: function () {
-        $('.f_editable_setting_field').dblclick(function () {
+        $(document).on('dblclick', '.f_editable_setting_field', function () {
             var cellValues = $(this).text().trim();
             var cellFieldName = $(this).data('field-name');
             var type = $(this).data('type');
