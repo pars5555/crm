@@ -72,6 +72,7 @@ use NGS;
             $this->addParam('total', $total);
             $this->addParam('total_stock', $totalStock);
             $this->addParam('showprofit', isset($_COOKIE['showprofit']) ? $_COOKIE['showprofit'] : 0);
+            $this->addParam('vahagn_cookie', isset($_COOKIE['vahagn']) ? $_COOKIE['vahagn'] : 0);
         }
 
         public function getRequestGroup() {
