@@ -11,24 +11,27 @@
 
 namespace crm\loads\main {
 
-    use crm\loads\AdminLoad;
-    use crm\managers\CurrencyRateManager;
-    use crm\managers\PartnerManager;
-    use crm\managers\ProductManager;
-    use crm\managers\PurchaseOrderLineManager;
-    use crm\managers\SaleOrderLineManager;
-    use crm\managers\WarehouseManager;
-    use crm\security\RequestGroups;
-    use NGS;
+use crm\loads\AdminLoad;
+use crm\managers\CurrencyRateManager;
+use crm\managers\PartnerManager;
+use crm\managers\ProductManager;
+use crm\managers\PurchaseOrderLineManager;
+use crm\managers\SaleOrderLineManager;
+use crm\managers\SettingManager;
+use crm\managers\WarehouseManager;
+use crm\security\RequestGroups;
+use NGS;
 
     class WarehouseLoad extends AdminLoad {
 
         public function load() {
+            $pwarehousesProductsQuantity = $this->loadPartnersWarehouses();
 
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity();
             $productsPrice = WarehouseManager::getInstance()->getAllProductsPrice(array_keys($productsQuantity));
             $productsMappedById = ProductManager::getInstance()->getProductListFull([], 'name', 'ASC');
             $productIds = array_keys($productsMappedById);
+            
             $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
             $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
             $partnerIds = [];
@@ -45,6 +48,10 @@ namespace crm\loads\main {
             $partnerIdsSql = implode(',', array_unique($partnerIds));
             $partnersMappedByIds = PartnerManager::getInstance()->selectAdvance(['name', 'id'], ['id', 'in', "($partnerIdsSql)"], null, null, null, null, true);
             $usdRate = CurrencyRateManager::getInstance()->getCurrencyRate(1);
+
+
+
+            $this->addParam('pwarehousesProductsQuantity', $pwarehousesProductsQuantity);
             $this->addParam('products', $productsMappedById);
             $this->addParam('usd_rate', $usdRate);
             $this->addParam('productsQuantity', $productsQuantity);
@@ -73,6 +80,24 @@ namespace crm\loads\main {
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/warehouse.tpl";
+        }
+
+        private function loadPartnersWarehouses() {
+            $warehouse_partners = SettingManager::getInstance()->getSetting('warehouse_partners');
+            $warehouse_partners_array = explode(',', $warehouse_partners);
+            $productIds = [];
+            $pwarehousesProductsQuantity = [];
+            foreach ($warehouse_partners_array as $partnerId) {
+                $productsQuantity = WarehouseManager::getInstance()->getWarehousePartnerProductsQuantity($partnerId);
+                foreach ($productsQuantity as $productId => $qty) {
+                    if (!isset($pwarehousesProductsQuantity[$productId])) {
+                        $pwarehousesProductsQuantity[$productId] = 0;
+                    }
+                    $pwarehousesProductsQuantity[$productId] += $qty;
+                }
+                $productIds = array_merge(array_keys($productsQuantity));
+            }
+            return $pwarehousesProductsQuantity;
         }
 
     }

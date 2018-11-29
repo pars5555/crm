@@ -32,56 +32,69 @@
                     {/if}
             </tr>
             {foreach from=$ns.products item=product}
-                {if isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0}
-                    <tr data-id="{$product->getId()}" data-type="product" {if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}>
-                        <td>{$product->getId()}</td>
-                        <td> <img src="{$product->getImageUrl()}" width="100"/> </td>
-                        <td style="min-width: 250px;" data-field-name="name">{$product->getName()}</td>
-                        <td data-field-name="model">{$product->getModel()}</td>
-                        {if $ns.userType == $ns.userTypeAdmin}
-                            <td class="pre f_editable_cell" data-type="richtext"  data-field-name="location_note">{$product->getLocationNote()} </td>
-                            {*                        <td>{$product->getUomDto()->getName()}</td>*}
-                            <td>{$ns.productsQuantity[$product->getId()]|default:'0'}</td>
-                            {if $ns.showprofit == 1}
-                                <td>{$ns.productsPrice[$product->getId()]|number_format:2}</td>
-                            {/if}
-                            <td class="f_editable_cell" data-field-name="stock_price">{$product->getStockPrice()|number_format:2}</td>                            
-                            <td class="icon-cell">
-                                <input class="f_qty_checked_checkbox"
-                                       data-product_id="{$product->getId()}" type="checkbox"
-                                       value="1" {if $product->getQtyChecked() ==1}checked{/if}/>
-                            </td>
-                            <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
-                                {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
-                                <p style="display: none">
-                                    {foreach from=$ns.productsPurchaseOrder[$product->getId()] item=productPurchaseOrder}
-                                        <a href="{$SITE_PATH}/purchase/{$productPurchaseOrder->getId()}">
-                                            &#8470; {$productPurchaseOrder->getId()} ({$productPurchaseOrder->getOrderDate()|truncate:10:""} {$partnersMappedByIds[$productPurchaseOrder->getPartnerId()]->getName()})
-                                        </a> <br>
-                                    {/foreach}
-                                </p>
-                            </td>
-                            <td {if $ns.productsSaleOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
-                                {$ns.productsSaleOrder[$product->getId()]|@count} Sale order(s)
-                                <p style="display: none">
-                                    {foreach from=$ns.productsSaleOrder[$product->getId()] item=productSaleOrder}
-                                        <a href="{$SITE_PATH}/sale/{$productSaleOrder->getId()}">
-                                            &#8470; {$productSaleOrder->getId()} ({$productSaleOrder->getOrderDate()|truncate:10:""}  {$partnersMappedByIds[$productSaleOrder->getPartnerId()]->getName()})
-                                        </a> <br>
-                                    {/foreach}
-                                </p>
-                            </td>
-                            <td class="icon-cell">
-                                <a href="{$SITE_PATH}/product/{$product->getId()}">
-                                    <span class="button_icon" title="View">
-                                        <i class="fa fa-eye"></i>
-                                    </span>
-                                </a>
-                            </td>
+                {if (isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0) ||
+                    (isset($ns.pwarehousesProductsQuantity[$product->getId()]) && $ns.pwarehousesProductsQuantity[$product->getId()]>0)}
+                <tr data-id="{$product->getId()}" data-type="product" {if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}>
+                    <td>{$product->getId()}</td>
+                    <td> <img src="{$product->getImageUrl()}" width="100"/> </td>
+                    <td style="min-width: 250px;" data-field-name="name">{$product->getName()}</td>
+                    <td data-field-name="model">{$product->getModel()}</td>
+                    {if $ns.userType == $ns.userTypeAdmin}
+                        <td class="pre f_editable_cell" data-type="richtext"  data-field-name="location_note">{$product->getLocationNote()} </td>
+                        {*                        <td>{$product->getUomDto()->getName()}</td>*}
+                        <td>
+                        {if isset($ns.productsQuantity[$product->getId()])}{$ns.productsQuantity[$product->getId()]|default:'0'}{/if}
+                        {if isset($ns.pwarehousesProductsQuantity[$product->getId()])}
+                            <span style="color:red">{$pwarehousesProductsQuantity[$product->getId()]|default:'0'}</span>
                         {/if}
-                    </tr>
+
+                    </td>
+                    {if $ns.showprofit == 1}
+                        <td>
+                            {if isset($ns.productsPrice[$product->getId()])}
+                                {$ns.productsPrice[$product->getId()]|number_format:2}</td>
+                            {else}
+                        <span style="color:red">partner</span>
+                    {/if}
+                    </td>
                 {/if}
-            {/foreach}
-        </table>
-    </div>
-</div>
+                <td class="f_editable_cell" data-field-name="stock_price">{$product->getStockPrice()|number_format:2}</td>                            
+                <td class="icon-cell">
+                    <input class="f_qty_checked_checkbox"
+                           data-product_id="{$product->getId()}" type="checkbox"
+                           value="1" {if $product->getQtyChecked() ==1}checked{/if}/>
+                </td>
+                <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
+                    {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
+                    <p style="display: none">
+                        {foreach from=$ns.productsPurchaseOrder[$product->getId()] item=productPurchaseOrder}
+                            <a href="{$SITE_PATH}/purchase/{$productPurchaseOrder->getId()}">
+                                &#8470; {$productPurchaseOrder->getId()} ({$productPurchaseOrder->getOrderDate()|truncate:10:""} {$partnersMappedByIds[$productPurchaseOrder->getPartnerId()]->getName()})
+                            </a> <br>
+                        {/foreach}
+                    </p>
+                </td>
+                <td {if $ns.productsSaleOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
+                    {$ns.productsSaleOrder[$product->getId()]|@count} Sale order(s)
+                    <p style="display: none">
+                        {foreach from=$ns.productsSaleOrder[$product->getId()] item=productSaleOrder}
+                            <a href="{$SITE_PATH}/sale/{$productSaleOrder->getId()}">
+                                &#8470; {$productSaleOrder->getId()} ({$productSaleOrder->getOrderDate()|truncate:10:""}  {$partnersMappedByIds[$productSaleOrder->getPartnerId()]->getName()})
+                            </a> <br>
+                        {/foreach}
+                    </p>
+                </td>
+                <td class="icon-cell">
+                    <a href="{$SITE_PATH}/product/{$product->getId()}">
+                        <span class="button_icon" title="View">
+                            <i class="fa fa-eye"></i>
+                        </span>
+                    </a>
+                </td>
+            {/if}
+            </tr>
+            {/if}
+                {/foreach}
+                </table>
+            </div>
+        </div>
