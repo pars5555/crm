@@ -43,7 +43,7 @@
                         <td class="pre f_editable_cell" data-type="richtext"  data-field-name="location_note">{$product->getLocationNote()} </td>
                         {*                        <td>{$product->getUomDto()->getName()}</td>*}
                         <td>
-                        {if isset($ns.productsQuantity[$product->getId()])}{$ns.productsQuantity[$product->getId()]|default:'0'}{/if}
+                        {if isset($ns.productsQuantity[$product->getId()])}{$ns.productsQuantity[$product->getId()]|default:'0'}<br/>{/if}
                         {if isset($ns.pwarehousesProductsQuantity[$product->getId()])}
                             <span style="color:red">{$pwarehousesProductsQuantity[$product->getId()]|default:'0'}</span>
                         {/if}
