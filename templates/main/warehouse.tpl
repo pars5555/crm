@@ -1,6 +1,6 @@
 <div class="container warehouse--container">
     <h1 class="main_title">Warehouse</h1>
-    {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie == 'Vahagn123'}
+    {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}
         <h1 class="left">Total: {$ns.total|number_format:2}</h1>
         <br/><br/>
         <h2 class="left">Total Stock: {$ns.total_stock|number_format:2}</h2>
@@ -39,7 +39,7 @@
                     <td> <img src="{$product->getImageUrl()}" width="100"/> </td>
                     <td style="min-width: 250px;" data-field-name="name">{$product->getName()}</td>
                     <td data-field-name="model">{$product->getModel()}</td>
-                    {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie == 'Vahagn123'}
+                    {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}
                         {if $ns.userType == $ns.userTypeAdmin}
                             <td class="pre f_editable_cell" data-type="richtext"  data-field-name="location_note">{$product->getLocationNote()}
                             </td>
