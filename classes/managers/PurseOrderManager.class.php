@@ -227,15 +227,13 @@ namespace crm\managers {
                 $primaryStatusText = trim($ps->item(0)->nodeValue);
                 $this->updateField($row->getId(), 'amazon_primary_status_text', $primaryStatusText);
                 if (strpos($primaryStatusText, 'cancel') !== false && $row->getExternal() == 1) {
+                    $this->updateField($row->getId(), 'status', 'canceled');
+                    $this->updateField($row->getId(), 'cancelled_at', date('Y-m-d H:i:s'));
                     $this->updateField($row->getId(), 'hidden', 1);
                 }
             }
-
-
             $ordersRows = $finder->query("//*[contains(@class, 'cardContainer')]");
-
             libxml_clear_errors();
-
             $trackingNumber = false;
             for ($i = 0; $i < $ordersRows->length; $i++) {
                 $el = $ordersRows->item($i);
@@ -293,6 +291,7 @@ namespace crm\managers {
             $dto->setStatus($order['state']);
             if ($order['state'] === 'canceled') {
                 $dto->setHidden(1);
+                $dto->setCancelledAt(date('Y-m-d H:i:s'));
             }
             $dto->setProductName($order['items'][0]['name']);
             $dto->setImageUrl($order['items'][0]['images']['small']);
