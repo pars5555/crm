@@ -259,6 +259,8 @@ namespace crm\managers {
                 while ($productSaleOrderLineQty > 0) {
                     if ($profit_calculation_method == 'max') {
                         $lineId = $this->findMaxProductPriceLineId($productPurchaseOrderLines, $productSaleOrderLine->getOrderDate());
+                    } elseif ($profit_calculation_method == 'min') {
+                        $lineId = $this->findMinProductPriceLineId($productPurchaseOrderLines, $productSaleOrderLine->getOrderDate());
                     } else {
                         $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
                     }
@@ -311,6 +313,24 @@ namespace crm\managers {
                 }
             }
             return $maxProductPriceLineId;
+        }
+        
+        private function findMinProductPriceLineId($productPurchaseOrderLines, $beforeDate = null) {
+            $minProductPrice = 0;
+            $minProductPriceLineId = 0;
+            foreach ($productPurchaseOrderLines as $lineId => $dto) {
+                if ($dto->getQuantity() == 0 || (!empty($beforeDate) && $dto->getOrderDate() > $beforeDate)) {
+                    continue;
+                }
+                $unitPrice = floatval($dto->getUnitPrice());
+                $currencyRate = floatval($dto->getCurrencyRate());
+                $productPriceInMainCurrency = $unitPrice * $currencyRate;
+                if ($productPriceInMainCurrency < $minProductPrice) {
+                    $minProductPrice = $productPriceInMainCurrency;
+                    $minProductPriceLineId = $lineId;
+                }
+            }
+            return $minProductPriceLineId;
         }
 
     }
