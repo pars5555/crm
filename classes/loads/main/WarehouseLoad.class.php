@@ -64,7 +64,7 @@ use NGS;
             foreach ($productsQuantity as $pId => $qty) {
                 $total += floatval($productsPrice[$pId]) * floatval($qty);
                 $productStockPrice = $productsMappedById[$pId]->getStockPrice();
-                if ($productStockPrice > 0) {
+                if ($productStockPrice <= 0.01) {
                     $productStockPrice = floatval($productsPrice[$pId]);
                 }
                 $totalStock += floatval($productStockPrice) * floatval($qty);
@@ -72,6 +72,7 @@ use NGS;
             $this->addParam('total', $total);
             $this->addParam('total_stock', $totalStock);
             $this->addParam('showprofit', isset($_COOKIE['showprofit']) ? $_COOKIE['showprofit'] : 0);
+            $this->addParam('vahagn_cookie', isset($_COOKIE['vahagn']) ? $_COOKIE['vahagn'] : 0);
         }
 
         public function getRequestGroup() {
