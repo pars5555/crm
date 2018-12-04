@@ -64,9 +64,9 @@ use NGS;
             foreach ($productsQuantity as $pId => $qty) {
                 $total += floatval($productsPrice[$pId]) * floatval($qty);
                 $productStockPrice = $productsMappedById[$pId]->getStockPrice();
-//                if ($productStockPrice <= 0.01) {
-//                    $productStockPrice = floatval($productsPrice[$pId]);
-//                }
+                if ($productStockPrice <= 0.01) {
+                    $productStockPrice = floatval($productsPrice[$pId]);
+                }
                 $totalStock += floatval($productStockPrice) * floatval($qty);
             }
             $this->addParam('total', $total);
