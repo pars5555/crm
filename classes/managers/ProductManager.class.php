@@ -316,7 +316,7 @@ namespace crm\managers {
         }
         
         private function findMinProductPriceLineId($productPurchaseOrderLines, $beforeDate = null) {
-            $minProductPrice = 0;
+            $minProductPrice = PHP_INT_MAX;
             $minProductPriceLineId = 0;
             foreach ($productPurchaseOrderLines as $lineId => $dto) {
                 if ($dto->getQuantity() == 0 || (!empty($beforeDate) && $dto->getOrderDate() > $beforeDate)) {
