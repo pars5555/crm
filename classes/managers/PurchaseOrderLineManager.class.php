@@ -48,17 +48,16 @@ namespace crm\managers {
             $productDtos = ProductManager::getInstance()->selectByPKs($productIds, true);
             $currencyDtos = CurrencyManager::getInstance()->selectByPKs($currencyIds, true);
             foreach ($rows as $row) {
-                if (isset($productDtos[$row->getProductId()])){
+                if (isset($productDtos[$row->getProductId()])) {
                     $row->setProductDto($productDtos[$row->getProductId()]);
                 }
                 $row->setCurrencyDto($currencyDtos[$row->getCurrencyId()]);
             }
             return $rows;
         }
-        
+
         public function replaceProductId($productId, $replaceProductId) {
-            return $this->mapper->updateAdvance(['product_id','=', $productId], ['product_id'=>$replaceProductId]);
-            
+            return $this->mapper->updateAdvance(['product_id', '=', $productId], ['product_id' => $replaceProductId]);
         }
 
         public function deleteWhereIdNotIdIds($purchaseOrderId, $ids) {
@@ -119,6 +118,22 @@ namespace crm\managers {
             $ret = [];
             foreach ($dtos as $dto) {
                 $ret [$dto->getProductId()][] = $dto;
+            }
+            return $ret;
+        }
+
+        public function getLastDaysPurchases($days = 10) {
+            $pos = PurchaseOrderManager::getInstance()->selectAdvance('id', 
+                    ['cancelled', '=', 0, 'AND','ABS(DATEDIFF(DATE(`order_date`), DATE(now())))', '<=', $days], null, null, null, null, true);
+            if (empty($pos))
+            {
+                return [];
+            }
+            $poIdsSql = '(' . implode(',', array_keys($pos)) . ')';
+            $pols = $this->selectAdvance('product_id', ['purchase_order_id', 'in', $poIdsSql]);
+            $ret = [];
+            foreach ($pols as $pol) {
+                $ret[] = $pol->getProductId(); 
             }
             return $ret;
         }

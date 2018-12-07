@@ -32,6 +32,9 @@ use NGS;
             $productsMappedById = ProductManager::getInstance()->getProductListFull([], 'name', 'ASC');
             $productIds = array_keys($productsMappedById);
             
+            $days = SettingManager::getInstance()->getSetting('new_items_days');
+            $newProductIds = PurchaseOrderLineManager::getInstance()->getLastDaysPurchases($days);
+            
             $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
             $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
             $partnerIds = [];
@@ -53,6 +56,7 @@ use NGS;
 
             $this->addParam('pwarehousesProductsQuantity', $pwarehousesProductsQuantity);
             $this->addParam('products', $productsMappedById);
+            $this->addParam('newProductIds', $newProductIds);
             $this->addParam('usd_rate', $usdRate);
             $this->addParam('productsQuantity', $productsQuantity);
             $this->addParam('productsPrice', $productsPrice);

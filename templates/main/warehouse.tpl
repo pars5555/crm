@@ -37,7 +37,7 @@
                 <tr data-id="{$product->getId()}" data-type="product" {if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}>
                     <td>{$product->getId()}</td>
                     <td> <img src="{$product->getImageUrl()}" width="100"/> </td>
-                    <td style="min-width: 250px;" data-field-name="name">{$product->getName()}</td>
+                    <td style="min-width: 250px; {if $product->getId()|in_array:$ns.newProductIds} color:blue; {/if}" data-field-name="name">{$product->getName()}</td>
                     <td data-field-name="model">{$product->getModel()}</td>
                     {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}
                         {if $ns.userType == $ns.userTypeAdmin}
