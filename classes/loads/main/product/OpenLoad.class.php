@@ -15,10 +15,9 @@ namespace crm\loads\main\product {
     use crm\managers\ProductManager;
     use crm\managers\PurchaseOrderLineManager;
     use crm\managers\SaleOrderLineManager;
-    use crm\security\RequestGroups;
     use NGS;
 
-    class OpenLoad  extends AdminLoad {
+    class OpenLoad extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -29,7 +28,7 @@ namespace crm\loads\main\product {
                 $productSaleQuantity = SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId);
                 $productPurchaseQuantity = PurchaseOrderLineManager::getInstance()->getProductCountInNonCancelledPurchaseOrders($productId);
                 $productQuantity = $productPurchaseQuantity - $productSaleQuantity;
-                $product = $products[0];
+                $product = reset($products);
                 $this->addParam('product', $product);
                 $this->addParam('productQuantity', $productQuantity);
             }
@@ -38,7 +37,6 @@ namespace crm\loads\main\product {
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/product/open.tpl";
         }
-
 
     }
 
