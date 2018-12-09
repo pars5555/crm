@@ -33,7 +33,7 @@ namespace crm\loads\main {
             }
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity();
             $productsPrice = WarehouseManager::getInstance()->getAllProductsPrice(array_keys($productsQuantity));
-            $productsMappedById = ProductManager::getInstance()->getProductListFull([], 'name', 'ASC');
+            $productsMappedById = ProductManager::getInstance()->getProductListFull([], 'category_id', 'ASC');
             $productIds = array_keys($productsMappedById);
 
             $days = SettingManager::getInstance()->getSetting('new_items_days');
