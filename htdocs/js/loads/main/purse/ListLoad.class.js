@@ -50,6 +50,14 @@ NGS.createLoad("crm.loads.main.purse.list", {
         this.initRefreshCarrierDeliveryDate();
         this.initAddExternalOrder();
         this.initAddExternalOrderConfirm();
+        this.initExport();
+    },
+    initExport: function () {
+        $('#export_csv').click(function () {
+            var actionUrl = '/dyn/main_purse/do_export_csv?';
+            $(this).attr('href', actionUrl);
+        });
+
     },
     initExportTrackingsSearch: function () {
         $('#export_search').click(function () {

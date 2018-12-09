@@ -39,7 +39,11 @@ namespace crm\actions\main\billing {
 
             fputcsv($output, ['Date', 'Partner', 'Amount', 'currency', 'Note']);
             foreach ($rows as $row) {
-                fputcsv($output, [$row->getDate(), $row->getPartnerDto()->getName(), abs($row->getAmount()), $row->getCurrencyDto()->getTemplateChar(), $row->getNote()]);
+                $row = [$row->getDate(), $row->getPartnerDto()->getName(), abs($row->getAmount()), $row->getCurrencyDto()->getTemplateChar(), $row->getNote()];
+                $row = array_map(function(&$el){
+                    return '="'.$el .'"';
+                }, $row);
+                fputcsv($output, $row);
             }
             exit;
         }

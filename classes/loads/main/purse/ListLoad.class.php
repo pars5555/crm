@@ -21,52 +21,8 @@ namespace crm\loads\main\purse {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 200;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterAccount, $selectedFilterRecipientId, $selectedFilterHidden, $selectedFilterShippingType, $orderType, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse) = $this->initFilters($limit);
-            $where = ['1', '=', '1'];
-            if ($selectedFilterAccount !== 'purse_all') {
-                $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
-            }
-
-            $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered', 'under_balance','under_balance.confirming', 'accepted')";
-            if ($selectedFilterStatus === 'active') {
-                $where = array_merge($where, ['AND ', 'status', 'in', $activeStatusesSql]);
-            }
-            if ($selectedFilterStatus === 'inactive') {
-                $where = array_merge($where, ['AND ', 'status', 'not in', $activeStatusesSql]);
-            }
-            if ($selectedFilterHidden !== 'all') {
-                $where = array_merge($where, ['AND ', 'hidden', '=', 0]);
-            }
-            if ($selectedFilterShippingType !== 'all') {
-                $where = array_merge($where, ['AND ', 'shipping_type', '=', "'$selectedFilterShippingType'"]);
-            }
-            if ($orderType !== 'all') {
-                $orderTypeVal = $orderType == 'external' ? 1 : 0;
-                $where = array_merge($where, ['AND ', 'external', '=', $orderTypeVal]);
-            }
-            if ($selectedFilterRecipientId > 0) {
-                $recipientUnitAddressesSql = \crm\managers\RecipientManager::getInstance()->getRecipientUnitAddresses($selectedFilterRecipientId, true);
-                $where = array_merge($where, ['AND ', 'unit_address', 'in', $recipientUnitAddressesSql]);
-            }
-            if (!empty($searchText)) {
-                if (strpos($searchText, ' ') === false) {
-                    $where = array_merge($where, ['AND', '(', 'product_name', 'like', "'%$searchText%'"]);
-                    $where = array_merge($where, ['OR', 'order_number', 'like', "'%$searchText%'"]);
-                    $where = array_merge($where, ['OR', 'amazon_order_number', 'like', "'%$searchText%'"]);
-                    $where = array_merge($where, ['OR', 'recipient_name', 'like', "'%$searchText%'"]);
-                    $where = array_merge($where, ['OR', 'serial_number', 'like', "'%$searchText%'"]);
-                    $where = array_merge($where, ['OR', 'note', 'like', "'%$searchText%'"]);
-                    $where = array_merge($where, ['OR', 'buyer_name', 'like', "'%$searchText%'"]);
-                    $where = array_merge($where, ['OR', 'tracking_number', 'like', "'%$searchText%'", ')']);
-                    $words = [$searchText];
-                } else {
-                    $words = $parts = preg_split('/\s+/', $searchText);
-                    foreach ($words as $word) {
-                        $where = array_merge($where, ['AND', '(', 'product_name', 'like', "'%$word%'"]);
-                        $where = array_merge($where, ['OR', 'recipient_name', 'like', "'%$word%'", ')']);
-                    }
-                }
-            }
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc,$where,$words, $searchText, 
+                    $problematic, $regOrdersInWarehouse) = $this->initFilters($limit, $this);
             if (!empty($regOrdersInWarehouse)) {
                 $orders = PurseOrderManager::getInstance()->getNotRegisteredOrdersInWarehouse($regOrdersInWarehouse);
                 $count = count($orders);
@@ -151,7 +107,7 @@ namespace crm\loads\main\purse {
             $this->addParam('recipients', \crm\managers\RecipientManager::getInstance()->selectAdvance('*', [], ['first_name', 'last_name']));
         }
 
-        private function initFilters($limit) {
+        public static function initFilters($limit = 10000, $load = null) {
 
             $regOrdersInWarehouse = [];
             if (isset(NGS()->args()->roiw)) {
@@ -169,15 +125,19 @@ namespace crm\loads\main\purse {
             if (isset(NGS()->args()->pg)) {
                 $selectedFilterPage = intval(NGS()->args()->pg);
             }
-            $this->addParam('selectedFilterPage', $selectedFilterPage);
+            if (!empty($load)) {
+                $load->addParam('selectedFilterPage', $selectedFilterPage);
+            }
             $offset = 0;
             if ($selectedFilterPage > 1) {
                 $offset = ($selectedFilterPage - 1) * intval($limit);
             }
 
             //sorting
-            $sortByFields = $this->getSortByFields();
-            $this->addParam('sortFields', $sortByFields);
+            $sortByFields = self::getSortByFields();
+            if (!empty($load)) {
+                $load->addParam('sortFields', $sortByFields);
+            }
             $selectedFilterSortBy = 'created_at';
             if (isset(NGS()->args()->srt)) {
                 if (array_key_exists(NGS()->args()->srt, $sortByFields)) {
@@ -243,27 +203,73 @@ namespace crm\loads\main\purse {
                 $offset = 0;
                 $selectedFilterPage = 1;
             }
-
-            $this->addParam('problematic', $problematic);
-            $this->addParam('searchText', $searchText);
-            $this->addParam('selectedFilterRecipientId', $selectedFilterRecipientId);
-            $this->addParam('selectedFilterAccount', $selectedFilterAccount);
-            $this->addParam('notRegOrdersInWarehouse', $regOrdersInWarehouse);
-            $this->addParam('selectedFilterHidden', $selectedFilterHidden);
-            $this->addParam('selectedFilterStatus', $selectedFilterStatus);
-            $this->addParam('selectedFilterShippingType', $selectedFilterShippingType);
-            $this->addParam('orderType', $orderType);
-            $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
-            $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
-
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, 'purse_' . $selectedFilterAccount, $selectedFilterRecipientId, $selectedFilterHidden, $selectedFilterShippingType, $orderType, $selectedFilterStatus, $searchText, $problematic, $regOrdersInWarehouse];
+            if (!empty($load)) {
+                $load->addParam('problematic', $problematic);
+                $load->addParam('searchText', $searchText);
+                $load->addParam('selectedFilterRecipientId', $selectedFilterRecipientId);
+                $load->addParam('selectedFilterAccount', $selectedFilterAccount);
+                $load->addParam('notRegOrdersInWarehouse', $regOrdersInWarehouse);
+                $load->addParam('selectedFilterHidden', $selectedFilterHidden);
+                $load->addParam('selectedFilterStatus', $selectedFilterStatus);
+                $load->addParam('selectedFilterShippingType', $selectedFilterShippingType);
+                $load->addParam('orderType', $orderType);
+                $load->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
+                $load->addParam('selectedFilterSortBy', $selectedFilterSortBy);
+            }
+            
+            $where = ['1', '=', '1'];
+            if ($selectedFilterAccount !== 'all') {
+                $where = array_merge($where, ['AND ', 'account_name', '=', "'purse_$selectedFilterAccount'"]);
+            }
+            $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered', 'under_balance','under_balance.confirming', 'accepted')";
+            if ($selectedFilterStatus === 'active') {
+                $where = array_merge($where, ['AND ', 'status', 'in', $activeStatusesSql]);
+            }
+            if ($selectedFilterStatus === 'inactive') {
+                $where = array_merge($where, ['AND ', 'status', 'not in', $activeStatusesSql]);
+            }
+            if ($selectedFilterHidden !== 'all') {
+                $where = array_merge($where, ['AND ', 'hidden', '=', 0]);
+            }
+            if ($selectedFilterShippingType !== 'all') {
+                $where = array_merge($where, ['AND ', 'shipping_type', '=', "'$selectedFilterShippingType'"]);
+            }
+            if ($orderType !== 'all') {
+                $orderTypeVal = $orderType == 'external' ? 1 : 0;
+                $where = array_merge($where, ['AND ', 'external', '=', $orderTypeVal]);
+            }
+            if ($selectedFilterRecipientId > 0) {
+                $recipientUnitAddressesSql = \crm\managers\RecipientManager::getInstance()->getRecipientUnitAddresses($selectedFilterRecipientId, true);
+                $where = array_merge($where, ['AND ', 'unit_address', 'in', $recipientUnitAddressesSql]);
+            }
+            $words = [];
+            if (!empty($searchText)) {
+                if (strpos($searchText, ' ') === false) {
+                    $where = array_merge($where, ['AND', '(', 'product_name', 'like', "'%$searchText%'"]);
+                    $where = array_merge($where, ['OR', 'order_number', 'like', "'%$searchText%'"]);
+                    $where = array_merge($where, ['OR', 'amazon_order_number', 'like', "'%$searchText%'"]);
+                    $where = array_merge($where, ['OR', 'recipient_name', 'like', "'%$searchText%'"]);
+                    $where = array_merge($where, ['OR', 'serial_number', 'like', "'%$searchText%'"]);
+                    $where = array_merge($where, ['OR', 'note', 'like', "'%$searchText%'"]);
+                    $where = array_merge($where, ['OR', 'buyer_name', 'like', "'%$searchText%'"]);
+                    $where = array_merge($where, ['OR', 'tracking_number', 'like', "'%$searchText%'", ')']);
+                    $words = [$searchText];
+                } else {
+                    $words = $parts = preg_split('/\s+/', $searchText);
+                    foreach ($words as $word) {
+                        $where = array_merge($where, ['AND', '(', 'product_name', 'like', "'%$word%'"]);
+                        $where = array_merge($where, ['OR', 'recipient_name', 'like', "'%$word%'", ')']);
+                    }
+                }
+            }
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $where,$words, $searchText, $problematic, $regOrdersInWarehouse];
         }
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/purse/list.tpl";
         }
 
-        public function getSortByFields() {
+        public static function getSortByFields() {
             return ['created_at' => 'Created Date', 'status' => 'Status', 'updated_at' => 'Changed', 'buyer_name' => 'Buyer'];
         }
 

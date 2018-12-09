@@ -12,6 +12,7 @@
     {if !empty($ns.changed_orders)}
         <h2>following orders are changed or added, {$ns.changed_orders}</h2>
     {/if}
+    
 
     <div class="main-table">
         <table>
@@ -37,7 +38,7 @@
             {foreach from=$ns.orders item=order}
                 <tr {if $order->getHidden()==1}style="background: lightgray"{/if}  data-type="btc" data-id="{$order->getId()}" >
                     <td>
-                       {$order->getId()}<br/>
+                        {$order->getId()}<br/>
                         {if $order->getHidden()==0}
                             <a href="javascript:void(0);" class="fa fa-eye-slash fa-1x f_hide left" data-id='{$order->getId()}'></a>
                         {/if}
@@ -54,7 +55,7 @@
                             <a href="javascript:void(0);" id="problem_solved_{$order->getId()}" class="fa fa-check-circle fa-2x f_problem_solved" data-id='{$order->getId()}'></a>
                         {/if}
                     </td>
-                    
+
                     <td>
                         <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a>
                         <br/>

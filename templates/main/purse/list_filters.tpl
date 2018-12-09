@@ -86,6 +86,9 @@
             </select>
         </div>
     {/if}
+    <div class="filter csv right">
+        <a href="javascript:void(0);" class="inline-block" id="export_csv"><img src="{$SITE_PATH}/img/csv.png" width="45"/></a>
+    </div>
     <div class="filter">
             <div class="add-new-btn">
                 <a id="add_external_order_button" >+</a>

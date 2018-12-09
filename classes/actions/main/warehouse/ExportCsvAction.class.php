@@ -37,8 +37,12 @@ namespace crm\actions\main\warehouse {
             fputcsv($output, ['']);
             foreach ($products as $product) {
                 if (isset($productsQuantity[$product->getId()]) && $productsQuantity[$product->getId()] > 0) {
-                    fputcsv($output, [$product->getName(), $product->getModel(), $product->getUomDto()->getName(),
-                        $productsQuantity[$product->getId()] ?: 0, round($productsPrice[$product->getId()], 2), $product->getStockPrice()]);
+                    $row = [$product->getName(), $product->getModel(), $product->getUomDto()->getName(),
+                        $productsQuantity[$product->getId()] ?: 0, round($productsPrice[$product->getId()], 2), $product->getStockPrice()];
+                    $row = array_map(function(&$el) {
+                        return '="' . $el . '"';
+                    }, $row);
+                    fputcsv($output, $row);
                 }
             }
             exit;
