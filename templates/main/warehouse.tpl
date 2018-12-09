@@ -37,7 +37,7 @@
                 {if $cat != $product->getCategoryId()}
                     {assign cat $product->getCategoryId()}
                     <tr>
-                        <h1 style="color:red">{$ns.categoriesMappedById[$product->getCategoryId()]}</h1>
+                        <span style="color:red; font-size: 24px">{$ns.categoriesMappedById[$product->getCategoryId()]}</span>
                     </tr>
                     {/if}
                 {if (isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0) ||
