@@ -34,9 +34,11 @@
             </tr>
             {assign cat 0}
             {foreach from=$ns.products item=product}
-                {if cat != $product->getCategoryId()}
+                {if $cat != $product->getCategoryId()}
                     {assign cat $product->getCategoryId()}
-                    <h1 style="color:red">{$ns.categoriesMappedById[$product->getCategoryId()]}</h1>
+                    <tr>
+                        <h1 style="color:red">{$ns.categoriesMappedById[$product->getCategoryId()]}</h1>
+                    </tr>
                     {/if}
                 {if (isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0) ||
                     (isset($ns.pwarehousesProductsQuantity[$product->getId()]) && $ns.pwarehousesProductsQuantity[$product->getId()]>0)}
