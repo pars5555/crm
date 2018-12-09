@@ -11,30 +11,34 @@
 
 namespace crm\loads\main {
 
-use crm\loads\AdminLoad;
-use crm\managers\CurrencyRateManager;
-use crm\managers\PartnerManager;
-use crm\managers\ProductManager;
-use crm\managers\PurchaseOrderLineManager;
-use crm\managers\SaleOrderLineManager;
-use crm\managers\SettingManager;
-use crm\managers\WarehouseManager;
-use crm\security\RequestGroups;
-use NGS;
+    use crm\loads\AdminLoad;
+    use crm\managers\CurrencyRateManager;
+    use crm\managers\PartnerManager;
+    use crm\managers\ProductManager;
+    use crm\managers\PurchaseOrderLineManager;
+    use crm\managers\SaleOrderLineManager;
+    use crm\managers\SettingManager;
+    use crm\managers\WarehouseManager;
+    use crm\security\RequestGroups;
+    use NGS;
 
     class WarehouseLoad extends AdminLoad {
 
         public function load() {
             $pwarehousesProductsQuantity = $this->loadPartnersWarehouses();
-
+            $categories = \crm\managers\ProductCategoryManager::getInstance()->selectAll();
+            $categoriesMappedById = [];
+            foreach ($categories as $category) {
+                $categoriesMappedById[$category->getId()] = $category->getName();
+            }
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity();
             $productsPrice = WarehouseManager::getInstance()->getAllProductsPrice(array_keys($productsQuantity));
             $productsMappedById = ProductManager::getInstance()->getProductListFull([], 'name', 'ASC');
             $productIds = array_keys($productsMappedById);
-            
+
             $days = SettingManager::getInstance()->getSetting('new_items_days');
             $newProductIds = PurchaseOrderLineManager::getInstance()->getLastDaysPurchases($days);
-            
+
             $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
             $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
             $partnerIds = [];
@@ -52,8 +56,7 @@ use NGS;
             $partnersMappedByIds = PartnerManager::getInstance()->selectAdvance(['name', 'id'], ['id', 'in', "($partnerIdsSql)"], null, null, null, null, true);
             $usdRate = CurrencyRateManager::getInstance()->getCurrencyRate(1);
 
-
-
+            $this->addParam('categoriesMappedById', $categoriesMappedById);
             $this->addParam('pwarehousesProductsQuantity', $pwarehousesProductsQuantity);
             $this->addParam('products', $productsMappedById);
             $this->addParam('newProductIds', $newProductIds);

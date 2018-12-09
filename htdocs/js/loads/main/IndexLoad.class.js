@@ -13,9 +13,47 @@ NGS.createLoad("crm.loads.main.index", {
         this.checkbox();
         this.initCloseModal();
         this.initEditableCells();
+        this.initSelectableCells();
         this.initSettingEditableCells();
         this.initLeftMenuTrigger();
         this.hideLeftMenuOnMobile();
+    },
+    initSelectableCells: function () {
+        $("body").on("dblclick", ".f_selectable_cell", function () {
+            var templateSelectId = $(this).data('template-select-id');
+            var selectElement = $('#' + templateSelectId).clone();
+            var value = $(this).data('value');
+            var displayValue = $(this).text();
+            var cellFieldName = $(this).data('field-name');
+            var object_type = $(this).parent('tr').data('type');
+            var id = $(this).closest('tr').data('id');
+            if (value >= 0 || value.length > 0) {
+                $(selectElement).val(value);
+            }
+            selectElement.removeAttr('id');
+            selectElement.removeClass('hidden');
+            $(this).html(selectElement);
+            var cellElement = $(this);
+            selectElement.focus();
+            selectElement.blur(function () {
+                selectElement.remove();
+                cellElement.html(displayValue);
+            });
+            selectElement.change(function () {
+                var value = $(this).val();
+                cellElement.data('value', value);
+                $(this).off();
+                NGS.action('crm.actions.main.UpdateField',
+                        {'id': id,
+                            'object_type': object_type,
+                            'field_name': cellFieldName,
+                            "field_value": value}, function (ret) {
+                    cellElement.data('value', ret.value);
+                    selectElement.remove();
+                    cellElement.html(ret.display_value);
+                });
+            });
+        });
     },
     initEditableCells: function () {
         $(document).on('dblclick', '.f_editable_cell', function () {
@@ -83,7 +121,7 @@ NGS.createLoad("crm.loads.main.index", {
         });
     },
     initCloseModal: function () {
-        $(document).on('click','.modal .modal-close',function () {
+        $(document).on('click', '.modal .modal-close', function () {
             $(this).closest('.modal').removeClass('is_active');
         });
     },

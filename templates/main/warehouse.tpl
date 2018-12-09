@@ -17,6 +17,7 @@
 
                 <th style="min-width: 250px;">Name</th>
                 <th>Model</th>
+                <th>Category</th>
                     {if $ns.userType == $ns.userTypeAdmin}
                     <th>Location</th>
                         {*                <th>Uom</th>*}
@@ -39,6 +40,9 @@
                     <td> <img src="{$product->getImageUrl()}" width="100"/> </td>
                     <td style="min-width: 250px; {if $product->getId()|in_array:$ns.newProductIds} color:blue; {/if}" data-field-name="name">{$product->getName()}</td>
                     <td data-field-name="model">{$product->getModel()}</td>
+                    <td class="f_selectable_cell" data-value="{$product->getCategoryId()}" data-field-name="category_id" data-template-select-id="category_select">
+                        {$ns.categoriesMappedById[$product->getCategoryId()]}
+                    </td>
                     {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}
                         {if $ns.userType == $ns.userTypeAdmin}
                             <td class="pre f_editable_cell" data-type="richtext"  data-field-name="location_note">{$product->getLocationNote()}
@@ -104,3 +108,8 @@
                     </table>
                 </div>
             </div>
+            <select id='category_select' class="hidden" style="width: 120px" >
+                {foreach from=$ns.categoriesMappedById key=category_id item=category_name}
+                    <option value="{$category_id}">{$category_name}</option>
+                {/foreach}
+            </select>

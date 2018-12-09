@@ -71,6 +71,10 @@ namespace crm\actions\main {
             $manager->updateField($id, $fieldName, $fieldValue);
             $valueAfterSave = $manager->selectByPk($id);
             $this->addParam('value', $valueAfterSave->$fieldName);
+            if ($fieldName === 'category_id' && $objectType === 'product'){
+                $this->addParam('display_value', \crm\managers\ProductCategoryManager::getInstance()->selectByPk($fieldValue)->getName());
+                
+            }
         }
 
     }

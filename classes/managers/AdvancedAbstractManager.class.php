@@ -104,8 +104,12 @@ namespace crm\managers {
             return $this->mapper->deleteByPK($id);
         }
 
-        public function selectAll() {
-            return $this->mapper->selectAll();
+        public function selectAll($mapByIds = False) {
+            $dtos = $this->mapper->selectAll();
+            if ($mapByIds) {
+                return $this->mapDtosById($dtos);
+            }
+            return $dtos;
         }
 
         public function deleteAdvance($filters = null) {
