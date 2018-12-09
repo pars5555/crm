@@ -64,15 +64,15 @@ namespace crm\dal\mappers {
             return $rows;
         }
 
-        public function getAllProductCountInNonCancelledSaleOrders($partnerId = false) {
+        public function getAllProductCountInNonCancelledSaleOrders($partnerId = false, $excludePartnerIdsStr) {
             $sql = "SELECT product_id, SUM(quantity) AS `product_qty` FROM `%s` INNER JOIN  "
                     . " `sale_orders` ON `sale_order_id` = `sale_orders`.`id` "
                     . "WHERE `sale_orders`.`cancelled` = 0 %s GROUP by `product_id`";
             $skip = "";
-            if ($partnerId > 0 )
-            {
+            if ($partnerId > 0) {
                 $skip = "AND `sale_orders`.partner_id = $partnerId";
             }
+            $skip = "AND `sale_orders`.partner_id not in ($excludePartnerIdsStr)";
             $sqlQuery = sprintf($sql, $this->getTableName(), $skip);
             $productIdQtyObjects = $this->fetchRows($sqlQuery);
             $ret = [];
@@ -110,8 +110,8 @@ namespace crm\dal\mappers {
             $sqlQuery = sprintf($sql, $this->getTableName(), $productIdsExploded);
             return $this->fetchRows($sqlQuery);
         }
-        
-        public function getNonCancelledProductSaleOrders($productId, $exceptSaleOrderId, $dateBefore) {
+
+        public function getNonCancelledProductSaleOrders($productId, $exceptSaleOrderId, $dateBefore, $excludePartnerIdsStr) {
             $sql = "SELECT * FROM `%s` INNER JOIN  "
                     . " `sale_orders` ON `sale_order_id` = `sale_orders`.`id` "
                     . "WHERE `sale_orders`.`cancelled` = 0  AND `sale_orders`.`id`!=:soId AND product_id=:id %s ORDER BY `order_date` ASC";
@@ -119,8 +119,9 @@ namespace crm\dal\mappers {
             if (!empty($dateBefore)) {
                 $subSql .= " AND `order_date`<='$dateBefore'";
             }
+            $subSql = "AND `sale_orders`.partner_id not in ($excludePartnerIdsStr)";
             $sqlQuery = sprintf($sql, $this->getTableName(), $subSql);
-            return $this->fetchRows($sqlQuery, ['id'=>$productId, "soId" => $exceptSaleOrderId]);
+            return $this->fetchRows($sqlQuery, ['id' => $productId, "soId" => $exceptSaleOrderId]);
         }
 
     }

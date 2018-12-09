@@ -64,10 +64,15 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function getAllProductsQuantity() {
+        public function getAllProductsQuantity($includePartnerWarehase = False) {
+            $excludePartnerIdsStr = '0';
+            if ($includePartnerWarehase)
+            {        
+                $excludePartnerIdsStr = SettingManager::getInstance()->getSetting('warehouse_partners');
+            }
 
-            $allProductQuantityInPurchaseOrders = PurchaseOrderLineManager::getInstance()->getAllProductCountInNonCancelledPurchaseOrders();
-            $allProductQuantityInSaleOrders = SaleOrderLineManager::getInstance()->getAllProductCountInNonCancelledSaleOrders();
+            $allProductQuantityInPurchaseOrders = PurchaseOrderLineManager::getInstance()->getAllProductCountInNonCancelledPurchaseOrders(false, $excludePartnerIdsStr);
+            $allProductQuantityInSaleOrders = SaleOrderLineManager::getInstance()->getAllProductCountInNonCancelledSaleOrders(false, $excludePartnerIdsStr);
             $productQtyMappedByProductId = [];
             foreach ($allProductQuantityInPurchaseOrders as $productId => $productQty) {
                 $productQtyMappedByProductId[$productId] = $productQty;

@@ -106,8 +106,8 @@ namespace crm\managers {
             return $this->mapper->getProductCountInNonCancelledPurchaseOrders($productId);
         }
 
-        public function getNonCancelledProductPurchaseOrders($productId, $date = null) {
-            return $this->mapper->getNonCancelledProductPurchaseOrders($productId, $date);
+        public function getNonCancelledProductPurchaseOrders($productId, $date = null, $includePartnerWarehase = False) {
+            return $this->mapper->getNonCancelledProductPurchaseOrders($productId, $date, $includePartnerWarehase);
         }
 
         public function getNonCancelledProductsPurchaseOrders($productIds) {
@@ -178,8 +178,8 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function getAllProductCountInNonCancelledPurchaseOrders($partnerId = false) {
-            return $this->mapper->getAllProductCountInNonCancelledPurchaseOrders($partnerId);
+        public function getAllProductCountInNonCancelledPurchaseOrders($partnerId = false, $excludePartnerIdsStr = '0') {
+            return $this->mapper->getAllProductCountInNonCancelledPurchaseOrders($partnerId, $excludePartnerIdsStr);
         }
 
         public function getAllProductPriceInNonCancelledPurchaseOrders() {

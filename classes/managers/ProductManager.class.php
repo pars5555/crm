@@ -178,7 +178,7 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function calculateProductCost($productId, $productSaleQty, $saleOrderId = 0) {
+        public function calculateProductCost($productId, $productSaleQty, $saleOrderId = 0, $includePartnerWarehase = False) {
             $date = null;
             if ($saleOrderId > 0) {
                 $so = SaleOrderManager::getInstance()->selectByPk($saleOrderId);
@@ -188,9 +188,14 @@ namespace crm\managers {
                 $date = $so->getOrderDate();
             }
             $this->calculationProductId = $productId;
-            $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId, $date);
+            $excludePartnerIds = '0';
+            if ($includePartnerWarehase)
+            {        
+                $excludePartnerIds = SettingManager::getInstance()->getSetting('warehouse_partners');
+            }
+            $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId, $date, $excludePartnerIds);
             $productPurchaseOrderLines = $this->mapDtosById($productPurchaseOrderLines);
-            $productSaleOrderLines = SaleOrderLineManager::getInstance()->getNonCancelledProductSaleOrders($productId, $saleOrderId, $date);
+            $productSaleOrderLines = SaleOrderLineManager::getInstance()->getNonCancelledProductSaleOrders($productId, $saleOrderId, $date, $excludePartnerIds);
             $productPurchaseOrderLines = $this->subtracPurchaseOrderLinesByProductSaleOrders($productPurchaseOrderLines, $productSaleOrderLines);
             $ret = $this->removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSaleQty, $date);
             return $ret;

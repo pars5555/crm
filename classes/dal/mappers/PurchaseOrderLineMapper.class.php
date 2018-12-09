@@ -51,14 +51,15 @@ namespace crm\dal\mappers {
             return isset($qty) ? floatval($qty) : 0;
         }
 
-        public function getNonCancelledProductPurchaseOrders($productId, $date) {
+        public function getNonCancelledProductPurchaseOrders($productId, $date, $excludePartnerIdsStr = '0') {
             $sql = "SELECT *, `purchase_order_lines`.`id` as `id` FROM `%s` INNER JOIN  "
                     . " `purchase_orders` ON `purchase_order_id` = `purchase_orders`.`id` "
-                    . "WHERE `purchase_orders`.`cancelled` = 0 AND product_id=:id %s ORDER BY `order_date` ASC";
+                    . "WHERE `purchase_orders`.`cancelled` = 0 AND product_id=:id %s %s ORDER BY `order_date` ASC";
+            $skip = "AND `purchase_orders`.partner_id not in ($excludePartnerIdsStr)";
             if ($date != null) {
-                $sqlQuery = sprintf($sql, $this->getTableName(), "AND `order_date`<='" . $date . "'");
+                $sqlQuery = sprintf($sql, $this->getTableName(), "AND `order_date`<='" . $date . "'", $skip);
             } else {
-                $sqlQuery = sprintf($sql, $this->getTableName(), '');
+                $sqlQuery = sprintf($sql, $this->getTableName(), '', $skip);
             }
             return $this->fetchRows($sqlQuery, array("id" => $productId));
         }
@@ -72,7 +73,7 @@ namespace crm\dal\mappers {
             return $this->fetchRows($sqlQuery);
         }
 
-        public function getAllProductCountInNonCancelledPurchaseOrders($partnerId = false) {
+        public function getAllProductCountInNonCancelledPurchaseOrders($partnerId = false, $excludePartnerIdsStr = '0') {
             $sql = "SELECT product_id, SUM(quantity) AS `product_qty` FROM `%s` INNER JOIN  "
                     . " `purchase_orders` ON `purchase_order_id` = `purchase_orders`.`id` "
                     . "WHERE `purchase_orders`.`cancelled` = 0 %s GROUP by `product_id`";
@@ -80,6 +81,7 @@ namespace crm\dal\mappers {
             if ($partnerId > 0) {
                 $skip = "AND purchase_orders.partner_id = $partnerId";
             }
+            $skip = "AND purchase_orders.partner_id not in ($excludePartnerIdsStr)";
             $sqlQuery = sprintf($sql, $this->getTableName(), $skip);
             $productIdQtyObjects = $this->fetchRows($sqlQuery);
             $ret = [];
