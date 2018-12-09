@@ -32,10 +32,15 @@
                     <th class="icon-cell">View</th>
                     {/if}
             </tr>
+            {assign cat 0}
             {foreach from=$ns.products item=product}
+                {if cat != $product->getCategoryId()}
+                    {assign cat $product->getCategoryId()}
+                    <h1 style="color:red">{$ns.categoriesMappedById[$product->getCategoryId()]}</h1>
+                    {/if}
                 {if (isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0) ||
                     (isset($ns.pwarehousesProductsQuantity[$product->getId()]) && $ns.pwarehousesProductsQuantity[$product->getId()]>0)}
-                <tr data-id="{$product->getId()}" data-type="product" {if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}>
+                    <tr data-id="{$product->getId()}" data-type="product" {if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}>
                     <td>{$product->getId()}</td>
                     <td> <img src="{$product->getImageUrl()}" width="100"/> </td>
                     <td style="min-width: 250px; {if $product->getId()|in_array:$ns.newProductIds} color:blue; {/if}" data-field-name="name">{$product->getName()}</td>
