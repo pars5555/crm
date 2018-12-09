@@ -25,7 +25,7 @@ namespace crm\loads\main {
     class WarehouseLoad extends AdminLoad {
 
         public function load() {
-            //$pwarehousesProductsQuantity = $this->loadPartnersWarehouses();
+            $pwarehousesProductsQuantity = $this->loadPartnersWarehouses();
             $categories = \crm\managers\ProductCategoryManager::getInstance()->selectAll();
             $categoriesMappedById = [];
             foreach ($categories as $category) {
@@ -57,7 +57,7 @@ namespace crm\loads\main {
             $usdRate = CurrencyRateManager::getInstance()->getCurrencyRate(1);
 
             $this->addParam('categoriesMappedById', $categoriesMappedById);
-          //  $this->addParam('pwarehousesProductsQuantity', $pwarehousesProductsQuantity);
+            $this->addParam('pwarehousesProductsQuantity', $pwarehousesProductsQuantity);
             $this->addParam('products', $productsMappedById);
             $this->addParam('newProductIds', $newProductIds);
             $this->addParam('usd_rate', $usdRate);

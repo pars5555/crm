@@ -59,11 +59,11 @@
                         {/if}
                         <td>
                             {if isset($ns.productsQuantity[$product->getId()])}{$ns.productsQuantity[$product->getId()]|default:'0'}<br/>{/if}
-                            {*{if $ns.userType == $ns.userTypeAdmin}
+                            {if $ns.userType == $ns.userTypeAdmin}
                                 {if isset($ns.pwarehousesProductsQuantity[$product->getId()])}
                                     <span style="color:red">{$pwarehousesProductsQuantity[$product->getId()]|default:'0'}</span>
                                 {/if}
-                            {/if}*}
+                            {/if}
 
                         </td>
                         {if $ns.showprofit == 1}
