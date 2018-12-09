@@ -37,6 +37,7 @@
                 {if $cat != $product->getCategoryId()}
                     {assign cat $product->getCategoryId()}
                     <tr>
+                        <td></td>
                         <td style="color:red; font-size: 24px">{$ns.categoriesMappedById[$product->getCategoryId()]}</td>
                     </tr>
                     {/if}
