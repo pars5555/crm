@@ -64,7 +64,7 @@ namespace crm\dal\mappers {
             return $rows;
         }
 
-        public function getAllProductCountInNonCancelledSaleOrders($partnerId = false, $excludePartnerIdsStr) {
+        public function getAllProductCountInNonCancelledSaleOrders($partnerId = false, $excludePartnerIdsStr = '0') {
             $sql = "SELECT product_id, SUM(quantity) AS `product_qty` FROM `%s` INNER JOIN  "
                     . " `sale_orders` ON `sale_order_id` = `sale_orders`.`id` "
                     . "WHERE `sale_orders`.`cancelled` = 0 %s GROUP by `product_id`";
@@ -72,7 +72,7 @@ namespace crm\dal\mappers {
             if ($partnerId > 0) {
                 $skip = "AND `sale_orders`.partner_id = $partnerId";
             }
-            $skip = "AND `sale_orders`.partner_id not in ($excludePartnerIdsStr)";
+            $skip .= " AND `sale_orders`.partner_id not in ($excludePartnerIdsStr)";
             $sqlQuery = sprintf($sql, $this->getTableName(), $skip);
             $productIdQtyObjects = $this->fetchRows($sqlQuery);
             $ret = [];
@@ -119,7 +119,7 @@ namespace crm\dal\mappers {
             if (!empty($dateBefore)) {
                 $subSql .= " AND `order_date`<='$dateBefore'";
             }
-            $subSql = "AND `sale_orders`.partner_id not in ($excludePartnerIdsStr)";
+            $subSql .= " AND `sale_orders`.partner_id not in ($excludePartnerIdsStr)";
             $sqlQuery = sprintf($sql, $this->getTableName(), $subSql);
             return $this->fetchRows($sqlQuery, ['id' => $productId, "soId" => $exceptSaleOrderId]);
         }

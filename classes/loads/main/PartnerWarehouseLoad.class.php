@@ -33,7 +33,6 @@ namespace crm\loads\main {
             if (!empty(NGS()->args()->partner_id)) {
                 $partnerId = NGS()->args()->partner_id;
             }
-
             $warehousePartners = PartnerManager::getInstance()->selectAdvance('*', ['id', 'in', "($warehouse_partners)"], null, null, null, null, true);
             $productsQuantity = WarehouseManager::getInstance()->getWarehousePartnerProductsQuantity($partnerId);
             $productIds = array_keys($productsQuantity);

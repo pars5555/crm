@@ -55,7 +55,7 @@ namespace crm\dal\mappers {
             $sql = "SELECT *, `purchase_order_lines`.`id` as `id` FROM `%s` INNER JOIN  "
                     . " `purchase_orders` ON `purchase_order_id` = `purchase_orders`.`id` "
                     . "WHERE `purchase_orders`.`cancelled` = 0 AND product_id=:id %s %s ORDER BY `order_date` ASC";
-            $skip = "AND `purchase_orders`.partner_id not in ($excludePartnerIdsStr)";
+            $skip = " AND `purchase_orders`.partner_id not in ($excludePartnerIdsStr)";
             if ($date != null) {
                 $sqlQuery = sprintf($sql, $this->getTableName(), "AND `order_date`<='" . $date . "'", $skip);
             } else {
@@ -81,7 +81,7 @@ namespace crm\dal\mappers {
             if ($partnerId > 0) {
                 $skip = "AND purchase_orders.partner_id = $partnerId";
             }
-            $skip = "AND purchase_orders.partner_id not in ($excludePartnerIdsStr)";
+            $skip .= " AND purchase_orders.partner_id not in ($excludePartnerIdsStr)";
             $sqlQuery = sprintf($sql, $this->getTableName(), $skip);
             $productIdQtyObjects = $this->fetchRows($sqlQuery);
             $ret = [];
