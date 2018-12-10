@@ -58,7 +58,13 @@
                             {*                        <td>{$product->getUomDto()->getName()}</td>*}
                         {/if}
                         <td>
-                            {if isset($ns.productsQuantity[$product->getId()])}{$ns.productsQuantity[$product->getId()]|default:'0'}<br/>{/if}
+                            {if isset($ns.productsQuantity[$product->getId()])}
+                                {assign qty $ns.productsQuantity[$product->getId()]|default:0}
+                                {if isset($ns.pwarehousesProductsQuantity[$product->getId()])}
+                                    {assign qty $qty-$ns.pwarehousesProductsQuantity[$product->getId()]}
+                                {/if}
+                                {$qty}<br/>
+                            {/if}
                             {if $ns.userType == $ns.userTypeAdmin}
                                 {if isset($ns.pwarehousesProductsQuantity[$product->getId()])}
                                     <span style="color:red">{$pwarehousesProductsQuantity[$product->getId()]|default:'0'}</span>
