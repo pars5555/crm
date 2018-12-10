@@ -273,6 +273,7 @@ namespace crm\managers {
                         if (!$ignoreInsufficientProduct){
                             throw new InsufficientProductException($this->calculationProductId);
                         }
+                        $productSaleOrderLineQty -= $quantity;
                         continue;
                     }
                     $pol = $productPurchaseOrderLines[$lineId];
