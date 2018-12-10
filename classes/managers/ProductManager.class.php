@@ -178,7 +178,7 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function calculateProductCost($productId, $productSaleQty, $saleOrderId = 0, $includePartnerWarehase = False) {
+        public function calculateProductCost($productId, $productSaleQty, $saleOrderId = 0, $includePartnerWarehase = False, $ignoreInsufficientProduct = false) {
             $date = null;
             if ($saleOrderId > 0) {
                 $so = SaleOrderManager::getInstance()->selectByPk($saleOrderId);
@@ -196,7 +196,7 @@ namespace crm\managers {
             $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId, $date, $excludePartnerIds);
             $productPurchaseOrderLines = $this->mapDtosById($productPurchaseOrderLines);
             $productSaleOrderLines = SaleOrderLineManager::getInstance()->getNonCancelledProductSaleOrders($productId, $saleOrderId, $date, $excludePartnerIds);
-            $productPurchaseOrderLines = $this->subtracPurchaseOrderLinesByProductSaleOrders($productPurchaseOrderLines, $productSaleOrderLines);
+            $productPurchaseOrderLines = $this->subtracPurchaseOrderLinesByProductSaleOrders($productPurchaseOrderLines, $productSaleOrderLines, $ignoreInsufficientProduct);
             $ret = $this->removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSaleQty, $date);
             return $ret;
         }
@@ -254,7 +254,7 @@ namespace crm\managers {
             return $ret / $totalQty;
         }
 
-        private function subtracPurchaseOrderLinesByProductSaleOrders($productPurchaseOrderLines, $productSaleOrderLines) {
+        private function subtracPurchaseOrderLinesByProductSaleOrders($productPurchaseOrderLines, $productSaleOrderLines, $ignoreInsufficientProduct = False) {
             if (empty($productSaleOrderLines)) {
                 return $productPurchaseOrderLines;
             }
@@ -270,7 +270,10 @@ namespace crm\managers {
                         $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
                     }
                     if ($lineId == 0) {
-                        throw new InsufficientProductException($this->calculationProductId);
+                        if (!$ignoreInsufficientProduct){
+                            throw new InsufficientProductException($this->calculationProductId);
+                        }
+                        continue;
                     }
                     $pol = $productPurchaseOrderLines[$lineId];
                     $quantity = floatval($pol->getQuantity());

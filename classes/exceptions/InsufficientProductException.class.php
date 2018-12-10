@@ -17,6 +17,7 @@ namespace crm\exceptions {
 
         public function __construct($productId) {
             $this->productId = $productId;
+            $this->message = $this->message . ' product ID:'. $this->productId;
         }
 
         function getProductId() {
