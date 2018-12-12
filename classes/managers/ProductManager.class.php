@@ -347,8 +347,9 @@ namespace crm\managers {
         private function findAverageProductPriceLineId($productPurchaseOrderLines, $beforeDate = null) {
             $minLineId = $this->findMinProductPriceLineId($productPurchaseOrderLines, $beforeDate);
             $maxLineId = $this->findMaxProductPriceLineId($productPurchaseOrderLines, $beforeDate);
-            $averagePrice = floatval($productPurchaseOrderLines[$minLineId]->getUnitPrice()) * floatval($productPurchaseOrderLines[$minLineId]->getCurrencyRate())
-                    + floatval($productPurchaseOrderLines[$maxLineId]->getUnitPrice()) * floatval($productPurchaseOrderLines[$minLineId]->getCurrencyRate());
+            $averagePrice = 
+                    (floatval($productPurchaseOrderLines[$minLineId]->getUnitPrice()) * floatval($productPurchaseOrderLines[$minLineId]->getCurrencyRate())
+                    + floatval($productPurchaseOrderLines[$maxLineId]->getUnitPrice()) * floatval($productPurchaseOrderLines[$minLineId]->getCurrencyRate()))*0.95;
             
             $minProductPriceLineId = 0;
             $minDiff = $averagePrice;
