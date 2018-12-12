@@ -178,7 +178,7 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function calculateProductCost($productId, $productSaleQty, $saleOrderId = 0, $includePartnerWarehase = False, $ignoreInsufficientProduct = false, $getAveragePrice = false) {
+        public function calculateProductCost($productId, $productSaleQty, $saleOrderId = 0, $includePartnerWarehase = False, $ignoreInsufficientProduct = false) {
             $date = null;
             if ($saleOrderId > 0) {
                 $so = SaleOrderManager::getInstance()->selectByPk($saleOrderId);
@@ -196,9 +196,6 @@ namespace crm\managers {
             $productPurchaseOrderLines = $this->mapDtosById($productPurchaseOrderLines);
             $productSaleOrderLines = SaleOrderLineManager::getInstance()->getNonCancelledProductSaleOrders($productId, $saleOrderId, $date, $excludePartnerIds);
             $productPurchaseOrderLines = $this->subtracPurchaseOrderLinesByProductSaleOrders($productPurchaseOrderLines, $productSaleOrderLines, $ignoreInsufficientProduct);
-            if ($getAveragePrice){
-                return $this->calcAveragePrice($productPurchaseOrderLines);
-            }
             $ret = $this->removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSaleQty, $date);
             return $ret;
         }
