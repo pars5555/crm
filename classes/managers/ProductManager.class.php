@@ -364,10 +364,14 @@ namespace crm\managers {
                 $unitPrice = floatval($dto->getUnitPrice());
                 $currencyRate = floatval($dto->getCurrencyRate());
                 $productPriceInMainCurrency = $unitPrice * $currencyRate;
-                if (abs($productPriceInMainCurrency - $averagePrice) < $minDiff || $minDiff === $averagePrice) {
+                if (abs($productPriceInMainCurrency - $averagePrice)) {
                     $minDiff = abs($productPriceInMainCurrency - $averagePrice);
                     $minProductPriceLineId = $lineId;
                 }
+            }
+            if ($minProductPriceLineId == 0)
+            {
+                return $this->findMinProductPriceLineId($productPurchaseOrderLines, $beforeDate);
             }
             return $minProductPriceLineId;
         }
