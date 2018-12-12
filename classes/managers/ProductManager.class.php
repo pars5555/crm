@@ -371,7 +371,7 @@ namespace crm\managers {
             }
             if ($minProductPriceLineId == 0)
             {
-                return $this->findMaxProductPriceLineId($productPurchaseOrderLines, $beforeDate);
+                return $this->findMinProductPriceLineId($productPurchaseOrderLines, $beforeDate);
             }
             return $minProductPriceLineId;
         }
