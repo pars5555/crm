@@ -217,7 +217,11 @@ namespace crm\managers {
             while (true) {
                 if ($profit_calculation_method == 'max') {
                     $lineId = $this->findMaxProductPriceLineId($productPurchaseOrderLines, $date);
-                } else {
+                } elseif ($profit_calculation_method == 'min'){
+                    $lineId = $this->findMinProductPriceLineId($productPurchaseOrderLines);
+                } elseif ($profit_calculation_method == 'average'){
+                    $lineId = $this->findAverageProductPriceLineId($productPurchaseOrderLines);
+                }else{
                     $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
                 }
 
@@ -369,8 +373,7 @@ namespace crm\managers {
                     $minProductPriceLineId = $lineId;
                 }
             }
-            if ($minProductPriceLineId == 0)
-            {
+            if ($minProductPriceLineId == 0) {
                 return $this->findMinProductPriceLineId($productPurchaseOrderLines, $beforeDate);
             }
             return $minProductPriceLineId;
