@@ -360,8 +360,8 @@ namespace crm\managers {
                 $unitPrice = floatval($dto->getUnitPrice());
                 $currencyRate = floatval($dto->getCurrencyRate());
                 $productPriceInMainCurrency = $unitPrice * $currencyRate;
-                $sum += $productPriceInMainCurrency;
-                $qty += $dto->getQuantity();
+                $sum += floatval($productPriceInMainCurrency);
+                $qty += floatval($dto->getQuantity());
             }
             return $sum / $qty;
         }
