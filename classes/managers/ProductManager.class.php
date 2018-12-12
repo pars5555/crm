@@ -162,7 +162,7 @@ namespace crm\managers {
             }
             $ret = [];
             foreach ($rows as $row) {
-               $ret[$row->getId()] = $row; 
+                $ret[$row->getId()] = $row;
             }
             return $ret;
         }
@@ -178,7 +178,7 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function calculateProductCost($productId, $productSaleQty, $saleOrderId = 0, $includePartnerWarehase = False, $ignoreInsufficientProduct = false) {
+        public function calculateProductCost($productId, $productSaleQty, $saleOrderId = 0, $includePartnerWarehase = False, $ignoreInsufficientProduct = false, $getAveragePrice = false) {
             $date = null;
             if ($saleOrderId > 0) {
                 $so = SaleOrderManager::getInstance()->selectByPk($saleOrderId);
@@ -189,14 +189,16 @@ namespace crm\managers {
             }
             $this->calculationProductId = $productId;
             $excludePartnerIds = '0';
-            if ($includePartnerWarehase)
-            {        
+            if ($includePartnerWarehase) {
                 $excludePartnerIds = SettingManager::getInstance()->getSetting('warehouse_partners');
             }
             $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId, $date, $excludePartnerIds);
             $productPurchaseOrderLines = $this->mapDtosById($productPurchaseOrderLines);
             $productSaleOrderLines = SaleOrderLineManager::getInstance()->getNonCancelledProductSaleOrders($productId, $saleOrderId, $date, $excludePartnerIds);
             $productPurchaseOrderLines = $this->subtracPurchaseOrderLinesByProductSaleOrders($productPurchaseOrderLines, $productSaleOrderLines, $ignoreInsufficientProduct);
+            if ($getAveragePrice){
+                return $this->calcAveragePrice($productPurchaseOrderLines);
+            }
             $ret = $this->removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSaleQty, $date);
             return $ret;
         }
@@ -217,11 +219,11 @@ namespace crm\managers {
             while (true) {
                 if ($profit_calculation_method == 'max') {
                     $lineId = $this->findMaxProductPriceLineId($productPurchaseOrderLines, $date);
-                } elseif ($profit_calculation_method == 'min'){
+                } elseif ($profit_calculation_method == 'min') {
                     $lineId = $this->findMinProductPriceLineId($productPurchaseOrderLines);
-                } elseif ($profit_calculation_method == 'average'){
+                } elseif ($profit_calculation_method == 'average') {
                     $lineId = $this->findAverageProductPriceLineId($productPurchaseOrderLines);
-                }else{
+                } else {
                     $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
                 }
 
@@ -276,7 +278,7 @@ namespace crm\managers {
                         $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
                     }
                     if ($lineId == 0) {
-                        if (!$ignoreInsufficientProduct){
+                        if (!$ignoreInsufficientProduct) {
                             throw new InsufficientProductException($this->calculationProductId);
                         }
                         $productSaleOrderLineQty -= $quantity;
@@ -329,7 +331,7 @@ namespace crm\managers {
             }
             return $maxProductPriceLineId;
         }
-        
+
         private function findMinProductPriceLineId($productPurchaseOrderLines, $beforeDate = null) {
             $minProductPrice = PHP_INT_MAX;
             $minProductPriceLineId = 0;
@@ -347,10 +349,10 @@ namespace crm\managers {
             }
             return $minProductPriceLineId;
         }
-        
-        private function findAverageProductPriceLineId($productPurchaseOrderLines, $beforeDate = null) {
+
+        private function calcAveragePrice($productPurchaseOrderLines, $beforeDate = null) {
             $sum = 0;
-            $qty =0;
+            $qty = 0;
             foreach ($productPurchaseOrderLines as $lineId => $dto) {
                 if ($dto->getQuantity() == 0 || (!empty($beforeDate) && $dto->getOrderDate() > $beforeDate)) {
                     continue;
@@ -361,7 +363,11 @@ namespace crm\managers {
                 $sum += $productPriceInMainCurrency;
                 $qty += $dto->getQuantity();
             }
-            $averagePrice = $sum / $qty;
+            return $sum / $qty;
+        }
+
+        private function findAverageProductPriceLineId($productPurchaseOrderLines, $beforeDate = null) {
+            $averagePrice = $this->calcAveragePrice($productPurchaseOrderLines, $beforeDate);
             $minProductPriceLineId = 0;
             $minDiff = $averagePrice;
             foreach ($productPurchaseOrderLines as $lineId => $dto) {
