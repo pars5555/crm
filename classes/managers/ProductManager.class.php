@@ -266,6 +266,8 @@ namespace crm\managers {
                         $lineId = $this->findMaxProductPriceLineId($productPurchaseOrderLines, $productSaleOrderLine->getOrderDate());
                     } elseif ($profit_calculation_method == 'min') {
                         $lineId = $this->findMinProductPriceLineId($productPurchaseOrderLines, $productSaleOrderLine->getOrderDate());
+                    } elseif ($profit_calculation_method == 'average') {
+                        $lineId = $this->findAverageProductPriceLineId($productPurchaseOrderLines, $productSaleOrderLine->getOrderDate());
                     } else {
                         $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
                     }
@@ -336,6 +338,29 @@ namespace crm\managers {
                 $productPriceInMainCurrency = $unitPrice * $currencyRate;
                 if ($productPriceInMainCurrency < $minProductPrice) {
                     $minProductPrice = $productPriceInMainCurrency;
+                    $minProductPriceLineId = $lineId;
+                }
+            }
+            return $minProductPriceLineId;
+        }
+        
+        private function findAverageProductPriceLineId($productPurchaseOrderLines, $beforeDate = null) {
+            $minLineId = $this->findMinProductPriceLineId($productPurchaseOrderLines, $beforeDate);
+            $maxLineId = $this->findMaxProductPriceLineId($productPurchaseOrderLines, $beforeDate);
+            $averagePrice = floatval($productPurchaseOrderLines[$minLineId]->getUnitPrice()) * floatval($productPurchaseOrderLines[$minLineId]->getCurrencyRate())
+                    + floatval($productPurchaseOrderLines[$maxLineId]->getUnitPrice()) * floatval($productPurchaseOrderLines[$minLineId]->getCurrencyRate());
+            
+            $minProductPriceLineId = 0;
+            $minDiff = $averagePrice;
+            foreach ($productPurchaseOrderLines as $lineId => $dto) {
+                if ($dto->getQuantity() == 0 || (!empty($beforeDate) && $dto->getOrderDate() > $beforeDate)) {
+                    continue;
+                }
+                $unitPrice = floatval($dto->getUnitPrice());
+                $currencyRate = floatval($dto->getCurrencyRate());
+                $productPriceInMainCurrency = $unitPrice * $currencyRate;
+                if ($productPriceInMainCurrency - $averagePrice < $minDiff) {
+                    $minDiff = $productPriceInMainCurrency;
                     $minProductPriceLineId = $lineId;
                 }
             }
