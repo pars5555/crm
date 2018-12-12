@@ -349,16 +349,19 @@ namespace crm\managers {
         }
         
         private function findAverageProductPriceLineId($productPurchaseOrderLines, $beforeDate = null) {
-            $minLineId = $this->findMinProductPriceLineId($productPurchaseOrderLines, $beforeDate);
-            $maxLineId = $this->findMaxProductPriceLineId($productPurchaseOrderLines, $beforeDate);
-            if ($minLineId == 0 || $maxLineId === 0)
-            {
-                return 0;
+            $sum = 0;
+            $qty =0;
+            foreach ($productPurchaseOrderLines as $lineId => $dto) {
+                if ($dto->getQuantity() == 0 || (!empty($beforeDate) && $dto->getOrderDate() > $beforeDate)) {
+                    continue;
+                }
+                $unitPrice = floatval($dto->getUnitPrice());
+                $currencyRate = floatval($dto->getCurrencyRate());
+                $productPriceInMainCurrency = $unitPrice * $currencyRate;
+                $sum += $productPriceInMainCurrency;
+                $qty += $dto->getQuantity();
             }
-            $averagePrice = 
-                    ((floatval($productPurchaseOrderLines[$minLineId]->getUnitPrice()) * floatval($productPurchaseOrderLines[$minLineId]->getCurrencyRate())
-                    + floatval($productPurchaseOrderLines[$maxLineId]->getUnitPrice()) * floatval($productPurchaseOrderLines[$maxLineId]->getCurrencyRate()))) /2;
-            
+            $averagePrice = $sum / $qty;
             $minProductPriceLineId = 0;
             $minDiff = $averagePrice;
             foreach ($productPurchaseOrderLines as $lineId => $dto) {
