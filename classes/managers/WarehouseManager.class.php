@@ -37,9 +37,8 @@ namespace crm\managers {
             $ret = [];
             $usdRate = floatval(\crm\managers\CurrencyRateManager::getInstance()->getCurrencyRate(1));
             foreach ($productsIds as $pid) {
-                $prCosts = ProductManager::getInstance()->calculateProductCost($pid, 1, 0, true, true);
-                $costInUsd = ProductManager::getInstance()->calculateProductTotalCost($prCosts);
-                $ret[$pid] = $costInUsd / $usdRate;
+                $prCosts = ProductManager::getInstance()->calculateProductCost($pid, 1, 0, true, true, true);
+                $ret[$pid] = $prCosts / $usdRate;
             }
             return $ret;
         }
