@@ -41,8 +41,8 @@ namespace crm\dal\dto {
 
 
         public function getCreateDateDiffWithNow() {
-            $date = new DateTime($this->getCreatedAt());
-            $now = new DateTime();
+            $date = new \DateTime($this->getCreatedAt());
+            $now = new \DateTime();
             return $date->diff($now)->format("%d");
         }
         
