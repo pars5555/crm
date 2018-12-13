@@ -93,6 +93,7 @@ namespace crm\loads\main\purse {
                 $this->addParam('info_btc_address', $purse_info_meta->wallet->BTC->legacy_address);
             }
             $external_products_days_diff_for_created_date = intval(\crm\managers\SettingManager::getInstance()->getSetting('external_products_days_diff_for_created_date'));
+            $this->addParam('external_products_days_diff_for_created_date', $external_products_days_diff_for_created_date);
 
 
             $parsUpdatedDate = PurseOrderManager::getInstance()->getAccountUpdatedDateString('purse_pars');
