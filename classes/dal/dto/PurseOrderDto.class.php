@@ -40,6 +40,12 @@ namespace crm\dal\dto {
         }
 
 
+        public function getCreateDateDiffWithNow() {
+            $date = new DateTime($this->getCreatedAt());
+            $now = new DateTime();
+            return $date->diff($now)->format("%d");
+        }
+        
         public function getCarrierTrackingUrl() {
             $trackingNumber = $this->getTrackingNumber();
             if (strpos(strtolower($this->getShippingCarrier()), 'usps') !== false) {
@@ -86,6 +92,7 @@ namespace crm\dal\dto {
             }
             return false;
         }
+        
 
     }
 
