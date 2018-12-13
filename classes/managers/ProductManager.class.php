@@ -162,7 +162,7 @@ namespace crm\managers {
             }
             $ret = [];
             foreach ($rows as $row) {
-               $ret[$row->getId()] = $row; 
+                $ret[$row->getId()] = $row;
             }
             return $ret;
         }
@@ -189,8 +189,7 @@ namespace crm\managers {
             }
             $this->calculationProductId = $productId;
             $excludePartnerIds = '0';
-            if ($includePartnerWarehase)
-            {        
+            if ($includePartnerWarehase) {
                 $excludePartnerIds = SettingManager::getInstance()->getSetting('warehouse_partners');
             }
             $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId, $date, $excludePartnerIds);
@@ -217,6 +216,10 @@ namespace crm\managers {
             while (true) {
                 if ($profit_calculation_method == 'max') {
                     $lineId = $this->findMaxProductPriceLineId($productPurchaseOrderLines, $date);
+                } elseif ($profit_calculation_method == 'min') {
+                    $lineId = $this->findMinProductPriceLineId($productPurchaseOrderLines);
+                } elseif ($profit_calculation_method == 'average') {
+                    $lineId = $this->findAverageProductPriceLineId($productPurchaseOrderLines);
                 } else {
                     $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
                 }
@@ -266,11 +269,13 @@ namespace crm\managers {
                         $lineId = $this->findMaxProductPriceLineId($productPurchaseOrderLines, $productSaleOrderLine->getOrderDate());
                     } elseif ($profit_calculation_method == 'min') {
                         $lineId = $this->findMinProductPriceLineId($productPurchaseOrderLines, $productSaleOrderLine->getOrderDate());
+                    } elseif ($profit_calculation_method == 'average') {
+                        $lineId = $this->findAverageProductPriceLineId($productPurchaseOrderLines, $productSaleOrderLine->getOrderDate());
                     } else {
                         $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
                     }
                     if ($lineId == 0) {
-                        if (!$ignoreInsufficientProduct){
+                        if (!$ignoreInsufficientProduct) {
                             throw new InsufficientProductException($this->calculationProductId);
                         }
                         var_dump($this->calculationProductId);
@@ -324,7 +329,7 @@ namespace crm\managers {
             }
             return $maxProductPriceLineId;
         }
-        
+
         private function findMinProductPriceLineId($productPurchaseOrderLines, $beforeDate = null) {
             $minProductPrice = PHP_INT_MAX;
             $minProductPriceLineId = 0;
@@ -339,6 +344,44 @@ namespace crm\managers {
                     $minProductPrice = $productPriceInMainCurrency;
                     $minProductPriceLineId = $lineId;
                 }
+            }
+            return $minProductPriceLineId;
+        }
+
+        private function calcAveragePrice($productPurchaseOrderLines, $beforeDate = null) {
+            $sum = 0;
+            $qty = 0;
+            foreach ($productPurchaseOrderLines as $lineId => $dto) {
+                if ($dto->getQuantity() == 0 || (!empty($beforeDate) && $dto->getOrderDate() > $beforeDate)) {
+                    continue;
+                }
+                $unitPrice = floatval($dto->getUnitPrice());
+                $currencyRate = floatval($dto->getCurrencyRate());
+                $productPriceInMainCurrency = $unitPrice * $currencyRate;
+                $sum += floatval($productPriceInMainCurrency);
+                $qty += floatval($dto->getQuantity());
+            }
+            return $sum / $qty;
+        }
+
+        private function findAverageProductPriceLineId($productPurchaseOrderLines, $beforeDate = null) {
+            $averagePrice = $this->calcAveragePrice($productPurchaseOrderLines, $beforeDate);
+            $minProductPriceLineId = 0;
+            $minDiff = $averagePrice;
+            foreach ($productPurchaseOrderLines as $lineId => $dto) {
+                if ($dto->getQuantity() == 0 || (!empty($beforeDate) && $dto->getOrderDate() > $beforeDate)) {
+                    continue;
+                }
+                $unitPrice = floatval($dto->getUnitPrice());
+                $currencyRate = floatval($dto->getCurrencyRate());
+                $productPriceInMainCurrency = $unitPrice * $currencyRate;
+                if (abs($productPriceInMainCurrency - $averagePrice) < $minDiff) {
+                    $minDiff = abs($productPriceInMainCurrency - $averagePrice);
+                    $minProductPriceLineId = $lineId;
+                }
+            }
+            if ($minProductPriceLineId == 0) {
+                return $this->findMinProductPriceLineId($productPurchaseOrderLines, $beforeDate);
             }
             return $minProductPriceLineId;
         }
