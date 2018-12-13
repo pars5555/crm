@@ -36,7 +36,9 @@
             </tr>
 
             {foreach from=$ns.orders item=order}
-                <tr style="{if $order->getHidden()==1} background: lightgray; {else}{if $order->getExternal() == 1 && $order->getCreateDateDiffWithNow() > $ns.external_products_days_diff_for_created_date} background: orange; {/if}{/if}"   data-type="btc" data-id="{$order->getId()}" >
+                <tr {if $order->getHidden()==1} style="background: lightgray;" {else}
+                    {if $order->getExternal() == 1 && $order->getCreateDateDiffWithNow() > $ns.external_products_days_diff_for_created_date} style="background: orange;"{/if}
+                    {/if} data-type="btc" data-id="{$order->getId()}">
                     <td>
                         {$order->getId()}<br/>
                         {if $order->getHidden()==0}
