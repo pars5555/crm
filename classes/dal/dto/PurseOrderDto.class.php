@@ -41,9 +41,7 @@ namespace crm\dal\dto {
 
 
         public function getCreateDateDiffWithNow() {
-            $date = new \DateTime($this->getCreatedAt());
-            $now = new \DateTime();
-            return $date->diff($now)->format("%d");
+            return round(abs(strtotime(date('Y-m-d H:i:s'))-strtotime($this->getCreatedAt()))/86400);
         }
         
         public function getCarrierTrackingUrl() {

@@ -41,7 +41,7 @@
                     {/if} data-type="btc" data-id="{$order->getId()}">
                     <td>
                         {$order->getId()}<br/>
-                        {$order->getCreateDateDiffWithNow()}<br/>
+                        
                         {if $order->getHidden()==0}
                             <a href="javascript:void(0);" class="fa fa-eye-slash fa-1x f_hide left" data-id='{$order->getId()}'></a>
                         {/if}
