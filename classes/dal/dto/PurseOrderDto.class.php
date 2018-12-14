@@ -40,7 +40,11 @@ namespace crm\dal\dto {
         }
 
 
-        public function getCreateDateDiffWithNow() {
+        public function isDelayed() {
+            return $this->getProblemSolved() == 0 &&  $this->getExternal() == 1 && $this->getCreateDateDiffWithNow() > intval(\crm\managers\SettingManager::getInstance()->getSetting('external_products_days_diff_for_created_date'));
+        }
+
+        private function getCreateDateDiffWithNow() {
             return round(abs(strtotime(date('Y-m-d H:i:s'))-strtotime($this->getCreatedAt()))/86400);
         }
         

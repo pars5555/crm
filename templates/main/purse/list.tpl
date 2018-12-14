@@ -37,7 +37,7 @@
 
             {foreach from=$ns.orders item=order}
                 <tr {if $order->getHidden()==1} style="background: lightgray;" {else}
-                    {if $order->getExternal() == 1 && $order->getCreateDateDiffWithNow() > $ns.external_products_days_diff_for_created_date} style="background: orange;"{/if}
+                    {if $order->isDelayed()} style="background: orange;"{/if}
                     {/if} data-type="btc" data-id="{$order->getId()}">
                     <td>
                         {$order->getId()}<br/>
@@ -54,7 +54,7 @@
                         {if $order->getExternal() == 1}
                             <a href="javascript:void(0);" id="delete_{$order->getId()}" class="fa fa-trash fa-2x f_delete" data-id='{$order->getId()}'></a>
                         {/if}
-                        {if $ns.problematic == 1}
+                        {if $ns.problematic == 1 || $order->isDelayed()}
                             <a href="javascript:void(0);" id="problem_solved_{$order->getId()}" class="fa fa-check-circle fa-2x f_problem_solved" data-id='{$order->getId()}'></a>
                         {/if}
                     </td>
