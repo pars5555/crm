@@ -20,7 +20,9 @@ namespace crm\actions\cron {
 
         public function service() {
             $data = json_decode(file_get_contents('https://blockchain.info/ticker'), true);
-            \crm\managers\CryptoRateManager::getInstance()->addRow('BTC', $data['USD']['last']);
+            if (!empty($data) && !empty($data['USD'])){
+                \crm\managers\CryptoRateManager::getInstance()->addRow('BTC', $data['USD']['last']);
+            }
         }
 
     }
