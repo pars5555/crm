@@ -275,11 +275,7 @@ namespace crm\managers {
                         $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
                     }
                     if ($lineId == 0) {
-                        if (!$ignoreInsufficientProduct) {
-                            throw new InsufficientProductException($this->calculationProductId);
-                        }
-                        $productSaleOrderLineQty -= $quantity;
-                        continue;
+                        throw new InsufficientProductException($this->calculationProductId);
                     }
                     $pol = $productPurchaseOrderLines[$lineId];
                     $quantity = floatval($pol->getQuantity());
