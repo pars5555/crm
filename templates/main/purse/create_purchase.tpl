@@ -17,7 +17,7 @@
                         {/foreach}
                     
                     </select> <br/>
-                    <input type="hidden" class="f_purchase_item_name" value="{$product_row['actual_name']|replace:'"':"\""}"/>
+                    <input type="hidden" class="f_purchase_item_name" value="{$product_row['actual_name']|escape:'htmlall'}"/>
                     unit price: <input type="text" class="text width100 inline f_purchase_item_price" value="{$product_row['purchase_price']}"/>
                     unit weight: <input type="text" class="text width100 inline f_purchase_item_weight" {if $product_row['product']}value="{$product_row['product']->getUnitWeight()}"{/if}/>
                     unit tax: <input type="text" class="text width100 inline f_purchase_item_tax" />
