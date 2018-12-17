@@ -22,7 +22,7 @@ namespace crm\actions\main\payment {
 
         public function exportCsv($rows, $startDate, $endDate, $partnerDto = null) {
             header('Content-type: text/csv; charset=UTF-8');
-            header('Content-Disposition: attachment; filename=observers.csv');
+            header('Content-Disposition: attachment; filename=export.csv');
             $output = fopen('php://output', 'w');
             fputs($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
             $total = [1=>0, 2=>0];

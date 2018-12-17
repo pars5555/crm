@@ -27,7 +27,7 @@ namespace crm\actions\main\purchase {
         public function exportCsv($rows, $startDate, $endDate, $partnerDto = null) {
             $currencyDtosMappedById = CurrencyManager::getInstance()->selectAdvance('*', [], null, null, null, null, true);
             header('Content-type: text/csv; charset=UTF-8');
-            header('Content-Disposition: attachment; filename=observers.csv');
+            header('Content-Disposition: attachment; filename=export.csv');
             $output = fopen('php://output', 'w');
             fputs($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
             $totalPurchases = [1=>0, 2=>0];
