@@ -38,6 +38,7 @@
             {foreach from=$ns.orders item=order}
                 <tr {if $order->getHidden()==1} style="background: lightgray;" {else}
                     {if $order->isDelayed()} style="background: orange;"{/if}
+                    {if $order->getProblematic() == 1} style="background: yellow;"{/if}
                     {/if} data-type="btc" data-id="{$order->getId()}">
                     <td>
                         {$order->getId()}<br/>
