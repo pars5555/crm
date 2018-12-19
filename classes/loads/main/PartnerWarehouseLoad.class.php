@@ -42,9 +42,11 @@ namespace crm\loads\main {
 
             $productIds = ProductManager::getDtosIdsArray($products);
             $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds, $partnerId);
-            $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds, $partnerId);
+            $productLastSellPrice = [];
+            $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds, $partnerId, $productLastSellPrice);
             $usdRate = CurrencyRateManager::getInstance()->getCurrencyRate(1);
             $this->addParam('products', $products);
+            $this->addParam('productLastSellPrice', $productLastSellPrice);
             $this->addParam('usd_rate', $usdRate);
             $this->addParam('productsQuantity', $productsQuantity);
             $this->addParam('productsPrice', $productsPrice);

@@ -38,6 +38,10 @@ namespace crm\dal\dto {
         function setDebt($debt) {
             $this->debt = $debt;
         }
+        
+        public function getOrderDateDiffWithNow() {
+            return round(abs(strtotime(date('Y-m-d H:i:s'))-strtotime($this->getOrderDate()))/86400);
+        }
 
     }
 

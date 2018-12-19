@@ -147,7 +147,7 @@ namespace crm\managers {
             return $this->mapper->getAllNonCancelledExpenseSaleOrders($startDate, $endDate);
         }
 
-        public function getProductsSaleOrders($productIds, $partnerId = false) {
+        public function getProductsSaleOrders($productIds, $partnerId = false, &$productLastSellPrice = []) {
             $soLines = [];
             if (!empty($productIds)) {
                 $soLines = $this->mapper->getNonCancelledProductsSaleOrders($productIds);
@@ -156,6 +156,7 @@ namespace crm\managers {
             $allSaleOrdersIds = [];
             foreach ($soLines as $sol) {
                 $soIdsMappedByProductId [$sol->getProductId()][] = $sol->getSaleOrderId();
+                $productLastSellPrice[$sol->getProductId()] = $sol->getUnitPrice();
                 $allSaleOrdersIds[] = intval($sol->getSaleOrderId());
             }
             $allSaleOrdersIds = array_unique($allSaleOrdersIds);
@@ -173,7 +174,7 @@ namespace crm\managers {
             foreach ($soIdsMappedByProductId as &$r) {
                 $r = array_unique($r);
             }
-            $ret = [];
+            $ret = [];            
             foreach ($productIds as $productId) {
                 if (!array_key_exists($productId, $soIdsMappedByProductId)) {
                     $soIdsMappedByProductId[$productId] = [];
@@ -182,6 +183,7 @@ namespace crm\managers {
                 foreach ($soIdsMappedByProductId[$productId] as $soId) {
                     if (array_key_exists($soId, $saleOrdersMappedById)) {
                         $ret[$productId][] = $saleOrdersMappedById[$soId];
+                        
                     }
                 }
             }
