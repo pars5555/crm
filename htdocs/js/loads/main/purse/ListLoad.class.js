@@ -54,7 +54,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
     },
     initExport: function () {
         $('#export_csv').click(function () {
-            var actionUrl = '/dyn/main_purse/do_export_csv?';
+            var actionUrl = '/dyn/main_purse/do_export_csv' + window.location.search;
             $(this).attr('href', actionUrl);
         });
 
