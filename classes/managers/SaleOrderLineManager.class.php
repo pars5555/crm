@@ -159,7 +159,7 @@ namespace crm\managers {
                 $soIdsMappedByProductId [$sol->getProductId()][] = $sol->getSaleOrderId();
                 $productLastSellPrice[$sol->getProductId()] = $sol->getUnitPrice();
                 $allSaleOrdersIds[] = intval($sol->getSaleOrderId());
-                $saleOrdersProductPrice[intval($sol->getSaleOrderId())] = $sol->getUnitPrice();
+                $saleOrdersProductPrice[intval($sol->getSaleOrderId())][$sol->getProductId()] = $sol->getUnitPrice();
             }
             $allSaleOrdersIds = array_unique($allSaleOrdersIds);
             $saleOrdersMappedById = [];
@@ -185,7 +185,7 @@ namespace crm\managers {
                 foreach ($soIdsMappedByProductId[$productId] as $soId) {
                     if (array_key_exists($soId, $saleOrdersMappedById)) {
                         $ret[$productId][] = $saleOrdersMappedById[$soId];
-                        $saleOrdersMappedById[$soId]->setProductPrice($productId, $saleOrdersProductPrice[$soId]);
+                        $saleOrdersMappedById[$soId]->setProductPrice($productId, $saleOrdersProductPrice[$soId][$productId]);
                     }
                 }
             }
