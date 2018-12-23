@@ -52,7 +52,7 @@
                         <p style="display: none">
                             {foreach from=$ns.productsSaleOrder[$product->getId()] item=productSaleOrder}
                                 <a href="{$SITE_PATH}/sale/{$productSaleOrder->getId()}">
-                                    &#8470; {$productSaleOrder->getId()} ({$productSaleOrder->getOrderDate()|truncate:10:""} {$partnersMappedByIds[$productSaleOrder->getPartnerId()]->getName()})
+                                    &#8470; {$productSaleOrder->getId()} ({$productSaleOrder->getOrderDate()|truncate:10:""} {$partnersMappedByIds[$productSaleOrder->getPartnerId()]->getName()}) {$productSaleOrder->getProductPrice($product->getId())}
                                 </a> <br>
                             {/foreach}
                         </p>
