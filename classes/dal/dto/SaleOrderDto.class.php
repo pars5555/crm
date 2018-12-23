@@ -21,6 +21,7 @@ namespace crm\dal\dto {
     class SaleOrderDto extends AbstractDto {
 
         private $debt;
+        private $productPrices = [];
         // Map of DB value to Field value
         private $mapArray = array("id" => "id", "order_date" => "orderDate", "partner_id" => "partnerId", "note" => "note", "checked" => "checked",
             "cancelled" => "cancelled","deleted" => "deleted", "cancel_note" => "cancelNote", "non_profit" => "nonProfit", "billing_deadline" => "billingDeadline",
@@ -37,6 +38,14 @@ namespace crm\dal\dto {
 
         function setDebt($debt) {
             $this->debt = $debt;
+        }
+        
+        function getProductPrice($productId) {
+            return $this->productPrices[$productId];
+        }
+
+        function setProductPrice($productId, $price) {
+            $this->productPrices[$productId] = $price;
         }
         
         public function getOrderDateDiffWithNow() {

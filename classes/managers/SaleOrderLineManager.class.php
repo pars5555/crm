@@ -153,11 +153,13 @@ namespace crm\managers {
                 $soLines = $this->mapper->getNonCancelledProductsSaleOrders($productIds);
             }
             $soIdsMappedByProductId = [];
+            $saleOrdersProductPrice = [];
             $allSaleOrdersIds = [];
             foreach ($soLines as $sol) {
                 $soIdsMappedByProductId [$sol->getProductId()][] = $sol->getSaleOrderId();
                 $productLastSellPrice[$sol->getProductId()] = $sol->getUnitPrice();
                 $allSaleOrdersIds[] = intval($sol->getSaleOrderId());
+                $saleOrdersProductPrice[intval($sol->getSaleOrderId())] = $sol->getUnitPrice();
             }
             $allSaleOrdersIds = array_unique($allSaleOrdersIds);
             $saleOrdersMappedById = [];
@@ -183,7 +185,7 @@ namespace crm\managers {
                 foreach ($soIdsMappedByProductId[$productId] as $soId) {
                     if (array_key_exists($soId, $saleOrdersMappedById)) {
                         $ret[$productId][] = $saleOrdersMappedById[$soId];
-                        
+                        $saleOrdersMappedById[$soId]->setProductPrice($productId, $saleOrdersProductPrice[$soId]);
                     }
                 }
             }
