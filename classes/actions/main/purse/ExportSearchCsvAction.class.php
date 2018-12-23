@@ -25,7 +25,7 @@ namespace crm\actions\main\purse {
             fputcsv($output, ['Given Tracking Number', 'Order Tracking Number', 'Recipient', 'Qty', 'Product', 'Total $']);
             
             foreach ($orders as $tr => $order) {
-                $row = ['"'.$tr.'"','"'. $order->getTrackingNumber().'"', $order->getRecipientName(), $order->getQuantity(), $order->getProductName(), $order->getAmazonTotal()];
+                $row = [$tr,$order->getTrackingNumber(), $order->getRecipientName(), $order->getQuantity(), $order->getProductName(), $order->getAmazonTotal()];
                 $row = array_map(function(&$el){
                     return '="'.$el .'"';
                 }, $row);
