@@ -140,6 +140,7 @@ namespace ngs\framework {
                 $actionObj->initialize();
                 if (!$this->validateRequest($actionObj)) {
                     $actionObj->onNoAccess();
+                    return;
                 }
                 $actionObj->service();
                 //passing arguments
@@ -178,7 +179,7 @@ namespace ngs\framework {
                 NGS()->getSessionManager()->logout();
                 NGS()->getHttpUtils()->redirect('login');
             }
-            return true;
+            return false;
         }
 
         /**
