@@ -109,6 +109,7 @@ namespace crm\loads\main\purse {
         public static function initFilters($limit = 10000, $load = null) {
 
             $regOrdersInWarehouse = [];
+            $local_carrier_name = "";
             if (isset(NGS()->args()->roiw)) {
                 $regOrdersInWarehouseStr = trim(NGS()->args()->roiw);
                 if (!empty($regOrdersInWarehouseStr)) {
