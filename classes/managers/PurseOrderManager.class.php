@@ -84,7 +84,7 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function getNotRegisteredOrdersInWarehouse($registeredTrackingNumbers) {
+        public function getNotRegisteredOrdersInWarehouse($registeredTrackingNumbers, $local_carrier_name) {
             $registeredTrackingNumbers = array_map('trim', $registeredTrackingNumbers);
             $ordersThatHasTrackingNumbers = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
                 'status', 'not in', "('open', 'under_balance', 'accepted', 'canceled', 'under_balance.confirming')", 'AND',
@@ -95,6 +95,16 @@ namespace crm\managers {
             foreach ($ordersThatHasTrackingNumbers as $order) {
                 $trackingNumber = $order->getTrackingNumber();
                 if (strlen(strval(trim($trackingNumber))) < 5) {
+                    continue;
+                }
+                $carrierFirst2Letter = substr(strtolower($order->getUnitAddress()), 0, 2);
+                if ($local_carrier_name === 'globbing' && ($carrierFirst2Letter == 'nv' || $carrierFirst2Letter == 'ar')){
+                    continue;
+                }
+                if ($local_carrier_name === 'onex' && $carrierFirst2Letter != 'arm'){
+                    continue;
+                }
+                if ($local_carrier_name === 'nova' && $carrierFirst2Letter != 'nv'){
                     continue;
                 }
                 $existingOrdersMappedByTrackingNumbers [strval($trackingNumber)] = $order;

@@ -172,6 +172,11 @@ checkout: {$ns.checkout_btc_address|default:'N/A'}<br/>
             </span>
             <h1 class="modal-headline">Insert All Registered Trackings in warehouses</h1>
             <div class="modal-content observers-detail-modal-content" id="observer_details_container">
+                <select id="local_carrier_name">
+                    <option value="globbing">Globbing</option>
+                    <option value="onex">Onex</option>
+                    <option value="nova">Nova</option>
+                </select>
                 <textarea id="not_registered_trackings_input" style="width: 100%; height: 100%; " rows="10"></textarea>
                 <a class="button blue" id="not_registered_trackings_confirm" href="javascript:void(0);" >Confirm</a>
 
