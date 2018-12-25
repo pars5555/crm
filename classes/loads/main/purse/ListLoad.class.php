@@ -22,9 +22,9 @@ namespace crm\loads\main\purse {
             $this->initSuccessMessages();
             $limit = 200;
             list($offset, $sortByFieldName, $selectedFilterSortByAscDesc,$where,$words, $searchText, 
-                    $problematic, $regOrdersInWarehouse) = $this->initFilters($limit, $this);
+                    $problematic, $local_carrier_name, $regOrdersInWarehouse) = $this->initFilters($limit, $this);
             if (!empty($regOrdersInWarehouse)) {
-                $orders = PurseOrderManager::getInstance()->getNotRegisteredOrdersInWarehouse($regOrdersInWarehouse);
+                $orders = PurseOrderManager::getInstance()->getNotRegisteredOrdersInWarehouse($regOrdersInWarehouse, $local_carrier_name);
                 $count = count($orders);
             } else {
                 if ($problematic == 1) {
@@ -109,12 +109,14 @@ namespace crm\loads\main\purse {
         public static function initFilters($limit = 10000, $load = null) {
 
             $regOrdersInWarehouse = [];
+            $local_carrier_name = "";
             if (isset(NGS()->args()->roiw)) {
                 $regOrdersInWarehouseStr = trim(NGS()->args()->roiw);
                 if (!empty($regOrdersInWarehouseStr)) {
                     $regOrdersInWarehouseStr = preg_replace('/\s+/', ';', $regOrdersInWarehouseStr);
                     $regOrdersInWarehouseStr = str_replace(',', ';', $regOrdersInWarehouseStr);
                     $regOrdersInWarehouse = explode(';', $regOrdersInWarehouseStr);
+                    $local_carrier_name = NGS()->args()->cn;                    
                     $limit = 1000;
                 }
             }
@@ -261,7 +263,7 @@ namespace crm\loads\main\purse {
                     }
                 }
             }
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $where,$words, $searchText, $problematic, $regOrdersInWarehouse];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $where,$words, $searchText, $problematic, $local_carrier_name, $regOrdersInWarehouse];
         }
 
         public function getTemplate() {
