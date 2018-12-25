@@ -98,13 +98,13 @@ namespace crm\managers {
                     continue;
                 }
                 $carrierFirst2Letter = substr(strtolower($order->getUnitAddress()), 0, 2);
-                if ($local_carrier_name === 'globbing' && ($carrierFirst2Letter == 'nv' || $carrierFirst2Letter == 'ar')){
+                if ($local_carrier_name === 'globbing' && ($carrierFirst2Letter == 'nv' || $carrierFirst2Letter == 'ar')) {
                     continue;
                 }
-                if ($local_carrier_name === 'onex' && $carrierFirst2Letter != 'arm'){
+                if ($local_carrier_name === 'onex' && $carrierFirst2Letter != 'arm') {
                     continue;
                 }
-                if ($local_carrier_name === 'nova' && $carrierFirst2Letter != 'nv'){
+                if ($local_carrier_name === 'nova' && $carrierFirst2Letter != 'nv') {
                     continue;
                 }
                 $existingOrdersMappedByTrackingNumbers [strval($trackingNumber)] = $order;
@@ -173,8 +173,10 @@ namespace crm\managers {
         }
 
         private function findTrackingInArray($tracking, $trackingsArray) {
+            $tracking = strtolower($tracking);
             foreach ($trackingsArray as $key => $tr) {
-                if (stripos(strval($tracking), strval($tr)) !== false or stripos(strval($tr), strval($tracking)) !== false) {
+                $tr = strtolower($tr);
+                if (stripos(strval($tracking), strval($tr)) !== false || stripos(strval($tr), strval($tracking)) !== false) {
                     return $key;
                 }
             }
