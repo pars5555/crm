@@ -19,6 +19,10 @@ namespace crm\loads\main {
 
         public function load() {
         }
+        
+        public function getRequestGroup() {
+            return RequestGroups::$guestRequest;
+        }
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/index.tpl";

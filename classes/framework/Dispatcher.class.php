@@ -87,7 +87,6 @@ namespace ngs\framework {
          * @return void
          */
         public function loadPage($action) {
-
             try {
                 if (class_exists($action) == false) {
                     throw NGS()->getNotFoundException();
