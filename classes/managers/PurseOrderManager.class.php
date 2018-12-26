@@ -101,7 +101,7 @@ namespace crm\managers {
                 if ($local_carrier_name === 'globbing' && ($carrierFirst2Letter == 'nv' || $carrierFirst2Letter == 'ar')) {
                     continue;
                 }
-                if ($local_carrier_name === 'onex' && $carrierFirst2Letter != 'arm') {
+                if ($local_carrier_name === 'onex' && $carrierFirst2Letter != 'ar') {
                     continue;
                 }
                 if ($local_carrier_name === 'nova' && $carrierFirst2Letter != 'nv') {
