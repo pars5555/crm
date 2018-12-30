@@ -21,6 +21,15 @@ NGS.createLoad("crm.loads.main.partner_warehouse", {
             search_contains: true
         });
         this.initPartnerSelect();
+        this.initExport();
+    },
+    initExport: function () {
+        $('#export_csv').click(function () {
+            var partner_id = $('#partner_select').val();
+            var actionUrl = '/dyn/main_warehouse/do_export_partner_csv?partner_id=' + partner_id;
+            $(this).attr('href', actionUrl);
+        });
+
     },
     initPartnerSelect: function () {
         $('#partner_select').change(function () {
