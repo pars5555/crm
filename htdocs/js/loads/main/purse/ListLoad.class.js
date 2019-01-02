@@ -99,6 +99,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
     initNotRegTrackingsConfirm: function () {
         $('#not_registered_trackings_confirm').click(function () {
             var trackingNumbers = $('#not_registered_trackings_input').val();
+            trackingNumbers = trackingNumbers.replace(/\s/g, ";");
             var cn = $('#local_carrier_name').val();            
             window.location.href = "/purse/list?cn=" + cn + "&roiw=" + trackingNumbers;
         });

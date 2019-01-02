@@ -49,7 +49,7 @@ namespace crm\actions\main\sale {
                 } else {
                     SaleOrderLineManager::getInstance()->deleteByField('sale_order_id', $saleOrderId);
                 }
-                SaleOrderManager::getInstance()->updateAllDependingSaleOrderLines($saleOrderId);
+                //SaleOrderManager::getInstance()->updateAllDependingSaleOrderLines($saleOrderId);
                 SaleOrderManager::getInstance()->commitTransaction();
             } catch (InsufficientProductException $exc) {
                 SaleOrderManager::getInstance()->rollbackTransaction();
