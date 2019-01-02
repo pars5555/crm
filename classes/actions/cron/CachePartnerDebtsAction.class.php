@@ -22,6 +22,7 @@ namespace crm\actions\cron {
     use crm\managers\PaymentTransactionManager;
     use crm\managers\PurchaseOrderManager;
     use crm\managers\SaleOrderManager;
+    use crm\security\RequestGroups;
 
     class CachePartnerDebtsAction extends BaseAction {
 
@@ -39,6 +40,10 @@ namespace crm\actions\cron {
             foreach ($partnersDebt as $partnerId => $debt) {
                 PartnerDebtCacheManager::getInstance()->setPartnerDebtCache($partnerId, $debt);
             }
+        }
+
+        public function getRequestGroup() {
+            return RequestGroups::$guestRequest;
         }
 
     }

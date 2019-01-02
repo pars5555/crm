@@ -16,6 +16,7 @@ namespace crm\actions\cron {
 
     use crm\actions\BaseAction;
     use crm\managers\CurrencyRateManager;
+    use crm\security\RequestGroups;
     use SoapClient;
     use SoapFault;
 
@@ -64,6 +65,10 @@ namespace crm\actions\cron {
                 return false;
             }
             unset($soapClient);
+        }
+
+        public function getRequestGroup() {
+            return RequestGroups::$guestRequest;
         }
 
     }
