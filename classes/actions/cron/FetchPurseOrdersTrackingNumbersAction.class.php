@@ -16,6 +16,7 @@ namespace crm\actions\cron {
 
     use crm\actions\BaseAction;
     use crm\managers\PurseOrderManager;
+    use crm\security\RequestGroups;
 
     class FetchPurseOrdersTrackingNumbersAction extends BaseAction {
 
@@ -29,6 +30,10 @@ namespace crm\actions\cron {
                 sleep(1);
             }
             $this->addParam('updated', $updated);
+        }
+
+        public function getRequestGroup() {
+            return RequestGroups::$guestRequest;
         }
 
     }
