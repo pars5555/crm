@@ -350,7 +350,7 @@ namespace crm\managers {
             $days = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             return $this->selectAdvance('*', array_merge($where, ['AND', 'problem_solved', '=', '0', 'AND',
                         '(',
-                        '(', 'problematic', '=', 1, 'AND', 'problem_sovled','=',0,')', 'OR', 'amazon_primary_status_text', 'like', "'%cancel%'", 'OR', 'amazon_primary_status_text', 'like', "'%Was expected%'",
+                        '(', 'problematic', '=', 1, 'AND', 'problem_sovled','=', 0,')', 'OR', 'amazon_primary_status_text', 'like', "'%cancel%'", 'OR', 'amazon_primary_status_text', 'like', "'%Was expected%'",
                         'OR', "length(COALESCE(`unit_address`,''))", '<', 2, 'OR',
                         "`shipping_type`", 'not in', "('express', 'standard')", 'OR',
                         '(',
