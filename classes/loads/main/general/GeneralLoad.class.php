@@ -22,7 +22,6 @@ namespace crm\loads\main\general {
             $warehouseTotal = $capitalData['warehouse_total'];
             $purseTotal = $capitalData['purse_total'];
             $purseBalanceTotal = $capitalData['purse_balance_total'];
-            $partnerWarehouseTotal = $capitalData['partner_warehouse_total'];
             $capital_external_debts = floatval($capitalData['capital_external_debts']);
             $capital_external_btc = floatval($capitalData['capital_external_btc']);
             $partnerDebtTotal = $capitalData['partner_debt_total'];
@@ -32,10 +31,9 @@ namespace crm\loads\main\general {
             $this->addParam('warehouseTotal', $warehouseTotal);
             $this->addParam('purseTotal', $purseTotal);
             $this->addParam('purseBalanceTotal', $purseBalanceTotal);
-            $this->addParam('partnerWarehouseTotal', $partnerWarehouseTotal);
             $this->addParam('capital_external_debts', $capital_external_debts);
             $this->addParam('capital_external_btc', $capital_external_btc);
-            $this->addParam('capital', $warehouseTotal + $purseTotal + $purseBalanceTotal + $partnerWarehouseTotal + $partnerDebtTotal + $cashboxTotal + $capital_external_btc - $capital_external_debts);
+            $this->addParam('capital', $warehouseTotal + $purseTotal + $purseBalanceTotal + $partnerDebtTotal + $cashboxTotal + $capital_external_btc - $capital_external_debts);
 
             $this->addParam("capital_external_debts", SettingManager::getInstance()->getSetting('capital_external_debts'));
             $this->addParam("capital_external_debts_note", SettingManager::getInstance()->getSetting('capital_external_debts_note'));

@@ -34,14 +34,12 @@ namespace crm\actions\cron {
             $warehouseTotal = $this->getWarehouseTotalUsdAmount();
             $purseTotal = $this->getPurseTotalUsdAmount();
             $purseBalanceTotal = $this->getPurseBalancesTotalAmount();
-            $partnerWarehouseTotal = $this->getPartnerWarehausesTotalAmount();
             $cashboxTotal = $this->getCashboxTotalUsdAmount();
             $capitalData = json_decode(SettingManager::getInstance()->getSetting('capital_data', '{}'), true);
             $capitalData['partner_debt_total'] = round($partnerDebtTotal, 2);
             $capitalData['warehouse_total'] =  round($warehouseTotal);
             $capitalData['purse_total'] = round($purseTotal);
             $capitalData['purse_balance_total'] = round($purseBalanceTotal);
-            $capitalData['partner_warehouse_total'] = round($partnerWarehouseTotal);
             $capitalData['cashbox_total'] = round($cashboxTotal);
             SettingManager::getInstance()->setSetting('capital_data', json_encode($capitalData));
             \crm\managers\CapitalHistoryManager::getInstance()->addRow();
@@ -57,7 +55,7 @@ namespace crm\actions\cron {
         }
 
         private function getWarehouseTotalUsdAmount() {
-            $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity();
+            $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity(true);
             $productsPrice = WarehouseManager::getInstance()->getAllProductsPrice(array_keys($productsQuantity));
             $total = 0;
             foreach ($productsQuantity as $pId => $qty) {
