@@ -17,6 +17,7 @@ namespace crm\actions\cron {
     use crm\actions\BaseAction;
     use crm\managers\ProductManager;
     use crm\managers\PurseOrderManager;
+    use crm\security\RequestGroups;
 
     class SetProductsImagesAction extends BaseAction {
 
@@ -26,6 +27,10 @@ namespace crm\actions\cron {
             foreach ($products as $product) {
                 ProductManager::getInstance()->findAndSetProoductImageFromPurseOrders($product, $allOrders);
             }
+        }
+
+        public function getRequestGroup() {
+            return RequestGroups::$guestRequest;
         }
 
     }

@@ -16,6 +16,7 @@ namespace crm\actions\cron {
 
     use crm\actions\BaseAction;
     use crm\managers\CalculationManager;
+    use crm\managers\CapitalHistoryManager;
     use crm\managers\CryptoRateManager;
     use crm\managers\CurrencyRateManager;
     use crm\managers\PartnerInitialDebtManager;
@@ -26,6 +27,7 @@ namespace crm\actions\cron {
     use crm\managers\SaleOrderManager;
     use crm\managers\SettingManager;
     use crm\managers\WarehouseManager;
+    use crm\security\RequestGroups;
 
     class CalcCapitalAction extends BaseAction {
 
@@ -37,12 +39,12 @@ namespace crm\actions\cron {
             $cashboxTotal = $this->getCashboxTotalUsdAmount();
             $capitalData = json_decode(SettingManager::getInstance()->getSetting('capital_data', '{}'), true);
             $capitalData['partner_debt_total'] = round($partnerDebtTotal, 2);
-            $capitalData['warehouse_total'] =  round($warehouseTotal);
+            $capitalData['warehouse_total'] = round($warehouseTotal);
             $capitalData['purse_total'] = round($purseTotal);
             $capitalData['purse_balance_total'] = round($purseBalanceTotal);
             $capitalData['cashbox_total'] = round($cashboxTotal);
             SettingManager::getInstance()->setSetting('capital_data', json_encode($capitalData));
-            \crm\managers\CapitalHistoryManager::getInstance()->addRow();
+            CapitalHistoryManager::getInstance()->addRow();
         }
 
         private function getPurseTotalUsdAmount() {
@@ -130,6 +132,10 @@ namespace crm\actions\cron {
             $cashboxAmd = -PaymentTransactionManager::getInstance()->getNonCancelledPaymentOrdersByCurrency(date('Y-m-d'), 2);
             $usdRate = floatval(CurrencyRateManager::getInstance()->getCurrencyRate(1));
             return $cashboxUsd + $cashboxAmd / $usdRate;
+        }
+
+        public function getRequestGroup() {
+            return RequestGroups::$guestRequest;
         }
 
     }

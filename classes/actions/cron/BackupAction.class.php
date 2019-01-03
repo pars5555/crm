@@ -15,13 +15,19 @@
 namespace crm\actions\cron {
 
     use crm\actions\BaseAction;
+    use crm\security\RequestGroups;
+    use NGS;
 
     class BackupAction extends BaseAction {
 
         public function service() {
             $dataDir = NGS()->getDataDir();
-            $backup_file = $dataDir. '/crm.pc.am_' . date("Y-m-d-H-i-s") . '.gz';
+            $backup_file = $dataDir . '/crm.pc.am_' . date("Y-m-d-H-i-s") . '.gz';
             system("mysqldump --opt -h localhost -P 3306 -u crm -pcrm123 crm.pc.am | gzip > $backup_file");
+        }
+
+        public function getRequestGroup() {
+            return RequestGroups::$guestRequest;
         }
 
     }
