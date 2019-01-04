@@ -17,11 +17,11 @@
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
-{*                <th>Tel.</th>*}
+                    {*                <th>Tel.</th>*}
                 <th>Ex Unit</th>
                 <th>St Unit</th>
                 <th>Doc Number</th>
-{*                <th>Doc Type</th>*}
+                    {*                <th>Doc Type</th>*}
                 <th>Note</th>
                 <th>Favorite</th>
                 <th>Orders</th>
@@ -34,6 +34,9 @@
             {foreach from=$ns.recipients item=recipient}
                 <tr class="table-row"  style="{if $recipient->getDeleted() ==1}background:lightgrey{elseif $recipient->getChecked() == 1}background:green{/if}"  data-type="recipient" data-id="{$recipient->getId()}">
                     <td class="link-cell id">
+                        {if isset($ns.attachments[$recipient->getId()])}
+                            <img src="{$SITE_PATH}/img/attachment.png" width="32"/>
+                        {/if}
                         <a href="{$SITE_PATH}/recipient/{$recipient->getId()}">
                             <span>{$recipient->getId()} </span>
                         </a>
@@ -41,11 +44,11 @@
                     <td>{$recipient->getFirstName()}</td>
                     <td>{$recipient->getLastName()}</td>
                     <td>{$recipient->getEmail()}</td>
-{*                    <td style="white-space: nowrap"> {$recipient->getPhoneNumber()|replace:',':'</br>'} </td>*}
+                    {*                    <td style="white-space: nowrap"> {$recipient->getPhoneNumber()|replace:',':'</br>'} </td>*}
                     <td>{$recipient->getExpressUnitAddress()} {$recipient->getOnexExpressUnit()} {$recipient->getNovaExpressUnit()}</td>
                     <td>{$recipient->getStandardUnitAddress()} {$recipient->getOnexStandardUnit()} {$recipient->getNovaStandardUnit()}</td>
                     <td>{$recipient->getDocumentNumber()}</td>
-{*                    <td>{$recipient->getDocumentType()}</td>*}
+                    {*                    <td>{$recipient->getDocumentType()}</td>*}
                     <td class="table-cell f_editable_cell" data-field-name="note">{$recipient->getNote()}</td>
                     <td>
                         <input class="f_favorite_checkbox"
@@ -57,11 +60,11 @@
                         {if isset($ns.recipientsRecentOrdersMappedByRecipientId[$recipient->getId()])}
                             {assign recipientOrders $ns.recipientsRecentOrdersMappedByRecipientId[$recipient->getId()]}
 
-                        <a class="link" data-orders='{$recipientOrders|@json_encode}'
-                           href="{$SITE_PATH}/rorder/list?prt={$recipient->getId()}">
+                            <a class="link" data-orders='{$recipientOrders|@json_encode}'
+                               href="{$SITE_PATH}/rorder/list?prt={$recipient->getId()}">
                                 {$recipientOrders['count']} (${$recipientOrders['total']})
-                                
-                        </a>
+
+                            </a>
                         {/if}
                     </td>
                     <td class="icon-cell">

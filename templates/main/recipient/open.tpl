@@ -1,6 +1,6 @@
 <div class="container recipient--open--container">
     <h1 class="main_title">Partner View</h1>
-    
+
     {if isset($ns.error_message)}
         {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
     {/if}
@@ -42,7 +42,7 @@
                     {$ns.recipient->getAddress()}
                 </span>
             </div>
-                      
+
             <div class="table-row">
                 <span class="table-cell">
                     Recipient Orders :
@@ -59,4 +59,17 @@
     {else}
         Wrong recipient!
     {/if}
+
+
+
+    {include file="{ngs cmd=get_template_dir}/main/util/attachments.tpl"} 
+    <form id="upload_attachment_form" target="upload_target" enctype="multipart/form-data" method="post" action="{$SITE_PATH}/dyn/attachment/do_upload" autocomplete="off">
+        <a class="button blue" id="select_attachment_button" >select attachment...</a>
+        <input type="hidden" name="entity_id" value="{$ns.recipient->getId()}"/>
+        <input type="hidden" name="entity_name" value="recipient"/>
+        <input type="hidden" name="partner_id" value="0"/>
+        <input id="file_input" name="file" type="file" style="display:none" />
+    </form>
+    <iframe id="upload_target" name="upload_target" style="width:0;height:0;border:0px solid #fff;display: none;" ></iframe>
+
 </div>

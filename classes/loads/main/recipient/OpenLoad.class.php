@@ -12,6 +12,7 @@
 namespace crm\loads\main\recipient {
 
     use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
     use crm\managers\CurrencyManager;
     use crm\managers\RecipientManager;
     use crm\managers\RecipientOrderManager;
@@ -30,6 +31,9 @@ namespace crm\loads\main\recipient {
                 $recipientOrders = RecipientOrderManager::getInstance()->getRecipientOrders($recipientId);
                 $this->addParam('recipientOrders', $recipientOrders);
                 $this->addParam('currencies', $currencyManager->mapDtosById($currencyManager->selectAdvance('*', ['active', '=', 1], ['name'])));
+
+                $attachments = AttachmentManager::getInstance()->getEntityAttachments($recipientId, 'recipient');
+                $this->addParam('attachments', $attachments);
             }
         }
 

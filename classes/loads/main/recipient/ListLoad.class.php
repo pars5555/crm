@@ -12,9 +12,10 @@
 namespace crm\loads\main\recipient {
 
     use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
     use crm\managers\CurrencyManager;
+    use crm\managers\PurseOrderManager;
     use crm\managers\RecipientManager;
-    use crm\managers\RecipientOrderManager;
     use NGS;
 
     class ListLoad extends AdminLoad {
@@ -52,13 +53,14 @@ namespace crm\loads\main\recipient {
             $recipientIds = $recipientManager->getDtosIdsArray($recipients);
             $recipientsRecentOrdersMappedByrecipientId = [];
             if (!empty($recipientIds)) {
-                $recipientsRecentOrdersMappedByrecipientId = \crm\managers\PurseOrderManager::getInstance()->getRecipientsRecentOrders($recipientIds);
+                $recipientsRecentOrdersMappedByrecipientId = PurseOrderManager::getInstance()->getRecipientsRecentOrders($recipientIds);
             }
-
             $this->addParam('recipientsRecentOrdersMappedByRecipientId', $recipientsRecentOrdersMappedByrecipientId);
-
             $this->addParam('recipients', $recipients);
             $count = RecipientManager::getInstance()->getLastSelectAdvanceRowsCount();
+            $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($recipients, 'recipient');
+            $this->addParam('attachments', $attachments);
+
             if (count($recipients) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }

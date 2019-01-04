@@ -73,10 +73,10 @@ namespace crm\loads\main\partner {
             $this->addParam('partnersBillingTransactionsMappedByPartnerId', $partnersBillingTransactionsMappedByPartnerId);
             $this->addParam('partnersDebt', $partnersDebt);
 
+            $count = PartnerManager::getInstance()->getLastSelectAdvanceRowsCount();
             $this->addParam('partners', $partners);
             $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($partners, 'partner');
             $this->addParam('attachments', $attachments);
-            $count = PartnerManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($partners) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }

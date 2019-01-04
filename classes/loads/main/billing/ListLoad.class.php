@@ -26,10 +26,10 @@ namespace crm\loads\main\billing {
             $limit = 100;
             list($where, $offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
             $billings = PaymentTransactionManager::getInstance()->getPaymentListFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            $count = PaymentTransactionManager::getInstance()->getLastSelectAdvanceRowsCount();
             $this->addParam('billings', $billings);
             $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($billings, 'billing');
             $this->addParam('attachments', $attachments);
-            $count = PaymentTransactionManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($billings) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }

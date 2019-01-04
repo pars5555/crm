@@ -32,10 +32,10 @@ namespace crm\loads\main\purchase {
             $limit = 100;
             list($where, $offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
             $purchaseOrders = PurchaseOrderManager::getInstance()->getPurchaseOrdersFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            $count = PurchaseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
             $this->addParam('purchaseOrders', $purchaseOrders);
             $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($purchaseOrders, 'purchase_order');
             $this->addParam('attachments', $attachments);
-            $count = PurchaseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($purchaseOrders) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }

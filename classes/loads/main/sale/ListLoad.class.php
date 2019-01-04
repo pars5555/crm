@@ -34,10 +34,10 @@ namespace crm\loads\main\sale {
             $limit = 100;
             list($where, $offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
             $saleOrders = SaleOrderManager::getInstance()->getSaleOrdersFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            $count = SaleOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
             $this->addParam('saleOrders', $saleOrders);
             $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($saleOrders, 'sale_order');
             $this->addParam('attachments', $attachments);
-            $count = SaleOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($saleOrders) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }
