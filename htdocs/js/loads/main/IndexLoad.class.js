@@ -27,6 +27,12 @@ NGS.createLoad("crm.loads.main.index", {
             $('#upload_attachment_form').trigger('submit');
 
         });
+        $('.f_remove_attachment').click(function () {
+
+            NGS.action('crm.actions.attachment.delete_attachment',
+                    {'id': $(this).data('id')});
+        });
+
     },
     initSelectableCells: function () {
         $("body").on("dblclick", ".f_selectable_cell", function () {
@@ -191,6 +197,6 @@ NGS.createLoad("crm.loads.main.index", {
         }
     }
 });
-function attachmentUploadTarget(){
+function attachmentUploadTarget() {
     window.location.reload(true);
 }
