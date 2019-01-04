@@ -45,7 +45,7 @@ namespace crm\loads\main\partner {
                 $this->addParam('partnerDebt', $debt);
                 $currencyManager = CurrencyManager::getInstance();
                 $this->addParam('currencies', $currencyManager->mapDtosById($currencyManager->selectAdvance('*', ['active', '=', 1], ['name'])));
-                $attachments = AttachmentManager::getInstance()->getEntityAttachments($partnerId, 'partner');
+                $attachments = AttachmentManager::getInstance()->getPartnerAttachments($partnerId);
                 $this->addParam('attachments', $attachments);
             }
         }

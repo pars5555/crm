@@ -75,7 +75,8 @@ namespace crm\loads\main\partner {
 
             $count = PartnerManager::getInstance()->getLastSelectAdvanceRowsCount();
             $this->addParam('partners', $partners);
-            $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($partners, 'partner');
+            $attachments = AttachmentManager::getInstance()->getPartnerRelatedAttachments($partners);
+            
             $this->addParam('attachments', $attachments);
             if (count($partners) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();

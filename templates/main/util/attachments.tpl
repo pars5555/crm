@@ -7,7 +7,9 @@
                 <a class="button_icon f_remove_attachment link" data-id="{$attachment->getId()}" title="delete attachment">
                     <i class="fa fa-trash-o"></i>
                 </a>
-
+                <div>
+                    {$attachment->getEntityName()}: {$attachment->getEntityId()}
+                </div>
             </div>
         </a>
     {/foreach}

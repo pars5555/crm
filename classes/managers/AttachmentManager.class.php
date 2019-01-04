@@ -37,6 +37,24 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function getPartnerRelatedAttachments($partnerObjects) {
+            $partnerIds = [];
+            foreach ($partnerObjects as $partnerObject) {
+                $partnerIds [] = $partnerObject->getId();
+            }
+            $partnerIdsSql = '(' . implode(',', $partnerIds) . ')';
+            $attachments = $this->selectAdvance('*', ['partner_id', 'in', $partnerIdsSql]);
+            $ret = [];
+            foreach ($attachments as $attachment) {
+                if (!isset($ret[$attachment->getPartnerId()]))
+                {
+                    $ret[$attachment->getPartnerId()] = [];
+                }
+                 $ret[$attachment->getPartnerId()][] = $attachment;
+            }
+            return $ret;
+        }
+
         public function getEntitiesAttachments($entityObjects, $entityName) {
             $entityIds = [];
             foreach ($entityObjects as $entityObject) {
