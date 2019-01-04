@@ -1,70 +1,40 @@
 <div class="container product--open--container">
-    <h1 class="main_title">Product View</h1>
-    
-    {if isset($ns.error_message)}
-        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"} 
-    {/if}
-    {if isset($ns.success_message)}
-        {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"} 
-    {/if}
-
-    {if isset($ns.product)}
-        <div class="table_striped table_striped_simple">
-            <div class="table-row">
-                <span class="table-cell">
-                    id :
-                </span>
-                <span class="table-cell">
-                    {$ns.product->getId()}
-                </span>
-            </div>
-            <div class="table-row">
-                <span class="table-cell">
-                    Name :
-                </span>
-                <span class="table-cell">
-                    {$ns.product->getName()}
-                </span>
-            </div>
-            <div class="table-row">
-                <span class="table-cell">
-                    Model :
-                </span>
-                <span class="table-cell">
-                    {$ns.product->getModel()}
-                </span>
-            </div>
-            <div class="table-row">
-                <span class="table-cell">
-                    Uom :
-                </span>
-                <span class="table-cell">
-                    {$ns.product->getUomDto()->getName()}
-                </span>
-            </div>
-            <div class="table-row">
-                <span class="table-cell">
-                    Manufacturer : 
-                </span>
-                <span class="table-cell">
-                    {if $ns.product->getManufacturerDto()}
-                        {$ns.product->getManufacturerDto()->getName()}
-                    {else}
-                        <span class="text_red">None</span>
-                    {/if}
-                </span>
-            </div>
-            <div class="table-row">
-                <span class="table-cell">
-                    Quantity in warehouse :
-                </span>
-                <span class="table-cell">
-                    {$ns.productQuantity}
-                </span>
-            </div>
+    <h1 class="main_title">BTC Order View</h1>
+    <div class="table_striped table_striped_simple">
+        <div class="table-row">
+            <span class="table-cell">
+                id :
+            </span>
+            <span class="table-cell">
+                {$ns.order->getId()}
+            </span>
         </div>
-    {/if}
-    <a class="button blue deleteProductButton"  href="{$SITE_PATH}/dyn/main_product/do_delete_product?id={$product->getId()}">
-        <span>delete</span>
-    </a>
+        <div class="table-row">
+            <span class="table-cell">
+                Name :
+            </span>
+            <span class="table-cell">
+                {$ns.order->getOrderNumber()|default:'external'}
+            </span>
+        </div>
+        <div class="table-row">
+            <span class="table-cell">
+                Note :
+            </span>
+            <span class="table-cell">
+                {$ns.order->getNote()}
+            </span>
+        </div>
+    </div>
 </div>
+
+{include file="{ngs cmd=get_template_dir}/main/util/attachments.tpl"} 
+            
+<form id="upload_attachment_form" target="upload_target" enctype="multipart/form-data" method="post" action="{$SITE_PATH}/dyn/attachment/do_upload" autocomplete="off">
+    <a class="button blue" id="select_attachment_button" >select attachment...</a>
+    <input type="hidden" name="entity_id" value="{$ns.order->getId()}"/>
+    <input type="hidden" name="entity_name" value="btc"/>
+    <input type="hidden" name="partner_id" value="0"/>
+    <input id="file_input" name="file" type="file" style="display:none" />
+</form>
+<iframe id="upload_target" name="upload_target" style="width:0;height:0;border:0px solid #fff;display: none;" ></iframe>

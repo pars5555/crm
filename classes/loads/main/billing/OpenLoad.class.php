@@ -12,11 +12,11 @@
 namespace crm\loads\main\billing {
 
     use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
     use crm\managers\PaymentTransactionManager;
-    use crm\security\RequestGroups;
     use NGS;
 
-    class OpenLoad  extends AdminLoad {
+    class OpenLoad extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -26,13 +26,14 @@ namespace crm\loads\main\billing {
             if (!empty($payments)) {
                 $payment = $payments[0];
                 $this->addParam('billing', $payment);
+                $attachments = AttachmentManager::getInstance()->getEntityAttachments($paymentId, 'billing');
+                $this->addParam('attachments', $attachments);
             }
         }
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/billing/open.tpl";
         }
-
 
     }
 

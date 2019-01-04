@@ -29,6 +29,9 @@
             {foreach from=$ns.saleOrders item=saleOrder}
                 <tr>
                     <td class="link-cell id">
+                        {if isset($ns.attachments[$saleOrder->getId()])}
+                            <img src="{$SITE_PATH}/img/attachment.png" width="32"/>
+                        {/if}
                         <a href="{$SITE_PATH}/sale/{$saleOrder->getId()}">
                             <span>{$saleOrder->getId()} </span>
                         </a>

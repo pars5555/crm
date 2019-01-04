@@ -31,6 +31,9 @@
             {foreach from=$ns.partners item=partner}
                 <tr>
                     <td class="link-cell id">
+                        {if isset($ns.attachments[$partner->getId()])}
+                            <img src="{$SITE_PATH}/img/attachment.png" width="32"/>
+                        {/if}
                         <a class="table-cell" href="{$SITE_PATH}/partner/{$partner->getId()}">
                             <span>{$partner->getId()} </span>
                         </a>
@@ -79,23 +82,23 @@
                     </td>
                     <td class="link-cell all-deals icon-cell">
                         <a class="view_item" href="{$SITE_PATH}/partner/all/{$partner->getId()}">
-                                <span class="button_icon" title="View">
-                                    <i class="fa fa-calendar"></i>
-                                </span>
+                            <span class="button_icon" title="View">
+                                <i class="fa fa-calendar"></i>
+                            </span>
                         </a>
                     </td>
                     <td class="link-cell view icon-cell">
                         <a class="view_item" href="{$SITE_PATH}/partner/{$partner->getId()}">
-                                <span class="button_icon" title="View">
-                                    <i class="fa fa-eye"></i>
-                                </span>
+                            <span class="button_icon" title="View">
+                                <i class="fa fa-eye"></i>
+                            </span>
                         </a>
                     </td>
                     <td class="link-cell edit icon-cell">
                         <a class="view_item" href="{$SITE_PATH}/partner/edit/{$partner->getId()}">
-                                <span class="button_icon" title="Edit">
-                                    <i class="fa fa-pencil"></i>
-                                </span>
+                            <span class="button_icon" title="Edit">
+                                <i class="fa fa-pencil"></i>
+                            </span>
                         </a>
                     </td>
                     <td class="hide-check icon-cell">

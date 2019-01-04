@@ -12,10 +12,10 @@
 namespace crm\loads\main\payment {
 
     use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
     use crm\managers\CurrencyManager;
     use crm\managers\PartnerManager;
     use crm\managers\PaymentTransactionManager;
-    use crm\security\RequestGroups;
     use NGS;
 
     class ListLoad extends AdminLoad {
@@ -27,6 +27,8 @@ namespace crm\loads\main\payment {
             list($where, $offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
             $payments = PaymentTransactionManager::getInstance()->getPaymentListFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $this->addParam('payments', $payments);
+            $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($payments, 'payment');
+            $this->addParam('attachments', $attachments);
             $count = PaymentTransactionManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($payments) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();

@@ -11,26 +11,27 @@
 
 namespace crm\loads\main\sale {
 
-use crm\loads\AdminLoad;
-use crm\managers\CurrencyManager;
-use crm\managers\ProductManager;
-use crm\managers\SaleOrderManager;
-use crm\managers\SettingManager;
-use crm\security\RequestGroups;
-use NGS;
+    use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
+    use crm\managers\CurrencyManager;
+    use crm\managers\ProductManager;
+    use crm\managers\SaleOrderManager;
+    use NGS;
 
-    class OpenLoad  extends AdminLoad {
+    class OpenLoad extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $this->addParam('products', ProductManager::getInstance()->selectAdvance('*', [], ['name']));
             $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
-            $paymentId = NGS()->args()->id;
-            $saleOrders = SaleOrderManager::getInstance()->getSaleOrdersFull(['id', '=', $paymentId]);
+            $saleorderId = NGS()->args()->id;
+            $saleOrders = SaleOrderManager::getInstance()->getSaleOrdersFull(['id', '=', $saleorderId]);
+            $attachments = AttachmentManager::getInstance()->getEntityAttachments($saleorderId, 'sale_order');
             if (!empty($saleOrders)) {
                 $saleOrder = $saleOrders[0];
                 $this->addParam('saleOrder', $saleOrder);
+                $this->addParam('attachments', $attachments);
             }
         }
 

@@ -12,6 +12,7 @@
 namespace crm\loads\main\partner {
 
     use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
     use crm\managers\CalculationManager;
     use crm\managers\CurrencyManager;
     use crm\managers\PartnerInitialDebtManager;
@@ -19,10 +20,9 @@ namespace crm\loads\main\partner {
     use crm\managers\PaymentTransactionManager;
     use crm\managers\PurchaseOrderManager;
     use crm\managers\SaleOrderManager;
-    use crm\security\RequestGroups;
     use NGS;
 
-    class OpenLoad  extends AdminLoad {
+    class OpenLoad extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -45,13 +45,14 @@ namespace crm\loads\main\partner {
                 $this->addParam('partnerDebt', $debt);
                 $currencyManager = CurrencyManager::getInstance();
                 $this->addParam('currencies', $currencyManager->mapDtosById($currencyManager->selectAdvance('*', ['active', '=', 1], ['name'])));
+                $attachments = AttachmentManager::getInstance()->getEntityAttachments($partnerId, 'partner');
+                $this->addParam('attachments', $attachments);
             }
         }
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/partner/open.tpl";
         }
-
 
     }
 

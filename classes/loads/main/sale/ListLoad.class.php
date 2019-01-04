@@ -12,15 +12,15 @@
 namespace crm\loads\main\sale {
 
     use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
     use crm\managers\CurrencyManager;
     use crm\managers\PartnerManager;
     use crm\managers\PaymentMethodManager;
     use crm\managers\ProductManager;
     use crm\managers\SaleOrderManager;
-    use crm\security\RequestGroups;
     use NGS;
 
-    class ListLoad  extends AdminLoad {
+    class ListLoad extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -28,13 +28,15 @@ namespace crm\loads\main\sale {
             $this->addParam('payment_methods', PaymentMethodManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
             $this->addParam('partners', PartnerManager::getInstance()->selectAdvance('*', [], ['name']));
             $this->addParam('products', ProductManager::getInstance()->selectAdvance('*', [], ['name']));
-            
-            
+
+
 
             $limit = 100;
             list($where, $offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
             $saleOrders = SaleOrderManager::getInstance()->getSaleOrdersFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $this->addParam('saleOrders', $saleOrders);
+            $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($saleOrders, 'sale_order');
+            $this->addParam('attachments', $attachments);
             $count = SaleOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($saleOrders) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
@@ -126,7 +128,6 @@ namespace crm\loads\main\sale {
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/sale/list.tpl";
         }
-
 
         public function getSortByFields() {
             return ['order_date' => 'Date', 'billing_deadline' => 'Billing Deadline'];

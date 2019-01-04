@@ -12,11 +12,11 @@
 namespace crm\loads\main\payment {
 
     use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
     use crm\managers\PaymentTransactionManager;
-    use crm\security\RequestGroups;
     use NGS;
 
-    class OpenLoad  extends AdminLoad {
+    class OpenLoad extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -26,6 +26,8 @@ namespace crm\loads\main\payment {
             if (!empty($payments)) {
                 $payment = $payments[0];
                 $this->addParam('payment', $payment);
+                $attachments = AttachmentManager::getInstance()->getEntityAttachments($paymentId, 'payment');
+                $this->addParam('attachments', $attachments);
             }
         }
 

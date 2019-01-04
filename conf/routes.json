@@ -101,6 +101,21 @@
             }
         }
     ],
+    "btc": [
+        {
+            "action": "loads.main.index",
+            "route": "[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.purse.open"
+                }
+            }
+        }
+    ],
+    
     "sale": [
         {
             "action": "loads.main.index",

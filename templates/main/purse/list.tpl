@@ -41,7 +41,7 @@
                     {if $order->getProblematic() == 1 && $order->getProblemSolved() == 0} style="background: yellow;"{/if}
                     {/if} data-type="btc" data-id="{$order->getId()}">
                     <td>
-                        {$order->getId()}<br/>
+                        <a href="{$SITE_PATH}/btc/{$order->getId()}" class="link" target="_blank">{$order->getId()}</a><br/>
                         
                         {if $order->getHidden()==0}
                             <a href="javascript:void(0);" class="fa fa-eye-slash fa-1x f_hide left" data-id='{$order->getId()}'></a>
@@ -57,6 +57,9 @@
                         {/if}
                         {if $ns.problematic == 1 || $order->isDelayed()}
                             <a href="javascript:void(0);" id="problem_solved_{$order->getId()}" class="fa fa-check-circle fa-2x f_problem_solved" data-id='{$order->getId()}'></a>
+                        {/if}
+                        {if isset($ns.attachments[$order->getId()])}
+                            <img src="{$SITE_PATH}/img/attachment.png" width="32"/>
                         {/if}
                     </td>
 

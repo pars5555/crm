@@ -11,24 +11,26 @@
 
 namespace crm\loads\main\billing {
 
-use crm\loads\AdminLoad;
-use crm\managers\CurrencyManager;
-use crm\managers\PartnerManager;
-use crm\managers\PaymentTransactionManager;
-use crm\security\RequestGroups;
-use NGS;
+    use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
+    use crm\managers\CurrencyManager;
+    use crm\managers\PartnerManager;
+    use crm\managers\PaymentTransactionManager;
+    use NGS;
 
-    class ListLoad  extends AdminLoad {
+    class ListLoad extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 100;
             list($where, $offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
-            $billing = PaymentTransactionManager::getInstance()->getPaymentListFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
-            $this->addParam('billings', $billing);
+            $billings = PaymentTransactionManager::getInstance()->getPaymentListFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            $this->addParam('billings', $billings);
+            $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($billings, 'billing');
+            $this->addParam('attachments', $attachments);
             $count = PaymentTransactionManager::getInstance()->getLastSelectAdvanceRowsCount();
-            if (count($billing) == 0 && $count > 0) {
+            if (count($billings) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }
             $pagesCount = ceil($count / $limit);
@@ -68,7 +70,7 @@ use NGS;
                 $where[] = '=';
                 $where[] = $selectedFilterPartnerId;
             }
-            
+
             $searchText = '';
             if (isset(NGS()->args()->st)) {
                 $searchText = trim(NGS()->args()->st);
@@ -130,7 +132,6 @@ use NGS;
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/billing/list.tpl";
         }
-
 
         public function getSortByFields() {
             return ['date' => 'Date', 'amount' => 'Amount'];
