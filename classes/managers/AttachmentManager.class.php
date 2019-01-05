@@ -60,6 +60,10 @@ namespace crm\managers {
             foreach ($entityObjects as $entityObject) {
                 $entityIds [] = $entityObject->getId();
             }
+            if (empty($entityIds))
+            {
+                return [];
+            }
             $entityIdsSql = '(' . implode(',', $entityIds) . ')';
             $attachments = $this->selectAdvance('*', ['entity_id', 'in', $entityIdsSql, 'AND', 'entity_name', '=', "'$entityName'"]);
             $ret = [];
