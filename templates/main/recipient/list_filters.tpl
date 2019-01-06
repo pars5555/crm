@@ -26,6 +26,13 @@
                 <option value="no" {if $ns.selectedFilterDeleted == 'no'}selected{/if}>No</option>
             </select>
         </div>
+        <div class="filter">
+            <label>Show Standard Units</label>
+            <select name="ssu">
+                <option value="no" {if $ns.selectedFilterShowStandardUnits == 'no'}selected{/if}>No</option>
+                <option value="yes" {if $ns.selectedFilterShowStandardUnits == 'yes'}selected{/if}>Yes</option>
+            </select>
+        </div>
         <div class="filter wide text-right">
             <div class="add-new-btn">
                 <a href="{$SITE_PATH}/recipient/create">

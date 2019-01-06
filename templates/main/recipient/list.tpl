@@ -19,7 +19,9 @@
                 <th>Email</th>
                     {*                <th>Tel.</th>*}
                 <th>Ex Unit</th>
-                <th>St Unit</th>
+                    {if $ns.selectedFilterShowStandardUnits == 'yes'}
+                    <th>St Unit</th>
+                    {/if}
                 <th>Doc Number</th>
                     {*                <th>Doc Type</th>*}
                 <th>Note</th>
@@ -46,7 +48,9 @@
                     <td>{$recipient->getEmail()}</td>
                     {*                    <td style="white-space: nowrap"> {$recipient->getPhoneNumber()|replace:',':'</br>'} </td>*}
                     <td>{$recipient->getExpressUnitAddress()} {$recipient->getOnexExpressUnit()} {$recipient->getNovaExpressUnit()}</td>
-                    <td>{$recipient->getStandardUnitAddress()} {$recipient->getOnexStandardUnit()} {$recipient->getNovaStandardUnit()}</td>
+                    {if $ns.selectedFilterShowStandardUnits == 'yes'}
+                        <td>{$recipient->getStandardUnitAddress()} {$recipient->getOnexStandardUnit()} {$recipient->getNovaStandardUnit()}</td>
+                    {/if}
                     <td>{$recipient->getDocumentNumber()}</td>
                     {*                    <td>{$recipient->getDocumentType()}</td>*}
                     <td class="table-cell f_editable_cell" data-field-name="note">{$recipient->getNote()}</td>
