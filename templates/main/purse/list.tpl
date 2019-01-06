@@ -38,10 +38,10 @@
             {foreach from=$ns.orders item=order}
                 <tr {if $order->getHidden()==1} style="background: lightgray;" {else}
                     {if $order->isDelayed()} style="background: orange;"{/if}
-                    {if $order->getProblematic() == 1} style="background: yellow;"{/if}
+                    {if $order->getProblematic() == 1 && $order->getProblemSolved() == 0} style="background: yellow;"{/if}
                     {/if} data-type="btc" data-id="{$order->getId()}">
                     <td>
-                        {$order->getId()}<br/>
+                        <a href="{$SITE_PATH}/btc/{$order->getId()}" class="link" target="_blank">{$order->getId()}</a><br/>
                         
                         {if $order->getHidden()==0}
                             <a href="javascript:void(0);" class="fa fa-eye-slash fa-1x f_hide left" data-id='{$order->getId()}'></a>
@@ -57,6 +57,9 @@
                         {/if}
                         {if $ns.problematic == 1 || $order->isDelayed()}
                             <a href="javascript:void(0);" id="problem_solved_{$order->getId()}" class="fa fa-check-circle fa-2x f_problem_solved" data-id='{$order->getId()}'></a>
+                        {/if}
+                        {if isset($ns.attachments[$order->getId()])}
+                            <img src="{$SITE_PATH}/img/attachment.png" width="32"/>
                         {/if}
                     </td>
 
@@ -107,7 +110,16 @@
                         <span id="carrier_delivery_details_{$order->getId()}" style="color:#46AF04">{$order->getCarrierDeliveryDate()}</span>
                         <a href="javascript:void(0);" class="fa fa-refresh f_refresh_carrier_delivery_details" data-id='{$order->getId()}'></a>
                     </td>
-                    <td> {$order->getHiddenAt()} </td>
+                    <td> 
+                        {$order->getHiddenAt()} 
+                        {if isset($ns.btc_purchase_orders[$order->getId()])}
+                            <br/>
+                            <br/>
+                                <a target="_blank" href="{$SITE_PATH}/purchase/{$ns.btc_purchase_orders[$order->getId()]}">
+                                <span>PO#{$ns.btc_purchase_orders[$order->getId()]} </span>
+                            </a>
+                        {/if}
+                    </td>
                     <td> {$order->getCreatedAt()} </td>
                 </tr>
             {/foreach}

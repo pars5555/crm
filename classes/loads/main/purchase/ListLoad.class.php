@@ -12,15 +12,15 @@
 namespace crm\loads\main\purchase {
 
     use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
     use crm\managers\CurrencyManager;
     use crm\managers\PartnerManager;
     use crm\managers\PaymentMethodManager;
     use crm\managers\ProductManager;
     use crm\managers\PurchaseOrderManager;
-    use crm\security\RequestGroups;
     use NGS;
 
-    class ListLoad  extends AdminLoad {
+    class ListLoad extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
@@ -32,8 +32,10 @@ namespace crm\loads\main\purchase {
             $limit = 100;
             list($where, $offset, $sortByFieldName, $selectedFilterSortByAscDesc) = $this->initFilters($limit);
             $purchaseOrders = PurchaseOrderManager::getInstance()->getPurchaseOrdersFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
-            $this->addParam('purchaseOrders', $purchaseOrders);
             $count = PurchaseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
+            $this->addParam('purchaseOrders', $purchaseOrders);
+            $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($purchaseOrders, 'purchase_order');
+            $this->addParam('attachments', $attachments);
             if (count($purchaseOrders) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }
@@ -123,7 +125,6 @@ namespace crm\loads\main\purchase {
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/purchase/list.tpl";
         }
-
 
         public function getSortByFields() {
             return ['order_date' => 'Date', 'payment_deadline' => 'Payment Deadline'];

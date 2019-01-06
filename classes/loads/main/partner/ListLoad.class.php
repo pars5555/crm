@@ -12,6 +12,7 @@
 namespace crm\loads\main\partner {
 
     use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
     use crm\managers\CalculationManager;
     use crm\managers\CurrencyManager;
     use crm\managers\PartnerInitialDebtManager;
@@ -19,7 +20,6 @@ namespace crm\loads\main\partner {
     use crm\managers\PaymentTransactionManager;
     use crm\managers\PurchaseOrderManager;
     use crm\managers\SaleOrderManager;
-    use crm\security\RequestGroups;
     use NGS;
 
     class ListLoad extends AdminLoad {
@@ -73,8 +73,11 @@ namespace crm\loads\main\partner {
             $this->addParam('partnersBillingTransactionsMappedByPartnerId', $partnersBillingTransactionsMappedByPartnerId);
             $this->addParam('partnersDebt', $partnersDebt);
 
-            $this->addParam('partners', $partners);
             $count = PartnerManager::getInstance()->getLastSelectAdvanceRowsCount();
+            $this->addParam('partners', $partners);
+            $attachments = AttachmentManager::getInstance()->getPartnerRelatedAttachments($partners);
+            
+            $this->addParam('attachments', $attachments);
             if (count($partners) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }

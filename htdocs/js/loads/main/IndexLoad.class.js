@@ -17,6 +17,22 @@ NGS.createLoad("crm.loads.main.index", {
         this.initSettingEditableCells();
         this.initLeftMenuTrigger();
         this.hideLeftMenuOnMobile();
+        this.initFileUploader();
+    },
+    initFileUploader: function () {
+        $('#select_attachment_button').click(function () {
+            $('#file_input').trigger('click');
+        });
+        $('#file_input').change(function () {
+            $('#upload_attachment_form').trigger('submit');
+
+        });
+        $('.f_remove_attachment').click(function () {
+
+            NGS.action('crm.actions.attachment.delete_attachment',
+                    {'id': $(this).data('id')});
+        });
+
     },
     initSelectableCells: function () {
         $("body").on("dblclick", ".f_selectable_cell", function () {
@@ -181,3 +197,6 @@ NGS.createLoad("crm.loads.main.index", {
         }
     }
 });
+function attachmentUploadTarget() {
+    window.location.reload(true);
+}

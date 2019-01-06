@@ -39,6 +39,23 @@ namespace crm\managers {
             return $this->getPurchaseOrdersFull(['deleted', '=', 0, 'AND', 'partner_id', '=', $partnerId]);
         }
 
+        public function getBtcPurchaseOrders($btcOrders) {
+            $btcOrderIds = [];
+            foreach ($btcOrders as $btcOrder) {
+                $btcOrderIds[] = $btcOrder->getId();
+            }
+            if (empty($btcOrderIds)) {
+                return [];
+            }
+            $btcOrderIdsSql = '(' . implode(',', $btcOrderIds) . ')';
+            $pos = $this->selectAdvance(['id', 'purse_order_id'], ['purse_order_id', 'in', $btcOrderIdsSql]);
+            $ret = [];
+            foreach ($pos as $po) {
+                $ret[$po->getPurseOrderId()] = $po->getId();
+            }
+            return $ret;
+        }
+
         public function getPartnerPurchaseOrdersTotal($partnerId) {
             $where = ['cancelled', '=', 0, 'AND', 'partner_id', '=', $partnerId];
             $pos = $this->getPurchaseOrdersFull($where);

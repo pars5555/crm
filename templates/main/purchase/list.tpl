@@ -26,6 +26,9 @@
             {foreach from=$ns.purchaseOrders item=purchaseOrder}
                 <tr {if $purchaseOrder->getCancelled() == 1}style="color: gray"{/if}>
                     <td class="link-cell id">
+                        {if isset($ns.attachments[$purchaseOrder->getId()])}
+                            <img src="{$SITE_PATH}/img/attachment.png" width="32"/>
+                        {/if}
                         <a href="{$SITE_PATH}/purchase/{$purchaseOrder->getId()}">
                             <span>{$purchaseOrder->getId()} </span>
                         </a>

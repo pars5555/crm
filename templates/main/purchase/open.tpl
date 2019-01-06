@@ -198,3 +198,14 @@
     </div>
     <input type="hidden" name="lines[]"/>
 </div>
+
+{include file="{ngs cmd=get_template_dir}/main/util/attachments.tpl"} 
+            
+<form id="upload_attachment_form" target="upload_target" enctype="multipart/form-data" method="post" action="{$SITE_PATH}/dyn/attachment/do_upload" autocomplete="off">
+    <a class="button blue" id="select_attachment_button" >select attachment...</a>
+    <input type="hidden" name="entity_id" value="{$ns.purchaseOrder->getId()}"/>
+    <input type="hidden" name="entity_name" value="purchase_order"/>
+    <input type="hidden" name="partner_id" value="{$ns.purchaseOrder->getPartnerId()}"/>
+    <input id="file_input" name="file" type="file" style="display:none" />
+</form>
+<iframe id="upload_target" name="upload_target" style="width:0;height:0;border:0px solid #fff;display: none;" ></iframe>

@@ -144,7 +144,8 @@
                     "actions/main/purse/RefreshRecipientAction.class.js",
                     "actions/main/purse/RefreshCarrierDeliveryDetailsAction.class.js",
                     "actions/main/purse/HideByTrackingsAction.class.js",
-                    "actions/main/UpdateFieldAction.class.js"
+                    "actions/main/UpdateFieldAction.class.js",
+                    "actions/attachment/DeleteAttachmentAction.class.js"
 
                 ]
             }

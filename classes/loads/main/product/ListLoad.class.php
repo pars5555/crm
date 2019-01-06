@@ -60,7 +60,10 @@ namespace crm\loads\main\product {
                 }
             }
             $partnerIdsSql = implode(',', array_unique($partnerIds));
-            $partnersMappedByIds = PartnerManager::getInstance()->selectAdvance(['name', 'id'], ['id', 'in', "($partnerIdsSql)"], null, null, null, null, true);
+            $partnersMappedByIds = [];
+            if (!empty($partnerIdsSql)){
+                $partnersMappedByIds = PartnerManager::getInstance()->selectAdvance(['name', 'id'], ['id', 'in', "($partnerIdsSql)"], null, null, null, null, true);
+            }
             $this->addParam('partnersMappedByIds', $partnersMappedByIds);
         }
 

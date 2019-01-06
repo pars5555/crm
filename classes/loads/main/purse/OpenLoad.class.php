@@ -12,31 +12,22 @@
 namespace crm\loads\main\purse {
 
     use crm\loads\AdminLoad;
-    use crm\managers\ProductManager;
-    use crm\managers\PurchaseOrderLineManager;
-    use crm\managers\SaleOrderLineManager;
-    use crm\security\RequestGroups;
+    use crm\managers\AttachmentManager;
+    use crm\managers\PurseOrderManager;
     use NGS;
 
     class OpenLoad extends AdminLoad {
 
         public function load() {
-            $this->initErrorMessages();
-            $this->initSuccessMessages();
-            $productId = NGS()->args()->id;
-            $products = ProductManager::getInstance()->getProductListFull(['id', '=', $productId]);
-            if (!empty($products)) {
-                $productSaleQuantity = SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId);
-                $productPurchaseQuantity = PurchaseOrderLineManager::getInstance()->getProductCountInNonCancelledPurchaseOrders($productId);
-                $productQuantity = $productPurchaseQuantity - $productSaleQuantity;
-                $product = $products[0];
-                $this->addParam('product', $product);
-                $this->addParam('productQuantity', $productQuantity);
-            }
+            $orderId = NGS()->args()->id;
+            $order = PurseOrderManager::getInstance()->selectByPk($orderId);
+            $this->addParam('order', $order);
+            $attachments = AttachmentManager::getInstance()->getEntityAttachments($orderId, 'btc');
+            $this->addParam('attachments', $attachments);
         }
 
         public function getTemplate() {
-            return NGS()->getTemplateDir() . "/main/product/open.tpl";
+            return NGS()->getTemplateDir() . "/main/purse/open.tpl";
         }
 
     }

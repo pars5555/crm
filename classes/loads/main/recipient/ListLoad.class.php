@@ -12,9 +12,10 @@
 namespace crm\loads\main\recipient {
 
     use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
     use crm\managers\CurrencyManager;
+    use crm\managers\PurseOrderManager;
     use crm\managers\RecipientManager;
-    use crm\managers\RecipientOrderManager;
     use NGS;
 
     class ListLoad extends AdminLoad {
@@ -52,13 +53,14 @@ namespace crm\loads\main\recipient {
             $recipientIds = $recipientManager->getDtosIdsArray($recipients);
             $recipientsRecentOrdersMappedByrecipientId = [];
             if (!empty($recipientIds)) {
-                $recipientsRecentOrdersMappedByrecipientId = \crm\managers\PurseOrderManager::getInstance()->getRecipientsRecentOrders($recipientIds);
+                $recipientsRecentOrdersMappedByrecipientId = PurseOrderManager::getInstance()->getRecipientsRecentOrders($recipientIds);
             }
-
             $this->addParam('recipientsRecentOrdersMappedByRecipientId', $recipientsRecentOrdersMappedByrecipientId);
-
             $this->addParam('recipients', $recipients);
             $count = RecipientManager::getInstance()->getLastSelectAdvanceRowsCount();
+            $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($recipients, 'recipient');
+            $this->addParam('attachments', $attachments);
+
             if (count($recipients) == 0 && $count > 0) {
                 $this->redirectIncludedParamsExeptPaging();
             }
@@ -116,6 +118,12 @@ namespace crm\loads\main\recipient {
                     $selectedFilterDeleted = strtolower(NGS()->args()->del);
                 }
             }
+            $selectedFilterShowStandardUnits = 'no';
+            if (isset(NGS()->args()->ssu)) {
+                if (in_array(strtolower(NGS()->args()->ssu), ['yes', 'no'])) {
+                    $selectedFilterShowStandardUnits = strtolower(NGS()->args()->ssu);
+                }
+            }
 
             $selectedFilterHasDebt = 'all';
             if (isset(NGS()->args()->hasdebt)) {
@@ -133,6 +141,7 @@ namespace crm\loads\main\recipient {
             $this->addParam('searchText', $searchText);
             $this->addParam('selectedFilterHasDebt', $selectedFilterHasDebt);
             $this->addParam('selectedFilterDeleted', $selectedFilterDeleted);
+            $this->addParam('selectedFilterShowStandardUnits', $selectedFilterShowStandardUnits);
             $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
 

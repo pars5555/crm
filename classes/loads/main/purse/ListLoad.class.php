@@ -12,7 +12,11 @@
 namespace crm\loads\main\purse {
 
     use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
+    use crm\managers\CryptoRateManager;
     use crm\managers\PurseOrderManager;
+    use crm\managers\RecipientManager;
+    use crm\managers\SettingManager;
     use NGS;
 
     class ListLoad extends AdminLoad {
@@ -21,7 +25,7 @@ namespace crm\loads\main\purse {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 200;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc,$where,$words, $searchText, 
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $where, $words, $searchText,
                     $problematic, $local_carrier_name, $regOrdersInWarehouse) = $this->initFilters($limit, $this);
             if (!empty($regOrdersInWarehouse)) {
                 $orders = PurseOrderManager::getInstance()->getNotRegisteredOrdersInWarehouse($regOrdersInWarehouse, $local_carrier_name);
@@ -74,12 +78,18 @@ namespace crm\loads\main\purse {
             $this->addParam('pagesCount', $pagesCount);
             $this->addParam('orders', $orders);
 
-            $btc_products_days_diff_for_delivery_date = intval(\crm\managers\SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
+            $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($orders, 'btc');
+            $this->addParam('attachments', $attachments);
+
+            $pos = \crm\managers\PurchaseOrderManager::getInstance()->getBtcPurchaseOrders($orders);
+            $this->addParam('btc_purchase_orders', $pos);
+
+            $btc_products_days_diff_for_delivery_date = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             $this->addParam('btc_products_days_diff_for_delivery_date', $btc_products_days_diff_for_delivery_date);
 
-            $purse_checkout_meta = json_decode(\crm\managers\SettingManager::getInstance()->getSetting('purse_checkout_meta', '{}'));
-            $purse_pars_meta = json_decode(\crm\managers\SettingManager::getInstance()->getSetting('purse_pars_meta', '{}'));
-            $purse_info_meta = json_decode(\crm\managers\SettingManager::getInstance()->getSetting('purse_info_meta', '{}'));
+            $purse_checkout_meta = json_decode(SettingManager::getInstance()->getSetting('purse_checkout_meta', '{}'));
+            $purse_pars_meta = json_decode(SettingManager::getInstance()->getSetting('purse_pars_meta', '{}'));
+            $purse_info_meta = json_decode(SettingManager::getInstance()->getSetting('purse_info_meta', '{}'));
             if (isset($purse_checkout_meta->wallet)) {
                 $this->addParam('checkout_btc_balance', round($purse_checkout_meta->wallet->BTC->balance->active, 3));
                 $this->addParam('checkout_btc_address', $purse_checkout_meta->wallet->BTC->legacy_address);
@@ -100,10 +110,10 @@ namespace crm\loads\main\purse {
             $this->addParam('infoUpdatedDate', $infoUpdatedDate);
             $this->addParam('checkoutUpdatedDate', $checkoutUpdatedDate);
 
-            $this->addParam('btc_rate', \crm\managers\CryptoRateManager::getInstance()->getBtcRate());
+            $this->addParam('btc_rate', CryptoRateManager::getInstance()->getBtcRate());
 
 
-            $this->addParam('recipients', \crm\managers\RecipientManager::getInstance()->selectAdvance('*', [], ['first_name', 'last_name']));
+            $this->addParam('recipients', RecipientManager::getInstance()->selectAdvance('*', [], ['first_name', 'last_name']));
         }
 
         public static function initFilters($limit = 10000, $load = null) {
@@ -116,7 +126,7 @@ namespace crm\loads\main\purse {
                     $regOrdersInWarehouseStr = preg_replace('/\s+/', ';', $regOrdersInWarehouseStr);
                     $regOrdersInWarehouseStr = str_replace(',', ';', $regOrdersInWarehouseStr);
                     $regOrdersInWarehouse = explode(';', $regOrdersInWarehouseStr);
-                    $local_carrier_name = NGS()->args()->cn;                    
+                    $local_carrier_name = NGS()->args()->cn;
                     $limit = 1000;
                 }
             }
@@ -217,7 +227,7 @@ namespace crm\loads\main\purse {
                 $load->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
                 $load->addParam('selectedFilterSortBy', $selectedFilterSortBy);
             }
-            
+
             $where = ['1', '=', '1'];
             if ($selectedFilterAccount !== 'all') {
                 $where = array_merge($where, ['AND ', 'account_name', '=', "'purse_$selectedFilterAccount'"]);
@@ -240,7 +250,7 @@ namespace crm\loads\main\purse {
                 $where = array_merge($where, ['AND ', 'external', '=', $orderTypeVal]);
             }
             if ($selectedFilterRecipientId > 0) {
-                $recipientUnitAddressesSql = \crm\managers\RecipientManager::getInstance()->getRecipientUnitAddresses($selectedFilterRecipientId, true);
+                $recipientUnitAddressesSql = RecipientManager::getInstance()->getRecipientUnitAddresses($selectedFilterRecipientId, true);
                 $where = array_merge($where, ['AND ', 'unit_address', 'in', $recipientUnitAddressesSql]);
             }
             $words = [];
@@ -263,7 +273,7 @@ namespace crm\loads\main\purse {
                     }
                 }
             }
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $where,$words, $searchText, $problematic, $local_carrier_name, $regOrdersInWarehouse];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $where, $words, $searchText, $problematic, $local_carrier_name, $regOrdersInWarehouse];
         }
 
         public function getTemplate() {

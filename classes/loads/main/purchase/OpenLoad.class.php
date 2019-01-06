@@ -12,31 +12,32 @@
 namespace crm\loads\main\purchase {
 
     use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
     use crm\managers\CurrencyManager;
     use crm\managers\ProductManager;
     use crm\managers\PurchaseOrderManager;
-    use crm\security\RequestGroups;
     use NGS;
 
-    class OpenLoad  extends AdminLoad {
+    class OpenLoad extends AdminLoad {
 
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $this->addParam('products', ProductManager::getInstance()->selectAdvance('*', [], ['name']));
             $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
-            $paymentId = NGS()->args()->id;
-            $purchaseOrders = PurchaseOrderManager::getInstance()->getPurchaseOrdersFull(['id', '=', $paymentId]);
+            $orderId = NGS()->args()->id;
+            $purchaseOrders = PurchaseOrderManager::getInstance()->getPurchaseOrdersFull(['id', '=', $orderId]);
             if (!empty($purchaseOrders)) {
                 $purchaseOrder = $purchaseOrders[0];
                 $this->addParam('purchaseOrder', $purchaseOrder);
+                $attachments = AttachmentManager::getInstance()->getEntityAttachments($orderId, 'purchase_order');
+                $this->addParam('attachments', $attachments);
             }
         }
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/purchase/open.tpl";
         }
-
 
     }
 

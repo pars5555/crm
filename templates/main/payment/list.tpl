@@ -28,6 +28,9 @@
             {foreach from=$ns.payments item=payment}
                 <tr {if $payment->getCancelled() == 1}style="color: gray"{/if}>
                     <td class="link-cell id">
+                        {if isset($ns.attachments[$payment->getId()])}
+                            <img src="{$SITE_PATH}/img/attachment.png" width="32"/>
+                        {/if}
                         <a href="{$SITE_PATH}/payment/{$payment->getId()}">
                             <span>{$payment->getId()} </span>
                         </a>

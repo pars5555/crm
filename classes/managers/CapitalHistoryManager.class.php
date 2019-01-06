@@ -42,12 +42,11 @@ namespace crm\managers {
             $warehouseTotal = floatval($capitalData['warehouse_total']);
             $purseTotal = floatval($capitalData['purse_total']);
             $purseBalanceTotal = floatval($capitalData['purse_balance_total']);
-            $partnerWarehouseTotal = floatval($capitalData['partner_warehouse_total']);
             $capital_external_debts = floatval($capitalData['capital_external_debts']);
             $capital_external_btc = floatval($capitalData['capital_external_btc']);
             $partnerDebtTotal = floatval($capitalData['partner_debt_total']);
             $cashboxTotal = floatval($capitalData['cashbox_total']);
-            $total = round($warehouseTotal + $purseTotal + $purseBalanceTotal + $partnerWarehouseTotal + $partnerDebtTotal + $cashboxTotal + $capital_external_btc - $capital_external_debts, 2);
+            $total = round($warehouseTotal + $purseTotal + $purseBalanceTotal + $partnerDebtTotal + $cashboxTotal + $capital_external_btc - $capital_external_debts, 2);
             $dto = $this->createDto();
             $dto->setAmount($total);
             $dto->setMeta(SettingManager::getInstance()->getSetting('capital_data', '{}'));
