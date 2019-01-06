@@ -346,6 +346,14 @@ namespace crm\managers {
             ]);
         }
 
+        public function getTrackingFetchNeededOrders() {
+            return $this->selectAdvance(['id', 'amazon_order_number', 'external'], ['hidden', '=', 0, 'AND',
+                        'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", "AND",
+                        "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
+                        "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND',
+                        "length(COALESCE(`serial_number`,''))", '<', 5]);
+        }
+
         public function getProblematicOrders($where) {
             $days = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             return $this->selectAdvance('*', array_merge($where, ['AND', 'problem_solved', '=', '0', 'AND',
@@ -378,14 +386,6 @@ namespace crm\managers {
                 "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
                 'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 30]);
             return array_merge($rows1, $rows2);
-        }
-
-        public function getTrackingFetchNeededOrders() {
-            return $this->selectAdvance(['id', 'amazon_order_number', 'external'], ['hidden', '=', 0, 'AND',
-                        'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", "AND",
-                        "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
-                        "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND',
-                        "length(COALESCE(`serial_number`,''))", '<', 5]);
         }
 
         public function getOrders($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
@@ -448,9 +448,11 @@ namespace crm\managers {
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
             curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+            curl_setopt($ch, CURLOPT_COOKIE, 'fdx_cbid=29533490681543402773715880209861; _abck=40750C5D7E7E4A5AF9E6A8A82820200E5F64B535A46100001575FE5B47206F3E~0~L25Xb7VekYfHPlXX4oDG7XUuam8ci9sztN7xoT0oHu0=~-1~-1; siteDC=edc; bm_sz=3E3147750A29A238EE641607A3DC3E8C~QAAQFbVkXxVuDPFnAQAAuM5kGgOO8bsfB80yXKoRa+gm4dF/zI6yFIgzR7aC6Iy5rVP9U+2kz5CJEq/fPI8gFiW/VreyixtDPrj3Y3IkdfHQBErqGsyPfOYC/FaFLNFelmoDRcSmoOOHZqDQ6XW8xmDHB7YhieuosIKy9a85FScVBXu4Q7z6ohs2izMSlA==; ak_bmsc=37E68A74E6EA317AB7D46E68B539AB015F64B5154562000080B72F5C34CF8A33~plXBkfCjGHpOWmPyUbva/olW3C8gyHNf8wtdYDpZtJDI582Q8VVwXZU4PFq0ze8P6hBxpYnSrO/XcZMicN2LR1Cgo4/AeOnJ8pviYosT0kRivqUJhs5k3XLcEiY4C2LpYPzVN2ZN7cunWiUcvAOncYnJa5s1R2FQqHzjUw06SxAJILvXaQPg9TMtf5UbxnIKpnuGFur45ZmplkyVcvEyRM2l4aeqH8qnr/vvMiPfKira8YUQbWakArpRnhklOJ8MmV; AMCVS_1E22171B520E93BF0A490D44%40AdobeOrg=1; AMCV_1E22171B520E93BF0A490D44%40AdobeOrg=817868104%7CMCIDTS%7C17901%7CMCMID%7C51651217412831998371301283322744154880%7CMCAAMLH-1547235845%7C6%7CMCAAMB-1547235845%7CRKhpRz8krg2tLO6pguXWp5olkAcUniQYPHaMWWgdJ3xzPWQmdj0y%7CMCOPTOUT-1546638245s%7CNONE%7CMCAID%7CNONE; fdx_locale=en_US; wdpl_id=29533490681543402773715880209861_1546631384579; tracking_locale=en_US; mbox=session#1546631043829-266982#1546633933; s_pers=%20s_skwcvp%3D%255B%255B%2527O%25253AKeyword%252520Unavailable%2527%252C%25271544777816078%2527%255D%255D%7C1702544216078%3B%20gpv_pageName%3Dus%252Fen%252Ffedex%252Funified%252Ftrackdetailspage%7C1546633511358%3B%20s_nr%3D1546631711372-Repeat%7C1578167711372%3B%20s_invisit%3Dtrue%7C1546633511380%3B%20s_tbm%3D1%7C1546633511386%3B%20s_dfa%3Dfedexeu%252Cfedexglbl%252Cfedexus%7C1546633872569%3B; s_sess=%20s_cm%3DundefinedTyped%252FBookmarkedTyped%252FBookmarkedundefined%3B%20s_cpc%3D0%3B%20s_ppv%3Dus%252Fen%252Ffedex%252Funified%252Ftrackdetailspage%3B%20s_cc%3Dtrue%3B%20s_visit%3D1%3B%20SC_LINKS%3D%3B%20setLink%3D%3B; Nina-nina-fedex-session=%7B%22locale%22%3A%22en_us%22%2C%22lcstat%22%3Afalse%7D; bm_sv=339C99DAD9F13B21F3839F6A51454C44~fxtshoxIGhZ/+g/jDRUORSeeuNl9uPTwCWQJbjtXQuuGTzKggm9EMc+KsGe6xoLb58/b/5IK+QfJ1zuwLN1c7LlsYTY5+ZKNUIX/+FatpPHQOwQJGp0UAFxRyPGZrOCmAp4/nNZkeG69MPUpYKsOaOj5IxJdT+ol0jRpPwhVKIc=');
+                                             
             $data = curl_exec($ch);
             curl_close($ch);
             return $data;
@@ -471,7 +473,15 @@ namespace crm\managers {
         }
 
         public function fetchFedexPageDetails($trackingNumber) {
-            
+//            $url = 'https://www.fedex.com/trackingCal/track';
+//            $params = [
+//                'data' => '{"TrackPackagesRequest":{"appType":"WTRK","appDeviceType":"DESKTOP","supportHTML":true,"supportCurrentLocation":true,"uniqueKey":"","processingParameters":{},"trackingInfoList":[{"trackNumberInfo":{"trackingNumber":"'.trim($trackingNumber).'","trackingQualifier":"","trackingCarrier":""}}]}}',
+//                'action' => 'trackpackages',
+//                'locale' => 'en_US',
+//                'version' => 1,
+//                'format' => 'json'
+//            ];
+//            return $this->curl_post_contents($url, $params);
         }
 
         public function fetchUpsPageDetails($trackingNumber) {

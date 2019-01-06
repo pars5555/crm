@@ -21,4 +21,6 @@ if(php_sapi_name() == "cli"){
 require_once '../vendor/autoload.php';
 date_default_timezone_set("Asia/Yerevan");
 require_once ("../classes/framework/NGS.class.php");
+//$res = \crm\managers\PurseOrderManager::getInstance()->fetchFedexPageDetails('474486664669');
+//var_dump($res);exit;
 $dispatcher = new ngs\framework\Dispatcher();
