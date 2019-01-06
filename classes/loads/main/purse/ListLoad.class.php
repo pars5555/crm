@@ -77,9 +77,12 @@ namespace crm\loads\main\purse {
 
             $this->addParam('pagesCount', $pagesCount);
             $this->addParam('orders', $orders);
-            
+
             $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($orders, 'btc');
             $this->addParam('attachments', $attachments);
+
+            $pos = \crm\managers\PurchaseOrderManager::getInstance()->getBtcPurchaseOrders($orders);
+            $this->addParam('btc_purchase_orders', $pos);
 
             $btc_products_days_diff_for_delivery_date = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             $this->addParam('btc_products_days_diff_for_delivery_date', $btc_products_days_diff_for_delivery_date);

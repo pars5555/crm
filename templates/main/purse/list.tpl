@@ -110,7 +110,16 @@
                         <span id="carrier_delivery_details_{$order->getId()}" style="color:#46AF04">{$order->getCarrierDeliveryDate()}</span>
                         <a href="javascript:void(0);" class="fa fa-refresh f_refresh_carrier_delivery_details" data-id='{$order->getId()}'></a>
                     </td>
-                    <td> {$order->getHiddenAt()} </td>
+                    <td> 
+                        {$order->getHiddenAt()} 
+                        {if isset($ns.btc_purchase_orders[$order->getId()])}
+                            <br/>
+                            <br/>
+                                <a target="_blank" href="{$SITE_PATH}/purchase/{$ns.btc_purchase_orders[$order->getId()]}">
+                                <span>PO#{$ns.btc_purchase_orders[$order->getId()]} </span>
+                            </a>
+                        {/if}
+                    </td>
                     <td> {$order->getCreatedAt()} </td>
                 </tr>
             {/foreach}
