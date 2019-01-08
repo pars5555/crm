@@ -14,7 +14,8 @@ NGS.createLoad("crm.loads.main.partner_warehouse", {
                 trigger: 'hover',
                 contentAsHTML: true,
                 interactive: true,
-                theme: 'tooltipster-shadow'
+                theme: 'tooltipster-shadow',
+                'minWidth': 500
             });
         });
         $("#partner_select").chosen({
