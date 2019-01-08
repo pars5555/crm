@@ -33,9 +33,9 @@ namespace crm\actions\main\warehouse {
             }
 
             $productLastSellPrice = [];
-            $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds, $partnerId, $productLastSellPrice);
+            SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds, $partnerId, $productLastSellPrice);
 
-            $this->exportCsv($products, $usdRate, $productsQuantity, $productsPrice, $total, $productsSaleOrders);
+            $this->exportCsv($products, $usdRate, $productsQuantity, $productsPrice, $total, $productLastSellPrice);
         }
 
         public function exportCsv($products, $usdRate, $productsQuantity, $productsPrice, $total, $productsSaleOrders) {
@@ -49,8 +49,8 @@ namespace crm\actions\main\warehouse {
             foreach ($products as $product) {
                 if (isset($productsQuantity[$product->getId()]) && $productsQuantity[$product->getId()] > 0) {
                     $row = [$product->getName(), $product->getModel(), $product->getUomDto()->getName(),
-                        $productsQuantity[$product->getId()] ?: 0, round($productsPrice[$product->getId()], 2), $product->getStockPrice(),
-                        round($productsSaleOrders[$product->getId()], 2)];
+                        $productsQuantity[$product->getId()] ?: 0, round($productsPrice[$product->getId()], 2), 
+                        $product->getStockPrice(), round($productsSaleOrders[$product->getId()], 2)];
                     $row = array_map(function(&$el) {
                         return '="' . $el . '"';
                     }, $row);
