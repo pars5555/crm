@@ -27,7 +27,7 @@
                         {/if }
                     <th>Stock Price</th>
                     <th>Qty Checked</th>
-                    {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}
+                    {if $ns.userType == $ns.userTypeAdmin}
                     <th>Purchase Orders</th>
                     <th>Sale Orders</th>
                     {/if}
@@ -90,7 +90,7 @@
                                data-product_id="{$product->getId()}" type="checkbox"
                                value="1" {if $product->getQtyChecked() ==1}checked{/if}/>
                     </td>
-                    {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}
+                    {if $ns.userType == $ns.userTypeAdmin}
                     <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
                         {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
                         <p style="display: none">
