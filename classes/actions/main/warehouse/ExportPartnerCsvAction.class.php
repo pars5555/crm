@@ -5,6 +5,7 @@ namespace crm\actions\main\warehouse {
     use crm\actions\BaseAction;
     use crm\managers\CurrencyRateManager;
     use crm\managers\ProductManager;
+    use crm\managers\SaleOrderLineManager;
     use crm\managers\SettingManager;
     use crm\managers\WarehouseManager;
     use NGS;
@@ -30,7 +31,7 @@ namespace crm\actions\main\warehouse {
             foreach ($productsQuantity as $pId => $qty) {
                 $total += floatval($productsPrice[$pId]) * floatval($qty);
             }
-            
+
             $productLastSellPrice = [];
             $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds, $partnerId, $productLastSellPrice);
 
