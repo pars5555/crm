@@ -150,7 +150,7 @@ namespace crm\managers {
         public function getProductsSaleOrders($productIds, $partnerId = false, &$productLastSellPrice = []) {
             $soLines = [];
             if (!empty($productIds)) {
-                $soLines = $this->mapper->getNonCancelledProductsSaleOrders($productIds);
+                $soLines = $this->mapper->getNonCancelledProductsSaleOrders($productIds, $partnerId);
             }
             $soIdsMappedByProductId = [];
             $saleOrdersProductPrice = [];
