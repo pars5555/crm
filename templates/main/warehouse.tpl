@@ -27,10 +27,10 @@
                         {/if }
                     <th>Stock Price</th>
                     <th>Qty Checked</th>
-                    {if $ns.userType == $ns.userTypeAdmin}
-                    <th>Purchase Orders</th>
-                    <th>Sale Orders</th>
-                    {/if}
+                        {if $ns.userType == $ns.userTypeAdmin}
+                        <th>Purchase Orders</th>
+                        <th>Sale Orders</th>
+                        {/if}
                     <th class="icon-cell">View</th>
                     {/if}
             </tr>
@@ -42,10 +42,10 @@
                         <td></td>
                         <td style="color:red; font-size: 24px">{$ns.categoriesMappedById[$product->getCategoryId()]}</td>
                     </tr>
-                    {/if}
+                {/if}
                 {if (isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0) ||
                     (isset($ns.pwarehousesProductsQuantity[$product->getId()]) && $ns.pwarehousesProductsQuantity[$product->getId()]>0)}
-                    <tr data-id="{$product->getId()}" data-type="product" {if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}>
+                <tr data-id="{$product->getId()}" data-type="product" {if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}>
                     <td>{$product->getId()}</td>
                     <td> <img src="{$product->getImageUrl()}" width="100"/> </td>
                     <td style="min-width: 250px; {if $product->getId()|in_array:$ns.newProductIds} color:blue; {/if}" data-field-name="name">{$product->getName()}</td>
@@ -67,10 +67,8 @@
                                 {/if}
                                 {$qty}<br/>
                             {/if}
-                            {if $ns.userType == $ns.userTypeAdmin}
-                                {if isset($ns.pwarehousesProductsQuantity[$product->getId()])}
-                                    <span style="color:red">{$pwarehousesProductsQuantity[$product->getId()]|default:'0'}</span>
-                                {/if}
+                            {if isset($ns.pwarehousesProductsQuantity[$product->getId()])}
+                                <span style="color:red">{$pwarehousesProductsQuantity[$product->getId()]|default:'0'}</span>
                             {/if}
 
                         </td>
@@ -91,26 +89,26 @@
                                value="1" {if $product->getQtyChecked() ==1}checked{/if}/>
                     </td>
                     {if $ns.userType == $ns.userTypeAdmin}
-                    <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
-                        {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
-                        <p style="display: none">
-                            {foreach from=$ns.productsPurchaseOrder[$product->getId()] item=productPurchaseOrder}
-                                <a href="{$SITE_PATH}/purchase/{$productPurchaseOrder->getId()}">
-                                    &#8470; {$productPurchaseOrder->getId()} ({$productPurchaseOrder->getOrderDate()|truncate:10:""} {$partnersMappedByIds[$productPurchaseOrder->getPartnerId()]->getName()})
-                                </a> <br>
-                            {/foreach}
-                        </p>
-                    </td>
-                    <td {if $ns.productsSaleOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
-                        {$ns.productsSaleOrder[$product->getId()]|@count} Sale order(s)
-                        <p style="display: none">
-                            {foreach from=$ns.productsSaleOrder[$product->getId()] item=productSaleOrder}
-                                <a href="{$SITE_PATH}/sale/{$productSaleOrder->getId()}">
-                                    &#8470; {$productSaleOrder->getId()} ({$productSaleOrder->getOrderDate()|truncate:10:""}  {$partnersMappedByIds[$productSaleOrder->getPartnerId()]->getName()}) {$productSaleOrder->getProductPrice($product->getId())}
-                                </a> <br>
-                            {/foreach}
-                        </p>
-                    </td>
+                        <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
+                            {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
+                            <p style="display: none">
+                                {foreach from=$ns.productsPurchaseOrder[$product->getId()] item=productPurchaseOrder}
+                                    <a href="{$SITE_PATH}/purchase/{$productPurchaseOrder->getId()}">
+                                        &#8470; {$productPurchaseOrder->getId()} ({$productPurchaseOrder->getOrderDate()|truncate:10:""} {$partnersMappedByIds[$productPurchaseOrder->getPartnerId()]->getName()})
+                                    </a> <br>
+                                {/foreach}
+                            </p>
+                        </td>
+                        <td {if $ns.productsSaleOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
+                            {$ns.productsSaleOrder[$product->getId()]|@count} Sale order(s)
+                            <p style="display: none">
+                                {foreach from=$ns.productsSaleOrder[$product->getId()] item=productSaleOrder}
+                                    <a href="{$SITE_PATH}/sale/{$productSaleOrder->getId()}">
+                                        &#8470; {$productSaleOrder->getId()} ({$productSaleOrder->getOrderDate()|truncate:10:""}  {$partnersMappedByIds[$productSaleOrder->getPartnerId()]->getName()}) {$productSaleOrder->getProductPrice($product->getId())}
+                                    </a> <br>
+                                {/foreach}
+                            </p>
+                        </td>
                     {/if}
                     <td class="icon-cell">
                         <a href="{$SITE_PATH}/product/{$product->getId()}">
