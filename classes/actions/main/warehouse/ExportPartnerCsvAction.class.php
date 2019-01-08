@@ -30,22 +30,26 @@ namespace crm\actions\main\warehouse {
             foreach ($productsQuantity as $pId => $qty) {
                 $total += floatval($productsPrice[$pId]) * floatval($qty);
             }
+            
+            $productLastSellPrice = [];
+            $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds, $partnerId, $productLastSellPrice);
 
-            $this->exportCsv($products, $usdRate, $productsQuantity, $productsPrice, $total);
+            $this->exportCsv($products, $usdRate, $productsQuantity, $productsPrice, $total, $productsSaleOrders);
         }
 
-        public function exportCsv($products, $usdRate, $productsQuantity, $productsPrice, $total) {
+        public function exportCsv($products, $usdRate, $productsQuantity, $productsPrice, $total, $productsSaleOrders) {
             header('Content-type: text/csv; charset=UTF-8');
             header('Content-Disposition: attachment; filename=export.csv');
             $output = fopen('php://output', 'w');
             fputs($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
-            fputcsv($output, ['Item Name', 'Model', 'Uom', 'Quantity', 'Price', 'Stock Price']);
+            fputcsv($output, ['Item Name', 'Model', 'Uom', 'Quantity', 'Price', 'Stock Price', 'Last Price']);
             fputcsv($output, ['']);
             foreach ($products as $product) {
                 if (isset($productsQuantity[$product->getId()]) && $productsQuantity[$product->getId()] > 0) {
                     $row = [$product->getName(), $product->getModel(), $product->getUomDto()->getName(),
-                        $productsQuantity[$product->getId()] ?: 0, round($productsPrice[$product->getId()], 2), $product->getStockPrice()];
+                        $productsQuantity[$product->getId()] ?: 0, round($productsPrice[$product->getId()], 2), $product->getStockPrice(),
+                        round($productsSaleOrders[$product->getId()], 2)];
                     $row = array_map(function(&$el) {
                         return '="' . $el . '"';
                     }, $row);
