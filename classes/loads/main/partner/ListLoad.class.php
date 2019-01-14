@@ -27,7 +27,7 @@ namespace crm\loads\main\partner {
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
-            $limit = 100;
+            $limit = 1000;
             list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $selectedFilterHidden, $selectedFilterHasDebt, $searchText) = $this->initFilters($limit);
             $partnerManager = PartnerManager::getInstance();
             $where = ['1', '=', '1'];
@@ -66,12 +66,13 @@ namespace crm\loads\main\partner {
                 $partnersBillingTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersBillingTransactions($partnerIds);
                 $partnersInitialDebt = PartnerInitialDebtManager::getInstance()->getPartnersInitialDebt($partnerIds);
             }
-            $partnersDebt = CalculationManager::getInstance()->calculatePartnersDebtBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId, $partnersInitialDebt);
+            list($partnersDebt,$partnersZeroDebt) = CalculationManager::getInstance()->calculatePartnersDebtBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId, $partnersInitialDebt);
             $this->addParam('partnersSaleOrdersMappedByPartnerId', $partnersSaleOrdersMappedByPartnerId);
             $this->addParam('partnersPurchaseOrdersMappedByPartnerId', $partnersPurchaseOrdersMappedByPartnerId);
             $this->addParam('partnersPaymentTransactionsMappedByPartnerId', $partnersPaymentTransactionsMappedByPartnerId);
             $this->addParam('partnersBillingTransactionsMappedByPartnerId', $partnersBillingTransactionsMappedByPartnerId);
             $this->addParam('partnersDebt', $partnersDebt);
+            $this->addParam('partnersZeroDebt', $partnersZeroDebt);
 
             $count = PartnerManager::getInstance()->getLastSelectAdvanceRowsCount();
             $this->addParam('partners', $partners);

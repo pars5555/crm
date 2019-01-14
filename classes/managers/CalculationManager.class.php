@@ -93,13 +93,13 @@ namespace crm\managers {
         }
 
         public function calculatePartnerAllDealesDebtHistory($partnerId, $allDeals) {
-             
+
             $partnerDebt = PartnerInitialDebtManager::getInstance()->getPartnerInitialDebt($partnerId);
 
             foreach ($allDeals as $dealTypeObjectPair) {
                 $dealType = $dealTypeObjectPair[0];
                 $dealObject = $dealTypeObjectPair[1];
-                
+
                 if ($dealObject->getCancelled() == 1) {
                     continue;
                 }
@@ -139,8 +139,7 @@ namespace crm\managers {
                         $partnerDebt[$currencyId] += $totalAmount;
                         break;
                 }
-               $dealObject->setDebt($partnerDebt);
-               
+                $dealObject->setDebt($partnerDebt);
             }
         }
 
@@ -236,7 +235,21 @@ namespace crm\managers {
                     }
                 }
             }
-            return $partnersDebt;
+            foreach ($partnersDebt as $partnerId => $partnerDebt) {
+                $zeroDebt = 1;
+                foreach ($partnerDebt as $currencyId => &$debt) {
+                    $partnersDebt[$partnerId][$currencyId] = round($debt, 2);
+                    //this case is for -0 only to show it as 0
+                    if ($partnersDebt[$partnerId][$currencyId] == -$partnersDebt[$partnerId][$currencyId]) {
+                        $partnersDebt[$partnerId][$currencyId] = 0;
+                    }
+                    if (abs($partnersDebt[$partnerId][$currencyId]) >= 0.1) {
+                        $zeroDebt = 0;
+                    }
+                }
+                $partnersZeroDebt[$partnerId] = $zeroDebt;
+            }
+            return [$partnersDebt, $partnersZeroDebt];
         }
 
     }
