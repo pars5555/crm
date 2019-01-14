@@ -28,7 +28,7 @@
                 <th class="icon-cell">Hidden</th>
             </tr>
             {foreach from=$ns.partners item=partner}
-                {if $ns.partnersZeroDebt[$partner->getId()] == 0}
+                {if  isset($ns.partnersZeroDebt[$partner->getId()]) && $ns.partnersZeroDebt[$partner->getId()] == 0}
                     <tr>
                         <td class="link-cell id">
                             {if isset($ns.attachments[$partner->getId()])}
