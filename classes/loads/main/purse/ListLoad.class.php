@@ -30,7 +30,6 @@ namespace crm\loads\main\purse {
             list($text1, $text2) = PreorderManager::getInstance()->getPerndingPreordersText();
             $this->addParam('preorder_text1', $text1);
             $this->addParam('preorder_text2', $text2);
-
             list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $where, $words, $searchText,
                     $problematic, $local_carrier_name, $regOrdersInWarehouse) = $this->initFilters($limit, $this);
             if (!empty($regOrdersInWarehouse)) {

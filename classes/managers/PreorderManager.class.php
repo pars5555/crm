@@ -138,19 +138,19 @@ namespace crm\managers {
             $btcOrders = PurseOrderManager::getInstance()->selectByPKs($pendingPreordersOrderIds);
             $cancelledMessages = [];
             foreach ($btcOrders as $btcOrder) {
-                if ($btcOrder->getStatus() == 'canceled'){
-                    $cancelledMessages[] = $btcOrder->getOrderNumber();
+                if ($btcOrder->getStatus() == 'canceled') {
+                    $cancelledMessages[] = $btcOrder->getId() . ': ' . $btcOrder->getRecipientName() . ' (' . $btcOrder->getAccountName() . ')';
                 }
             }
             $notDonePreorders = $this->selectAdvance(['purse_order_ids', 'partner_id'], ['is_done', '=', 0]);
             $preordersMesaages = [];
             foreach ($notDonePreorders as $notDonePreorder) {
-                $partnerName = PartnerManager::getInstance()->getPartnerName($notDonePreorder->getPartnerId()); 
-                $preordersMesaages[] = $notDonePreorder->getId(). ' '. $partnerName;
+                $partnerName = PartnerManager::getInstance()->getPartnerName($notDonePreorder->getPartnerId());
+                $preordersMesaages[] = $notDonePreorder->getId() . ' ' . $partnerName;
             }
             return [implode('<br>', $preordersMesaages), implode('<br>', $cancelledMessages)];
         }
-        
+
         private function getPendingPreordersOrderIds() {
             $preorders = $this->selectAdvance(['purse_order_ids'], ['is_done', '=', 0]);
             $purseOrderIds = [];
