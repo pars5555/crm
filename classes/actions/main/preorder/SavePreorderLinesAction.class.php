@@ -64,7 +64,6 @@ namespace crm\actions\main\preorder {
             }
 
             $_SESSION['success_message'] = 'Preorder Order lines successfully saved.';
-            PreorderManager::getInstance()->updateAllDependingSaleOrderLines($preorderId);
             $this->redirect('preorder/list?srt=order_date&ascdesc=DESC');
         }
 
