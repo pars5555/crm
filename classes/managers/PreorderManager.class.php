@@ -133,9 +133,34 @@ namespace crm\managers {
             return $opDtos;
         }
 
-        public function updateAllDependingSaleOrderLines($preorderId) {
-            $productsIds = $this->getProductsIdsInOrder($preorderId);
-            SaleOrderManager::getInstance()->updateAllOrderLinesThatContainsProducts($productsIds);
+        public function getPerndingPreordersText() {
+            $pendingPreordersOrderIds = $this->getPendingPreordersOrderIds();
+            $btcOrders = PurseOrderManager::getInstance()->selectByPKs($pendingPreordersOrderIds);
+            $cancelledMessages = [];
+            foreach ($btcOrders as $btcOrder) {
+                if ($btcOrder->getStatus() == 'canceled'){
+                    $cancelledMessages[] = $btcOrder->getOrderNumber();
+                }
+            }
+            $notDonePreorders = $this->selectAdvance(['purse_order_ids', 'partner_id'], ['is_done', '=', 0]);
+            $preordersMesaages = [];
+            foreach ($notDonePreorders as $notDonePreorder) {
+                $partnerName = PartnerManager::getInstance()->getPartnerName($notDonePreorder->getPartnerId()); 
+                $preordersMesaages[] = $notDonePreorder->getId(). ' '. $partnerName;
+            }
+            return [implode('<br>', $preordersMesaages), implode('<br>', $cancelledMessages)];
+        }
+        
+        private function getPendingPreordersOrderIds() {
+            $preorders = $this->selectAdvance(['purse_order_ids'], ['is_done', '=', 0]);
+            $purseOrderIds = [];
+            foreach ($preorders as $preorder) {
+                $purseOrderIdsStr = $preorder->getPurseOrderIds();
+                if (!empty($purseOrderIdsStr)) {
+                    $purseOrderIds = array_merge($purseOrderIds, explode(',', $purseOrderIdsStr));
+                }
+            }
+            return $purseOrderIds;
         }
 
         public function getProductsIdsInOrder($preorderId) {
@@ -226,13 +251,14 @@ namespace crm\managers {
             return $this->insertDto($dto);
         }
 
-        public function updatePreorder($id, $partnerId, $date, $paymentDeadlineDate, $note) {
+        public function updatePreorder($id, $partnerId, $date, $paymentDeadlineDate, $note, $purse_order_ids = '') {
             $dto = $this->selectByPk($id);
             if ($dto) {
                 $dto->setPartnerId($partnerId);
                 $dto->setOrderDate($date);
                 $dto->setPaymentDeadline($paymentDeadlineDate);
                 $dto->setNote($note);
+                $dto->setPurseOrderIds($purse_order_ids);
                 return $this->updateByPk($dto);
             }
         }

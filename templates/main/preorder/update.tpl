@@ -43,6 +43,10 @@
 
 
             <div class="form-group">
+                <label class="label">BTC Order Numbers</label>
+                <textarea placeholder="eg. 7, 128, 8, ..." class="text" name="purse_order_ids">{$ns.req.purse_order_ids|default:''}</textarea>
+            </div>
+            <div class="form-group">
                 <label class="label">Note</label>
                 <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
             </div>

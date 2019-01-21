@@ -42,16 +42,20 @@ namespace crm\managers {
             }
             return null;
         }
-        
+
         public function setPartnerIncludedInCapital($id, $hidden) {
             $this->mapper->updateField($id, 'included_in_capital', $hidden);
-            
         }
-        
+
+        public function getPartnerName($id) {
+            $partner = $this->selectByPk($id);
+            return $partner->getName();
+        }
+
         public function setPartnerHidden($id, $hidden) {
             $this->mapper->updateField($id, 'hidden', $hidden);
-            
         }
+
         public function getPartnersFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
             $partnerIds = array();
@@ -73,7 +77,7 @@ namespace crm\managers {
 
         public function deletePartnerFull($partnerId) {
             $saleOrderDtos = SaleOrderManager::getInstance()->selectAdvance('id', ['partner_id', '=', $partnerId]);
-            $purchaseOrderDtos= PurchaseOrderManager::getInstance()->selectAdvance('id', ['partner_id', '=', $partnerId]);
+            $purchaseOrderDtos = PurchaseOrderManager::getInstance()->selectAdvance('id', ['partner_id', '=', $partnerId]);
             $paymentOrderDtos = PaymentTransactionManager::getInstance()->selectAdvance('id', ['partner_id', '=', $partnerId]);
             if (!empty($saleOrderDtos)) {
                 throw new \ngs\framework\exceptions\NgsErrorException('partner has sale orders related!');

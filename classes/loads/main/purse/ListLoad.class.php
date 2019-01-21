@@ -14,6 +14,8 @@ namespace crm\loads\main\purse {
     use crm\loads\AdminLoad;
     use crm\managers\AttachmentManager;
     use crm\managers\CryptoRateManager;
+    use crm\managers\PreorderManager;
+    use crm\managers\PurchaseOrderManager;
     use crm\managers\PurseOrderManager;
     use crm\managers\RecipientManager;
     use crm\managers\SettingManager;
@@ -25,6 +27,10 @@ namespace crm\loads\main\purse {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 200;
+            list($text1, $text2) = PreorderManager::getInstance()->getPerndingPreordersText();
+            $this->addParam('preorder_text1', $text1);
+            $this->addParam('preorder_text2', $text2);
+
             list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $where, $words, $searchText,
                     $problematic, $local_carrier_name, $regOrdersInWarehouse) = $this->initFilters($limit, $this);
             if (!empty($regOrdersInWarehouse)) {
@@ -81,7 +87,7 @@ namespace crm\loads\main\purse {
             $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($orders, 'btc');
             $this->addParam('attachments', $attachments);
 
-            $pos = \crm\managers\PurchaseOrderManager::getInstance()->getBtcPurchaseOrders($orders);
+            $pos = PurchaseOrderManager::getInstance()->getBtcPurchaseOrders($orders);
             $this->addParam('btc_purchase_orders', $pos);
 
             $btc_products_days_diff_for_delivery_date = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));

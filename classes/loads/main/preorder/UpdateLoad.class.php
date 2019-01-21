@@ -33,7 +33,8 @@ namespace crm\loads\main\preorder {
                         'order_date' => $this->cutSecondsFromDateTime($preorder->getOrderDate()),
                         'payment_deadline' => $preorder->getPaymentDeadline(),
                         'partnerId' => $preorder->getPartnerId(),
-                        'note' => $preorder->getNote()
+                        'note' => $preorder->getNote(),
+                        'purse_order_ids' => $preorder->getPurseOrderIds()
                     ];
                 }
                 $this->addParam("preorder", $preorder);
