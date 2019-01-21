@@ -115,7 +115,7 @@
             }
         }
     ],
-    
+
     "sale": [
         {
             "action": "loads.main.index",
@@ -225,6 +225,51 @@
             "nestedLoad": {
                 "content": {
                     "action": "loads.main.purchase.open"
+                }
+            }
+        }
+
+    ],
+    "preorder": [
+        {
+            "action": "loads.main.index",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.preorder.list"
+                }
+            }
+        },
+        {
+            "action": "loads.main.index",
+            "route": "create",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.preorder.create"
+                }
+            }
+        },
+        {
+            "action": "loads.main.index",
+            "route": "edit/[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.preorder.update"
+                }
+            }
+        },
+        {
+            "action": "loads.main.index",
+            "route": "[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.preorder.open"
                 }
             }
         }

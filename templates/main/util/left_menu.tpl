@@ -7,6 +7,7 @@
         </h1>
         <ul>
             <li><a {if $ns.loadName=='general' || $ns.loadName=='default'}class="active"{/if} href="{$SITE_PATH}/general">General</a></li>
+            <li><a {if $ns.loadName=='preorder'}class="active"{/if} href="{$SITE_PATH}/preorder/list?srt=order_date&ascdesc=DESC">Preorders</a></li>
             <li><a {if $ns.loadName=='partner'}class="active"{/if}  href="{$SITE_PATH}/partner/list">Partners</a></li>
             <li><a {if $ns.loadName=='sale'}class="active"{/if} href="{$SITE_PATH}/sale/list?srt=order_date&ascdesc=DESC">Sale Orders</a></li>
             <li><a {if $ns.loadName=='purchase'}class="active"{/if} href="{$SITE_PATH}/purchase/list?srt=order_date&ascdesc=DESC">Purchase Orders</a></li>
