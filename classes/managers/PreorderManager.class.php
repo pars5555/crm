@@ -134,7 +134,7 @@ namespace crm\managers {
         }
 
         public function getPerndingPreordersText() {
-            $pendingPreordersOrderIds = $this->getNotPurchasedPreordersOrderIds();
+            $pendingPreordersOrderIds = $this->getNotFinishedPreordersOrderIds();
             $btcOrders = PurseOrderManager::getInstance()->selectByPKs($pendingPreordersOrderIds);
             $cancelledMessages = [];
             foreach ($btcOrders as $btcOrder) {
@@ -142,7 +142,7 @@ namespace crm\managers {
                     $cancelledMessages[] = $btcOrder->getId() . ': ' . $btcOrder->getRecipientName() . ' (' . $btcOrder->getAccountName() . ')';
                 }
             }
-            $notDonePreorders = $this->selectAdvance(['purse_order_ids', 'partner_id'], ['finished', '=', 0]);
+            $notDonePreorders = $this->selectAdvance('*', ['purchased', '=', 0]);
             $preordersMesaages = [];
             foreach ($notDonePreorders as $notDonePreorder) {
                 $partnerName = PartnerManager::getInstance()->getPartnerName($notDonePreorder->getPartnerId());
@@ -151,8 +151,8 @@ namespace crm\managers {
             return [implode('<br>', $preordersMesaages), implode('<br>', $cancelledMessages)];
         }
 
-        private function getNotPurchasedPreordersOrderIds() {
-            $preorders = $this->selectAdvance(['purse_order_ids'], ['purchased', '=', 0]);
+        private function getNotFinishedPreordersOrderIds() {
+            $preorders = $this->selectAdvance('*', ['finished', '=', 0]);
             $purseOrderIds = [];
             foreach ($preorders as $preorder) {
                 $purseOrderIdsStr = $preorder->getPurseOrderIds();
