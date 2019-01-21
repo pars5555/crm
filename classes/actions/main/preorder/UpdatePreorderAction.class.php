@@ -23,13 +23,13 @@ namespace crm\actions\main\preorder {
 
         public function service() {
             try {
-                list($id, $partnerId, $date, $paymentDeadlineDate, $note, $purse_order_ids) = $this->getFormData();
+                list($id, $partnerId, $date, $paymentDeadlineDate, $note, $purchased, $finished, $purse_order_ids) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            PreorderManager::getInstance()->updatePreorder($id, $partnerId, $date, $paymentDeadlineDate, $note, $purse_order_ids);
+            PreorderManager::getInstance()->updatePreorder($id, $partnerId, $date, $paymentDeadlineDate, $note, $purchased, $finished, $purse_order_ids);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Preorder Order Successfully updated!';
             $this->redirect('preorder/' . $id);
@@ -48,10 +48,20 @@ namespace crm\actions\main\preorder {
                 $purse_order_ids = preg_replace('/\s+/', '', $purse_order_ids);
             }
             
+            $purchased= 0;
+            if (isset(NGS()->args()->purchased)) {
+                $purchased = 1;
+            }
+            
+            $finished= 0;
+            if (isset(NGS()->args()->finnished)) {
+                $finished = 1;
+            }
+            
             $partnerId = intval(NGS()->args()->partnerId);
             $date = NGS()->args()->order_date;
             $paymentDeadlineDate = NGS()->args()->payment_deadline;
-            return array($id, $partnerId, $date, $paymentDeadlineDate, $note, $purse_order_ids);
+            return array($id, $partnerId, $date, $paymentDeadlineDate, $note, $purchased, $finished, $purse_order_ids);
         }
 
         private function validateFormData() {

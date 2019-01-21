@@ -134,7 +134,7 @@ namespace crm\managers {
         }
 
         public function getPerndingPreordersText() {
-            $pendingPreordersOrderIds = $this->getPendingPreordersOrderIds();
+            $pendingPreordersOrderIds = $this->getNotPurchasedPreordersOrderIds();
             $btcOrders = PurseOrderManager::getInstance()->selectByPKs($pendingPreordersOrderIds);
             $cancelledMessages = [];
             foreach ($btcOrders as $btcOrder) {
@@ -142,7 +142,7 @@ namespace crm\managers {
                     $cancelledMessages[] = $btcOrder->getId() . ': ' . $btcOrder->getRecipientName() . ' (' . $btcOrder->getAccountName() . ')';
                 }
             }
-            $notDonePreorders = $this->selectAdvance(['purse_order_ids', 'partner_id'], ['is_done', '=', 0]);
+            $notDonePreorders = $this->selectAdvance(['purse_order_ids', 'partner_id'], ['finished', '=', 0]);
             $preordersMesaages = [];
             foreach ($notDonePreorders as $notDonePreorder) {
                 $partnerName = PartnerManager::getInstance()->getPartnerName($notDonePreorder->getPartnerId());
@@ -151,8 +151,8 @@ namespace crm\managers {
             return [implode('<br>', $preordersMesaages), implode('<br>', $cancelledMessages)];
         }
 
-        private function getPendingPreordersOrderIds() {
-            $preorders = $this->selectAdvance(['purse_order_ids'], ['is_done', '=', 0]);
+        private function getNotPurchasedPreordersOrderIds() {
+            $preorders = $this->selectAdvance(['purse_order_ids'], ['purchased', '=', 0]);
             $purseOrderIds = [];
             foreach ($preorders as $preorder) {
                 $purseOrderIdsStr = $preorder->getPurseOrderIds();
@@ -251,13 +251,15 @@ namespace crm\managers {
             return $this->insertDto($dto);
         }
 
-        public function updatePreorder($id, $partnerId, $date, $paymentDeadlineDate, $note, $purse_order_ids = '') {
+        public function updatePreorder($id, $partnerId, $date, $paymentDeadlineDate, $note,$purchased, $finished,  $purse_order_ids = '') {
             $dto = $this->selectByPk($id);
             if ($dto) {
                 $dto->setPartnerId($partnerId);
                 $dto->setOrderDate($date);
                 $dto->setPaymentDeadline($paymentDeadlineDate);
                 $dto->setNote($note);
+                $dto->setPurchased($purchased);
+                $dto->setFinished($finished);
                 $dto->setPurseOrderIds($purse_order_ids);
                 return $this->updateByPk($dto);
             }

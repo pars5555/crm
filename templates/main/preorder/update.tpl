@@ -46,6 +46,30 @@
                 <label class="label">BTC Order Numbers</label>
                 <textarea placeholder="eg. 7, 128, 8, ..." class="text" name="purse_order_ids">{$ns.req.purse_order_ids|default:''}</textarea>
             </div>
+            <div class="checkbox_container">
+                {if isset($ns.req.purchased)}
+                    {assign selectedPurchased $ns.req.purchased}
+                {else}
+                    {assign selectedPurchased 0}
+                {/if}
+                <div class="checkbox f_checkbox">
+                    <input type="checkbox" name="purchased" id="purchasedCheckbox" value="1" {if $selectedPurchased == 1}checked{/if}/>
+                </div>
+                <label class="checkbox_label label" for="purchasedCheckbox">Purchased</label>
+            </div>
+
+            <div class="checkbox_container">
+                {if isset($ns.req.finished)}
+                    {assign selectedFinished $ns.req.finished}
+                {else}
+                    {assign selectedFinished 0}
+                {/if}
+                <div class="checkbox f_checkbox">
+                    <input type="checkbox" name="finished" id="finishedCheckbox" value="1" {if $selectedFinished == 1}checked{/if}/>
+                </div>
+                <label class="checkbox_label label" for="finishedCheckbox">Finished</label>
+            </div>
+
             <div class="form-group">
                 <label class="label">Note</label>
                 <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
