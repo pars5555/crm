@@ -61,7 +61,7 @@ namespace crm\loads\main\preorder {
         }
 
         private function initFilters($limit) {
-            $where = ['deleted', '=', 0];
+            $where = ['1', '=', 1];
             //partner
             $selectedFilterPartnerId = 0;
             if (isset(NGS()->args()->prt)) {

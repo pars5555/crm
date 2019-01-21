@@ -39,7 +39,7 @@
                     <td>
                         {foreach from=$totalAmount key=currencyId item=amount}
                             <span class="price">
-                            {assign currencyDto $ns.currencies[$currencyId]}
+                                {assign currencyDto $ns.currencies[$currencyId]}
                                 {if $currencyDto->getSymbolPosition() == 'left'}
                                     {$currencyDto->getTemplateChar()}
                                 {/if}
@@ -47,7 +47,7 @@
                                 {if $currencyDto->getSymbolPosition() == 'right'}
                                     {$currencyDto->getTemplateChar()}
                                 {/if}
-                        </span>
+                            </span>
                         {/foreach}
                     </td>
                     <td>{$preorder->getNote()}</td>
@@ -65,17 +65,13 @@
                             </span>
                         </a>
                     </td>
-                    {if $preorder->getCancelled() == 1}
-                        <td class="icon-cell">
-                            <a class="deleteBilling" href="{$SITE_PATH}/dyn/main_preorder/do_delete_preorder?id={$preorder->getId()}">
-                                <span class="button_icon" title="delete">
-                                    <i class="fa fa-trash-o"></i>
-                                </span>
-                            </a>
-                        </td>
-                    {else}
-                        <td></td>
-                    {/if}
+                    <td class="icon-cell">
+                        <a class="deletePreorder" href="{$SITE_PATH}/dyn/main_preorder/do_delete_preorder?id={$preorder->getId()}">
+                            <span class="button_icon" title="delete">
+                                <i class="fa fa-trash-o"></i>
+                            </span>
+                        </a>
+                    </td>
                 </tr>
             {/foreach}
         </table>

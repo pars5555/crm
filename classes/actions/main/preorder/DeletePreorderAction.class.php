@@ -28,7 +28,7 @@ namespace crm\actions\main\preorder {
                 $this->redirect('preorder/list');
             }
             $preorderManager = PreorderManager::getInstance();
-            $preorderManager->updateField($preorderId, 'deleted', 1);
+            $preorderManager->deleteByPK($preorderId);
             $_SESSION['success_message'] = 'Preorder Order Successfully deleted!';
             if (strpos($_SERVER['HTTP_REFERER'], 'preorder/list') === false) {
                 $this->redirect('preorder/list');

@@ -42,7 +42,6 @@ namespace crm\actions\main\preorder {
             $note = NGS()->args()->note;
             $preorderManager->cancelPreorder($preorderId, $note);
             try {
-                PreorderManager::getInstance()->updateAllDependingSaleOrderLines($preorderId);
                 $_SESSION['success_message'] = 'Preorder Order Successfully cancelled!';
             } catch (InsufficientProductException $exc) {
                 $preorderManager->restorePreorder($preorderId);
