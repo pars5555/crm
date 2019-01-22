@@ -139,7 +139,7 @@ namespace crm\managers {
             $cancelledMessages = [];
             foreach ($btcOrders as $btcOrder) {
                 if ($btcOrder->getStatus() == 'canceled') {
-                    $cancelledMessages[] = $btcOrder->getId() . ': ' . $btcOrder->getRecipientName() . ' (' . $btcOrder->getAccountName() . ')';
+                    $cancelledMessages[] = $btcOrder->getId() . ': ' . $btcOrder->getRecipientName() . ' (' . $btcOrder->getAccountName() . ') '. $btcOrder->getProductName();
                 }
             }
             $notDonePreorders = $this->selectAdvance('*', ['purchased', '=', 0,'and', 'cancelled', '=', 0]);
