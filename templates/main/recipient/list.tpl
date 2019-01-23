@@ -47,9 +47,9 @@
                     <td>{$recipient->getLastName()}</td>
                     <td>{$recipient->getEmail()}</td>
                     {*                    <td style="white-space: nowrap"> {$recipient->getPhoneNumber()|replace:',':'</br>'} </td>*}
-                    <td>{$recipient->getExpressUnitAddress()} {$recipient->getOnexExpressUnit()} {$recipient->getNovaExpressUnit()}</td>
+                    <td>{$recipient->getExpressUnitAddress()} {$recipient->getOnexExpressUnit()} {$recipient->getNovaExpressUnit()} {$recipient->getShipexExpressUnit()} {$recipient->getCheapexExpressUnit()}</td>
                     {if $ns.selectedFilterShowStandardUnits == 'yes'}
-                        <td>{$recipient->getStandardUnitAddress()} {$recipient->getOnexStandardUnit()} {$recipient->getNovaStandardUnit()}</td>
+                        <td>{$recipient->getStandardUnitAddress()} {$recipient->getOnexStandardUnit()} {$recipient->getNovaStandardUnit()} {$recipient->getShipexStandardUnit()} {$recipient->getCheapexStandardUnit()}</td>
                     {/if}
                     <td>{$recipient->getDocumentNumber()}</td>
                     {*                    <td>{$recipient->getDocumentType()}</td>*}

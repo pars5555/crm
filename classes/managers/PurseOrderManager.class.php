@@ -42,7 +42,9 @@ namespace crm\managers {
                 $expressUnitAddress = $recipient->getExpressUnitAddress();
                 $onexExpressUnit = $recipient->getOnexExpressUnit();
                 $novaExpressUnit = $recipient->getNovaExpressUnit();
-                if (empty($expressUnitAddress) && empty($onexExpressUnit) && empty($novaExpressUnit)) {
+                $shipexExpressUnit = $recipient->getShipexExpressUnit();
+                $cheapexExpressUnit = $recipient->getCheapexExpressUnit();
+                if (empty($expressUnitAddress) && empty($onexExpressUnit) && empty($novaExpressUnit) && empty($shipexExpressUnit) && empty($cheapexExpressUnit)) {
                     continue;
                 }
                 if (!empty($expressUnitAddress)) {
@@ -50,6 +52,12 @@ namespace crm\managers {
                 }
                 if (!empty($onexExpressUnit)) {
                     $partnerIdMappedByExpressUnitAddresses[strtolower($onexExpressUnit)] = $recipient->getId();
+                }
+                if (!empty($shipexExpressUnit)) {
+                    $partnerIdMappedByExpressUnitAddresses[strtolower($shipexExpressUnit)] = $recipient->getId();
+                }
+                if (!empty($cheapexExpressUnit)) {
+                    $partnerIdMappedByExpressUnitAddresses[strtolower($cheapexExpressUnit)] = $recipient->getId();
                 }
                 if (!empty($novaExpressUnit)) {
                     $partnerIdMappedByExpressUnitAddresses[strtolower($novaExpressUnit)] = $recipient->getId();

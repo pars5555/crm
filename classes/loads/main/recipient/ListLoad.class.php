@@ -37,6 +37,10 @@ namespace crm\loads\main\recipient {
                     $where = array_merge($where, ['OR', 'onex_express_unit', 'like', "'%$word%'"]);
                     $where = array_merge($where, ['OR', 'onex_standard_unit', 'like', "'%$word%'"]);
                     $where = array_merge($where, ['OR', 'nova_express_unit', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'shipex_standard_unit', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'shipex_express_unit', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'cheapex_standard_unit', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'cheapex_express_unit', 'like', "'%$word%'"]);
                     $where = array_merge($where, ['OR', 'nova_standard_unit', 'like', "'%$word%'"]);
                     $where = array_merge($where, ['OR', 'note', 'like', "'%$word%'", ')']);
                 }

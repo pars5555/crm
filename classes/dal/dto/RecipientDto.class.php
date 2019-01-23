@@ -32,6 +32,8 @@ namespace crm\dal\dto {
             "express_unit_address" => "expressUnitAddress", "standard_unit_address" => "standardUnitAddress", 
             "onex_express_unit" => "onexExpressUnit", "onex_standard_unit" => "onexStandardUnit", 
             "nova_express_unit" => "novaExpressUnit", "nova_standard_unit" => "novaStandardUnit", 
+            "shipex_express_unit" => "shipexExpressUnit", "shipex_standard_unit" => "shipexStandardUnit", 
+            "cheapex_express_unit" => "cheapexExpressUnit", "cheapex_standard_unit" => "cheapexStandardUnit", 
             "meta" => "meta", "address" => "address", "district" => "district", "note" => "note",  "checked" => "checked",
             "phone_number" => "phoneNumber", "favorite" => "favorite", "deleted" => "deleted");
 

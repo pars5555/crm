@@ -68,6 +68,10 @@ namespace crm\managers {
                 'lower', '(', 'standard_unit_address',')', '=', 'lower','(', "'$unitAddress'",  ')', 'OR',
                 'lower', '(', 'onex_express_unit',')', '=', 'lower', '(',"'$unitAddress'",  ')', 'OR',
                 'lower', '(', 'onex_standard_unit',')', '=', 'lower','(',"'$unitAddress'",  ')', 'OR',
+                'lower', '(', 'shipex_express_unit',')', '=', 'lower', '(',"'$unitAddress'",  ')', 'OR',
+                'lower', '(', 'shipex_standard_unit',')', '=', 'lower','(',"'$unitAddress'",  ')', 'OR',
+                'lower', '(', 'cheapex_express_unit',')', '=', 'lower', '(',"'$unitAddress'",  ')', 'OR',
+                'lower', '(', 'cheapex_standard_unit',')', '=', 'lower','(',"'$unitAddress'",  ')', 'OR',
                 'lower', '(', 'nova_express_unit',')', '=', 'lower','(', "'$unitAddress'",  ')', 'OR',
                 'lower', '(', 'nova_standard_unit',')', '=', 'lower','(', "'$unitAddress'",  ')'
             ]);
@@ -85,11 +89,15 @@ namespace crm\managers {
             }
             if (strtolower($row->getExpressUnitAddress()) === strtolower($unitAddress) ||
                     strtolower($row->getOnexExpressUnit()) === strtolower($unitAddress) ||
+                    strtolower($row->getShipexExpressUnit()) === strtolower($unitAddress) ||
+                    strtolower($row->getCheapexExpressUnit()) === strtolower($unitAddress) ||
                     strtolower($row->getNovaExpressUnit()) === strtolower($unitAddress)) {
                 return 'express';
             }
             if (strtolower($row->getStandardUnitAddress()) === strtolower($unitAddress) ||
                     strtolower($row->getOnexStandardUnit()) === strtolower($unitAddress) ||
+                    strtolower($row->getShipexStandardUnit()) === strtolower($unitAddress) ||
+                    strtolower($row->getCheapexStandardUnit()) === strtolower($unitAddress) ||
                     strtolower($row->getNovaStandardUnit()) === strtolower($unitAddress)) {
                 return 'standard';
             }
@@ -98,8 +106,8 @@ namespace crm\managers {
 
         public function getRecipientUnitAddresses($recipintId, $sqlReady = false) {
             $recipient = $this->selectByPk($recipintId);
-            $res = [$recipient->getExpressUnitAddress(), $recipient->getOnexExpressUnit(), $recipient->getNovaExpressUnit(),
-                $recipient->getStandardUnitAddress(), $recipient->getOnexStandardUnit(), $recipient->getNovaStandardUnit()];
+            $res = [$recipient->getExpressUnitAddress(), $recipient->getOnexExpressUnit(), $recipient->getNovaExpressUnit(), $recipient->getShipexExpressUnit(), $recipient->getCheapexExpressUnit(),
+                $recipient->getStandardUnitAddress(), $recipient->getOnexStandardUnit(), $recipient->getNovaStandardUnit(), $recipient->getShipexStandardUnit(), $recipient->getCheapexStandardUnit()];
             $res = array_filter($res, function($value) {
                 $value = trim($value);
                 return !empty($value);
