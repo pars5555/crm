@@ -148,7 +148,7 @@ namespace crm\managers {
                 $partnerName = PartnerManager::getInstance()->getPartnerName($notDonePreorder->getPartnerId());
                 $preordersMesaages[] = $notDonePreorder->getId() . ' ' . $partnerName;
             }
-            return [implode('<br>', $preordersMesaages), implode('<br>', $cancelledMessages)];
+            return [implode('<br>', $preordersMesaages), implode('<br>', $cancelledMessages), $pendingPreordersOrderIds];
         }
 
         private function getNotFinishedPreordersOrderIds() {

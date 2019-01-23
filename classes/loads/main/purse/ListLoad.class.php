@@ -27,9 +27,10 @@ namespace crm\loads\main\purse {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 200;
-            list($text1, $text2) = PreorderManager::getInstance()->getPerndingPreordersText();
+            list($text1, $text2, $pendingPreordersOrderIds) = PreorderManager::getInstance()->getPerndingPreordersText();
             $this->addParam('preorder_text1', $text1);
             $this->addParam('preorder_text2', $text2);
+            $this->addParam('preorder_order_ids', $pendingPreordersOrderIds);
             list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $where, $words, $searchText,
                     $problematic, $local_carrier_name, $regOrdersInWarehouse) = $this->initFilters($limit, $this);
             if (!empty($regOrdersInWarehouse)) {
