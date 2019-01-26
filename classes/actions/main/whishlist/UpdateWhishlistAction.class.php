@@ -29,7 +29,7 @@ namespace crm\actions\main\whishlist {
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            $whishlistId = WhishlistManager::getInstance()->updateRow($id, $name, $asin_list, $target_price);
+             WhishlistManager::getInstance()->updateRow($id, $name, $asin_list, $target_price);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Whishlist Order Successfully updated!';
             $this->redirect('whishlist/' . $id);
