@@ -16,6 +16,7 @@
                 <th>Name</th>
                 <th>Target Price</th>
                 <th>Current Min Price</th>
+                <th>Note</th>
                 <th>Item</th>
                 <th>Amazon Asin List</th>
                 <th>Updated Date</th>
@@ -24,11 +25,12 @@
                 <th class="icon-cell">Delete</th>
             </tr>
             {foreach from=$ns.whishlists item=whishlist}
-                <tr {if $whishlist->getCurrentMinPrice()>0.01 && $whishlist->getCurrentMinPrice()<=$whishlist->getTargetPrice()}style="color: red"{/if}>
+                <tr data-type="whishlist" data-id="{$whishlist->getId()}" {if $whishlist->getCurrentMinPrice()>0.01 && $whishlist->getCurrentMinPrice()<=$whishlist->getTargetPrice()}style="color: red"{/if}>
                     <td>{$whishlist->getId()}</td>
-                    <td>{$whishlist->getName()}</td>
-                    <td>{$whishlist->getTargetPrice()}</td>
+                    <td class="f_editable_cell" data-field-name="name">{$whishlist->getName()}</td>
+                    <td class="f_editable_cell" data-field-name="target_price">{$whishlist->getTargetPrice()}</td>
                     <td>{$whishlist->getCurrentMinPrice()}</td>
+                    <td class="f_editable_cell" data-field-name="note">{$whishlist->getNote()}</td>
                     <td>{if !empty($whishlist->getCurrentMinPriceAsin())} 
                         <a href="https://www.amazon.com/dp/{$whishlist->getCurrentMinPriceAsin()}" target="_blank">
                             Product amazon page

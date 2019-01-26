@@ -14,16 +14,18 @@
 
 namespace crm\actions\main {
 
-    use crm\actions\BaseAction;
-    use crm\managers\PaymentTransactionManager;
-    use crm\managers\ProductManager;
-    use crm\managers\PurchaseOrderManager;
-    use crm\managers\PurseOrderManager;
-    use crm\managers\RecipientManager;
-    use crm\managers\SaleOrderManager;
-    use crm\managers\SettingManager;
-    use crm\managers\TranslationManager;
-    use NGS;
+use crm\actions\BaseAction;
+use crm\managers\PaymentTransactionManager;
+use crm\managers\ProductCategoryManager;
+use crm\managers\ProductManager;
+use crm\managers\PurchaseOrderManager;
+use crm\managers\PurseOrderManager;
+use crm\managers\RecipientManager;
+use crm\managers\SaleOrderManager;
+use crm\managers\SettingManager;
+use crm\managers\TranslationManager;
+use crm\managers\WhishlistManager;
+use NGS;
 
     class UpdateFieldAction extends BaseAction {
 
@@ -59,6 +61,9 @@ namespace crm\actions\main {
                 case 'recipient':
                     $manager = RecipientManager::getInstance();
                     break;
+                case 'whishlist':
+                    $manager = WhishlistManager::getInstance();
+                    break;
             }
             if ($objectType === 'settings_name'){
                 $manager->setSetting($fieldName, $fieldValue);
@@ -72,7 +77,7 @@ namespace crm\actions\main {
             $valueAfterSave = $manager->selectByPk($id);
             $this->addParam('value', $valueAfterSave->$fieldName);
             if ($fieldName === 'category_id' && $objectType === 'product'){
-                $this->addParam('display_value', \crm\managers\ProductCategoryManager::getInstance()->selectByPk($fieldValue)->getName());
+                $this->addParam('display_value', ProductCategoryManager::getInstance()->selectByPk($fieldValue)->getName());
                 
             }
         }
