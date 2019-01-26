@@ -275,6 +275,51 @@
         }
 
     ],
+    "whishlist": [
+        {
+            "action": "loads.main.index",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.whishlist.list"
+                }
+            }
+        },
+        {
+            "action": "loads.main.index",
+            "route": "create",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.whishlist.create"
+                }
+            }
+        },
+        {
+            "action": "loads.main.index",
+            "route": "edit/[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.whishlist.update"
+                }
+            }
+        },
+        {
+            "action": "loads.main.index",
+            "route": "[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.whishlist.open"
+                }
+            }
+        }
+
+    ],
     "payment": [
         {
             "action": "loads.main.index",
@@ -599,6 +644,10 @@
         {
             "action": "actions.cron.get_currency_rates",
             "route": "get_rates"
+        },
+        {
+            "action": "actions.cron.fetch_whishlist",
+            "route": "fetch_whishlist"
         },
         {
             "action": "actions.cron.get_crypto_rates",

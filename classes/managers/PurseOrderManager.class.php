@@ -35,6 +35,15 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function getItemPriceByAsin($asin) {
+            $content = $this->curl_get_contents('https://api.purse.io/api/v1/instant/item/' . $asin);
+            $apiRes = json_decode($content, true);
+            if (isset($apiRes['fiat_price'])) {
+                return floatval($apiRes['fiat_price']);
+            }
+            return null;
+        }
+
         public function getRecipientsRecentOrders($recipientIds) {
             $recipients = RecipientManager::getInstance()->selectByPKs($recipientIds);
             $partnerIdMappedByExpressUnitAddresses = [];
@@ -316,18 +325,17 @@ namespace crm\managers {
             $productNames = [];
             $totalQty = 0;
             $totalProductNamesLength = 0;
-            $productNamesCount= 0;
+            $productNamesCount = 0;
             foreach ($order['items'] as $item) {
                 if (isset($item['quantity']) && isset($item['name'])) {
-                    $totalProductNamesLength+= strlen($item['name']);
-                    $productNamesCount+=1;
+                    $totalProductNamesLength += strlen($item['name']);
+                    $productNamesCount += 1;
                 }
-                
             }
-            $pordcutNamesMidLength = intval(max(500, $totalProductNamesLength)/$productNamesCount);
+            $pordcutNamesMidLength = intval(max(500, $totalProductNamesLength) / $productNamesCount);
             foreach ($order['items'] as $item) {
                 if (isset($item['quantity']) && isset($item['name'])) {
-                    $productNames[] = $item['quantity'] . ' x ' . mb_strimwidth($item['name'], 0, $pordcutNamesMidLength, "..."); 
+                    $productNames[] = $item['quantity'] . ' x ' . mb_strimwidth($item['name'], 0, $pordcutNamesMidLength, "...");
                 }
                 if (isset($item['quantity'])) {
                     $totalQty += intval($item['quantity']);
