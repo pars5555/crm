@@ -24,7 +24,7 @@
                 <th class="icon-cell">Delete</th>
             </tr>
             {foreach from=$ns.whishlists item=whishlist}
-                <tr {if $whishlist->getCurrentMinPrice()>0.01 && $whishlist->getCurrentMinPrice()<$whishlist->getTargetPrice()}style="color: red"{/if}>
+                <tr {if $whishlist->getCurrentMinPrice()>0.01 && $whishlist->getCurrentMinPrice()<=$whishlist->getTargetPrice()}style="color: red"{/if}>
                     <td>{$whishlist->getId()}</td>
                     <td>{$whishlist->getName()}</td>
                     <td>{$whishlist->getTargetPrice()}</td>
