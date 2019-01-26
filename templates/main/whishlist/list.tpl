@@ -15,6 +15,8 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Target Price</th>
+                <th>Current Min Price</th>
+                <th>Item</th>
                 <th>Amazon Asin List</th>
                 <th>Updated Date</th>
                 <th class="icon-cell">View</th>
@@ -22,35 +24,41 @@
                 <th class="icon-cell">Delete</th>
             </tr>
             {foreach from=$ns.whishlists item=whishlist}
-                <tr>
+                <tr {if $whishlist->getCurrentMinPrice()>0.01 && $whishlist->getCurrentMinPrice()<$whishlist->getTargetPrice()}style="color: red"{/if}>
                     <td>{$whishlist->getId()}</td>
                     <td>{$whishlist->getName()}</td>
                     <td>{$whishlist->getTargetPrice()}</td>
-                    <td>{$whishlist->getAsinList()}</td>
-                    <td>{$whishlist->getUpdatedAt()}</td>
-                    <td class="icon-cell">
-                        <a href="{$SITE_PATH}/whishlist/{$whishlist->getId()}">
-                            <span class="button_icon" title="View">
-                                <i class="fa fa-eye"></i>
-                            </span>
+                    <td>{$whishlist->getCurrentMinPrice()}</td>
+                    <td>{if !empty($whishlist->getCurrentMinPriceAsin())} 
+                        <a href="https://www.amazon.com/dp/{$whishlist->getCurrentMinPriceAsin()}" target="_blank">
+                            Product amazon page
                         </a>
-                    </td>
-                    <td class="icon-cell">
-                        <a href="{$SITE_PATH}/whishlist/edit/{$whishlist->getId()}">
-                            <span class="button_icon" title="Edit">
-                                <i class="fa fa-pencil"></i>
-                            </span>
-                        </a>
-                    </td>
-                    <td class="icon-cell">
-                        <a class="deleteWhishlist" href="{$SITE_PATH}/dyn/main_whishlist/do_delete_whishlist?id={$whishlist->getId()}">
-                            <span class="button_icon" title="delete">
-                                <i class="fa fa-trash-o"></i>
-                            </span>
-                        </a>
-                    </td>
-                </tr>
-            {/foreach}
-        </table>
-    </div>
-</div>
+                        {/if}</td>
+                        <td>{$whishlist->getAsinList()}</td>
+                        <td>{$whishlist->getUpdatedAt()}</td>
+                        <td class="icon-cell">
+                            <a href="{$SITE_PATH}/whishlist/{$whishlist->getId()}">
+                                <span class="button_icon" title="View">
+                                    <i class="fa fa-eye"></i>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="icon-cell">
+                            <a href="{$SITE_PATH}/whishlist/edit/{$whishlist->getId()}">
+                                <span class="button_icon" title="Edit">
+                                    <i class="fa fa-pencil"></i>
+                                </span>
+                            </a>
+                        </td>
+                        <td class="icon-cell">
+                            <a class="deleteWhishlist" href="{$SITE_PATH}/dyn/main_whishlist/do_delete_whishlist?id={$whishlist->getId()}">
+                                <span class="button_icon" title="delete">
+                                    <i class="fa fa-trash-o"></i>
+                                </span>
+                            </a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </table>
+                </div>
+            </div>
