@@ -39,6 +39,7 @@ namespace crm\actions\main\whishlist {
             $this->validateFormData();
             $name = NGS()->args()->name;
             $asin_list= NGS()->args()->asin_list;
+            $stripped = preg_replace('/\s+/', ' ', $sentence);
             $target_price= floatval(NGS()->args()->target_price);
             return array($name, $asin_list, $target_price);
         }

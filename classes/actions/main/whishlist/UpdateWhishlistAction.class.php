@@ -40,6 +40,7 @@ namespace crm\actions\main\whishlist {
             $id= intval(NGS()->args()->id);
             $name = NGS()->args()->name;
             $asin_list= NGS()->args()->asin_list;
+            $asin_list = preg_replace('/\s+/', ' ', $asin_list);
             $target_price= floatval(NGS()->args()->target_price);
             return array($id, $name, $asin_list, $target_price);
         }
