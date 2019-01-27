@@ -35,11 +35,17 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function getItemPriceByAsin($asin) {
-            $content = $this->curl_get_contents('https://api.purse.io/api/v1/instant/item/' . $asin);
-            $apiRes = json_decode($content, true);
-            if (isset($apiRes['fiat_price'])) {
-                return floatval($apiRes['fiat_price']);
+        public function getItemPriceByAsin($asin, $maxTryCount = 3) {
+            $content = "";
+            $tryCount = 0;
+            while (empty($content) && $tryCount < $maxTryCount) {
+                $tryCount++;
+                $content = $this->curl_get_contents('https://api.purse.io/api/v1/instant/item/' . $asin);
+                $apiRes = json_decode($content, true);
+                if (isset($apiRes['fiat_price'])) {
+                    return floatval($apiRes['fiat_price']);
+                }
+                sleep(1);
             }
             return null;
         }
@@ -464,7 +470,7 @@ namespace crm\managers {
             curl_setopt($ch, CURLOPT_ENCODING, "");
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 20);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 21);
             curl_setopt($ch, CURLOPT_TIMEOUT, 20);
             curl_setopt($ch, CURLOPT_REFERER, 'https://purse.io/orders');
             if (!empty($headers)) {
