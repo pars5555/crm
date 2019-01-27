@@ -40,6 +40,9 @@ namespace crm\managers {
             $apiRes = json_decode($content, true);
             if (isset($apiRes['fiat_price'])) {
                 return floatval($apiRes['fiat_price']);
+            }else
+            {
+                echo $content."/r/n"."/r/n"."/r/n";
             }
             return null;
         }
