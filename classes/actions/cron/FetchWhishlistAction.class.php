@@ -39,9 +39,9 @@ namespace crm\actions\cron {
                         $row->setCurrentMinPrice($price);
                         WhishlistManager::getInstance()->updateField($row->getId(), 'current_min_price_asin', $asin);
                     }
+                    sleep(1);
                 }
                 echo 'id: '. $row->getId() . ' finished'."\r\n";
-                sleep(1);
             }
             echo 'Finished'."\r\n"."\r\n"."\r\n"."\r\n"."\r\n";
             
