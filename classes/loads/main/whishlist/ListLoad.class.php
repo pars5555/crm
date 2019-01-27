@@ -95,7 +95,7 @@ namespace crm\loads\main\whishlist {
         }
 
         public function getSortByFields() {
-            return ['id', 'ID', 'updated_at' => 'Updated Date'];
+            return ['id'=> 'ID', 'updated_at' => 'Updated Date'];
         }
 
     }

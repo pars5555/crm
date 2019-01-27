@@ -6,6 +6,8 @@ NGS.createLoad("crm.loads.main.whishlist.list", {
 
     },
     afterLoad: function () {
-       
+       $('#whishlistFilters').find('select, checkbox').change(function () {
+            $('#whishlistFilters').trigger('submit');
+        });
     }
 });
