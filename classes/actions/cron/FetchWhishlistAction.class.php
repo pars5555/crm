@@ -23,7 +23,7 @@ namespace crm\actions\cron {
 
         public function service() {
             set_time_limit(0);
-            $rows = WhishlistManager::getInstance()->selectAll();
+            $rows = WhishlistManager::getInstance()->selectAdvance('*', [], 'current_min_price');
             foreach ($rows as $row) {
                 $asinList = $row->getAsinList();
                 if (!empty($asinList)) {
@@ -39,7 +39,7 @@ namespace crm\actions\cron {
                         $row->setCurrentMinPrice($price);
                         WhishlistManager::getInstance()->updateField($row->getId(), 'current_min_price_asin', $asin);
                     }
-                    sleep(1);
+                    sleep(3);
                 }
                 echo 'id: '. $row->getId() . ' finished'."\r\n";
             }
