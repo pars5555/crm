@@ -47,6 +47,11 @@ namespace crm\managers {
                 }
                 sleep(1);
             }
+            $content = file_get_contents('https://api.purse.io/api/v1/instant/item/' . $asin);
+            $apiRes = json_decode($content, true);
+            if (isset($apiRes['fiat_price'])) {
+                return floatval($apiRes['fiat_price']);
+            }
             return null;
         }
 
