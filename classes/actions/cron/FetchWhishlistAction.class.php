@@ -33,7 +33,7 @@ namespace crm\actions\cron {
                 foreach ($asinListArray as $asin) {
                     $price = PurseOrderManager::getInstance()->getItemPriceByAsin($asin);
                     $currentMinPrice = floatval($row->getCurrentMinPrice());
-                    echo 'id: '. $row->getId() . ', old price: '. $currentMinPrice. ' , new price: '. $price. "\r\n";
+                    echo 'asin: '. $asin . ', old price: '. $currentMinPrice. ' , new price: '. $price. "\r\n";
                     if ($price > 0.01 && ($currentMinPrice <= 0.01 or $price < $currentMinPrice)) {
                         WhishlistManager::getInstance()->updateField($row->getId(), 'current_min_price', $price);
                         $row->setCurrentMinPrice($price);
