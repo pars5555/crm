@@ -29,17 +29,23 @@ namespace crm\actions\cron {
                 if (!empty($asinList)) {
                     $asinListArray = explode(',', $asinList);
                 }
+                echo 'id: '. $row->getId() . ' updateing...'."\r\n";
                 foreach ($asinListArray as $asin) {
                     $price = PurseOrderManager::getInstance()->getItemPriceByAsin($asin);
                     $currentMinPrice = floatval($row->getCurrentMinPrice());
+                    echo 'id: '. $row->getId() . 'old price: '. $currentMinPrice. ' , new price: '. $price. "\r\n";
                     if ($price > 0.01 && ($currentMinPrice <= 0.01 or $price < $currentMinPrice)) {
                         WhishlistManager::getInstance()->updateField($row->getId(), 'current_min_price', $price);
                         $row->setCurrentMinPrice($price);
                         WhishlistManager::getInstance()->updateField($row->getId(), 'current_min_price_asin', $asin);
                     }
                 }
+                echo 'id: '. $row->getId() . ' finished'."\r\n";
                 sleep(1);
             }
+            echo 'Finished'."\r\n"."\r\n"."\r\n"."\r\n"."\r\n";
+            
+            exit;
         }
 
         public function getRequestGroup() {
