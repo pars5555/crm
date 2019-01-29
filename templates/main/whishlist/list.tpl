@@ -31,14 +31,14 @@
                     <td class="f_editable_cell" data-field-name="name">{$whishlist->getName()}</td>
                     <td class="f_editable_cell" data-field-name="target_price">{$whishlist->getTargetPrice()}</td>
                     <td>{$whishlist->getCurrentMinPrice()}</td>
-                    <td class="f_editable_cell" data-field-name="note">{$whishlist->getNote()}</td>
-                    <td class="f_editable_cell" data-field-name="note1">{$whishlist->getNote1()}</td>
+                    <td class="f_editable_cell" style="min-width: 150px" data-field-name="note">{$whishlist->getNote()}</td>
+                    <td class="f_editable_cell" style="min-width: 150px" data-field-name="note1">{$whishlist->getNote1()}</td>
                     <td>{if !empty($whishlist->getCurrentMinPriceAsin())} 
                         <a href="https://www.amazon.com/dp/{$whishlist->getCurrentMinPriceAsin()}" target="_blank">
                             Product amazon page
                         </a>
                         {/if}</td>
-                        <td>{$whishlist->getAsinList()|replace:',':' '}</td>
+                        <td>{$whishlist->getAsinList()|replace:',':', '}</td>
                         <td>{$whishlist->getUpdatedAt()}</td>
                         <td class="icon-cell">
                             <a href="{$SITE_PATH}/whishlist/{$whishlist->getId()}">
