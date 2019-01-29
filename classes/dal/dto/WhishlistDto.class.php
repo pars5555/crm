@@ -28,7 +28,7 @@ namespace crm\dal\dto {
         // Map of DB value to Field value
         private $mapArray = array("id" => "id", "name" => "name",
             "asin_list" => "asinList","target_price" => "targetPrice","current_min_price" => "currentMinPrice",
-            "current_min_price_asin" => "currentMinPriceAsin","prices_json" => "pricesJson","note" => "note", "updated_at" => "updatedAt");
+            "current_min_price_asin" => "currentMinPriceAsin","prices_json" => "pricesJson","note" => "note","note1" => "note1", "updated_at" => "updatedAt");
 
         // returns map array
         public function getMapArray() {

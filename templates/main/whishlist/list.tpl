@@ -16,7 +16,8 @@
                 <th>Name</th>
                 <th>Target Price</th>
                 <th>Current Min Price</th>
-                <th>Note</th>
+                <th>Note 1</th>
+                <th>Note 2</th>
                 <th>Item</th>
                 <th>Amazon Asin List</th>
                 <th>Updated Date</th>
@@ -31,6 +32,7 @@
                     <td class="f_editable_cell" data-field-name="target_price">{$whishlist->getTargetPrice()}</td>
                     <td>{$whishlist->getCurrentMinPrice()}</td>
                     <td class="f_editable_cell" data-field-name="note">{$whishlist->getNote()}</td>
+                    <td class="f_editable_cell" data-field-name="note1">{$whishlist->getNote1()}</td>
                     <td>{if !empty($whishlist->getCurrentMinPriceAsin())} 
                         <a href="https://www.amazon.com/dp/{$whishlist->getCurrentMinPriceAsin()}" target="_blank">
                             Product amazon page
