@@ -43,6 +43,7 @@ namespace crm\actions\cron {
                     sleep(4);
                 }
                 if ($minPrice > 0) {
+                    WhishlistManager::getInstance()->updateField($row->getId(), 'updated_at', date('Y-m-d H:i:s'));
                     WhishlistManager::getInstance()->updateField($row->getId(), 'current_min_price', $minPrice);
                     WhishlistManager::getInstance()->updateField($row->getId(), 'current_min_price_asin', $minMinAsin);
                 }
