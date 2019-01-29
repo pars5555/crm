@@ -38,7 +38,7 @@
                             Product amazon page
                         </a>
                         {/if}</td>
-                        <td>{$whishlist->getAsinList()}</td>
+                        <td>{$whishlist->getAsinList()|replace:',':' '}</td>
                         <td>{$whishlist->getUpdatedAt()}</td>
                         <td class="icon-cell">
                             <a href="{$SITE_PATH}/whishlist/{$whishlist->getId()}">
