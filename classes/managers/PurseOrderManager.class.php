@@ -47,7 +47,7 @@ namespace crm\managers {
                 }
                 sleep(3);
             }
-            return null;
+            return 0;
         }
 
         public function getRecipientsRecentOrders($recipientIds) {
