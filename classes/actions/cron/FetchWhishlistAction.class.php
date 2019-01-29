@@ -29,22 +29,25 @@ namespace crm\actions\cron {
                 if (!empty($asinList)) {
                     $asinListArray = explode(',', $asinList);
                 }
-                echo 'id: '. $row->getId() . ' updateing...'."\r\n";
+                echo 'id: ' . $row->getId() . ' updateing...' . "\r\n";
+                $minPrice = PHP_INT_MAX;
+                $minMinAsin = "";
                 foreach ($asinListArray as $asin) {
                     $price = PurseOrderManager::getInstance()->getItemPriceByAsin($asin);
                     $currentMinPrice = floatval($row->getCurrentMinPrice());
-                    echo 'asin: '. $asin . ', old price: '. $currentMinPrice. ' , new price: '. $price. "\r\n";
-                    if ($price > 0.01 && ($currentMinPrice <= 0.01 or $price < $currentMinPrice)) {
-                        WhishlistManager::getInstance()->updateField($row->getId(), 'current_min_price', $price);
-                        $row->setCurrentMinPrice($price);
-                        WhishlistManager::getInstance()->updateField($row->getId(), 'current_min_price_asin', $asin);
+                    echo 'asin: ' . $asin . ', old price: ' . $currentMinPrice . ' , new price: ' . $price . "\r\n";
+                    if ($price < $minPrice) {
+                        $minPrice = $price;
+                        $minMinAsin = $asin;
                     }
                     sleep(4);
                 }
-                echo 'id: '. $row->getId() . ' finished'."\r\n";
+                WhishlistManager::getInstance()->updateField($row->getId(), 'current_min_price', $minPrice);
+                WhishlistManager::getInstance()->updateField($row->getId(), 'current_min_price_asin', $minMinAsin);
+                echo 'id: ' . $row->getId() . ' finished' . "\r\n";
             }
-            echo 'Finished'."\r\n"."\r\n"."\r\n"."\r\n"."\r\n";
-            
+            echo 'Finished' . "\r\n" . "\r\n" . "\r\n" . "\r\n" . "\r\n";
+
             exit;
         }
 
