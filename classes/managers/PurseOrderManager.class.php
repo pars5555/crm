@@ -45,7 +45,7 @@ namespace crm\managers {
                 if (isset($apiRes['fiat_price'])) {
                     return floatval($apiRes['fiat_price']);
                 }
-                sleep(1);
+                sleep(3);
             }
             return null;
         }
