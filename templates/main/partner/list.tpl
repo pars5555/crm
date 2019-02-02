@@ -28,7 +28,7 @@
                 <th class="icon-cell">Hidden</th>
             </tr>
             {foreach from=$ns.partners item=partner}
-                {if  (isset($ns.partnersZeroDebt[$partner->getId()]) && $ns.partnersZeroDebt[$partner->getId()] == 0) || $ns.selectedFilterHidden == 'yes' }
+                {if  (isset($ns.partnersZeroDebt[$partner->getId()]) && $ns.partnersZeroDebt[$partner->getId()] == 0) || $ns.selectedFilterHidden == 'all'}
                     <tr>
                         <td class="link-cell id">
                             {if isset($ns.attachments[$partner->getId()])}
