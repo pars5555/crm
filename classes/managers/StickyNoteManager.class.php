@@ -38,6 +38,10 @@ namespace crm\managers {
         }
 
         public function setPageContent($pageName, $userId, $note) {
+            if ($pageName ==='default')
+            {
+                $pageName = 'general';
+            }
             $rows = $this->selectAdvance('*', ['admin_id', "=", $userId, 'AND', 'page_name', '=', "'$pageName'", 'AND', 'datetime', '>=', "DATE_SUB(NOW(),INTERVAL 1 HOUR)"], 'id', 'desc', 0, 1);
             if (empty($rows)){
             }else{
@@ -53,8 +57,12 @@ namespace crm\managers {
             return $this->insertDto($dto);
         }
 
-        public function getPageContent($page, $adminId) {
-            $rows = $this->selectAdvance('*', ['admin_id', "=", $adminId, 'AND', 'page_name', '=', "'$page'"], 'id', 'desc', 0, 1);
+        public function getPageContent($pageName, $adminId) {
+            if ($pageName ==='default')
+            {
+                $pageName = 'general';
+            }
+            $rows = $this->selectAdvance('*', ['admin_id', "=", $adminId, 'AND', 'page_name', '=', "'$pageName'"], 'id', 'desc', 0, 1);
             if (!empty($rows)) {
                 return $rows[0]->getContent();
             }
