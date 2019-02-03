@@ -51,6 +51,7 @@ use NGS;
                 case 'product':
                     $manager = ProductManager::getInstance();
                     break;
+                case 'set_setting':
                 case 'settings':
                 case 'settings_name':
                     $manager = SettingManager::getInstance();
@@ -64,6 +65,10 @@ use NGS;
                 case 'whishlist':
                     $manager = WhishlistManager::getInstance();
                     break;
+            }
+            if ($objectType === 'set_setting'){
+                $manager->setSetting($fieldName, $fieldValue);
+                return;
             }
             if ($objectType === 'settings_name'){
                 $manager->setSetting($fieldName, $fieldValue);

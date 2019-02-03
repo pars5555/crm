@@ -9,6 +9,7 @@
                 "files": [
                     "lib/jquery.js",
                     "lib/jquery-ui.js",
+                    "lib/jquery.cookie.js",
                     "lib/chosen/chosen.jquery.min.js",
                     "lib/jSignature.min.js",
                     "lib/jquery.tooltipster.min.js",

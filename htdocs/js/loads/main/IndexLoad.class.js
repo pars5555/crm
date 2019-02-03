@@ -18,6 +18,39 @@ NGS.createLoad("crm.loads.main.index", {
         this.initLeftMenuTrigger();
         this.hideLeftMenuOnMobile();
         this.initFileUploader();
+        var position = false;
+        if ($.cookie("stickynote_position")) {
+            var position = JSON.parse($.cookie("stickynote_position"));
+        }
+        $('#sticky_note_content').on('change copy paste keyup', function () {
+
+            NGS.action('crm.actions.main.UpdateField',
+                    {'id': 0,
+                        'object_type': 'set_setting',
+                        'field_name': 'sticky_note',
+                        "field_value": $('#sticky_note_content').val()}, function (ret) {
+            });
+        });
+        $("#sticky_note").dialog({
+            drag: function (event, ui) {
+                $.cookie("stickynote_position", JSON.stringify([$("#sticky_note").parent().position().left, $("#sticky_note").parent().position().top]));
+                return true;
+            },
+            open: function () {
+                if (position) {
+                    $("#sticky_note").parent().css({'left': position[0], 'top': position[1]});
+                }
+            }
+
+        });
+        $("#open_sticky_note").click(function () {
+            $("#sticky_note").dialog('open');
+            var position = JSON.parse($.cookie("stickynote_position"));
+            $("#sticky_note").parent().css({'left': position[0], 'top': position[1]});
+
+
+        });
+
     },
     initFileUploader: function () {
         $('#select_attachment_button').click(function () {

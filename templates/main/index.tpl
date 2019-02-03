@@ -12,7 +12,7 @@
             </header>
             <section class="wrapper" id="mainWrapper">
                 {if $ns.userType == $ns.userTypeAdmin}
-                {include file="./util/left_menu.tpl"}
+                    {include file="./util/left_menu.tpl"}
                 {/if}
                 <div class="content" id="indexRightContent">
                     {nest ns=content}
@@ -22,5 +22,10 @@
                 {include file="./util/footer.tpl"}
             </footer>
         </div>
+        {if $ns.userType == $ns.userTypeAdmin}
+            <div id="sticky_note" title="Sticky Note">
+                <textarea id="sticky_note_content" rows="10" style="width: 100%; height: 100%">{$ns.sticky_note}</textarea>
+            </div>
+        {/if}
     </body>
 </html>

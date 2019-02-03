@@ -18,6 +18,8 @@ namespace crm\loads\main {
     class IndexLoad extends AdminLoad {
 
         public function load() {
+            
+            $this->addParam('sticky_note', \crm\managers\SettingManager::getInstance()->getSetting('sticky_note'));
         }
         
         public function getRequestGroup() {
