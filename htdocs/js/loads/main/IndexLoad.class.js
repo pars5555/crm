@@ -1,3 +1,4 @@
+NGS.stickyNoteTimeoutInstance = 0;
 NGS.createLoad("crm.loads.main.index", {
     getContainer: function () {
         return "initialLoad";
@@ -18,18 +19,30 @@ NGS.createLoad("crm.loads.main.index", {
         this.initLeftMenuTrigger();
         this.hideLeftMenuOnMobile();
         this.initFileUploader();
+        this.initStickyNote();
+    },
+    initStickyNote: function () {
         var position = false;
         if ($.cookie("stickynote_position")) {
             var position = JSON.parse($.cookie("stickynote_position"));
         }
         $('#sticky_note_content').on('change copy paste keyup', function () {
+            var page_name = $(this).data('page_name');
+            if (NGS.stickyNoteTimeoutInstance) {
+                window.clearTimeout(NGS.stickyNoteTimeoutInstance);
+            }
+            NGS.stickyNoteTimeoutInstance = window.setTimeout(function () {
+                NGS.action('crm.actions.main.set_sticky_note',
+                        {
+                            page_name: page_name,
+                            note: $('#sticky_note_content').val()
+                        }, function (ret) {
+                    $('#sticky_note_content').val(ret.note);
+                });
 
-            NGS.action('crm.actions.main.UpdateField',
-                    {'id': 0,
-                        'object_type': 'set_setting',
-                        'field_name': 'sticky_note',
-                        "field_value": $('#sticky_note_content').val()}, function (ret) {
-            });
+
+            }, 500);
+
         });
         $("#sticky_note").dialog({
             drag: function (event, ui) {
@@ -50,7 +63,6 @@ NGS.createLoad("crm.loads.main.index", {
 
 
         });
-
     },
     initFileUploader: function () {
         $('#select_attachment_button').click(function () {

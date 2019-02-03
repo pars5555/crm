@@ -24,7 +24,7 @@
         </div>
         {if $ns.userType == $ns.userTypeAdmin}
             <div id="sticky_note" title="Sticky Note">
-                <textarea id="sticky_note_content" rows="10" style="width: 100%; height: 100%">{$ns.sticky_note}</textarea>
+                <textarea id="sticky_note_content" data-page_name="{$ns.sticky_note_page_name}" rows="10" style="width: 100%; height: 100%">{$ns.sticky_note}</textarea>
             </div>
         {/if}
     </body>

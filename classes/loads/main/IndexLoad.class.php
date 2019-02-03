@@ -18,10 +18,12 @@ namespace crm\loads\main {
     class IndexLoad extends AdminLoad {
 
         public function load() {
-            
-            $this->addParam('sticky_note', \crm\managers\SettingManager::getInstance()->getSetting('sticky_note'));
+            $pageName = NGS()->getRoutesEngine()->getPackage();
+            $userId = NGS()->getSessionManager()->getUserId();
+            $this->addParam('sticky_note', \crm\managers\StickyNoteManager::getInstance()->getPageContent($pageName, $userId));
+            $this->addParam('sticky_note_page_name', $pageName);
         }
-        
+
         public function getRequestGroup() {
             return RequestGroups::$guestRequest;
         }
