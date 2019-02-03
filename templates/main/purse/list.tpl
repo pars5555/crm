@@ -8,13 +8,10 @@
         {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="success" content="{$ns.success_message}"}
     {/if}
 
-
-
     {include file="{ngs cmd=get_template_dir}/main/purse/list_filters.tpl"}
     {if !empty($ns.changed_orders)}
         <h2>following orders are changed or added, {$ns.changed_orders}</h2>
     {/if}
-
 
     {if !empty($ns.preorder_text1)}
         Preorders: <br>
@@ -24,7 +21,6 @@
         Cancelled Preorders Items: <br>
         <h2 style="color:red">{$ns.preorder_text2}</h2>
     {/if}
-
 
     <div class="main-table">
         <table>
@@ -58,11 +54,11 @@
                                                         {if $order->getHidden()==0}
                                                             <a href="javascript:void(0);" class="fa fa-eye-slash fa-1x f_hide left" data-id='{$order->getId()}'></a>
                                                         {/if}
-                                                        
+
                                                         {if $order->getId()|in_array:$ns.preorder_order_ids}
                                                             <i style="color: red" href="javascript:void(0);" class="fa fa-star fa-2x left"></i>
                                                         {/if}
-                                                        
+
                                                         <a href="javascript:void(0);" {if $ns.problematic == 1}style="color: red"{/if} id="problematic_{$order->getId()}" class="fa fa-exclamation-triangle fa-1x f_problematic right" data-id='{$order->getId()}'></a>
                                                         <br/>
                                                         {if $order->getUnreadMessages() > 0}

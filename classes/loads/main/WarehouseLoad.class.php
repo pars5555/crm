@@ -26,6 +26,8 @@ namespace crm\loads\main {
 
         public function load() {
             $pwarehousesProductsQuantity = $this->loadPartnersWarehouses();
+            $reservations = \crm\managers\ProductReservationManager::getInstance()->getReservedProducts();
+            $this->addParam('reservations', $reservations);
             $categories = \crm\managers\ProductCategoryManager::getInstance()->selectAll();
             $categoriesMappedById = [];
             foreach ($categories as $category) {

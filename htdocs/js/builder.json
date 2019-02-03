@@ -141,6 +141,7 @@
                     "actions/main/recipient/SetRecipientCheckedAction.class.js",
                     "actions/main/recipient/SetRecipientFavoriteAction.class.js",
                     "actions/main/product/SetProductHiddenAction.class.js",
+                    "actions/main/product/ReserveProductAction.class.js",
                     "actions/main/product/SetProductQtyCheckedAction.class.js",
                     "actions/main/SetObjectCheckedAction.class.js",
                     "actions/main/purse/UpdateOrdersAction.class.js",

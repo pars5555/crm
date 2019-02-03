@@ -18,11 +18,29 @@ NGS.createLoad("crm.loads.main.warehouse", {
             });
         });
         this.initExport();
+        this.initReserve();
         this.initQtyChecked();
         $("#partner_select").chosen({
             search_contains: true
         });
-    },   
+    },
+    initReserve: function () {
+        $('.f_reserve').click(function () {
+            $('#add_reservation_modalBox').addClass('is_active');
+            var productName = $(this).data('product_name');
+            $('#add_reservation_modalBox').find('.f_product_name').text(productName);
+            $('#reserve_product_id').val($(this).data('product_id'));
+        });
+        $('#add_reservation_modalBox #reserve_confirm').click(function () {
+            var reserve_product_id = $('#reserve_product_id').val();
+            var reserve_qty = $('#reserve_qty').val();
+            var reserve_hours = $('#reserve_hours').val();
+            var reserve_phone_number = $('#reserve_phone_number').val();
+            var reserve_note = $('#reserve_note').val();
+            var params = {product_id: reserve_product_id, qty: reserve_qty, hours: reserve_hours, phone_number: reserve_phone_number, note: reserve_note};
+            NGS.action('crm.actions.main.product.reserve_product', params);
+        });
+    },
     initQtyChecked: function () {
         $('.f_qty_checked_checkbox').change(function () {
             var product_id = $(this).data('product_id');
