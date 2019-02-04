@@ -20,7 +20,9 @@ namespace crm\loads\main {
         public function load() {
             $pageName = NGS()->getRoutesEngine()->getPackage();
             $userId = NGS()->getSessionManager()->getUserId();
+            if ($userId>0){
             $this->addParam('sticky_note', \crm\managers\StickyNoteManager::getInstance()->getPageContent($pageName, $userId));
+            }
             $this->addParam('sticky_note_page_name', $pageName);
         }
 
