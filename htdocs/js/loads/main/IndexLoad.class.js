@@ -45,7 +45,7 @@ NGS.createLoad("crm.loads.main.index", {
 
         });
         $("#sticky_note").dialog({
-            autoOpen: $.cookie("stickynote_position") == 'true',
+            autoOpen: $.cookie("stickynote_autopen") == 'true',
             drag: function (event, ui) {
                 $.cookie("stickynote_position", JSON.stringify([$("#sticky_note").parent().position().left, $("#sticky_note").parent().position().top]));
                 return true;
