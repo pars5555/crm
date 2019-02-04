@@ -45,7 +45,7 @@ NGS.createLoad("crm.loads.main.index", {
 
         });
         $("#sticky_note").dialog({
-            autoOpen: $.cookie("stickynote_position"),
+            autoOpen: $.cookie("stickynote_position") == 'true',
             drag: function (event, ui) {
                 $.cookie("stickynote_position", JSON.stringify([$("#sticky_note").parent().position().left, $("#sticky_note").parent().position().top]));
                 return true;
@@ -56,14 +56,14 @@ NGS.createLoad("crm.loads.main.index", {
                 }
             },
             close: function () {
-                $.cookie("stickynote_autopen", false);
+                $.cookie("stickynote_autopen", 'false');
             }
         });
         $("#open_sticky_note").click(function () {
             $("#sticky_note").dialog('open');
             var position = JSON.parse($.cookie("stickynote_position"));
             $("#sticky_note").parent().css({'left': position[0], 'top': position[1]});
-            $.cookie("stickynote_autopen", true);
+            $.cookie("stickynote_autopen", 'true');
         });
     },
     initFileUploader: function () {
