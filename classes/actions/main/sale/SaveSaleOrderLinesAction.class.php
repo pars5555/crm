@@ -23,6 +23,8 @@ namespace crm\actions\main\sale {
     class SaveSaleOrderLinesAction extends BaseAction {
 
         public function service() {
+             ini_set('memory_limit','3G');
+            set_time_limit(0);
             if (!isset(NGS()->args()->sale_order_id)) {
                 $_SESSION['error_message'] = 'Sale Order ID is missing';
                 $this->redirect('sale/list');
