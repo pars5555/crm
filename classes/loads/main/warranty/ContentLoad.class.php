@@ -32,7 +32,10 @@ namespace crm\loads\main\warranty {
             $sol_searial_numbers = SaleOrderLineSerialNumberManager::getInstance()->selectAdvance('*', $searchWhereFilter, null, null, 0, 1000);
             $saleOrdersDateMappedBySN = $this->getSaleOrdersDatesMappedBySN($sol_searial_numbers);
             $pol_searial_numbers = PurchaseOrderLineSerialNumberManager::getInstance()->selectAdvance('*', $searchWhereFilter, null, null, 0, 1000);
-            $purchaseOrdersDateMappedBySN = $this->getPurchaseOrdersDatesMappedBySN($pol_searial_numbers);
+            $purchaseOrdersDateMappedBySN = [];
+            if (!empty($pol_searial_numbers)){
+                $purchaseOrdersDateMappedBySN = $this->getPurchaseOrdersDatesMappedBySN($pol_searial_numbers);
+            }
             $combinePolAndSolSerialNumbers = $this->combinePolAndSolSerialNumbers($sol_searial_numbers, $pol_searial_numbers);
             $this->addParam('searial_numbers', $combinePolAndSolSerialNumbers);
             $this->addParam('saleOrdersDateMappedBySN', $saleOrdersDateMappedBySN);
