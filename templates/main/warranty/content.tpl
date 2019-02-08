@@ -26,15 +26,15 @@
                     {/if}
                 </span>
                 <span class="table-cell">
-                    {if isset($purchaseOrdersDateMappedBySN[$sn])}
-                        {$purchaseOrdersDateMappedBySN[$sn][0]}<br>
-                        {$purchaseOrdersDateMappedBySN[$sn][1]}
+                    {if isset($ns.purchaseOrdersDateMappedBySN[$sn])}
+                        {$ns.purchaseOrdersDateMappedBySN[$sn][0]}<br>
+                        {$ns.purchaseOrdersDateMappedBySN[$sn][1]}
                     {/if}
                 </span>
                 <span class="table-cell">
-                    {if isset($saleOrdersDateMappedBySN[$sn])}
-                        {$saleOrdersDateMappedBySN[$sn][0]}<br>
-                        {$saleOrdersDateMappedBySN[$sn][1]}
+                    {if isset($ns.saleOrdersDateMappedBySN[$sn])}
+                        {$ns.saleOrdersDateMappedBySN[$sn][0]}<br>
+                        {$ns.saleOrdersDateMappedBySN[$sn][1]}
                     {/if}
                 </span>
             </div> 
