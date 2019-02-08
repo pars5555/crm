@@ -27,7 +27,7 @@
                 </span>
                 <span class="table-cell">
                     {if isset($ns.purchaseOrdersDateMappedBySN[$sn])}
-                        <a class="link" href="{$SITE_PATH}/sale/list?prt={$ns.purchaseOrdersDateMappedBySN[$sn][0]}">
+                        <a class="link" href="{$SITE_PATH}/sale/{$ns.purchaseOrdersDateMappedBySN[$sn][0]}">
                             {$ns.purchaseOrdersDateMappedBySN[$sn][0]}
                         </a>
                         {$ns.purchaseOrdersDateMappedBySN[$sn][1]}<br>
@@ -36,7 +36,7 @@
                 </span>
                 <span class="table-cell">
                     {if isset($ns.saleOrdersDateMappedBySN[$sn])}
-                        <a class="link" href="{$SITE_PATH}/sale/list?prt={$ns.saleOrdersDateMappedBySN[$sn][0]}">
+                        <a class="link" href="{$SITE_PATH}/purchase/{$ns.saleOrdersDateMappedBySN[$sn][0]}">
                             {$ns.saleOrdersDateMappedBySN[$sn][0]}
                         </a>
                         {$ns.saleOrdersDateMappedBySN[$sn][1]}<br>
