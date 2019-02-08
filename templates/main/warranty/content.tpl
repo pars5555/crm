@@ -27,14 +27,20 @@
                 </span>
                 <span class="table-cell">
                     {if isset($ns.purchaseOrdersDateMappedBySN[$sn])}
-                        {$ns.purchaseOrdersDateMappedBySN[$sn][0]}<br>
-                        {$ns.purchaseOrdersDateMappedBySN[$sn][1]}
+                        <a class="link" href="{$SITE_PATH}/sale/list?prt={$ns.purchaseOrdersDateMappedBySN[$sn][0]}">
+                            {$ns.purchaseOrdersDateMappedBySN[$sn][0]}
+                        </a>
+                        {$ns.purchaseOrdersDateMappedBySN[$sn][1]}<br>
+                        {$ns.purchaseOrdersDateMappedBySN[$sn][2]}
                     {/if}
                 </span>
                 <span class="table-cell">
                     {if isset($ns.saleOrdersDateMappedBySN[$sn])}
-                        {$ns.saleOrdersDateMappedBySN[$sn][0]}<br>
-                        {$ns.saleOrdersDateMappedBySN[$sn][1]}
+                        <a class="link" href="{$SITE_PATH}/sale/list?prt={$ns.saleOrdersDateMappedBySN[$sn][0]}">
+                            {$ns.saleOrdersDateMappedBySN[$sn][0]}
+                        </a>
+                        {$ns.saleOrdersDateMappedBySN[$sn][1]}<br>
+                        {$ns.saleOrdersDateMappedBySN[$sn][2]}
                     {/if}
                 </span>
             </div> 

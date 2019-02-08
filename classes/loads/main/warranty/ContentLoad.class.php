@@ -105,7 +105,7 @@ namespace crm\loads\main\warranty {
             foreach ($soIdsMappedBySolId as $solId => $soId) {
                 foreach ($snMappedBySolIds[$solId] as $sn) {
                     if (isset($soDtosMappedByID[$soId])) {
-                        $ret[$sn] = [$soDtosMappedByID[$soId]->getOrderDate(), $soDtosMappedByID[$soId]->getPartnerDto()->getName()];
+                        $ret[$sn] = [$soId, $soDtosMappedByID[$soId]->getOrderDate(), $soDtosMappedByID[$soId]->getPartnerDto()->getName()];
                     }
                 }
             }
@@ -133,7 +133,7 @@ namespace crm\loads\main\warranty {
             foreach ($poIdsMappedByPolId as $polId => $poId) {
                 foreach ($snMappedByPolIds[$polId] as $sn) {
                     if (isset($poDtosMappedByID[$poId])) {
-                        $ret[$sn] = [$poDtosMappedByID[$poId]->getOrderDate(), $poDtosMappedByID[$poId]->getPartnerDto()->getName()];
+                        $ret[$sn] = [$poId, $poDtosMappedByID[$poId]->getOrderDate(), $poDtosMappedByID[$poId]->getPartnerDto()->getName()];
                     }
                 }
             }
