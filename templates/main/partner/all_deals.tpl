@@ -1,6 +1,8 @@
 <div class="container partner--list--container">
     <h1 class="main_title">{$ns.partner->getName()} All Deals</h1>
-
+    <div class="filter csv">
+        <a href="{$SITE_PATH}/dyn/main_partner/do_export_partner_all_deals_csv?id={$ns.partner->getId()}" class="inline-block" id="export_csv"><img src="/img/csv.png" width="45"/></a>
+    </div>
     <div class="main-table">
         <table>
             <tr>
@@ -50,7 +52,7 @@
                             {assign totalAmount $deal[1]->getTotalAmount()}
                             {foreach from=$totalAmount key=currencyId item=amount}
                                 <span class="price">
-                                {assign currencyDto $ns.currencies[$currencyId]}
+                                    {assign currencyDto $ns.currencies[$currencyId]}
                                     {if $currencyDto->getSymbolPosition() == 'left'}
                                         {$currencyDto->getTemplateChar()}
                                     {/if}
@@ -58,7 +60,7 @@
                                     {if $currencyDto->getSymbolPosition() == 'right'}
                                         {$currencyDto->getTemplateChar()}
                                     {/if}
-                            </span>
+                                </span>
                             {/foreach}
                         {else}
                             <span class="price">
@@ -78,7 +80,7 @@
                         <a>
                             {foreach from=$deal[1]->getDebt() key=currencyId item=amount}
                                 <span style="white-space-collapse: discard;">
-                                {assign currencyDto $ns.currencies[$currencyId]}
+                                    {assign currencyDto $ns.currencies[$currencyId]}
                                     {if $currencyDto->getSymbolPosition() == 'left'}
                                         {$currencyDto->getTemplateChar()}
                                     {/if}
@@ -86,7 +88,7 @@
                                     {if $currencyDto->getSymbolPosition() == 'right'}
                                         {$currencyDto->getTemplateChar()}
                                     {/if}
-                            </span>
+                                </span>
                             {/foreach}
                         </a>
                     </td>

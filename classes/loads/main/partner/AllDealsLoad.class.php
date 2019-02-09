@@ -26,41 +26,43 @@ namespace crm\loads\main\partner {
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
+            self::loadParams($this);
+        }
+
+        public static function loadParams($load = false) {
             if (isset(NGS()->args()->id)) {
                 $partnerId = intval(NGS()->args()->id);
                 $partner = PartnerManager::getInstance()->selectByPk($partnerId);
             }
             if (isset(NGS()->args()->slug) && !empty(NGS()->args()->slug)) {
-                $partners  =  PartnerManager::getInstance()->selectByField('slug', NGS()->args()->slug);
+                $partners = PartnerManager::getInstance()->selectByField('slug', NGS()->args()->slug);
                 $partner = $partners[0];
                 $partnerId = intval($partner->getId());
             }
-            if (empty($partner))
-            {
-                echo 'partner not found';exit;                    
+            if (empty($partner)) {
+                echo 'partner not found';
+                exit;
             }
-            
-            if ($partner) {
-                $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], null, null, null, null, true));
-                $this->addParam('partner', $partner);
-                $partnerSaleOrders = SaleOrderManager::mapDtosById(SaleOrderManager::getInstance()->getPartnerSaleOrders($partnerId));
-                $partnerPurchaseOrders = PurchaseOrderManager::mapDtosById(PurchaseOrderManager::getInstance()->getPartnerPurchaseOrders($partnerId));
-                $partnerPaymentTransactions = PaymentTransactionManager::mapDtosById(PaymentTransactionManager::getInstance()->getPartnerPaymentTransactions($partnerId));
-                $partnerBillingTransactions = PaymentTransactionManager::mapDtosById(PaymentTransactionManager::getInstance()->getPartnerBillingTransactions($partnerId));
-                $sales = $this->mapByIdAndGivenField('sale_', 'order_date', $partnerSaleOrders);
-                $purchases = $this->mapByIdAndGivenField('purchase_', 'order_date', $partnerPurchaseOrders);
-                $paments = $this->mapByIdAndGivenField('payment_', 'date', $partnerPaymentTransactions);
-                $billings = $this->mapByIdAndGivenField('billing_', 'date', $partnerBillingTransactions);
-                $allDeals = $this->mergeAllDeals($sales, $purchases, $paments, $billings, $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions);
-                $this->addParam('allDeals', $allDeals);
-                $this->addParam('partnerSaleOrders', $partnerSaleOrders);
-                $this->addParam('partnerPurchaseOrders', $partnerPurchaseOrders);
-                $this->addParam('partnerPaymentTransactions', $partnerPaymentTransactions);
-                $this->addParam('partnerBillingTransactions', $partnerBillingTransactions);
 
-
-                CalculationManager::getInstance()->calculatePartnerAllDealesDebtHistory($partnerId, array_reverse($allDeals, true));
+            if ($load) {
+                $load->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], null, null, null, null, true));
+                $load->addParam('partner', $partner);
             }
+            $partnerSaleOrders = SaleOrderManager::mapDtosById(SaleOrderManager::getInstance()->getPartnerSaleOrders($partnerId));
+            $partnerPurchaseOrders = PurchaseOrderManager::mapDtosById(PurchaseOrderManager::getInstance()->getPartnerPurchaseOrders($partnerId));
+            $partnerPaymentTransactions = PaymentTransactionManager::mapDtosById(PaymentTransactionManager::getInstance()->getPartnerPaymentTransactions($partnerId));
+            $partnerBillingTransactions = PaymentTransactionManager::mapDtosById(PaymentTransactionManager::getInstance()->getPartnerBillingTransactions($partnerId));
+            $sales = self::mapByIdAndGivenField('sale_', 'order_date', $partnerSaleOrders);
+            $purchases = self::mapByIdAndGivenField('purchase_', 'order_date', $partnerPurchaseOrders);
+            $paments = self::mapByIdAndGivenField('payment_', 'date', $partnerPaymentTransactions);
+            $billings = self::mapByIdAndGivenField('billing_', 'date', $partnerBillingTransactions);
+            $allDeals = self::mergeAllDeals($sales, $purchases, $paments, $billings, $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions);
+            if ($load) {
+                $load->addParam('allDeals', $allDeals);
+            }
+
+            CalculationManager::getInstance()->calculatePartnerAllDealesDebtHistory($partnerId, array_reverse($allDeals, true));
+            return $allDeals;
         }
 
         public function getRequestGroup() {
@@ -70,7 +72,7 @@ namespace crm\loads\main\partner {
             return RequestGroups::$guestRequest;
         }
 
-        private function mergeAllDeals($sale, $purchase, $payment, $billing, $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions) {
+        private static function mergeAllDeals($sale, $purchase, $payment, $billing, $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions) {
             $allDeals = array_merge($sale, $purchase, $payment, $billing);
             arsort($allDeals);
             $ret = [];
@@ -97,7 +99,7 @@ namespace crm\loads\main\partner {
             return $ret;
         }
 
-        private function mapByIdAndGivenField($keyPrefix, $fieldName, $partnerTransactions) {
+        private static function mapByIdAndGivenField($keyPrefix, $fieldName, $partnerTransactions) {
             $ret = [];
             foreach ($partnerTransactions as $partnerTransaction) {
                 $ret [$keyPrefix . $partnerTransaction->getId()] = $partnerTransaction->$fieldName;
