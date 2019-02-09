@@ -52,6 +52,7 @@ namespace crm\loads\main\general {
                 $oDate = new DateTime($profitSaleOrder->getOrderDate());
                 $sDate = $oDate->format("Y-m-d");
                 $ret[$sDate][0] = $profitSaleOrder->getTotalProfit();
+                $ret[$sDate][3] = intval($profitSaleOrder->getTotalAmountInMainCurrency());
             }
             $expenseSaleOrders = SaleOrderManager::getInstance()->getSaleOrdersFull(['cancelled', '=', 0, 'AND', 'is_expense', '=', 1, 'AND', 'order_date', '>=', "'" . $startDate . "'", 'AND', 'order_date', '<=', "DATE_ADD('$endDate' ,INTERVAL 1 DAY)"], ['order_date'], 'DESC');
             foreach ($expenseSaleOrders as $expenseSaleOrder) {

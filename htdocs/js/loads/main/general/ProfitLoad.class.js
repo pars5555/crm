@@ -15,9 +15,9 @@ NGS.createLoad("crm.loads.main.general.profit", {
     initChart2: function () {
         var chartData = jQuery.parseJSON($('#lineChartData').text());
         var chartDataFormatted = [];
-        chartDataFormatted.push(['Date', 'Sales', 'Sale Expenses', 'Payment Expenses']);
+        chartDataFormatted.push(['Date', 'Sales Profit', 'Sale Expenses', 'Payment Expenses', 'Sales Amout']);
         $.each(chartData, function (key, value) {
-            chartDataFormatted.push([new Date(key), value[0], value[1], value[2]]);
+            chartDataFormatted.push([new Date(key), value[0], value[1], value[2], value[3]]);
         });
         var kyz = Object.keys(chartData);
         var data = google.visualization.arrayToDataTable(chartDataFormatted);

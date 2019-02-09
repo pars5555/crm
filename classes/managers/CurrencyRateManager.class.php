@@ -53,18 +53,6 @@ namespace crm\managers {
             return $this->getCurrencyRateByDate($date, $currencyId);
         }
 
-        public function getCurrencyRatesByDates($dates, $currencyId) {
-            $datesSql = "('" . implode("','", $dates) . "')";
-
-            $dtos = $this->selectAdvance('*', ['date', 'in', $datesSql]);
-            $rates = [];
-            foreach ($dtos as $dto) {
-                $rates [$dto->getDate()] = $dto;
-            }
-            $oDate = new DateTime($row->createdate);
-            $sDate = $oDate->format("Y-m-d H:i:s");
-        }
-
         public function getCurrencyRateByDate($date, $currencyId) {
             $currencyIso = CurrencyManager::getInstance()->selectByPk($currencyId)->getIso();
             if (strtolower($currencyIso) == strtolower(SettingManager::getInstance()->getSetting('main_currency_iso'))) {
