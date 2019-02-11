@@ -42,7 +42,6 @@ namespace crm\loads\main\partner {
             $groupBy = '';
             if ($selectedFilterHasDebt === 'yes') {
                 $join = 'LEFT JOIN partner_debt_cache on partner_debt_cache.partner_id=partners.id';
-
                 $groupBy = 'GROUP BY partners.id';
                 $where = array_merge($where, ['and', 'partner_debt_cache.amount', '>', 0]);
             }
@@ -66,7 +65,7 @@ namespace crm\loads\main\partner {
                 $partnersBillingTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersBillingTransactions($partnerIds);
                 $partnersInitialDebt = PartnerInitialDebtManager::getInstance()->getPartnersInitialDebt($partnerIds);
             }
-            list($partnersDebt,$partnersZeroDebt) = CalculationManager::getInstance()->calculatePartnersDebtBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId, $partnersInitialDebt);
+            list($partnersDebt, $partnersZeroDebt) = CalculationManager::getInstance()->calculatePartnersDebtBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId, $partnersInitialDebt);
             $this->addParam('partnersSaleOrdersMappedByPartnerId', $partnersSaleOrdersMappedByPartnerId);
             $this->addParam('partnersPurchaseOrdersMappedByPartnerId', $partnersPurchaseOrdersMappedByPartnerId);
             $this->addParam('partnersPaymentTransactionsMappedByPartnerId', $partnersPaymentTransactionsMappedByPartnerId);

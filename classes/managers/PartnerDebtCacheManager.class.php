@@ -36,6 +36,7 @@ namespace crm\managers {
         }
 
         public function setPartnerDebtCache($partnerId, $debts) {
+            $this->deleteAdvance(['partner_id', '=', $partnerId]);
             foreach ($debts as $currencyId => $amount) {
                 $rows = $this->selectAdvance('*', ['partner_id', '=', $partnerId, 'and', 'currency_id', '=', $currencyId]);
                 if (!empty($rows)) {

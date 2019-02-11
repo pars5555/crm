@@ -44,6 +44,7 @@ namespace crm\actions\main\partner {
                 if ($currencyDto->getSymbolPosition() == 'right') {
                     $ret .= $currencyDto->getTemplateChar();
                 }
+                $ret .= "\r\n";
             }
             return $ret;
         }
