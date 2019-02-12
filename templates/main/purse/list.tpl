@@ -32,6 +32,7 @@
                 <th> Qty </th>
                 <th> Product Name </th>
                 <th> Total </th>
+                <th> Caluclation Price</th>
                 <th> % </th>
                 <th> Buyer </th>
                 <th> Status </th>
@@ -93,6 +94,7 @@
                                                         <a class="link " target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getProductName()}</a>
                                                     </td>
                                                     <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="amazon_total"> {$order->getAmazonTotal()} </td>
+                                                    <td class="f_editable_cell" data-field-name="supposed_purchase_price"> {$order->getSupposedPurchasePrice()} </td>
                                                     <td> {$order->getDiscount()} </td>
                                                     <td style="max-width: 70px;word-wrap: break-word"> {$order->getBuyerName()} </td>
                                                     <td> {$order->getStatus()} </td>
