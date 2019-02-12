@@ -32,7 +32,7 @@ namespace crm\loads\main\purse {
                 $product->name = $order->getProductName();
                 $product->quantity= $order->getQuantity();
                 $product->fiat_price= $order->getAmazonTotal() / intval(max($product->quantity, 1));
-                if ($order->getSupposedPrice() > 0){
+                if ($order->getSupposedPurchasePrice() > 0){
                     $product->fiat_price= $order->getSupposedPurchasePrice() / intval(max($product->quantity, 1));
                 }
                 $meta->items = [$product];
@@ -42,7 +42,7 @@ namespace crm\loads\main\purse {
                 $name = $item->name;
                 $quantity = $item->quantity;
                 $price = floatval($item->fiat_price) / intval(max($quantity, 1));
-                if ($order->getSupposedPrice() > 0){
+                if ($order->getSupposedPurchasePrice() > 0){
                     $product->fiat_price= $order->getSupposedPurchasePrice() / intval(max($quantity, 1));
                 }
                 list($product, $allProductSortBySimilatity) = ProductManager::getInstance()->getMostSimilarProduct($name);
