@@ -43,7 +43,7 @@ namespace crm\loads\main\purse {
                 $quantity = intval($item->quantity);
                 $price = floatval($item->fiat_price) / intval(max($quantity, 1));
                 if ($order->getSupposedPurchasePrice() > 0) {
-                    $product->fiat_price = floatval($order->getSupposedPurchasePrice()) / intval(max($quantity, 1));
+                    $price = floatval($order->getSupposedPurchasePrice()) / intval(max($quantity, 1));
                 }
                 list($product, $allProductSortBySimilatity) = ProductManager::getInstance()->getMostSimilarProduct($name);
                 $ret[] = ['product_list' => $allProductSortBySimilatity, 'product' => $product, 'actual_name' => $name, 'quantity' => $quantity, 'purchase_price' => $price];
