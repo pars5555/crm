@@ -71,7 +71,7 @@ namespace crm\loads\main\recipient {
             $pagesCount = ceil($count / $limit);
             $this->addParam('pagesCount', $pagesCount);
 
-            $recipient_monthly_limit_usd = SettingManager::getInstance()->getSetting('recipient_monthly_limit_usd');
+            $recipient_monthly_limit_usd = \crm\managers\SettingManager::getInstance()->getSetting('recipient_monthly_limit_usd');
             $this->addParam('recipient_monthly_limit_usd', $recipient_monthly_limit_usd);
 
             $currencyManager = CurrencyManager::getInstance();
