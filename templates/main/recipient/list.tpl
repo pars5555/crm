@@ -34,7 +34,7 @@
             </tr>
 
             {foreach from=$ns.recipients item=recipient}
-                <tr class="table-row"  style="{if $recipient->getDeleted() ==1}background:lightgrey{elseif $recipient->getChecked() == 1}background:green{/if}"  data-type="recipient" data-id="{$recipient->getId()}">
+                <tr class="table-row"  style="{if $recipient->getDeleted() ==1}background:lightgrey{elseif $recipient->getChecked() == 1}background:lightgreen{/if}"  data-type="recipient" data-id="{$recipient->getId()}">
                     <td class="link-cell id">
                         {if isset($ns.attachments[$recipient->getId()])}
                             <img src="{$SITE_PATH}/img/attachment.png" width="32"/>
@@ -64,7 +64,7 @@
                         {if isset($ns.recipientsRecentOrdersMappedByRecipientId[$recipient->getId()])}
                             {assign recipientOrders $ns.recipientsRecentOrdersMappedByRecipientId[$recipient->getId()]}
 
-                            <a class="link" data-orders='{$recipientOrders|@json_encode}'
+                            <a {if $recipientOrders['total']>=$ns.recipient_monthly_limit_usd}color:red;{/if} class="link" data-orders='{$recipientOrders|@json_encode}'
                                href="{$SITE_PATH}/rorder/list?prt={$recipient->getId()}">
                                 {$recipientOrders['count']} (${$recipientOrders['total']})
 
