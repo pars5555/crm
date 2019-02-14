@@ -99,7 +99,8 @@ namespace crm\managers {
                 $orders = [];
                 foreach ($recipientOrders as $order) {
                     $total += $order->getAmazonTotal();
-                    $orders[] = ['created_at' => explode(' ', $order->getCreatedAt())[0], 'status' => $order->getStatus(), 'order_total' => $order->getAmazonTotal(), 'image_url' => $order->getImageUrl()];
+                    $orders[] = ['created_at' => explode(' ', $order->getCreatedAt())[0], 'status' => $order->getStatus(), 'product_name' => $order->getProductName(), 
+                        'order_total' => $order->getAmazonTotal(), 'image_url' => $order->getImageUrl()];
                 }
 
                 $ret[$recId] = ['total' => $total, 'count' => count($recipientOrders), 'orders' => $orders];

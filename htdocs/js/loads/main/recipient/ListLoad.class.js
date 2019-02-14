@@ -37,10 +37,12 @@ NGS.createLoad("crm.loads.main.recipient.list", {
                 var data = element.data('orders');
                 var titleHtml = "";
                 $(data['orders']).each(function (index, order) {
-                    titleHtml += '<img width="30" src="' + order['image_url'] + '"/>' + '<span>$' +
+                    titleHtml +=     '<div style=" overflow: hidden;">'   +                     
+                            '<span style="width:100%;font-size:8px;white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis;">' + order['product_name'] + '</span>' + '<br>' +
+                            '<img width="30" src="' + order['image_url'] + '"/>' + '<span>$' +
                             order['order_total'] + ' ' + 
                             order['status'] + ' ' + 
-                            order['created_at'] + ' ' + '</span>' + "<br/><br/>";
+                            order['created_at'] + ' ' + '</span>' + "</div><br/><br/>";
                 }); 
                 return titleHtml;
             }
