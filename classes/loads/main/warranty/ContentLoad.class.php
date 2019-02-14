@@ -30,6 +30,7 @@ namespace crm\loads\main\warranty {
                 $searchWhereFilter = ['serial_number', 'like', "'%$searchText%'"];
             }
             $sol_searial_numbers = SaleOrderLineSerialNumberManager::getInstance()->selectAdvance('*', $searchWhereFilter, null, null, 0, 1000);
+            $saleOrdersDateMappedBySN = [];
             if (!empty($sol_searial_numbers)){
             $saleOrdersDateMappedBySN = $this->getSaleOrdersDatesMappedBySN($sol_searial_numbers);
             }
