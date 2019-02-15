@@ -63,8 +63,7 @@
                     <td>
                         {if isset($ns.recipientsRecentOrdersMappedByRecipientId[$recipient->getId()])}
                             {assign recipientOrders $ns.recipientsRecentOrdersMappedByRecipientId[$recipient->getId()]}
-
-                            <a {if $recipientOrders['total']>=$ns.recipient_monthly_limit_usd}style="color:red;"{/if} class="link" data-orders='{$recipientOrders|@json_encode}'
+                            <a {if $recipientOrders['total']>=$ns.recipient_monthly_limit_usd}style="color:red;"{/if} class="link" data-orders='{$recipientOrders|@json_encode|escape}'
                                href="{$SITE_PATH}/rorder/list?prt={$recipient->getId()}">
                                 {$recipientOrders['count']} (${$recipientOrders['total']})
 
