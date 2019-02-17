@@ -87,7 +87,7 @@ namespace crm\loads\main {
         }
 
         public static function getSortByFields() {
-            return ['none' => 'None', 'sale_date' => 'Sale Date', 'purchase_date' => 'Purchase Date'];
+            return ['sale_date' => 'Sale Date', 'purchase_date' => 'Purchase Date'];
         }
 
         public function getRequestGroup() {

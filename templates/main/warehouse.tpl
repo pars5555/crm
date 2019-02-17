@@ -2,7 +2,7 @@
     <div class="filter group">
         <label>Sort by </label>
         <select name="srt">
-            <option value="0" {if $ns.selectedFilterSortBy == 0}selected{/if}>None</option>
+            <option value="none" {if $ns.selectedFilterSortBy == 0}selected{/if}>None</option>
 
             {foreach from=$ns.sortFields key=fieldName item=fieldDisplayName}
                 {$fieldName}
@@ -54,12 +54,14 @@
             </tr>
             {assign cat 0}
             {foreach from=$ns.products item=product}
-                {if $cat != $product->getCategoryId()}
-                    {assign cat $product->getCategoryId()}
-                    <tr>
-                        <td></td>
-                        <td style="color:red; font-size: 24px">{$ns.categoriesMappedById[$product->getCategoryId()]}</td>
-                    </tr>
+                {if $ns.selectedFilterSortBy === 'none'}
+                    {if $cat != $product->getCategoryId()}
+                        {assign cat $product->getCategoryId()}
+                        <tr>
+                            <td></td>
+                            <td style="color:red; font-size: 24px">{$ns.categoriesMappedById[$product->getCategoryId()]}</td>
+                        </tr>
+                    {/if}
                 {/if}
                 {if (isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0) || (isset($ns.pwarehousesProductsQuantity[$product->getId()]) && $ns.pwarehousesProductsQuantity[$product->getId()]>0)}
                     <tr data-id="{$product->getId()}" data-type="product" {if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}>
