@@ -578,6 +578,9 @@ select::-ms-expand {
 .text.comment {
     width: 100%;
 }
+.text.sn{
+    min-width: 300px;
+}
 
 .text.default_width {
     max-width: 270px;
