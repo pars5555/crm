@@ -19,9 +19,15 @@ NGS.createLoad("crm.loads.main.warehouse", {
         });
         this.initExport();
         this.initReserve();
+        this.initSort();
         this.initQtyChecked();
         $("#partner_select").chosen({
             search_contains: true
+        });
+    },
+    initSort:function(){
+        $('#warehouseFilters').find('select, checkbox').change(function () {
+            $('#warehouseFilters').trigger('submit');
         });
     },
     initReserve: function () {

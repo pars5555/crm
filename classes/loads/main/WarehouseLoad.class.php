@@ -58,9 +58,11 @@ namespace crm\loads\main {
             $partnersMappedByIds = PartnerManager::getInstance()->selectAdvance(['name', 'id'], ['id', 'in', "($partnerIdsSql)"], null, null, null, null, true);
             $usdRate = CurrencyRateManager::getInstance()->getCurrencyRate(1);
 
+            $products = $this->initSorting($productsMappedById, $productsSaleOrders, $productsPurchaseOrders);
+
             $this->addParam('categoriesMappedById', $categoriesMappedById);
             $this->addParam('pwarehousesProductsQuantity', $pwarehousesProductsQuantity);
-            $this->addParam('products', $productsMappedById);
+            $this->addParam('products', $products);
             $this->addParam('newProductIds', $newProductIds);
             $this->addParam('usd_rate', $usdRate);
             $this->addParam('productsQuantity', $productsQuantity);
@@ -82,6 +84,10 @@ namespace crm\loads\main {
             $this->addParam('total_stock', $totalStock);
             $this->addParam('showprofit', isset($_COOKIE['showprofit']) ? $_COOKIE['showprofit'] : 0);
             $this->addParam('vahagn_cookie', isset($_COOKIE['vahagn']) ? $_COOKIE['vahagn'] : 0);
+        }
+
+        public static function getSortByFields() {
+            return ['none' => 'None', 'sale_date' => 'Sale Date', 'purchase_date' => 'Purchase Date'];
         }
 
         public function getRequestGroup() {
@@ -108,6 +114,53 @@ namespace crm\loads\main {
                 $productIds = array_merge(array_keys($productsQuantity));
             }
             return $pwarehousesProductsQuantity;
+        }
+
+        public function initSorting($productsMappedById, $productsSaleOrders, $productsPurchaseOrders) {
+            $sortByFields = self::getSortByFields();
+            $this->addParam('sortFields', $sortByFields);
+            $selectedFilterSortBy = 'none';
+            if (isset(NGS()->args()->srt)) {
+                if (array_key_exists(NGS()->args()->srt, $sortByFields)) {
+                    $selectedFilterSortBy = NGS()->args()->srt;
+                }
+            }
+            $selectedFilterSortByAscDesc = 'DESC';
+            if (isset(NGS()->args()->ascdesc)) {
+                if (in_array(strtoupper(NGS()->args()->ascdesc), ['ASC', 'DESC'])) {
+                    $selectedFilterSortByAscDesc = strtoupper(NGS()->args()->ascdesc);
+                }
+            }
+            if ($selectedFilterSortBy === 'purchase_date') {
+                $this->sortProductsBySaleOrderDate($productsMappedById, $productsPurchaseOrders, $selectedFilterSortByAscDesc);
+            }
+            if ($selectedFilterSortBy === 'sale_date') {
+                $this->sortProductsBySaleOrderDate($productsMappedById, $productsSaleOrders, $selectedFilterSortByAscDesc);
+            }
+            $this->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
+            $this->addParam('selectedFilterSortBy', $selectedFilterSortBy);
+            return $productsMappedById;
+        }
+
+        private function sortProductsBySaleOrderDate(&$productsMappedById, $productsPorchaseOrSaleOrdersMappedByProductId, $selectedFilterSortByAscDesc) {
+            $warehouse_partners = SettingManager::getInstance()->getSetting('warehouse_partners');
+            $warehouse_partners_ids_array = explode(',', $warehouse_partners);
+            $productsMappedByLastSaleOrderDate = [];
+            foreach ($productsPorchaseOrSaleOrdersMappedByProductId as $productId => $sos) {
+                $maxSaleOrderDate = "";
+                foreach ($sos as $so) {
+                    if (!in_array($so->getPartnerId(), $warehouse_partners_ids_array) && $so->getOrderDate() >= $maxSaleOrderDate) {
+                        $maxSaleOrderDate = $so->getOrderDate();
+                    }
+                }
+                $productsMappedByLastSaleOrderDate[$maxSaleOrderDate] = $productsMappedById[$productId];
+            }
+            if (strtolower($selectedFilterSortByAscDesc) === 'asc') {
+                ksort($productsMappedByLastSaleOrderDate);
+            } else {
+                krsort($productsMappedByLastSaleOrderDate);
+            }
+            $productsMappedById = array_values($productsMappedByLastSaleOrderDate);
         }
 
     }

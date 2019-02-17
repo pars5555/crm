@@ -1,3 +1,20 @@
+<form class="filters--form" id="warehouseFilters" autocomplete="off" action="{$SITE_PATH}/warehouse/list" method="GET">
+    <div class="filter group">
+        <label>Sort by </label>
+        <select name="srt">
+            <option value="0" {if $ns.selectedFilterSortBy == 0}selected{/if}>None</option>
+
+            {foreach from=$ns.sortFields key=fieldName item=fieldDisplayName}
+                {$fieldName}
+                <option value="{$fieldName}" {if $ns.selectedFilterSortBy === $fieldName}selected{/if}>{$fieldDisplayName}</option>
+            {/foreach}
+        </select>
+        <select name="ascdesc">
+            <option value="ASC" {if $ns.selectedFilterSortByAscDesc== 'ASC'}selected{/if}>ASC</option>
+            <option value="DESC" {if $ns.selectedFilterSortByAscDesc== 'DESC'}selected{/if}>DESC</option>
+        </select>
+    </div>
+</form>
 <div class="container warehouse--container">
     <h1 class="main_title">Warehouse</h1>
     {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}
