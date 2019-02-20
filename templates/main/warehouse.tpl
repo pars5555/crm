@@ -98,7 +98,7 @@
                                 <p style="display: none">
                                     {foreach from=$ns.reservations[$product->getId()] item=productReservation}
                                         <a href="javascript:void(0);">
-                                            qty: {$productReservation->getNote()} ({$productReservation->getStartAt()|truncate:10:""} - {$productReservation->getHours()} hours), tel: {$productReservation->getPhone()}
+                                           qty: {$productReservation->getQuantity()}, {$productReservation->getNote()} ({$productReservation->getStartAt()|truncate:10:""} - {$productReservation->getHours()} hours), tel: {$productReservation->getPhone()}
                                             <br>
                                             {$productReservation->getNote()}
                                         </a>
