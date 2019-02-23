@@ -442,6 +442,17 @@
             }
         }
     ],
+    "checkout": [
+        {
+            "action": "loads.main.index",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.checkout.list"
+                }
+            }
+        }
+    ],
     "product": [
         {
             "action": "loads.main.index",

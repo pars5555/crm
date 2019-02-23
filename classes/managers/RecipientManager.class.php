@@ -104,6 +104,12 @@ namespace crm\managers {
             return '';
         }
 
+        public function getFakeRecipientUnitAddressesSql() {
+            $unitAddressesCommaSeparated =  preg_replace('/\s+/', '', SettingManager::getInstance()->getSetting('fake_recipients_unit_addresses'));
+            $unitAddressesArray = explode(',', $unitAddressesCommaSeparated);
+            return "'".implode("','", $unitAddressesArray)."'";
+        }
+        
         public function getRecipientUnitAddresses($recipintId, $sqlReady = false) {
             $recipient = $this->selectByPk($recipintId);
             $res = [$recipient->getExpressUnitAddress(), $recipient->getOnexExpressUnit(), $recipient->getNovaExpressUnit(), $recipient->getShipexExpressUnit(), $recipient->getCheapexExpressUnit(),

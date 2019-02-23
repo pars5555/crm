@@ -20,6 +20,7 @@ namespace crm\managers {
          * @var $instance
          */
         public static $instance;
+        private $fakeRecipientUnitAddressesStr;
 
         /**
          * Returns an singleton instance of this class
@@ -33,6 +34,11 @@ namespace crm\managers {
                 self::$instance = new PurseOrderManager(PurseOrderMapper::getInstance());
             }
             return self::$instance;
+        }
+
+       private  function __construct($mapper) {
+           parent::__construct($mapper);
+           $this->fakeRecipientUnitAddressesStr = RecipientManager::getInstance()->getFakeRecipientUnitAddressesSql();
         }
 
         public function getItemPriceByAsin($asin, $maxTryCount = 3) {
@@ -99,7 +105,7 @@ namespace crm\managers {
                 $orders = [];
                 foreach ($recipientOrders as $order) {
                     $total += $order->getAmazonTotal();
-                    $orders[] = ['created_at' => explode(' ', $order->getCreatedAt())[0], 'status' => $order->getStatus(), 'product_name' => $order->getProductName(), 
+                    $orders[] = ['created_at' => explode(' ', $order->getCreatedAt())[0], 'status' => $order->getStatus(), 'product_name' => $order->getProductName(),
                         'order_total' => $order->getAmazonTotal(), 'image_url' => $order->getImageUrl()];
                 }
 
@@ -397,7 +403,13 @@ namespace crm\managers {
                         "length(COALESCE(`serial_number`,''))", '<', 5]);
         }
 
-        public function getProblematicOrders($where) {
+        public function getProblematicOrders($where,$checoutOnly = false) {
+            if (!empty($checoutOnly)) {
+                $where =  $where = array_merge($where, ['AND','unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)"]);
+            } else {
+                $where =  $where = array_merge($where, ['AND','unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)"]);
+            }
+           
             $days = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             return $this->selectAdvance('*', array_merge($where, ['AND', 'problem_solved', '=', 0, 'AND',
                         '(',
@@ -412,8 +424,13 @@ namespace crm\managers {
             ]));
         }
 
-        public function getOrdersPuposedToNotReceivedToDestinationCounty() {
-            $rows1 = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
+        public function getOrdersPuposedToNotReceivedToDestinationCounty($checoutOnly = false) {
+            if (!empty($checoutOnly)) {
+                $where = ['unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)"];
+            } else {
+                $where = ['unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)"];
+            }
+            $where = array_merge($where, ['AND', 'hidden', '=', 0, 'AND',
                 '(',
                 '(',
                 'status', 'in', "('shipping', 'shipped', 'accepted')", 'AND',
@@ -422,16 +439,28 @@ namespace crm\managers {
                 ')', 'OR', 'account_name', '=', "'external'",
                 ')'
             ]);
+            $rows1 = $this->selectAdvance('*', $where);
 
             //if delivery date in none
-            $rows2 = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
+            if (!empty($checoutOnly)) {
+                $where = ['unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)"];
+            } else {
+                $where = ['unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)"];
+            }
+            $where = array_merge($where, ['AND', 'hidden', '=', 0, 'AND',
                 'status', 'in', "('feedback', 'finished',  'partially_delivered', 'delivered')", 'AND',
                 "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
                 'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 30]);
+            $rows2 = $this->selectAdvance('*', $where);
             return array_merge($rows1, $rows2);
         }
 
-        public function getOrders($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
+        public function getOrders($where = [1,'=',1], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null, $checoutOnly = false) {
+            if (!empty($checoutOnly)) {
+                $where =  $where = array_merge($where, ['AND','unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)"]);
+            } else {
+                $where =  $where = array_merge($where, ['AND','unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)"]);
+            }
             return $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit, true);
         }
 
