@@ -36,7 +36,7 @@ namespace crm\managers {
             return self::$instance;
         }
 
-       private  function __construct($mapper) {
+       public  function __construct($mapper) {
            parent::__construct($mapper);
            $this->fakeRecipientUnitAddressesStr = RecipientManager::getInstance()->getFakeRecipientUnitAddressesSql();
         }
