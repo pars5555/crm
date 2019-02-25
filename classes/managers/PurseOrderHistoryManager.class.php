@@ -37,7 +37,7 @@ namespace crm\managers {
 
         public function getLast12HoursChangedOrderIds() {
             $date = date('Y-m-d H:i:s', strtotime('-12 hour'));
-            $rows = $this->selectAdvance('order_id', ['created_at', '>=', "'$date'"], 'id', 'desc');
+            $rows = $this->selectAdvance('order_id', ['created_at', '>=', "'$date'"], 'created_at', 'desc');
             $ret = [];
             foreach ($rows as $row) {
                 $ret[] = $row->getOrderId();
