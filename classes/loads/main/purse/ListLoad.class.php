@@ -32,18 +32,20 @@ namespace crm\loads\main\purse {
             $this->addParam('preorder_text2', $text2);
             $this->addParam('preorder_order_ids', $pendingPreordersOrderIds);
             list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $where, $words, $searchText,
-                    $problematic, $local_carrier_name, $regOrdersInWarehouse) = $this->initFilters($limit, $this);
+                    $problematic,$new_changed, $local_carrier_name, $regOrdersInWarehouse) = $this->initFilters($limit, $this);
             if (!empty($regOrdersInWarehouse)) {
                 $orders = PurseOrderManager::getInstance()->getNotRegisteredOrdersInWarehouse($regOrdersInWarehouse, $local_carrier_name);
                 $count = count($orders);
             } else {
                 if ($problematic == 1) {
                     $orders = PurseOrderManager::getInstance()->getProblematicOrders($where);
+                }elseif ($new_changed== 1) {
+                    $idsArray = \crm\managers\PurseOrderHistoryManager::getInstance()->getLast12HoursChangedOrderIds();
+                    $orders = PurseOrderManager::getInstance()->selectByPKs($idsArray);
                 } else {
                     $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
                 }
                 $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
-
                 $ordersPuposedToNotReceivedToDestinationCounty = PurseOrderManager::getInstance()->getOrdersPuposedToNotReceivedToDestinationCounty();
 
                 $totalPuposedToNotReceived = 0;
@@ -78,7 +80,6 @@ namespace crm\loads\main\purse {
 
             $pagesCount = ceil($count / $limit);
 
-            $this->addParam('changed_orders', NGS()->args()->changed_orders);
             $this->addParam('count', $count);
 
             $this->addParam('pagesCount', $pagesCount);
@@ -199,8 +200,15 @@ namespace crm\loads\main\purse {
             }
             $problematic = 0;
             if (isset(NGS()->args()->pr)) {
+                NGS()->args()->nc = 0;
                 $problematic = intval(NGS()->args()->pr);
             }
+            $new_changed = 0;
+            if (isset(NGS()->args()->nc)) {
+                $new_changed = intval(NGS()->args()->nc);
+                NGS()->args()->pr = 0;
+                $problematic = 0;
+            }          
             $searchText = '';
             if (isset(NGS()->args()->st)) {
 
@@ -210,6 +218,7 @@ namespace crm\loads\main\purse {
 
             if (!empty($regOrdersInWarehouse)) {
                 $problematic = 0;
+                $new_changed = 0;
                 $searchText = '';
                 $selectedFilterAccount = '';
                 $selectedFilterHidden = 'no';
@@ -222,6 +231,7 @@ namespace crm\loads\main\purse {
             }
             if (!empty($load)) {
                 $load->addParam('problematic', $problematic);
+                $load->addParam('new_changed', $new_changed);
                 $load->addParam('searchText', $searchText);
                 $load->addParam('selectedFilterRecipientId', $selectedFilterRecipientId);
                 $load->addParam('selectedFilterAccount', $selectedFilterAccount);
@@ -279,7 +289,7 @@ namespace crm\loads\main\purse {
                     }
                 }
             }
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $where, $words, $searchText, $problematic, $local_carrier_name, $regOrdersInWarehouse];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $where, $words, $searchText, $problematic,$new_changed, $local_carrier_name, $regOrdersInWarehouse];
         }
 
         public function getTemplate() {

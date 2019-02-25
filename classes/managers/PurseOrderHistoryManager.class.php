@@ -34,6 +34,17 @@ namespace crm\managers {
             }
             return self::$instance;
         }
+
+        public function getLast12HoursChangedOrderIds() {
+            $date = date('Y-m-d H:i:s', strtotime('-12 hour'));
+            $rows = $this->selectAdvance('order_id', ['created_at', '>=', "'$date'"], 'id', 'desc');
+            $ret = [];
+            foreach ($rows as $row) {
+                $ret[] = $row->getOrderId();
+            }
+            return $ret;
+        }
+
         public function addRow($orderId, $status, $meta) {
             $dto = $this->createDto();
             $dto->setOrderId($orderId);

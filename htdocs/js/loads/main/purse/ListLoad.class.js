@@ -21,6 +21,9 @@ NGS.createLoad("crm.loads.main.purse.list", {
         $('#productFilters').find('input[name="pr"]').change(function () {
             $('#productFilters').trigger('submit');
         });
+        $('#productFilters').find('input[name="nc"]').change(function () {
+            $('#productFilters').trigger('submit');
+        });
 
         $('.tooltipster').each(function () {
             var content = $(this).find('p').html();
@@ -184,14 +187,3 @@ NGS.createLoad("crm.loads.main.purse.list", {
         });
     }
 });
-function uploadedFileResponse(changedOrNewOrdersText) {
-    if (changedOrNewOrdersText.length > 0) {
-        window.location.href = "/purse/list?changed_orders=" + changedOrNewOrdersText;
-    } else
-    {
-        window.location.href = "/purse/list";
-
-    }
-
-}
-;
