@@ -23,6 +23,7 @@
             <li><a {if $ns.loadName=='recipient'}class="active"{/if} href="{$SITE_PATH}/recipient/list">Recipients</a></li>
             <li><a {if $ns.loadName=='rorder'}class="active"{/if} href="{$SITE_PATH}/rorder/list?srt=order_date&ascdesc=DESC">Recipient Orders</a></li>
             <li><a {if $ns.loadName=='purse'}class="active"{/if} href="{$SITE_PATH}/purse/list">BTC-Products</a></li>
+            <li><a {if $ns.loadName=='checkout'}class="active"{/if} href="{$SITE_PATH}/checkout/list">Checkout.am</a></li>
             <li><a {if $ns.loadName=='warranty'}class="active"{/if} href="{$SITE_PATH}/warranty">Warranty</a></li>
             <li><a {if $ns.loadName=='settings'}class="active"{/if} href="{$SITE_PATH}/settings">Settings</a></li>
             <li><a href="{$SITE_PATH}/logout">Logout</a></li>

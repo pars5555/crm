@@ -72,7 +72,11 @@
         </div>
         <div class="filter">
             <label>Problematic</label>
-            <input name="pr" type="checkbox" name="pr" {if $ns.problematic == 1}checked{/if} value="1"/>
+            <input name="pr" type="checkbox" {if $ns.problematic == 1}checked{/if} value="1"/>
+        </div>
+        <div class="filter">
+            <label>last 12 hours changed</label>
+            <input name="nc" type="checkbox" {if $ns.new_changed == 1}checked{/if} value="1"/>
         </div>
     </div>
 

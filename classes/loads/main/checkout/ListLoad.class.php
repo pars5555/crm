@@ -9,12 +9,10 @@
  * @version 2.0.0
  */
 
-namespace crm\loads\main\purse {
+namespace crm\loads\main\checkout {
 
     use crm\loads\AdminLoad;
     use crm\managers\AttachmentManager;
-    use crm\managers\CryptoRateManager;
-    use crm\managers\PreorderManager;
     use crm\managers\PurchaseOrderManager;
     use crm\managers\PurseOrderManager;
     use crm\managers\RecipientManager;
@@ -27,59 +25,49 @@ namespace crm\loads\main\purse {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $limit = 200;
-            list($text1, $text2, $pendingPreordersOrderIds) = PreorderManager::getInstance()->getPerndingPreordersText();
-            $this->addParam('preorder_text1', $text1);
-            $this->addParam('preorder_text2', $text2);
-            $this->addParam('preorder_order_ids', $pendingPreordersOrderIds);
             list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $where, $words, $searchText,
-                    $problematic,$new_changed, $local_carrier_name, $regOrdersInWarehouse) = $this->initFilters($limit, $this);
-            if (!empty($regOrdersInWarehouse)) {
-                $orders = PurseOrderManager::getInstance()->getNotRegisteredOrdersInWarehouse($regOrdersInWarehouse, $local_carrier_name);
-                $count = count($orders);
+                    $problematic) = $this->initFilters($limit, $this);
+            if ($problematic == 1) {
+                $orders = PurseOrderManager::getInstance()->getProblematicOrders($where, true);
             } else {
-                if ($problematic == 1) {
-                    $orders = PurseOrderManager::getInstance()->getProblematicOrders($where);
-                }elseif ($new_changed== 1) {
-                    $idsArray = \crm\managers\PurseOrderHistoryManager::getInstance()->getLast12HoursChangedOrderIds();
-                    $orders = PurseOrderManager::getInstance()->selectByPKs($idsArray);
-                } else {
-                    $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
-                }
-                $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
-                $ordersPuposedToNotReceivedToDestinationCounty = PurseOrderManager::getInstance()->getOrdersPuposedToNotReceivedToDestinationCounty();
+                $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit, true);
+            }
+            $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
 
-                $totalPuposedToNotReceived = 0;
-                $searchedItemCount = 0;
-                $searchedItemCountThatHasTrackingNumber = 0;
-                foreach ($ordersPuposedToNotReceivedToDestinationCounty as $order) {
-                    $productName = $order->getProductName();
-                    if (!empty($searchText)) {
-                        $allWordsAreinProductTitle = true;
-                        foreach ($words as $word) {
-                            if (stripos($productName, $word) === false) {
-                                $allWordsAreinProductTitle = false;
-                                break;
-                            }
-                        }
-                        if ($allWordsAreinProductTitle) {
-                            if (strlen($order->getTrackingNumber()) > 3) {
-                                $searchedItemCountThatHasTrackingNumber += intval($order->getQuantity());
-                            }
-                            $searchedItemCount += intval($order->getQuantity());
+            $ordersPuposedToNotReceivedToDestinationCounty = PurseOrderManager::getInstance()->getOrdersPuposedToNotReceivedToDestinationCounty(true);
+
+            $totalPuposedToNotReceived = 0;
+            $searchedItemCount = 0;
+            $searchedItemCountThatHasTrackingNumber = 0;
+            foreach ($ordersPuposedToNotReceivedToDestinationCounty as $order) {
+                $productName = $order->getProductName();
+                if (!empty($searchText)) {
+                    $allWordsAreinProductTitle = true;
+                    foreach ($words as $word) {
+                        if (stripos($productName, $word) === false) {
+                            $allWordsAreinProductTitle = false;
+                            break;
                         }
                     }
-                    $totalPuposedToNotReceived += floatval($order->getAmazonTotal());
+                    if ($allWordsAreinProductTitle) {
+                        if (strlen($order->getTrackingNumber()) > 3) {
+                            $searchedItemCountThatHasTrackingNumber += intval($order->getQuantity());
+                        }
+                        $searchedItemCount += intval($order->getQuantity());
+                    }
                 }
-                $this->addParam('total_puposed_to_not_received', $totalPuposedToNotReceived);
-                $this->addParam('not_received_orders_count', count($ordersPuposedToNotReceivedToDestinationCounty));
-                $this->addParam('searchedItemPuposedCount', $searchedItemCount);
-                $this->addParam('searchedItemCountThatHasTrackingNumber', $searchedItemCountThatHasTrackingNumber);
+                $totalPuposedToNotReceived += floatval($order->getAmazonTotal());
             }
+            $this->addParam('total_puposed_to_not_received', $totalPuposedToNotReceived);
+            $this->addParam('not_received_orders_count', count($ordersPuposedToNotReceivedToDestinationCounty));
+            $this->addParam('searchedItemPuposedCount', $searchedItemCount);
+            $this->addParam('searchedItemCountThatHasTrackingNumber', $searchedItemCountThatHasTrackingNumber);
 
 
 
             $pagesCount = ceil($count / $limit);
 
+            $this->addParam('changed_orders', NGS()->args()->changed_orders);
             $this->addParam('count', $count);
 
             $this->addParam('pagesCount', $pagesCount);
@@ -94,49 +82,11 @@ namespace crm\loads\main\purse {
             $btc_products_days_diff_for_delivery_date = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             $this->addParam('btc_products_days_diff_for_delivery_date', $btc_products_days_diff_for_delivery_date);
 
-            $purse_checkout_meta = json_decode(SettingManager::getInstance()->getSetting('purse_checkout_meta', '{}'));
-            $purse_pars_meta = json_decode(SettingManager::getInstance()->getSetting('purse_pars_meta', '{}'));
-            $purse_info_meta = json_decode(SettingManager::getInstance()->getSetting('purse_info_meta', '{}'));
-            if (isset($purse_checkout_meta->wallet)) {
-                $this->addParam('checkout_btc_balance', round($purse_checkout_meta->wallet->BTC->balance->active, 3));
-                $this->addParam('checkout_btc_address', $purse_checkout_meta->wallet->BTC->legacy_address);
-            }
-            if (isset($purse_pars_meta->wallet)) {
-                $this->addParam('pars_btc_balance', round($purse_pars_meta->wallet->BTC->balance->active, 3));
-                $this->addParam('pars_btc_address', $purse_pars_meta->wallet->BTC->legacy_address);
-            }
-            if (isset($purse_info_meta->wallet)) {
-                $this->addParam('info_btc_balance', round($purse_info_meta->wallet->BTC->balance->active, 3));
-                $this->addParam('info_btc_address', $purse_info_meta->wallet->BTC->legacy_address);
-            }
-
-            $parsUpdatedDate = PurseOrderManager::getInstance()->getAccountUpdatedDateString('purse_pars');
-            $infoUpdatedDate = PurseOrderManager::getInstance()->getAccountUpdatedDateString('purse_info');
-            $checkoutUpdatedDate = PurseOrderManager::getInstance()->getAccountUpdatedDateString('purse_checkout');
-            $this->addParam('parsUpdatedDate', $parsUpdatedDate);
-            $this->addParam('infoUpdatedDate', $infoUpdatedDate);
-            $this->addParam('checkoutUpdatedDate', $checkoutUpdatedDate);
-
-            $this->addParam('btc_rate', CryptoRateManager::getInstance()->getBtcRate());
-
 
             $this->addParam('recipients', RecipientManager::getInstance()->selectAdvance('*', [], ['first_name', 'last_name']));
         }
 
         public static function initFilters($limit = 10000, $load = null) {
-
-            $regOrdersInWarehouse = [];
-            $local_carrier_name = "";
-            if (isset(NGS()->args()->roiw)) {
-                $regOrdersInWarehouseStr = trim(NGS()->args()->roiw);
-                if (!empty($regOrdersInWarehouseStr)) {
-                    $regOrdersInWarehouseStr = preg_replace('/\s+/', ';', $regOrdersInWarehouseStr);
-                    $regOrdersInWarehouseStr = str_replace(',', ';', $regOrdersInWarehouseStr);
-                    $regOrdersInWarehouse = explode(';', $regOrdersInWarehouseStr);
-                    $local_carrier_name = NGS()->args()->cn;
-                    $limit = 1000;
-                }
-            }
 
             //pageing
             $selectedFilterPage = 1;
@@ -200,15 +150,8 @@ namespace crm\loads\main\purse {
             }
             $problematic = 0;
             if (isset(NGS()->args()->pr)) {
-                NGS()->args()->nc = 0;
                 $problematic = intval(NGS()->args()->pr);
             }
-            $new_changed = 0;
-            if (isset(NGS()->args()->nc)) {
-                $new_changed = intval(NGS()->args()->nc);
-                NGS()->args()->pr = 0;
-                $problematic = 0;
-            }          
             $searchText = '';
             if (isset(NGS()->args()->st)) {
 
@@ -218,7 +161,6 @@ namespace crm\loads\main\purse {
 
             if (!empty($regOrdersInWarehouse)) {
                 $problematic = 0;
-                $new_changed = 0;
                 $searchText = '';
                 $selectedFilterAccount = '';
                 $selectedFilterHidden = 'no';
@@ -231,11 +173,9 @@ namespace crm\loads\main\purse {
             }
             if (!empty($load)) {
                 $load->addParam('problematic', $problematic);
-                $load->addParam('new_changed', $new_changed);
                 $load->addParam('searchText', $searchText);
                 $load->addParam('selectedFilterRecipientId', $selectedFilterRecipientId);
                 $load->addParam('selectedFilterAccount', $selectedFilterAccount);
-                $load->addParam('notRegOrdersInWarehouse', $regOrdersInWarehouse);
                 $load->addParam('selectedFilterHidden', $selectedFilterHidden);
                 $load->addParam('selectedFilterStatus', $selectedFilterStatus);
                 $load->addParam('selectedFilterShippingType', $selectedFilterShippingType);
@@ -289,11 +229,11 @@ namespace crm\loads\main\purse {
                     }
                 }
             }
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $where, $words, $searchText, $problematic,$new_changed, $local_carrier_name, $regOrdersInWarehouse];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $where, $words, $searchText, $problematic];
         }
 
         public function getTemplate() {
-            return NGS()->getTemplateDir() . "/main/purse/list.tpl";
+            return NGS()->getTemplateDir() . "/main/checkout/list.tpl";
         }
 
         public static function getSortByFields() {

@@ -70,6 +70,7 @@
                     "loads/main/purse/ListLoad.class.js",
                     "loads/main/purse/GuestListLoad.class.js",
                     "loads/main/purse/PrepareHiddenLoad.class.js",
+                    "loads/main/checkout/ListLoad.class.js",
                     "loads/main/product/CreateLoad.class.js",
                     "loads/main/product/UpdateLoad.class.js",
                     "loads/main/product/SearchListLoad.class.js",

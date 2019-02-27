@@ -1,4 +1,4 @@
-NGS.createLoad("crm.loads.main.purse.list", {
+NGS.createLoad("crm.loads.main.checkout.list", {
     search_timout_handler: null,
     getContainer: function () {
         return "initialLoad";
@@ -19,9 +19,6 @@ NGS.createLoad("crm.loads.main.purse.list", {
             $('#productFilters').trigger('submit');
         });
         $('#productFilters').find('input[name="pr"]').change(function () {
-            $('#productFilters').trigger('submit');
-        });
-        $('#productFilters').find('input[name="nc"]').change(function () {
             $('#productFilters').trigger('submit');
         });
 
@@ -57,7 +54,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
     },
     initExport: function () {
         $('#export_csv').click(function () {
-            var actionUrl = '/dyn/main_purse/do_export_csv' + window.location.search;
+            var actionUrl = '/dyn/main_checkout/do_export_csv' + window.location.search;
             $(this).attr('href', actionUrl);
         });
 
@@ -67,7 +64,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
             var trackingNumbers = $('#tracking_numbers_input').val();
             var params = {trackingNumbers: trackingNumbers};
             var urlParams = $.param(params);
-            var actionUrl = '/dyn/main_purse/do_export_search_csv?';
+            var actionUrl = '/dyn/main_checkout/do_export_search_csv?';
             $(this).attr('href', actionUrl + urlParams);
         });
     },
@@ -88,7 +85,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
             var qty = $('#external_order_qty_input').val();
             var price = $('#external_order_price_input').val();
             var params = {url: url, qty: qty, price: price, unit_address: unit_address};
-            NGS.action('crm.actions.main.purse.add_external_order', params);
+            NGS.action('crm.actions.main.checkout.add_external_order', params);
             $(this).remove();
         });
     },
@@ -96,7 +93,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
         $('#hide_by_trackings_confirm').click(function () {
             var trackingNumbers = $('#hide_by_trackings_input').val();
             var params = {trackingNumbers: trackingNumbers};
-            NGS.action('crm.actions.main.purse.hide_by_trackings', params);
+            NGS.action('crm.actions.main.checkout.hide_by_trackings', params);
         });
     },
     initNotRegTrackingsConfirm: function () {
@@ -104,7 +101,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
             var trackingNumbers = $('#not_registered_trackings_input').val();
             trackingNumbers = trackingNumbers.replace(/\s/g, ";");
             var cn = $('#local_carrier_name').val();            
-            window.location.href = "/purse/list?cn=" + cn + "&roiw=" + trackingNumbers;
+            window.location.href = "/checkout/list?cn=" + cn + "&roiw=" + trackingNumbers;
         });
     },
     initHideByTrackings: function () {
@@ -121,19 +118,19 @@ NGS.createLoad("crm.loads.main.purse.list", {
     initUpdate: function () {
         $('.f_update_purse').click(function () {
             var account = $(this).data('account_name');
-            NGS.action('crm.actions.main.purse.update_orders', {account_name: account});
+            NGS.action('crm.actions.main.checkout.update_orders', {account_name: account});
         });
     },
     initHide: function () {
         $('.f_hide').click(function () {
             var id = $(this).data('id');
-            NGS.load('crm.loads.main.purse.prepare_hidden', {id: id});
+            NGS.load('crm.loads.main.checkout.prepare_hidden', {id: id});
         });
     },
     initProblematic: function () {
         $('.f_problematic').click(function () {
             var id = $(this).data('id');
-            NGS.action('crm.actions.main.purse.set_problematic', {id: id});
+            NGS.action('crm.actions.main.checkout.set_problematic', {id: id});
 
         });
     },
@@ -141,27 +138,27 @@ NGS.createLoad("crm.loads.main.purse.list", {
         $('.f_delete').click(function () {
             var id = $(this).data('id');
             $(this).closest('tr').remove();
-            NGS.action('crm.actions.main.purse.delete', {id: id});
+            NGS.action('crm.actions.main.checkout.delete', {id: id});
         });
     },
     initSolveProblematic: function () {
         $('.f_problem_solved').click(function () {
             var id = $(this).data('id');
-            NGS.action('crm.actions.main.purse.set_problem_solved', {id: id});
+            NGS.action('crm.actions.main.checkout.set_problem_solved', {id: id});
 
         });
     },
     initRefreshTracking: function () {
         $('.f_refresh_tracking').click(function () {
             var id = $(this).data('id');
-            NGS.action('crm.actions.main.purse.refresh_tracking', {id: id});
+            NGS.action('crm.actions.main.checkout.refresh_tracking', {id: id});
             $(this).closest('.f_tracking').html('');
         });
     },
     initRefreshRecipient: function () {
         $('.f_refresh_recipient').click(function () {
             var id = $(this).data('id');
-            NGS.action('crm.actions.main.purse.refresh_recipient', {id: id}, function(){
+            NGS.action('crm.actions.main.checkout.refresh_recipient', {id: id}, function(){
                 window.location.reload();
             });
         });
@@ -169,7 +166,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
     initRefreshCarrierDeliveryDate: function () {
         $('.f_refresh_carrier_delivery_details').click(function () {
             var id = $(this).data('id');
-            NGS.action('crm.actions.main.purse.refresh_carrier_delivery_details', {id: id});
+            NGS.action('crm.actions.main.checkout.refresh_carrier_delivery_details', {id: id});
             $(this).remove();
             $('#carrier_delivery_details_' + id).html('');
             $('#carrier_tracking_status_' + id).html('');
@@ -187,3 +184,14 @@ NGS.createLoad("crm.loads.main.purse.list", {
         });
     }
 });
+function uploadedFileResponse(changedOrNewOrdersText) {
+    if (changedOrNewOrdersText.length > 0) {
+        window.location.href = "/checkout/list?changed_orders=" + changedOrNewOrdersText;
+    } else
+    {
+        window.location.href = "/checkout/list";
+
+    }
+
+}
+;
