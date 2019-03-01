@@ -258,8 +258,7 @@ namespace crm\managers {
         public function fetchAndUpdateTrackingDetails($row) {
             $aon = $row->getAmazonOrderNumber();
             $url = "https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jpmklqnukqppon&orderId=$aon";
-            $content = file_get_contents($url);
-
+            $content = $this->curl_get_contents($url);
             libxml_use_internal_errors(true);
             $xmlDoc = new \DOMDocument();
             $xmlDoc->loadHTML($content);
