@@ -27,7 +27,8 @@
             <tr>
                 <th>Actions</th>
                 <th>Order Number</th>
-                <th>Recipient</th>
+                <th>Internal Recipient</th>
+                <th>Actual Recipient</th>
                 <th>Img</th>
                 <th> Qty </th>
                 <th> Product Name </th>
@@ -56,7 +57,7 @@
                                                             <a href="javascript:void(0);" class="fa fa-eye-slash fa-1x f_hide left" data-id='{$order->getId()}'></a>
                                                         {/if}
 
-                                                       
+
                                                         <a href="javascript:void(0);" {if $ns.problematic == 1}style="color: red"{/if} id="problematic_{$order->getId()}" class="fa fa-exclamation-triangle fa-1x f_problematic right" data-id='{$order->getId()}'></a>
                                                         <br/>
                                                         {if $order->getUnreadMessages() > 0}
@@ -83,7 +84,12 @@
                                                         {if not $order->getRecipientName()}
                                                             <a href="javascript:void(0);" class="fa fa-refresh f_refresh_recipient" data-id='{$order->getId()}'></a>
                                                         {/if}
-                                                        {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})</td>
+                                                        {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})
+                                                    </td>
+                                                    <td> 
+                                                        {$order->getCheckoutCustomerName()} {$order->getCheckoutCustomerUnitAddress()}
+                                                        <a class="button blue" id="add_external_order_button">Confirm</a>
+                                                    </td>
 
                                                     <td> <img src="{$order->getImageUrl()}" width="100"/> </td>
                                                     <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="quantity"> {$order->getQuantity()} </td>

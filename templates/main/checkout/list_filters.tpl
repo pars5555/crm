@@ -30,7 +30,7 @@
                 <option value="DESC" {if $ns.selectedFilterSortByAscDesc== 'DESC'}selected{/if}>DESC</option>
             </select>
         </div>
-        
+
         <div class="filter">
             <label>Status</label>
             <select name="stts">
@@ -39,7 +39,7 @@
                 <option value="inactive" {if $ns.selectedFilterStatus == 'inactive'}selected{/if}>Archive</option>
             </select>
         </div>
-      
+
         <div class="filter">
             <label>Type (Ex/BTC)</label>
             <select name="tp">
@@ -74,11 +74,6 @@
     <div class="filter csv right">
         <a href="javascript:void(0);" class="inline-block" id="export_csv"><img src="{$SITE_PATH}/img/csv.png" width="45"/></a>
     </div>
-    <div class="filter">
-            <div class="add-new-btn">
-                <a id="add_external_order_button" >+</a>
-            </div>
-        </div>
 </form>
 <h2>
     Rows Count: {$ns.count}

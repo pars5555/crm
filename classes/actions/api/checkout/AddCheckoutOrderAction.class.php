@@ -21,13 +21,15 @@ namespace crm\actions\api\checkout {
     class AddCheckoutOrderAction extends BaseAction {
 
         public function service() {
+            $customer_name = trim(NGS()->args()->customer_name);
+            $shipping_carrier = trim(NGS()->args()->shipping_carrier);
             $unitAddress = trim(NGS()->args()->unit_address);
             $asin = trim(NGS()->args()->asin);
             $productName = trim(NGS()->args()->title);
             $qty = intval(NGS()->args()->qty);
             $price = floatval(NGS()->args()->price);
             $imageUrl = trim(NGS()->args()->image_url);
-            PurseOrderManager::getInstance()->addManualOrder($productName, $qty, $price, $unitAddress, $imageUrl, 0);
+            PurseOrderManager::getInstance()->addCheckoutOrder($shipping_carrier, $customer_name, $asin, $productName, $qty, $price, $unitAddress, $imageUrl, 0);
         }
 
         public function getRequestGroup() {
