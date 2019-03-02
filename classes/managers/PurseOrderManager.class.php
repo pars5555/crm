@@ -298,7 +298,7 @@ namespace crm\managers {
             }
         }
 
-        public function addExternalOrder($productName, $qty, $price, $unitAddress, $imageUrl) {
+        public function addManualOrder($productName, $qty, $price, $unitAddress, $imageUrl, $external = 1) {
             $dto = $this->createDto();
             $dto->setProductName($productName);
             $dto->setImageUrl($imageUrl);
@@ -307,7 +307,7 @@ namespace crm\managers {
             $dto->setAmazonTotal($price);
             $dto->setAccountName('external');
             $dto->setStatus('shipping');
-            $dto->setExternal(1);
+            $dto->setExternal($external);
             $dto->setUnitAddress($unitAddress);
             $shippingType = RecipientManager::getInstance()->getShippingTypeByUnitAddress($unitAddress);
             $dto->setShippingType($shippingType);

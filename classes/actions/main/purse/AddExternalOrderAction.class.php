@@ -31,7 +31,7 @@ namespace crm\actions\main\purse {
                 $productName = $url;
             }
             $imageUrl = $this->extractImagesFromWebPage($html);
-            PurseOrderManager::getInstance()->addExternalOrder($productName, $qty, $price, $unitAddress, $imageUrl);
+            PurseOrderManager::getInstance()->addManualOrder($productName, $qty, $price, $unitAddress, $imageUrl);
         }
 
         private function curl_get_contents($url, $headers = [], $cookie = '') {
