@@ -40,24 +40,23 @@ namespace crm\managers {
         public function setProductHidden($id, $hidden) {
             $this->mapper->updateField($id, 'hidden', $hidden);
         }
-        
-        public function getBrandsAndModels($id, $hidden) {
-            $this->mapper->updateField($id, 'hidden', $hidden);
-        }
 
         public function setProductQtyChecked($id, $qty_checked) {
-            $rows = $this->selectAdvance(['model'], [],'model','ASC',null,null,null,'model');
+            $this->mapper->updateField($id, 'qty_checked', $qty_checked);
+        }
+
+        public function getBrandsAndModels() {
+            $rows = $this->selectAdvance(['model'], [], 'model', 'ASC', null, null, null, 'model');
             $models = [];
             foreach ($rows as $row) {
                 $models[] = $row->getModel();
             }
-            $rows = $this->selectAdvance(['manufacturer'], [],'manufacturer','ASC',null,null,null,'manufacturer');
+            $rows = $this->selectAdvance(['manufacturer'], [], 'manufacturer', 'ASC', null, null, null, 'manufacturer');
             $brands = [];
             foreach ($rows as $row) {
-                $brands[] = $row->getModel();
+                $brands[] = $row->getManufacturer();
             }
-            return [$models, $brands];
-           
+            return [array_unique($models), array_unique($brands)];
         }
 
         public function getMostSimilarProduct($name) {
@@ -159,7 +158,6 @@ namespace crm\managers {
             return false;
         }
 
-     
         public function calculateProductQuantityInStock($productId) {
             $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId);
             $productSoldCount = floatval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId));

@@ -26,7 +26,7 @@ namespace crm\actions\api\checkout {
             $unitAddress = trim(NGS()->args()->unit_address);
             $asin = trim(NGS()->args()->asin);
             $productName = trim(NGS()->args()->title);
-            $qty = intval(NGS()->args()->qty);
+            $qty = min(intval(NGS()->args()->qty), 1);
             $price = floatval(NGS()->args()->price);
             $imageUrl = trim(NGS()->args()->image_url);
             PurseOrderManager::getInstance()->addCheckoutOrder($shipping_carrier, $customer_name, $asin, $productName, $qty, $price, $unitAddress, $imageUrl, 0);

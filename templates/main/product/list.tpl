@@ -35,8 +35,8 @@
                     <td>{$product->getName()}</td>
                     <td>{$product->getModel()}</td>
                     <td>{$product->getUnitWeight()|number_format:2}</td>
-                    <td>{$product->getManufacturerDto()->getName()}</td>
-                    <td>{$product->getUomDto()->getName()}</td>
+                    <td>{$product->getManufacturer()}</td>
+                    <td>{$product->getUomId()}</td>
                     <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
                         {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
                         <p style="display: none">

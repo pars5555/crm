@@ -101,7 +101,7 @@ NGS.createLoad("crm.loads.main.index", {
             selectElement.blur(function () {
                 selectElement.remove();
                 cellElement.html(displayValue);
-            });
+            });           
             selectElement.change(function () {
                 var value = $(this).val();
                 cellElement.data('value', value);
@@ -140,6 +140,7 @@ NGS.createLoad("crm.loads.main.index", {
             $(this).html(input);
             var cellElement = $(this);
             input.focus();
+            input.select();
             input.blur(function () {
                 var id = $(this).data('id');
                 var fielldName = $(this).data('field-name');

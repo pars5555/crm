@@ -39,7 +39,7 @@
                     Uom :
                 </span>
                 <span class="table-cell">
-                    {$ns.product->getUomDto()->getName()}
+                    {$ns.product->getUomId()}
                 </span>
             </div>
             <div class="table-row">
@@ -47,11 +47,7 @@
                     Manufacturer : 
                 </span>
                 <span class="table-cell">
-                    {if $ns.product->getManufacturerDto()}
-                        {$ns.product->getManufacturerDto()->getName()}
-                    {else}
-                        <span class="text_red">None</span>
-                    {/if}
+                    {$ns.product->getManufacturer()}
                 </span>
             </div>
             <div class="table-row">

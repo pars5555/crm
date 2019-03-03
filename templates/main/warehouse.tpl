@@ -226,11 +226,9 @@
     {foreach from=$ns.models item=model}
         <option value="{$model}"/>
     {/foreach}
-
 </datalist>
 <datalist id="brand_list">
     {foreach from=$ns.brands item=brand}
         <option value="{$brand}"/>
     {/foreach}
-
 </datalist>
