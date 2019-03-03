@@ -30,7 +30,7 @@ namespace crm\loads\main\product {
                 $this->addParam('product', $product);
                 if (!isset($_SESSION['action_request'])) {
                     $_SESSION['action_request'] = ['name' => $product->getName(), 'model' => $product->getModel(),
-                        'manufacturerId' => $product->getManufacturerId(), 'uomId' => $product->getUomId()];
+                        'manufacturer' => $product->getManufacturer(), 'uomId' => $product->getUomId()];
                 }
                 $this->addParam('req', $_SESSION['action_request']);
                 unset($_SESSION['action_request']);

@@ -42,7 +42,7 @@ namespace crm\actions\main\purse {
                 }
                 if ($productId == 0) {
                     $productId = ProductManager::getInstance()->createProduct(
-                            $product->name, "", 1, 1, floatval($product->weight));
+                            $product->name, "", "unknown", 1, floatval($product->weight));
                 } else {
                     ProductManager::getInstance()->updateProductWeight($productId, floatval($product->weight));
                 }

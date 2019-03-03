@@ -24,13 +24,13 @@
         <div class="form-group">
             <label class="label">Manufacturer</label>
             <select name="manufacturerId">
-                {if isset($ns.req.manufacturerId)}
-                    {assign selectedManufacturerId $ns.req.manufacturerId}
+                {if isset($ns.req.manufacturer)}
+                    {assign selectedManufacturer $ns.req.manufacturer}
                 {else}
-                    {assign selectedManufacturerId null}
+                    {assign selectedManufacturer null}
                 {/if}
                 {foreach from=$ns.manufacturers item=m}
-                    <option value="{$m->getId()}" {if isset($selectedManufacturerId) && $selectedManufacturerId == $m->getId()}selected{/if}>{$m->getName()}</option>
+                    <option value="{$m->getId()}" {if isset($selectedManufacturer) && $selectedManufacturer == $m->getName()}selected{/if}>{$m->getName()}</option>
                 {/foreach}
             </select>
         </div>

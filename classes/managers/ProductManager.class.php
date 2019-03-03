@@ -40,9 +40,24 @@ namespace crm\managers {
         public function setProductHidden($id, $hidden) {
             $this->mapper->updateField($id, 'hidden', $hidden);
         }
+        
+        public function getBrandsAndModels($id, $hidden) {
+            $this->mapper->updateField($id, 'hidden', $hidden);
+        }
 
         public function setProductQtyChecked($id, $qty_checked) {
-            $this->mapper->updateField($id, 'qty_checked', $qty_checked);
+            $rows = $this->selectAdvance(['model'], [],'model','ASC',null,null,null,'model');
+            $models = [];
+            foreach ($rows as $row) {
+                $models[] = $row->getModel();
+            }
+            $rows = $this->selectAdvance(['manufacturer'], [],'manufacturer','ASC',null,null,null,'manufacturer');
+            $brands = [];
+            foreach ($rows as $row) {
+                $brands[] = $row->getModel();
+            }
+            return [$models, $brands];
+           
         }
 
         public function getMostSimilarProduct($name) {
@@ -118,11 +133,11 @@ namespace crm\managers {
             return $this->mapper->updateField($productId, 'unit_weight', $weight);
         }
 
-        public function createProduct($name, $model, $manufacturerId = 1, $uomId = 1, $weight = 0.1) {
+        public function createProduct($name, $model, $manufacturer = "unknown", $uomId = 1, $weight = 0.1) {
             $dto = $this->createDto();
             $dto->setName($name);
             $dto->setModel($model);
-            $dto->setManufacturerId($manufacturerId);
+            $dto->setManufacturer($manufacturer);
             $dto->setUomId($uomId);
             $dto->setUnitWeight($weight);
             $id = $this->insertDto($dto);
@@ -144,29 +159,7 @@ namespace crm\managers {
             return false;
         }
 
-        public function getProductListFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
-            $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
-            $manufacturerIds = array();
-            $uomIds = array();
-            foreach ($rows as $row) {
-                $manufacturerIds[] = $row->getManufacturerId();
-                $uomIds[] = $row->getUomId();
-            }
-            $manufacturerIds = array_unique($manufacturerIds);
-            $uomIds = array_unique($uomIds);
-            $manufacturerDtos = ManufacturerManager::getInstance()->selectByPKs($manufacturerIds, true);
-            $uomDtos = UomManager::getInstance()->selectByPKs($uomIds, true);
-            foreach ($rows as $row) {
-                $row->setUomDto($uomDtos[$row->getUomId()]);
-                $row->setManufacturerDto($manufacturerDtos[$row->getManufacturerId()]);
-            }
-            $ret = [];
-            foreach ($rows as $row) {
-                $ret[$row->getId()] = $row;
-            }
-            return $ret;
-        }
-
+     
         public function calculateProductQuantityInStock($productId) {
             $productPurchaseOrderLines = PurchaseOrderLineManager::getInstance()->getNonCancelledProductPurchaseOrders($productId);
             $productSoldCount = floatval(SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId));

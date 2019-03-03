@@ -29,7 +29,8 @@ namespace crm\actions\main\product {
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            $productId = ProductManager::getInstance()->createProduct($name, $model, $manufacturerId, $uomId, $weight);
+            $manufacturer = \crm\managers\ManufacturerManager::getInstance()->selectByPk($manufacturerId);
+            $productId = ProductManager::getInstance()->createProduct($name, $model, $manufacturer->getName(), $uomId, $weight);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Product Successfully created!';
             $this->redirect('product/create');

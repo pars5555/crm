@@ -23,7 +23,7 @@ namespace crm\loads\main\product {
             $this->initErrorMessages();
             $this->initSuccessMessages();
             $productId = NGS()->args()->id;
-            $products = ProductManager::getInstance()->getProductListFull(['id', '=', $productId]);
+            $products = ProductManager::getInstance()->selectAdvance('*',['id', '=', $productId]);
             if (!empty($products)) {
                 $productSaleQuantity = SaleOrderLineManager::getInstance()->getProductCountInNonCancelledSaleOrders($productId);
                 $productPurchaseQuantity = PurchaseOrderLineManager::getInstance()->getProductCountInNonCancelledPurchaseOrders($productId);

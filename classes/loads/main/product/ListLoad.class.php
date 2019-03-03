@@ -33,7 +33,7 @@ namespace crm\loads\main\product {
                 $where = array_merge($where, ['AND', '(', 'name', 'like', "'%$searchText%'"]);
                 $where = array_merge($where, ['OR', 'model', 'like', "'%$searchText%'", ')']);
             }
-            $products = ProductManager::getInstance()->getProductListFull($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+            $products = ProductManager::getInstance()->selectAdvance('*',$where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $productIds = ProductManager::getDtosIdsArray($products);
             $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
             $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);

@@ -33,6 +33,7 @@
                 <th>Image</th>
 
                 <th style="min-width: 250px;">Name</th>
+                <th>Brand</th>
                 <th>Model</th>
                 <th>Category</th>
                 <th>Sale Price</th>
@@ -69,16 +70,16 @@
                         <td>{$product->getId()}</td>
                         <td> <img src="{$product->getImageUrl()}" width="100"/> </td>
                         <td style="min-width: 250px; {if $product->getId()|in_array:$ns.newProductIds} color:blue; {/if}" data-field-name="name">{$product->getName()}</td>
-                        <td data-field-name="model">{$product->getModel()}</td>
+                        <td class="f_editable_cell" data-list="brand_list" data-field-name="manufacturer">{$product->getManufacturer()}</td>
+                        <td class="f_editable_cell" data-list="model_list" data-field-name="model">{$product->getModel()}</td>
                         <td class="f_selectable_cell" data-value="{$product->getCategoryId()}" data-field-name="category_id" data-template-select-id="category_select">
                             {$ns.categoriesMappedById[$product->getCategoryId()]}
                         </td>
-                         <td {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}class="f_editable_cell" data-field-name="sale_price"{/if}>{$product->getSalePrice()|number_format:2}</td>                            
+                        <td {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}class="f_editable_cell" data-field-name="sale_price"{/if}>{$product->getSalePrice()|number_format:2}</td>                            
                         {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}
                             {if $ns.userType == $ns.userTypeAdmin}
                                 <td class="pre f_editable_cell" data-type="richtext"  data-field-name="location_note">{$product->getLocationNote()}
                                 </td>
-                                {*                        <td>{$product->getUomDto()->getName()}</td>*}
                             {/if}
                             <td>
                                 {if isset($ns.productsQuantity[$product->getId()])}
@@ -100,7 +101,7 @@
                                 <p style="display: none">
                                     {foreach from=$ns.reservations[$product->getId()] item=productReservation}
                                         <a href="javascript:void(0);">
-                                           qty: {$productReservation->getQuantity()}, ({$productReservation->getStartAt()|truncate:10:""} - {$productReservation->getHours()} hours), tel: {$productReservation->getPhone()}
+                                            qty: {$productReservation->getQuantity()}, ({$productReservation->getStartAt()|truncate:10:""} - {$productReservation->getHours()} hours), tel: {$productReservation->getPhone()}
                                             <br>
                                             {$productReservation->getNote()}
                                         </a>
@@ -126,7 +127,7 @@
 
                             <td class="f_editable_cell" {if isset($ns.productsPrice[$product->getId()]) && $product->getStockPrice()<=$ns.productsPrice[$product->getId()]}style="color:orange"{/if} 
                                 data-field-name="stock_price">{$product->getStockPrice()|number_format:2}</td>                            
-                           
+
                             <td class="icon-cell">
                                 <input class="f_qty_checked_checkbox"
                                        data-product_id="{$product->getId()}" type="checkbox"
@@ -220,3 +221,16 @@
         </div>
     </div>
 </div>
+
+<datalist id="model_list">
+    {foreach from=$ns.models item=model}
+        <option value="{$model}"/>
+    {/foreach}
+
+</datalist>
+<datalist id="brand_list">
+    {foreach from=$ns.brands item=brand}
+        <option value="{$brand}"/>
+    {/foreach}
+
+</datalist>

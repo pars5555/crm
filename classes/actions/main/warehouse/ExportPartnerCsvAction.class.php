@@ -23,7 +23,7 @@ namespace crm\actions\main\warehouse {
             $productIds = array_keys($productsQuantity);
             $productsPrice = WarehouseManager::getInstance()->getAllProductsPrice($productIds);
             $productIdsSql = '(' . implode(',', $productIds) . ')';
-            $products = ProductManager::getInstance()->getProductListFull(['id', 'in', $productIdsSql], 'name', 'ASC');
+            $products = ProductManager::getInstance()->selectAdvance('*',['id', 'in', $productIdsSql], 'name', 'ASC', null,null,true);
 
             $productIds = ProductManager::getDtosIdsArray($products);
             $usdRate = CurrencyRateManager::getInstance()->getCurrencyRate(1);

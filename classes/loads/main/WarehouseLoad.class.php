@@ -28,6 +28,7 @@ namespace crm\loads\main {
             $pwarehousesProductsQuantity = $this->loadPartnersWarehouses();
             $reservations = \crm\managers\ProductReservationManager::getInstance()->getReservedProducts();
             $this->addParam('reservations', $reservations);
+            $this->loadProductModelsAndBrands();
             $categories = \crm\managers\ProductCategoryManager::getInstance()->selectAll();
             $categoriesMappedById = [];
             foreach ($categories as $category) {
@@ -35,7 +36,7 @@ namespace crm\loads\main {
             }
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity(true);
             $productsPrice = WarehouseManager::getInstance()->getAllProductsPrice(array_keys($productsQuantity));
-            $productsMappedById = ProductManager::getInstance()->getProductListFull([], 'category_id', 'ASC');
+            $productsMappedById = ProductManager::getInstance()->selectAdvance('*',[], 'category_id', 'ASC', null,null,true);
             $productIds = array_keys($productsMappedById);
 
             $days = SettingManager::getInstance()->getSetting('new_items_days');
@@ -96,6 +97,12 @@ namespace crm\loads\main {
 
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/warehouse.tpl";
+        }
+
+        private function loadProductModelsAndBrands() {
+            list($models, $brands) = ProductManager::getInstance()->getBrandsAndModels();
+            $this->addParam('models', $models);
+            $this->addParam('brands', $brands);
         }
 
         private function loadPartnersWarehouses() {

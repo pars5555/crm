@@ -13,7 +13,7 @@ namespace crm\actions\main\warehouse {
 
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity();
             $productsPrice = WarehouseManager::getInstance()->getAllProductsPrice(array_keys($productsQuantity));
-            $products = ProductManager::getInstance()->getProductListFull([], 'category_id', 'ASC');
+            $products = ProductManager::getInstance()->selectAdvance('*',[], 'category_id', 'ASC', null,null,true);
             $usdRate = CurrencyRateManager::getInstance()->getCurrencyRate(1);
             $this->addParam('products', $products);
             $this->addParam('usd_rate', $usdRate);
