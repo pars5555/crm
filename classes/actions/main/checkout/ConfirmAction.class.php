@@ -22,7 +22,17 @@ namespace crm\actions\main\checkout {
 
         public function service() {
             $id = intval(NGS()->args()->id);
-            PurseOrderManager::getInstance()->confirmCheckoutOrder($id);
+            $order  = PurseOrderManager::getInstance()->selectByPk($id);
+            
+            $res = \crm\managers\CheckoutManager::getInstance()->confirmOrder($order->getCheckoutOrderId());
+            if ($res === true) {
+                $asin = PurseOrderManager::getInstance()->confirmCheckoutOrder($id);
+                $this->addParam('success', true);
+                $this->addParam('asin', $asin);
+                return ;
+            }
+            $this->addParam('success', false);
+            $this->addParam('message', $res);
         }
 
     }

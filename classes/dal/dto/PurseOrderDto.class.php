@@ -32,8 +32,10 @@ namespace crm\dal\dto {
             "account_name" => "accountName", "created_at" => "createdAt", "updated_at" => "updatedAt", "hidden_at" => "hiddenAt", 'meta' => 'meta',
             'external' => 'external',
             'checkout_customer_unit_address' => 'checkoutCustomerUnitAddress',
+            'checkout_order_id' => 'checkoutOrderId',
             'checkout_customer_name' => 'checkoutCustomerName',
-            'external_merchant_name' => 'externalMerchantName'
+            'external_merchant_name' => 'externalMerchantName',
+            'external_product_number' => 'externalProductNumber'
             );
 
         // returns map array

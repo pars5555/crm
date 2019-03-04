@@ -155,7 +155,7 @@
             
             <input type="hidden" id="confirming_order_id" value=""/>
             <div class="modal-content observers-detail-modal-content">
-                <a class="button blue" id="confirm_checkout_order_btn" href="javascript:void(0);" target="_blank">Confirm</a>
+                <a class="button blue" id="confirm_checkout_order_btn">Confirm</a>
             </div>
             
         </div>

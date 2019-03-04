@@ -31,7 +31,9 @@ namespace crm\actions\main\purse {
                 $productName = $url;
             }
             $imageUrl = $this->extractImagesFromWebPage($html);
-            PurseOrderManager::getInstance()->addManualOrder($productName, $qty, $price, $unitAddress, $imageUrl);
+
+            $asin = PurseOrderManager::getItemAsinFromUrl($url);
+            PurseOrderManager::getInstance()->addManualOrder($productName, $qty, $price, $unitAddress, $imageUrl, 1, $asin);
         }
 
         private function curl_get_contents($url, $headers = [], $cookie = '') {
@@ -81,11 +83,10 @@ namespace crm\actions\main\purse {
                     return $this->DOMinnerHTML($element);
                 }
             }
-            
+
             $finder = new \DOMXPath($dom);
             $ordersRows = $finder->query("//*[contains(@itemprop, 'name')]");
-            if ($ordersRows ->length > 0)
-            {
+            if ($ordersRows->length > 0) {
                 return $this->DOMinnerHTML($ordersRows[0]);
             }
             if (strlen($content) > 0) {

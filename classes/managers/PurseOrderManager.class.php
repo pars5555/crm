@@ -41,6 +41,18 @@ namespace crm\managers {
             $this->fakeRecipientUnitAddressesStr = RecipientManager::getInstance()->getFakeRecipientUnitAddressesSql();
         }
 
+        public static function getItemAsinFromUrl($url) {
+            $pattern = "%/([a-zA-Z0-9]{10})(?:[/?]|$)%";
+            $matches = [];
+            preg_match($pattern, $url, $matches);
+            if ($matches && isset($matches[1])) {
+                $asin = $matches[1];
+            } else {
+                return false;
+            }
+            return $asin;
+        }
+
         public function getItemPriceByAsin($asin, $maxTryCount = 3) {
             $content = "";
             $tryCount = 0;
@@ -149,6 +161,13 @@ namespace crm\managers {
                 }
             }
             return $ret;
+        }
+
+        public function confirmCheckoutOrder($id) {
+            $dto = $this->selectByPk($id);
+            $dto->setStatus('shipping');
+            $this->updateByPk($dto);
+            return $dto->getExternalProductNumber();
         }
 
         public function getAccountUpdatedDateString($accountName) {
@@ -298,16 +317,18 @@ namespace crm\managers {
             }
         }
 
-        public function addCheckoutOrder($shipping_carrier, $customer_name, $asin, $productName, $qty, $price, $unitAddress, $imageUrl, $external = 1) {
+        public function addCheckoutOrder($orderId, $shipping_carrier, $customer_name, $asin, $productName, $qty, $price, $unitAddress, $imageUrl, $external = 1) {
             $carrierUnitAddress = SettingManager::getInstance()->getSetting($shipping_carrier . '_unit_address');
-            $id = $this->addManualOrder($productName, $qty, $price, $carrierUnitAddress, $imageUrl, $external);
+            $id = $this->addManualOrder($productName, $qty, $price, $carrierUnitAddress, $imageUrl, $external, $asin);
             $dto = $this->selectByPk($id);
             $dto->setCheckoutCustomerName($customer_name);
+            $dto->setCheckoutOrderId($orderId);
+            $dto->setStatus('open');
             $dto->setCheckoutCustomerUnitAddress($unitAddress);
             $this->updateByPk($dto);
         }
 
-        public function addManualOrder($productName, $qty, $price, $unitAddress, $imageUrl, $external = 1) {
+        public function addManualOrder($productName, $qty, $price, $unitAddress, $imageUrl, $external = 1, $externalProductNumber = "") {
             $dto = $this->createDto();
             $dto->setProductName($productName);
             $dto->setImageUrl($imageUrl);
@@ -317,6 +338,7 @@ namespace crm\managers {
             $dto->setAccountName('external');
             $dto->setStatus('shipping');
             $dto->setExternal($external);
+            $dto->setExternalProductNumber($externalProductNumber);
             $dto->setUnitAddress($unitAddress);
             $shippingType = RecipientManager::getInstance()->getShippingTypeByUnitAddress($unitAddress);
             $dto->setShippingType($shippingType);

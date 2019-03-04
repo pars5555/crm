@@ -47,17 +47,23 @@ NGS.createLoad("crm.loads.main.checkout.list", {
         this.initConfirmOrder();
     },
     initConfirmOrder: function () {
-      $('.f_confirm_order').click(function(){
-          $('#confirming_order_id').val($(this).data('id'));
-          $('#confirm_order').addClass('is_active');
-      });
-      $('#confirm_checkout_order_btn').click(function(){
-          var id = $('#confirming_order_id').val();
-          NGS.action('crm.actions.main.checkout.confirm', {'id':id}, function(){
-              alert(1);
-          });
-      });
-      
+        $('.f_confirm_order').click(function () {
+            $('#confirming_order_id').val($(this).data('id'));
+            $('#confirm_order').addClass('is_active');
+        });
+        $('#confirm_checkout_order_btn').click(function () {
+            var id = $('#confirming_order_id').val();
+            NGS.action('crm.actions.main.checkout.confirm', {'id': id}, function (data) {
+                console.log(data);
+                if (data.success === true) {
+                    window.open('https://www.amazon.com/dp/' + data.asin);
+                    $('#confirm_order').removeClass('is_active');
+                }else{
+                    alert(data.message);
+                }
+            });
+        });
+
     },
     initExport: function () {
         $('#export_csv').click(function () {
@@ -85,8 +91,7 @@ NGS.createLoad("crm.loads.main.checkout.list", {
             $('#add_external_order_modalBox').addClass('is_active');
         });
     },
-   
-   
+
     initHide: function () {
         $('.f_hide').click(function () {
             var id = $(this).data('id');
@@ -124,7 +129,7 @@ NGS.createLoad("crm.loads.main.checkout.list", {
     initRefreshRecipient: function () {
         $('.f_refresh_recipient').click(function () {
             var id = $(this).data('id');
-            NGS.action('crm.actions.main.purse.refresh_recipient', {id: id}, function(){
+            NGS.action('crm.actions.main.purse.refresh_recipient', {id: id}, function () {
                 window.location.reload();
             });
         });

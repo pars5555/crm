@@ -46,7 +46,7 @@ namespace crm\managers {
         public function setRecipientDeleted($id, $deleted) {
             $this->mapper->updateField($id, 'deleted', $deleted);
         }
-        
+
         public function setRecipientChecked($id, $checked) {
             $this->mapper->updateField($id, 'checked', $checked);
         }
@@ -64,16 +64,16 @@ namespace crm\managers {
                 return false;
             }
             $rows = $this->selectAdvance('*', [
-                'lower', '(', 'express_unit_address',')', '=', 'lower','(', "'$unitAddress'", ')', 'OR',
-                'lower', '(', 'standard_unit_address',')', '=', 'lower','(', "'$unitAddress'",  ')', 'OR',
-                'lower', '(', 'onex_express_unit',')', '=', 'lower', '(',"'$unitAddress'",  ')', 'OR',
-                'lower', '(', 'onex_standard_unit',')', '=', 'lower','(',"'$unitAddress'",  ')', 'OR',
-                'lower', '(', 'shipex_express_unit',')', '=', 'lower', '(',"'$unitAddress'",  ')', 'OR',
-                'lower', '(', 'shipex_standard_unit',')', '=', 'lower','(',"'$unitAddress'",  ')', 'OR',
-                'lower', '(', 'cheapex_express_unit',')', '=', 'lower', '(',"'$unitAddress'",  ')', 'OR',
-                'lower', '(', 'cheapex_standard_unit',')', '=', 'lower','(',"'$unitAddress'",  ')', 'OR',
-                'lower', '(', 'nova_express_unit',')', '=', 'lower','(', "'$unitAddress'",  ')', 'OR',
-                'lower', '(', 'nova_standard_unit',')', '=', 'lower','(', "'$unitAddress'",  ')'
+                'lower', '(', 'express_unit_address', ')', '=', 'lower', '(', "'$unitAddress'", ')', 'OR',
+                'lower', '(', 'standard_unit_address', ')', '=', 'lower', '(', "'$unitAddress'", ')', 'OR',
+                'lower', '(', 'onex_express_unit', ')', '=', 'lower', '(', "'$unitAddress'", ')', 'OR',
+                'lower', '(', 'onex_standard_unit', ')', '=', 'lower', '(', "'$unitAddress'", ')', 'OR',
+                'lower', '(', 'shipex_express_unit', ')', '=', 'lower', '(', "'$unitAddress'", ')', 'OR',
+                'lower', '(', 'shipex_standard_unit', ')', '=', 'lower', '(', "'$unitAddress'", ')', 'OR',
+                'lower', '(', 'cheapex_express_unit', ')', '=', 'lower', '(', "'$unitAddress'", ')', 'OR',
+                'lower', '(', 'cheapex_standard_unit', ')', '=', 'lower', '(', "'$unitAddress'", ')', 'OR',
+                'lower', '(', 'nova_express_unit', ')', '=', 'lower', '(', "'$unitAddress'", ')', 'OR',
+                'lower', '(', 'nova_standard_unit', ')', '=', 'lower', '(', "'$unitAddress'", ')'
             ]);
             if (empty($rows)) {
                 return false;
@@ -105,11 +105,13 @@ namespace crm\managers {
         }
 
         public function getFakeRecipientUnitAddressesSql() {
-            $unitAddressesCommaSeparated =  preg_replace('/\s+/', '', SettingManager::getInstance()->getSetting('fake_recipients_unit_addresses'));
-            $unitAddressesArray = explode(',', $unitAddressesCommaSeparated);
-            return "'".implode("','", $unitAddressesArray)."'";
+            $u1 = SettingManager::getInstance()->getSetting('onex_unit_address');
+            $u2 = SettingManager::getInstance()->getSetting('nova_unit_address');
+            $u3 = SettingManager::getInstance()->getSetting('globbing_unit_address');
+            $u4 = SettingManager::getInstance()->getSetting('shipex_unit_address');
+            return "'" . implode("','", [$u1, $u2, $u3, $u4]) . "'";
         }
-        
+
         public function getRecipientUnitAddresses($recipintId, $sqlReady = false) {
             $recipient = $this->selectByPk($recipintId);
             $res = [$recipient->getExpressUnitAddress(), $recipient->getOnexExpressUnit(), $recipient->getNovaExpressUnit(), $recipient->getShipexExpressUnit(), $recipient->getCheapexExpressUnit(),
