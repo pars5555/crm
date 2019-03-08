@@ -78,7 +78,7 @@
                         <td {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}class="f_editable_cell" data-field-name="sale_price"{/if}>{$product->getSalePrice()|number_format:2}</td>                            
                         {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}
                             {if $ns.userType == $ns.userTypeAdmin}
-                                <td style="max-width: 90px;" class="pre f_editable_cell" data-type="richtext"  data-field-name="location_note">{$product->getLocationNote()}
+                                <td style="max-width: 90px;" class="f_editable_cell" data-type="richtext"  data-field-name="location_note">{$product->getLocationNote()}
                                 </td>
                             {/if}
                             <td>
