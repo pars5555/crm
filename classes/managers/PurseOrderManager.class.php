@@ -487,7 +487,7 @@ namespace crm\managers {
 
         public function getOrders($where = [1, '=', 1], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null, $checoutOnly = false) {
             if (!empty($checoutOnly)) {
-                $where = $where = array_merge($where, ['AND', 'checkout_order_id', '>', 0]);
+                $where = $where = array_merge($where, ['AND', 'checkout_order_id', '>', 0, 'OR', 'unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)"]);
             } else {
                 $where = $where = array_merge($where, ['AND', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)"]);
             }

@@ -67,7 +67,7 @@ namespace crm\managers {
 
         private function returnCheckoutResponse($actionPath) {
             $host = self::CHECKOUT_HOST;
-            if (\crm\util\Util::isWindows()) {
+            if (\ngs\framework\util\NgsUtils::isWindows()) {
                 $host = "http://api.checkoutdev.am";
             }
             $stream = $this->prepareCheckoutRequest();
