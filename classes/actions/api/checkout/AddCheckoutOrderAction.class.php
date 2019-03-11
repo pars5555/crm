@@ -9,7 +9,7 @@
  * @year 2009-2014
  * @package actions.site
  * @version 6.0
- *
+ * 
  */
 
 namespace crm\actions\api\checkout {

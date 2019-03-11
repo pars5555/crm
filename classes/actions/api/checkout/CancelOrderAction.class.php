@@ -8,7 +8,7 @@
  * @mail levon@naghashyan.com
  * @year 2009-2014
  * @package actions.site
- * @version 6.0
+ * @version  6.0
  *
  */
 
