@@ -14,6 +14,7 @@ NGS.createLoad("crm.loads.main.index", {
         this.checkbox();
         this.initCloseModal();
         this.initEditableCells();
+        this.initEditableImageCells();
         this.initSelectableCells();
         this.initSettingEditableCells();
         this.initLeftMenuTrigger();
@@ -101,7 +102,7 @@ NGS.createLoad("crm.loads.main.index", {
             selectElement.blur(function () {
                 selectElement.remove();
                 cellElement.html(displayValue);
-            });           
+            });
             selectElement.change(function () {
                 var value = $(this).val();
                 cellElement.data('value', value);
@@ -134,7 +135,7 @@ NGS.createLoad("crm.loads.main.index", {
             if (type === 'richtext') {
                 var input = $('<textarea ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%;min-width:150px;min-height:50px" data-id="' + id + '" data-field-name="' + cellFieldName + '">' + cellValues.htmlEncode() + '</textarea>')
             } else {
-                var input = $('<input list="'+cellListName+'" ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '" type="text" value="' + cellValues.htmlEncode() + '"/>')
+                var input = $('<input list="' + cellListName + '" ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '" type="text" value="' + cellValues.htmlEncode() + '"/>')
             }
 
             $(this).html(input);
@@ -153,6 +154,41 @@ NGS.createLoad("crm.loads.main.index", {
                             "field_value": value},
                         function (ret) {
                             cellElement.html(ret.value);
+                        });
+            });
+        });
+    },
+    initEditableImageCells: function () {
+        $(document).on('dblclick', '.f_editable_image_cell', function () {
+            var cellValues = $(this).text().trim();
+            var cellFieldName = $(this).data('field-name');
+            var object_type = $(this).parent('div').data('type');
+            var id = $(this).parent('div').data('id');
+            if (typeof object_type === 'undefined') {
+                object_type = $(this).parent('tr').data('type');
+                id = $(this).parent('tr').data('id');
+            }
+            var input = $('<input ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '" type="text" value="' + cellValues.htmlEncode() + '"/>')
+
+            var cellElementOldContent = $($(this).html());
+            var cellElement = $(this);
+            $(this).html(input);
+            input.focus();
+            input.select();
+            input.blur(function () {
+                var id = $(this).data('id');
+                var fielldName = $(this).data('field-name');
+                var value = $(this).val().trim();
+                cellElement.html(cellElementOldContent);
+                cellElement.find('img').attr('src', value);
+                $(this).off();
+                NGS.action('crm.actions.main.UpdateField',
+                        {'id': id, 'object_type': object_type,
+                            'field_name': fielldName,
+                            "field_value": value},
+                        function (ret) {
+                            cellElement.html(cellElementOldContent);
+                            cellElement.find('img').attr('src',ret.value);
                         });
             });
         });
