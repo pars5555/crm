@@ -33,7 +33,6 @@
                 <th> Qty </th>
                 <th> Product Name </th>
                 <th> Total </th>
-                <th> Caluclation Price</th>
                 <th> % </th>
                 <th> Buyer </th>
                 <th> Status </th>
@@ -46,7 +45,7 @@
             </tr>
 
             {foreach from=$ns.orders item=order}
-                <tr {if $order->getHidden()==1} style="background: lightgray;"{else}{if $order->isDelayed()} style="background: orange;"{/if}{if $order->getProblematic() == 1 && $order->getProblemSolved() == 0} style="background: yellow;"{/if}{/if} data-type="btc" data-id="{$order->getId()}">
+                <tr {if $order->getHidden()==1} style="background: lightgray;"{else}{if $order->isDelayed()} style="background: orange;"{/if}{if $order->getProblematic() == 1 && $order->getProblemSolved() == 0} style="background: yellow;"{/if}{/if} data-type="checkout" data-id="{$order->getId()}">
                     <td>
                         <a href="{$SITE_PATH}/btc/{$order->getId()}" class="link" target="_blank">{$order->getId()}</a><br/>
 
@@ -83,18 +82,17 @@
                         {/if}
                         {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})
                     </td>
-                    <td> 
+                    <td class="f_editable_cell" data-field-name="checkout_customer_unit_address"> 
                         {$order->getCheckoutCustomerName()} {$order->getCheckoutCustomerUnitAddress()}
                         <a class="button blue f_confirm_order" data-id="{$order->getId()}">Confirm</a>
                     </td>
 
                     <td> <img src="{$order->getImageUrl()}" width="100"/> </td>
-                    <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="quantity"> {$order->getQuantity()} </td>
-                    <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="product_name">
+                    <td > {$order->getQuantity()} </td>
+                    <td >
                         <a class="link " target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getProductName()}</a>
                     </td>
-                    <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="amazon_total"> {$order->getAmazonTotal()} </td>
-                    <td class="f_editable_cell" data-field-name="supposed_purchase_price"> {$order->getSupposedPurchasePrice()} </td>
+                    <td> {$order->getAmazonTotal()} </td>
                     <td> {$order->getDiscount()} </td>
                     <td style="max-width: 70px;word-wrap: break-word"> {$order->getBuyerName()} </td>
                     <td> {$order->getStatus()} </td>
@@ -105,25 +103,8 @@
                         <br/>
                         {$order->getAmazonPrimaryStatusText()}
                     </td>
-                    <td class="{if $order->getExternal() == 1}f_editable_cell{/if}" data-field-name="tracking_number" >
-                        <div class="f_tracking" id="tracking_{$order->getId()}">
-
-                            {if $order->getCarrierTrackingUrl() !== false}
-                                <a class="link" target="_black" href="{$order->getCarrierTrackingUrl()}" >{$order->getTrackingNumber()}</a>
-                            {else}
-                                {$order->getTrackingNumber()}
-                            {/if}
-                            {if $order->getExternal() == 0}
-                                <a href="javascript:void(0);" class="fa fa-refresh f_refresh_tracking" data-id='{$order->getId()}'></a>
-                            {/if}
-                        </div>
-                        {if $order->getDeliveryDate()>0}
-                            <br/><br/>delivered at: {$order->getDeliveryDate()}
-                        {/if}
-                        <br/>
-                        <span id="carrier_tracking_status_{$order->getId()}">{$order->getCarrierTrackingStatus()}</span>:
-                        <span id="carrier_delivery_details_{$order->getId()}" style="color:#46AF04">{$order->getCarrierDeliveryDate()}</span>
-                        <a href="javascript:void(0);" class="fa fa-refresh f_refresh_carrier_delivery_details" data-id='{$order->getId()}'></a>
+                    <td class="f_editable_cell" data-field-name="tracking_number" >
+                        {$order->getTrackingNumber()}
                     </td>
                     <td> 
                         {$order->getHiddenAt()} 
@@ -151,13 +132,13 @@
             </span>
             <h1 class="modal-headline">Confirm</h1>
             <h4 class="modal-sub-headline">You you sure you want to confirm?</h4>
-            
-            
+
+
             <input type="hidden" id="confirming_order_id" value=""/>
             <div class="modal-content observers-detail-modal-content">
                 <a class="button blue" id="confirm_checkout_order_btn">Confirm</a>
             </div>
-            
+
         </div>
     </div>
 </div>

@@ -21,6 +21,9 @@ namespace crm\managers {
 
         const CHECKOUT_HOST = "https://api.checkout.am";
         const CHECKOUT_CONFIRM_ACTION_PATH = "/_sys_/orders/Confirm";
+        const CHECKOUT_SET_TRACKING_ACTION_PATH = "/_sys_/orders/SetTracking";
+        const CHECKOUT_SET_AMAZON_ORDER_NUMBER_ACTION_PATH = "/_sys_/orders/SetAmazonOrderNumber";
+        const CHECKOUT_CHANGE_UNIT_ADDRESS_ACTION_PATH = "/_sys_/orders/ChangeUnitAddress";
 
         /**
          * Returns an singleton instance of this class
@@ -36,22 +39,39 @@ namespace crm\managers {
             return self::$instance;
         }
 
+     
+
+        public function changeCheckoutOrderCustomerUnitAddress($checkoutOrderId, $unitAddress) {
+            $urlParams = ['order_id' => $checkoutOrderId, 'unit_address' => $unitAddress];
+            $actionPath = self::CHECKOUT_CHANGE_UNIT_ADDRESS_ACTION_PATH . '?' . http_build_query($urlParams);
+            return $this->returnCheckoutResponse($actionPath);
+        }
+        
+        public function setAmazonOrderNumber($checkoutOrderId, $amazonOrderNumber) {
+            $urlParams = ['order_id' => $checkoutOrderId, 'amazon_order_number' => $amazonOrderNumber];
+            $actionPath = self::CHECKOUT_SET_AMAZON_ORDER_NUMBER_ACTION_PATH . '?' . http_build_query($urlParams);
+            return $this->returnCheckoutResponse($actionPath);
+        }
+        
+        public function setCheckoutOrderTrackingNumber($checkoutOrderId, $trackingNumber) {
+            $urlParams = ['order_id' => $checkoutOrderId, 'tracking_number' => $trackingNumber];
+            $actionPath = self::CHECKOUT_SET_TRACKING_ACTION_PATH . '?' . http_build_query($urlParams);
+            return $this->returnCheckoutResponse($actionPath);
+        }
+
         public function confirmOrder($checkoutOrderId) {
+            $urlParams = ['order_id' => $checkoutOrderId];
+            $actionPath = self::CHECKOUT_CONFIRM_ACTION_PATH . '?' . http_build_query($urlParams);
+            return $this->returnCheckoutResponse($actionPath);
+        }
+
+        private function returnCheckoutResponse($actionPath) {
             $host = self::CHECKOUT_HOST;
             if (\crm\util\Util::isWindows()) {
                 $host = "http://api.checkoutdev.am";
             }
-            $urlParams = ['order_id' => $checkoutOrderId];
-            $arrContextOptions = array(
-                "ssl" => array(
-                    "verify_peer" => false,
-                    "verify_peer_name" => false,
-                ),
-            );
-
-            $stream = stream_context_create($arrContextOptions);
-            $url = $host . '/' . self::CHECKOUT_CONFIRM_ACTION_PATH . '?'. http_build_query($urlParams);
-            $res = @file_get_contents($url, false, $stream);
+            $stream = $this->prepareCheckoutRequest();
+            $res = @file_get_contents($host . $actionPath, false, $stream);
             $data = json_decode($res, true);
             if (isset($data['success']) && $data['success'] === true) {
                 return true;
@@ -59,7 +79,22 @@ namespace crm\managers {
             if (isset($data['message'])) {
                 return ($data['message']);
             }
+            if (empty($res)){
+                return "connection problem to checkout.am! please contact administrator!";
+            }
             return $data;
+        }
+
+        private function prepareCheckoutRequest() {
+            
+            $arrContextOptions = array(
+                "ssl" => array(
+                    "verify_peer" => false,
+                    "verify_peer_name" => false,
+                ),
+            );
+
+            return stream_context_create($arrContextOptions);
         }
 
     }
