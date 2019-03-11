@@ -68,7 +68,7 @@
                 {if (isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]>0) || (isset($ns.pwarehousesProductsQuantity[$product->getId()]) && $ns.pwarehousesProductsQuantity[$product->getId()]>0)}
                     <tr data-id="{$product->getId()}" data-type="product" {if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}>
                         <td>{$product->getId()}</td>
-                        <td> <img src="{$product->getImageUrl()}" width="100"/> </td>
+                        <td class="f_editable_image_cell" data-field-name="image_url"> <img src="{$product->getImageUrl()}" width="100"/> </td>
                         <td style="min-width: 250px; {if $product->getId()|in_array:$ns.newProductIds} color:blue; {/if}" data-field-name="name">{$product->getName()}</td>
                         <td class="f_editable_cell" data-list="brand_list" data-field-name="manufacturer">{$product->getManufacturer()}</td>
                         <td class="f_editable_cell" data-list="model_list" data-field-name="model">{$product->getModel()}</td>
