@@ -68,8 +68,9 @@ namespace crm\actions\main {
                     break;
             }
             if ($objectType === 'checkout') {
-                $this->handleCheckoutOrdersChanged($manager, $id, $fieldName, $fieldValue);
-                return;
+                if (!$this->handleCheckoutOrdersChanged($manager, $id, $fieldName, $fieldValue)){
+                    return ;
+                }
             }
 
             if ($objectType === 'set_setting') {
@@ -111,13 +112,16 @@ namespace crm\actions\main {
                     $this->addParam('display_value', \crm\dal\dto\PurseOrderDto::CHECKOUT_ORDER_STATUSES[intval($fieldValue)]);
                     break;
                 default:
+                    return true;
                     break;
             }
             if ($ret === true) {
                 $this->addParam('value', $fieldValue);
+                return true;
             } else {
                 $this->addParam('success', false);
                 $this->addParam('message', print_r($ret, true));
+                return false;
             }
         }
 
