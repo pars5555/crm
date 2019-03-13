@@ -20,13 +20,15 @@ namespace crm\dal\dto {
 
     class PurseOrderDto extends AbstractDto {
 
+        const CHECKOUT_ORDER_STATUSES = [0 => 'waitin_for_payment', 5 => 'confirmed', 10 => 'processing', 15 => 'purchased', 20 => 'cancelled', 25 => 'done'];
+
         private $histores = [];
         // Map of DB value to Field value
         private $mapArray = array("id" => "id", "order_number" => "orderNumber", "amazon_order_number" => "amazonOrderNumber",
             "delivery_date" => "deliveryDate", "carrier_delivery_date" => "carrierDeliveryDate", "unit_address" => "unitAddress",
-            "carrier_tracking_status" => "carrierTrackingStatus", "tracking_number" => "trackingNumber", "supposed_purchase_price"=>"supposedPurchasePrice",
-            "amazon_total" => "amazonTotal", "buyer_name" => "buyerName", "problematic" => "problematic","hidden" => "hidden",
-            "amazon_primary_status_text" => 'amazonPrimaryStatusText', 'problem_solved' => 'problemSolved','shipping_type' => 'shipping_type', 
+            "carrier_tracking_status" => "carrierTrackingStatus", "tracking_number" => "trackingNumber", "supposed_purchase_price" => "supposedPurchasePrice",
+            "amazon_total" => "amazonTotal", "buyer_name" => "buyerName", "problematic" => "problematic", "hidden" => "hidden",
+            "amazon_primary_status_text" => 'amazonPrimaryStatusText', 'problem_solved' => 'problemSolved', 'shipping_type' => 'shipping_type',
             "discount" => "discount", "serial_number" => "serial_number", "btc_rate" => "btcRate", "recipient_name" => "recipientName", "product_name" => "productName",
             "quantity" => "quantity", "cancelled_at" => "cancelledAt", "image_url" => "imageUrl", "shipping_carrier" => "shippingCarrier", "status" => "status", "note" => 'note', "unread_messages" => 'unreadMessages',
             "account_name" => "accountName", "created_at" => "createdAt", "updated_at" => "updatedAt", "hidden_at" => "hiddenAt", 'meta' => 'meta',
@@ -34,24 +36,24 @@ namespace crm\dal\dto {
             'checkout_customer_unit_address' => 'checkoutCustomerUnitAddress',
             'checkout_order_id' => 'checkoutOrderId',
             'checkout_customer_name' => 'checkoutCustomerName',
+            'checkout_order_status' => 'checkoutOrderStatus',
             'external_merchant_name' => 'externalMerchantName',
             'external_product_number' => 'externalProductNumber'
-            );
+        );
 
         // returns map array
         public function getMapArray() {
             return $this->mapArray;
         }
 
-
         public function isDelayed() {
-            return $this->getProblemSolved() == 0 &&  $this->getExternal() == 1 && $this->getCreateDateDiffWithNow() > intval(\crm\managers\SettingManager::getInstance()->getSetting('external_products_days_diff_for_created_date'));
+            return $this->getProblemSolved() == 0 && $this->getExternal() == 1 && $this->getCreateDateDiffWithNow() > intval(\crm\managers\SettingManager::getInstance()->getSetting('external_products_days_diff_for_created_date'));
         }
 
         private function getCreateDateDiffWithNow() {
-            return round(abs(strtotime(date('Y-m-d H:i:s'))-strtotime($this->getCreatedAt()))/86400);
+            return round(abs(strtotime(date('Y-m-d H:i:s')) - strtotime($this->getCreatedAt())) / 86400);
         }
-        
+
         public function getCarrierTrackingUrl() {
             $trackingNumber = $this->getTrackingNumber();
             if (strpos(strtolower($this->getShippingCarrier()), 'usps') !== false) {
@@ -98,7 +100,6 @@ namespace crm\dal\dto {
             }
             return false;
         }
-        
 
     }
 

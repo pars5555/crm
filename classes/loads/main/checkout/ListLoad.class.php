@@ -11,13 +11,13 @@
 
 namespace crm\loads\main\checkout {
 
+    use crm\dal\dto\PurseOrderDto;
     use crm\loads\AdminLoad;
     use crm\managers\AttachmentManager;
     use crm\managers\PurchaseOrderManager;
     use crm\managers\PurseOrderManager;
     use crm\managers\RecipientManager;
     use crm\managers\SettingManager;
-    use NGS;
 
     class ListLoad extends AdminLoad {
 
@@ -84,6 +84,7 @@ namespace crm\loads\main\checkout {
 
 
             $this->addParam('recipients', RecipientManager::getInstance()->selectAdvance('*', [], ['first_name', 'last_name']));
+            $this->addParam('checkout_order_statuses', PurseOrderDto::CHECKOUT_ORDER_STATUSES);
         }
 
         public static function initFilters($limit = 10000, $load = null) {

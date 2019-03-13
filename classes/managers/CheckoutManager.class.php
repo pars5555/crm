@@ -24,6 +24,7 @@ namespace crm\managers {
         const CHECKOUT_SET_TRACKING_ACTION_PATH = "/_sys_/orders/SetTracking";
         const CHECKOUT_SET_AMAZON_ORDER_NUMBER_ACTION_PATH = "/_sys_/orders/SetAmazonOrderNumber";
         const CHECKOUT_CHANGE_UNIT_ADDRESS_ACTION_PATH = "/_sys_/orders/ChangeUnitAddress";
+        const CHECKOUT_CHANGE_ORDER_STATUS_ACTION_PATH = "/_sys_/orders/ChangeStatus";
 
         /**
          * Returns an singleton instance of this class
@@ -44,6 +45,12 @@ namespace crm\managers {
         public function changeCheckoutOrderCustomerUnitAddress($checkoutOrderId, $unitAddress) {
             $urlParams = ['order_id' => $checkoutOrderId, 'unit_address' => $unitAddress];
             $actionPath = self::CHECKOUT_CHANGE_UNIT_ADDRESS_ACTION_PATH . '?' . http_build_query($urlParams);
+            return $this->returnCheckoutResponse($actionPath);
+        }
+        
+        public function setCheckoutOrderStatus($checkoutOrderId, $status) {
+            $urlParams = ['order_id' => $checkoutOrderId, 'status' => $status];
+            $actionPath = self::CHECKOUT_CHANGE_ORDER_STATUS_ACTION_PATH . '?' . http_build_query($urlParams);
             return $this->returnCheckoutResponse($actionPath);
         }
         

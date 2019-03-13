@@ -36,6 +36,7 @@
                 <th> % </th>
                 <th> Buyer </th>
                 <th> Status </th>
+                <th> Checkout Status </th>
                 <th> Note </th>
                 <th> S/N </th>
                 <th> amazon Order Number </th>
@@ -96,6 +97,7 @@
                     <td> {$order->getDiscount()} </td>
                     <td style="max-width: 70px;word-wrap: break-word"> {$order->getBuyerName()} </td>
                     <td> {$order->getStatus()} </td>
+                    <td class="f_selectable_cell" data-value="{$order->getCheckoutOrderStatus()}" data-field-name="checkout_order_status" data-template-select-id="checkout_order_status_select"> {$ns.checkout_order_statuses[$order->getCheckoutOrderStatus()]} </td>
                     <td class="table-cell f_editable_cell" data-field-name="note" data-type="richtext" style="min-width: 100px"> {$order->getNote()} </td>
                     <td class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </td>
                     <td class="table-cell f_editable_cell"  data-field-name="amazon_order_number">
@@ -142,4 +144,9 @@
         </div>
     </div>
 </div>
+        <select id='checkout_order_status_select' class="hidden" style="width: 120px" >
+    {foreach from=$ns.checkout_order_statuses key=status_id item=status_name}
+        <option value="{$status_id}">{$status_name}</option>
+    {/foreach}
+</select>
 

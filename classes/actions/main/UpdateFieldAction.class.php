@@ -106,6 +106,10 @@ namespace crm\actions\main {
                 case 'amazon_order_number':
                     $ret = CheckoutManager::getInstance()->setAmazonOrderNumber($checkoutOrderId, $fieldValue);
                     break;
+                case 'checkout_order_status':
+                    $ret = CheckoutManager::getInstance()->setCheckoutOrderStatus($checkoutOrderId, $fieldValue);
+                    $this->addParam('display_value', \crm\dal\dto\PurseOrderDto::CHECKOUT_ORDER_STATUSES[intval($fieldValue)]);
+                    break;
                 default:
                     break;
             }
