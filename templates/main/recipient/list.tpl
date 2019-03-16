@@ -24,6 +24,7 @@
                     {/if}
                 <th>Doc Number</th>
                     {*                <th>Doc Type</th>*}
+                <th>Social Id</th>
                 <th>Note</th>
                 <th>Favorite</th>
                 <th>Orders</th>
@@ -53,6 +54,7 @@
                     {/if}
                     <td>{$recipient->getDocumentNumber()}</td>
                     {*                    <td>{$recipient->getDocumentType()}</td>*}
+                    <td class="f_editable_cell" data-field-name="ssid">{$recipient->getSsid()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="note">{$recipient->getNote()}</td>
                     <td>
                         <input class="f_favorite_checkbox"
