@@ -116,6 +116,7 @@ namespace crm\actions\main {
                     break;
             }
             if ($ret === true) {
+                $this->addParam('success', true);
                 $this->addParam('value', $fieldValue);
                 return true;
             } else {

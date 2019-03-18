@@ -166,6 +166,7 @@ namespace crm\managers {
         public function confirmCheckoutOrder($id) {
             $dto = $this->selectByPk($id);
             $dto->setStatus('shipping');
+            $dto->setCheckoutOrderStatus(5);
             $this->updateByPk($dto);
             return $dto->getExternalProductNumber();
         }

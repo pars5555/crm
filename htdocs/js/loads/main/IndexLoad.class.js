@@ -112,16 +112,22 @@ NGS.createLoad("crm.loads.main.index", {
                             'object_type': object_type,
                             'field_name': cellFieldName,
                             "field_value": value}, function (ret) {
+                            if (ret.success === true){
                     cellElement.data('value', ret.value);
-                    selectElement.remove();
                     cellElement.html(ret.display_value);
+                }else{
+                    cellElement.data('value', value);
+                    cellElement.html(displayValue);
+                    
+                }
+                    selectElement.remove();
                 });
             });
         });
     },
     initEditableCells: function () {
         $(document).on('dblclick', '.f_editable_cell', function () {
-            var cellValues = $(this).text().trim();
+            var cellValue = $(this).text().trim();
             var cellFieldName = $(this).data('field-name');
             var cellListName = $(this).data('list');
             var type = $(this).data('type');
@@ -133,9 +139,9 @@ NGS.createLoad("crm.loads.main.index", {
 
             }
             if (type === 'richtext') {
-                var input = $('<textarea ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%;min-width:150px;min-height:50px" data-id="' + id + '" data-field-name="' + cellFieldName + '">' + cellValues.htmlEncode() + '</textarea>')
+                var input = $('<textarea ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%;min-width:150px;min-height:50px" data-id="' + id + '" data-field-name="' + cellFieldName + '">' + cellValue.htmlEncode() + '</textarea>')
             } else {
-                var input = $('<input list="' + cellListName + '" ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '" type="text" value="' + cellValues.htmlEncode() + '"/>')
+                var input = $('<input list="' + cellListName + '" ondblclick="event.preventDefault();event.stopPropagation();" style="width:100%;height:100%" data-id="' + id + '" data-field-name="' + cellFieldName + '" type="text" value="' + cellValue.htmlEncode() + '"/>')
             }
 
             $(this).html(input);
