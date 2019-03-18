@@ -61,9 +61,7 @@
                             <span class="fa fa-envelope" style="color: red">{$order->getUnreadMessages()}</span>
                         {/if}
                         <br/>
-                        {if $order->getExternal() == 1}
-                            <a href="javascript:void(0);" id="delete_{$order->getId()}" class="fa fa-trash fa-2x f_delete" data-id='{$order->getId()}'></a>
-                        {/if}
+                        
                         {if $ns.problematic == 1 || $order->isDelayed()}
                             <a href="javascript:void(0);" id="problem_solved_{$order->getId()}" class="fa fa-check-circle fa-2x f_problem_solved" data-id='{$order->getId()}'></a>
                         {/if}
