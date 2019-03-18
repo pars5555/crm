@@ -49,10 +49,11 @@
             </select>
         </div>
         <div class="filter">
-            <label>Show Hiddens</label>
-            <select name="hddn">
-                <option value="all" {if $ns.selectedFilterHidden == 'all'}selected{/if}>All</option>
-                <option value="no" {if $ns.selectedFilterHidden == 'no'}selected{/if}>No</option>
+            <label>Active/Archive</label>
+            <select name="chst">
+                <option value="all" {if $ns.selectedFilterCheckoutStatus== 'all'}selected{/if}>All</option>
+                <option value="active" {if $ns.selectedFilterCheckoutStatus == 'active'}selected{/if}>Active Only</option>
+                <option value="inactive" {if $ns.selectedFilterCheckoutStatus == 'inactive'}selected{/if}>Archive Only</option>
             </select>
         </div>
         <div class="filter">

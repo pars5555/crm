@@ -119,10 +119,10 @@ namespace crm\loads\main\checkout {
                     $selectedFilterSortByAscDesc = strtoupper(NGS()->args()->ascdesc);
                 }
             }
-            $selectedFilterHidden = 'no';
-            if (isset(NGS()->args()->hddn)) {
-                if (in_array(strtolower(NGS()->args()->hddn), ['all', 'no'])) {
-                    $selectedFilterHidden = strtolower(NGS()->args()->hddn);
+            $selectedFilterCheckoutStatus = 'active';
+            if (isset(NGS()->args()->chst)) {
+                if (in_array(strtolower(NGS()->args()->chst), ['all', 'active', 'inactive'])) {
+                    $selectedFilterCheckoutStatus = strtolower(NGS()->args()->chst);
                 }
             }
             $selectedFilterAccount = 'all';
@@ -164,7 +164,7 @@ namespace crm\loads\main\checkout {
                 $problematic = 0;
                 $searchText = '';
                 $selectedFilterAccount = '';
-                $selectedFilterHidden = 'no';
+                $selectedFilterCheckoutStatus = 'active';
                 $selectedFilterStatus = 'all';
                 $selectedFilterShippingType = 'all';
                 $orderType = 'all';
@@ -177,7 +177,7 @@ namespace crm\loads\main\checkout {
                 $load->addParam('searchText', $searchText);
                 $load->addParam('selectedFilterRecipientId', $selectedFilterRecipientId);
                 $load->addParam('selectedFilterAccount', $selectedFilterAccount);
-                $load->addParam('selectedFilterHidden', $selectedFilterHidden);
+                $load->addParam('selectedFilterCheckoutStatus', $selectedFilterCheckoutStatus);
                 $load->addParam('selectedFilterStatus', $selectedFilterStatus);
                 $load->addParam('selectedFilterShippingType', $selectedFilterShippingType);
                 $load->addParam('orderType', $orderType);
@@ -196,8 +196,11 @@ namespace crm\loads\main\checkout {
             if ($selectedFilterStatus === 'inactive') {
                 $where = array_merge($where, ['AND ', 'status', 'not in', $activeStatusesSql]);
             }
-            if ($selectedFilterHidden !== 'all') {
-                $where = array_merge($where, ['AND ', 'hidden', '=', 0]);
+            if ($selectedFilterCheckoutStatus === 'active') {
+                $where = array_merge($where, ['AND ', 'checkout_order_status', '<', 20]);
+            }
+            if ($selectedFilterCheckoutStatus === 'inactive') {
+                $where = array_merge($where, ['AND ', 'checkout_order_status', '>=', 20]);
             }
             if ($selectedFilterShippingType !== 'all') {
                 $where = array_merge($where, ['AND ', 'shipping_type', '=', "'$selectedFilterShippingType'"]);
