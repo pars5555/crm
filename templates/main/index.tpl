@@ -17,6 +17,24 @@
                 <div class="content" id="indexRightContent">
                     {nest ns=content}
                 </div>
+
+
+                <div id="confirm_modalBox" class="modal modal-medium">
+                    <div class="modal-container">
+                        <div class="modal-inner-container ">
+                            <span id='popup_close_btn' class="modal-close f_modal-close">
+                                <span class="close-icon1"></span>
+                                <span class="close-icon2"></span>
+                            </span>
+                            <h1 class="modal-headline" id='confirm_dlg_headline'></h1>
+                            <h3 id='confirm_dlg_message'></h3>
+                            <a href="javascript:void(0);" id="popup_confirm_btn" class="button blue">Confirm</a>
+                            <a href="javascript:void(0);" id="popup_cancel_btn" class="button grey">Cancel</a>
+                            <input id="confirm_item_id" type="hidden"/>
+                            <input id="confirm_tmp_val" type="hidden"/>
+                        </div>
+                    </div>
+                </div>
             </section>
             <footer class="footer">
                 {include file="./util/footer.tpl"}

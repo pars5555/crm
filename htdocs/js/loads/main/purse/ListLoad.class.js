@@ -139,9 +139,11 @@ NGS.createLoad("crm.loads.main.purse.list", {
     },
     initDelete: function () {
         $('.f_delete').click(function () {
-            var id = $(this).data('id');
-            $(this).closest('tr').remove();
-            NGS.action('crm.actions.main.purse.delete', {id: id});
+            var row = $(this);
+            Modals.showConfirmDlg('Confirm','are you sure you want to delete order?', null, null, function () {
+                $(row).closest('tr').remove();
+                NGS.action('crm.actions.main.purse.delete', {id: row.closest('tr').data('id')});
+            });
         });
     },
     initSolveProblematic: function () {

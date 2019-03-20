@@ -61,7 +61,7 @@
                             <span class="fa fa-envelope" style="color: red">{$order->getUnreadMessages()}</span>
                         {/if}
                         <br/>
-                        
+
                         {if $ns.problematic == 1 || $order->isDelayed()}
                             <a href="javascript:void(0);" id="problem_solved_{$order->getId()}" class="fa fa-check-circle fa-2x f_problem_solved" data-id='{$order->getId()}'></a>
                         {/if}
@@ -142,7 +142,7 @@
         </div>
     </div>
 </div>
-        <select id='checkout_order_status_select' class="hidden" style="width: 120px" >
+<select id='checkout_order_status_select' class="hidden" style="width: 120px" >
     {foreach from=$ns.checkout_order_statuses key=status_id item=status_name}
         <option value="{$status_id}">{$status_name}</option>
     {/foreach}
