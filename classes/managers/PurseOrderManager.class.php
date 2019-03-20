@@ -485,16 +485,11 @@ namespace crm\managers {
             $rows2 = $this->selectAdvance('*', $where);
             return array_merge($rows1, $rows2);
         }
-
-        public function getOrders($where = [1, '=', 1], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null, $checoutOnly = false) {
-            if (!empty($checoutOnly)) {
-                $where = $where = array_merge($where, ['AND', 'checkout_order_id', '>', 0]);
-            } else {
-                $where = $where = array_merge($where, ['AND', 'checkout_order_id', 'IS NULL']);
-            }
+        
+        public function getOrders($where = [1, '=', 1], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             return $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit, true);
         }
-
+       
         public function getInactiveOrders($token) {
             $headers = $this->getPurseHeader($token);
             $rawData = $this->curl_get_contents('https://api.purse.io/api/v1/orders/me/inactive', $headers);

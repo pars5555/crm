@@ -18,7 +18,7 @@ NGS.createLoad("crm.loads.main.checkout.list", {
         $('#productFilters').find('select').change(function () {
             $('#productFilters').trigger('submit');
         });
-        $('#productFilters').find('input[name="pr"]').change(function () {
+        $('#productFilters').find('input[name="pr"], input[name="vu"]').change(function () {
             $('#productFilters').trigger('submit');
         });
 

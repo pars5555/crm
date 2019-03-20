@@ -30,7 +30,8 @@ namespace crm\loads\main\checkout {
             if ($problematic == 1) {
                 $orders = PurseOrderManager::getInstance()->getProblematicOrders($where, true);
             } else {
-                $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit, true);
+                
+                $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             }
             $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
 
@@ -85,6 +86,13 @@ namespace crm\loads\main\checkout {
 
             $this->addParam('recipients', RecipientManager::getInstance()->selectAdvance('*', [], ['first_name', 'last_name']));
             $this->addParam('checkout_order_statuses', PurseOrderDto::CHECKOUT_ORDER_STATUSES);
+
+
+            $u1 = SettingManager::getInstance()->getSetting('onex_unit_address');
+            $u2 = SettingManager::getInstance()->getSetting('nova_unit_address');
+            $u3 = SettingManager::getInstance()->getSetting('globbing_unit_address');
+            $u4 = SettingManager::getInstance()->getSetting('shipex_unit_address');
+            $this->addParam('virtual_unit_addresses', [$u1, $u2, $u3, $u4]);
         }
 
         public static function initFilters($limit = 10000, $load = null) {
@@ -141,6 +149,10 @@ namespace crm\loads\main\checkout {
             if (isset(NGS()->args()->rcpt)) {
                 $selectedFilterRecipientId = intval(NGS()->args()->rcpt);
             }
+            $showUnitAddressesOrdersOnly = 0;
+            if (isset(NGS()->args()->vu)) {
+                $showUnitAddressesOrdersOnly = intval(NGS()->args()->vu);
+            }
             $orderType = 'all';
             if (isset(NGS()->args()->tp)) {
                 $orderType = strtolower(NGS()->args()->tp);
@@ -170,10 +182,12 @@ namespace crm\loads\main\checkout {
                 $orderType = 'all';
                 $selectedFilterRecipientId = 0;
                 $offset = 0;
+                $showUnitAddressesOrdersOnly = 0;
                 $selectedFilterPage = 1;
             }
             if (!empty($load)) {
                 $load->addParam('problematic', $problematic);
+                $load->addParam('showUnitAddressesOrdersOnly', $showUnitAddressesOrdersOnly);
                 $load->addParam('searchText', $searchText);
                 $load->addParam('selectedFilterRecipientId', $selectedFilterRecipientId);
                 $load->addParam('selectedFilterAccount', $selectedFilterAccount);
@@ -212,6 +226,13 @@ namespace crm\loads\main\checkout {
             if ($selectedFilterRecipientId > 0) {
                 $recipientUnitAddressesSql = RecipientManager::getInstance()->getRecipientUnitAddresses($selectedFilterRecipientId, true);
                 $where = array_merge($where, ['AND ', 'unit_address', 'in', $recipientUnitAddressesSql]);
+            }
+            if ($showUnitAddressesOrdersOnly == 1) {
+                $fakeRecipientUnitAddressesSql = RecipientManager::getInstance()->getFakeRecipientUnitAddressesSql();
+                $where = array_merge($where, ['AND', 'unit_address', 'in', "($fakeRecipientUnitAddressesSql)"]);
+                    
+            }else{
+                $where = array_merge($where, ['AND', 'checkout_order_id', '>', 0]);
             }
             $words = [];
             if (!empty($searchText)) {

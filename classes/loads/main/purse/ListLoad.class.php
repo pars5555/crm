@@ -43,6 +43,7 @@ namespace crm\loads\main\purse {
                     $idsArray = \crm\managers\PurseOrderHistoryManager::getInstance()->getLast12HoursChangedOrderIds();
                     $orders = PurseOrderManager::getInstance()->selectByPKs($idsArray);
                 } else {
+                    $where = array_merge($where, ['AND', 'checkout_order_id', 'IS NULL']);
                     $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
                 }
                 $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();

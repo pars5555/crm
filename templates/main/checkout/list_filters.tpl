@@ -58,7 +58,11 @@
         </div>
         <div class="filter">
             <label>Problematic</label>
-            <input name="pr" type="checkbox" name="pr" {if $ns.problematic == 1}checked{/if} value="1"/>
+            <input type="checkbox" name="pr" {if $ns.problematic == 1}checked{/if} value="1"/>
+        </div>
+        <div class="filter">
+            <label>Show only thease units ({', '|implode:$virtual_unit_addresses})</label>
+            <input type="checkbox" name="vu" {if $ns.showUnitAddressesOrdersOnly == 1}checked{/if} value="1"/>
         </div>
     </div>
 
