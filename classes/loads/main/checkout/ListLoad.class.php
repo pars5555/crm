@@ -75,7 +75,9 @@ namespace crm\loads\main\checkout {
             $this->addParam('orders', $orders);
 
             $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($orders, 'btc');
+            $checkoutAttachments = AttachmentManager::getInstance()->getEntitiesAttachments($orders, 'checkout');
             $this->addParam('attachments', $attachments);
+            $this->addParam('checkout_attachments', $checkoutAttachments);
 
             $pos = PurchaseOrderManager::getInstance()->getBtcPurchaseOrders($orders);
             $this->addParam('btc_purchase_orders', $pos);

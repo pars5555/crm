@@ -24,7 +24,16 @@ namespace crm\actions\attachment {
             if (empty($attachment)) {
                 die("File not found");
             }
-            $file = DATA_DIR . DIRECTORY_SEPARATOR . 'attachments' . DIRECTORY_SEPARATOR . $attachment->getEntityName() . DIRECTORY_SEPARATOR . $attachment->getFileName();
+            if ($attachment->getEntityName() === 'checkout') {
+                $order = \crm\managers\PurseOrderManager::getInstance()->selectByPk($attachment->getEntityId());
+                $checkoutOrderId = $order->getCheckoutOrderId();
+                if (empty($checkoutOrderId)) {
+                    return;
+                }
+                $file = CHECKOUT_DATA_DIR . DIRECTORY_SEPARATOR . 'orders' . DIRECTORY_SEPARATOR . $checkoutOrderId . DIRECTORY_SEPARATOR . 'pictures' . DIRECTORY_SEPARATOR . $attachment->getFileName();
+            } else {
+                $file = DATA_DIR . DIRECTORY_SEPARATOR . 'attachments' . DIRECTORY_SEPARATOR . $attachment->getEntityName() . DIRECTORY_SEPARATOR . $attachment->getFileName();
+            }
             unlink($file);
             \crm\managers\AttachmentManager::getInstance()->deleteByPk($id);
         }

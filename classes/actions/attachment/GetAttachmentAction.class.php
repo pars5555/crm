@@ -25,6 +25,14 @@ namespace crm\actions\attachment {
                 die("File not found");
             }
             $fileName = $attachment->getUploadedFileName();
+            if ($attachment->getEntityName()  === 'checkout') {
+                $order = \crm\managers\PurseOrderManager::getInstance()->selectByPk($attachment->getEntityId());
+                $checkoutOrderId = $order->getCheckoutOrderId();
+                if (empty($checkoutOrderId)) {
+                    return;
+                }
+                $file = CHECKOUT_DATA_DIR . DIRECTORY_SEPARATOR . 'orders' . DIRECTORY_SEPARATOR . $checkoutOrderId . DIRECTORY_SEPARATOR . 'pictures'. DIRECTORY_SEPARATOR . $attachment->getFileName();
+            }
             $file = DATA_DIR . DIRECTORY_SEPARATOR . 'attachments' . DIRECTORY_SEPARATOR . $attachment->getEntityName() . DIRECTORY_SEPARATOR . $attachment->getFileName();
             $mime = mime_content_type($file);
             header("Content-Disposition: attachment; filename=" . $fileName);

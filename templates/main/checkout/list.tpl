@@ -65,7 +65,7 @@
                         {if $ns.problematic == 1 || $order->isDelayed()}
                             <a href="javascript:void(0);" id="problem_solved_{$order->getId()}" class="fa fa-check-circle fa-2x f_problem_solved" data-id='{$order->getId()}'></a>
                         {/if}
-                        {if isset($ns.attachments[$order->getId()])}
+                        {if isset($ns.attachments[$order->getId()]) || isset($ns.checkout_attachments[$order->getId()])}
                             <img src="{$SITE_PATH}/img/attachment.png" width="32"/>
                         {/if}
                     </td>

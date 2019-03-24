@@ -23,7 +23,8 @@ namespace crm\loads\main\purse {
             $order = PurseOrderManager::getInstance()->selectByPk($orderId);
             $this->addParam('order', $order);
             $attachments = AttachmentManager::getInstance()->getEntityAttachments($orderId, 'btc');
-            $this->addParam('attachments', $attachments);
+            $checkoutAttachments = AttachmentManager::getInstance()->getEntityAttachments($orderId, 'checkout');
+            $this->addParam('attachments', array_merge($attachments, $checkoutAttachments));
         }
 
         public function getTemplate() {

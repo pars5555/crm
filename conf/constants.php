@@ -34,6 +34,7 @@ if (isLinux()) {
 }
 
 define('DATA_DIR', $dataDir . '/crm_data');
+define('CHECKOUT_DATA_DIR', $dataDir . '/checkout_data');
 
 function isLinux() {
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {

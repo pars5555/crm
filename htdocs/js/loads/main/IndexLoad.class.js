@@ -75,6 +75,13 @@ NGS.createLoad("crm.loads.main.index", {
             $('#upload_attachment_form').trigger('submit');
 
         });
+        $('#select_attachment_checkout_button').click(function () {
+            $('#file_input_checkout').trigger('click');
+        });
+        $('#file_input_checkout').change(function () {
+            $('#upload_attachment_checkout_form').trigger('submit');
+
+        });
         $('.f_remove_attachment').click(function () {
 
             NGS.action('crm.actions.attachment.delete_attachment',
