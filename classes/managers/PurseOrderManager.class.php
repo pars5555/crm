@@ -318,6 +318,16 @@ namespace crm\managers {
             }
         }
 
+        public function changeCheckoutOrderStatus($orderId, $status) {
+            $dto = $this->selectByField('checkout_order_id', $orderId);
+            if (!empty($dto)) {
+                $this->updateField($dto[0]->getId(), 'checkout_order_status', $status);
+                var_dump($dto[0]->getId());exit;
+                return true;
+            }
+            return false;
+        }
+
         public function addCheckoutOrder($orderId, $shipping_carrier, $customer_name, $asin, $productName, $qty, $price, $unitAddress, $imageUrl, $external = 1) {
             $carrierUnitAddress = SettingManager::getInstance()->getSetting($shipping_carrier . '_unit_address');
             $id = $this->addManualOrder($productName, $qty, $price, $carrierUnitAddress, $imageUrl, $external, $asin);
@@ -485,11 +495,11 @@ namespace crm\managers {
             $rows2 = $this->selectAdvance('*', $where);
             return array_merge($rows1, $rows2);
         }
-        
+
         public function getOrders($where = [1, '=', 1], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             return $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit, true);
         }
-       
+
         public function getInactiveOrders($token) {
             $headers = $this->getPurseHeader($token);
             $rawData = $this->curl_get_contents('https://api.purse.io/api/v1/orders/me/inactive', $headers);
