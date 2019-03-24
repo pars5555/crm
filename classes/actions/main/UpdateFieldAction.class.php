@@ -68,8 +68,8 @@ namespace crm\actions\main {
                     break;
             }
             if ($objectType === 'checkout') {
-                if (!$this->handleCheckoutOrdersChanged($manager, $id, $fieldName, $fieldValue)){
-                    return ;
+                if (!$this->handleCheckoutOrdersChanged($manager, $id, $fieldName, $fieldValue)) {
+                    return;
                 }
             }
 
@@ -109,6 +109,18 @@ namespace crm\actions\main {
                     break;
                 case 'checkout_order_status':
                     $ret = CheckoutManager::getInstance()->setCheckoutOrderStatus($checkoutOrderId, $fieldValue);
+                    if ($ret === true && $fieldValue < 10) {
+                        $purseManager->updateField($rowId, 'status', 'open');
+                    }
+                    if ($ret === true && $fieldValue >= 10 && $fieldValue <= 15) {
+                        $purseManager->updateField($rowId, 'status', 'shipping');
+                    }
+                    if ($ret === true && $fieldValue == 25) {
+                        $purseManager->updateField($rowId, 'status', 'canceled');
+                    }
+                    if ($ret === true && $fieldValue > 25) {
+                        $purseManager->updateField($rowId, 'status', 'finished');
+                    }
                     $this->addParam('display_value', \crm\dal\dto\PurseOrderDto::CHECKOUT_ORDER_STATUSES[intval($fieldValue)]);
                     break;
                 default:
