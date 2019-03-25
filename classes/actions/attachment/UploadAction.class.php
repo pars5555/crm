@@ -31,7 +31,7 @@ namespace crm\actions\attachment {
             }
             $array = explode('.', $fileName);
             $extension = end($array);
-            $fname = str_repeat('.', '', uniqid('att_', true)) . '.' . $extension;
+            $fname = str_replace('.', '', uniqid('att_', true)) . '.' . $extension;
 
             $rowId = \crm\managers\AttachmentManager::getInstance()->addRow($partnerId, $entityName, $entityId, $fileName, $fname);
             $fileFullPathToMove = $attachmentDirectory . DIRECTORY_SEPARATOR . $fname;
