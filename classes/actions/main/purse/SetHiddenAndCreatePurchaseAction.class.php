@@ -26,7 +26,7 @@ namespace crm\actions\main\purse {
 
         public function service() {
             $id = intval(NGS()->args()->id);
-            $tax = floatval(NGS()->args()->tax);
+            
             $products = json_decode(NGS()->args()->products);
             $partnerId = SettingManager::getInstance()->getSetting('external_supplier_partner_id');
             $external_1kg_shipping_cost = floatval(SettingManager::getInstance()->getSetting('external_1kg_shipping_cost'));
@@ -36,6 +36,7 @@ namespace crm\actions\main\purse {
                 if ($productId == -1) {
                     continue;
                 }
+                $tax = floatval($product->tax);
                 if (!$poId){
                     $poId = PurchaseOrderManager::getInstance()->createPurchaseOrder(
                         $partnerId, date('Y-m-d H:i:s'), date('Y-m-d'), 'Purchase order for external order id: ' . $id, 1, $id);
