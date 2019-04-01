@@ -266,6 +266,9 @@ namespace crm\managers {
                         $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
                     }
                     if ($lineId == 0) {
+                        $lineId = $this->findFirstNonZeroQuantityLineId($productPurchaseOrderLines);
+                    }
+                    if ($lineId == 0) {
                         throw new InsufficientProductException($this->calculationProductId);
                     }
                     $pol = $productPurchaseOrderLines[$lineId];
