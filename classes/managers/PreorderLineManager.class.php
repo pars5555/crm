@@ -94,13 +94,13 @@ namespace crm\managers {
             $dto->setQuantity($quantity);
             $dto->setUnitPrice($unitPrice);
             $dto->setCurrencyId($currencyId);
-            $po = PreorderManager::getInstance()->selectByPk($preorderId);
-            $orderDate = $po->getOrderDate();
+            $preorder = PreorderManager::getInstance()->selectByPk($preorderId);
+            $orderDate = $preorder->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
             $ret = $this->insertDto($dto);
             ProductManager::getInstance()->updateProductCostForOneUnit($productId);
-            PartnerManager::getInstance()->setPartnerHidden($po->getPartnerId(), 0);
+            PartnerManager::getInstance()->setPartnerHidden($preorder->getPartnerId(), 0);
             return $ret;
         }
 
