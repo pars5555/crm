@@ -88,7 +88,9 @@
                                                         {/if}
                                                         {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})</td>
 
-                                                    <td> <img src="{$order->getImageUrl()}" width="100"/> </td>
+                                                    <td> 
+                                                        <img src="{$order->getImageUrl()}" width="100"/>
+                                                        <a target="_blank" href="{$order->getCheckoutOrderProductLink()}"><img src="{$SITE_PATH}/img/link.png" width="32"/></a> </td>
                                                     <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="quantity"> {$order->getQuantity()} </td>
                                                     <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="product_name">
                                                         <a class="link " target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getProductName()}</a>

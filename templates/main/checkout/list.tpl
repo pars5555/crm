@@ -83,15 +83,19 @@
                     </td>
                     <td class="f_editable_cell" data-field-name="checkout_customer_unit_address"> 
                         {$order->getCheckoutCustomerName()} {$order->getCheckoutCustomerUnitAddress()}
+                        {$order->getCheckoutOrderMetadataProperty('user_object->email')}
                         <a class="button blue f_confirm_order" data-id="{$order->getId()}">Confirm</a>
                     </td>
 
-                    <td> <img src="{$order->getImageUrl()}" width="100"/> </td>
+                    <td> 
+                        <img src="{$order->getImageUrl()}" width="100"/>
+                        <a target="_blank" href="{$order->getCheckoutOrderProductLink()}"><img src="{$SITE_PATH}/img/link.png" width="32"/></a> </td>
+
                     <td > {$order->getQuantity()} </td>
                     <td >
                         <a class="link " target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getProductName()}</a>
                     </td>
-                    <td> {$order->getAmazonTotal()} </td>
+                    <td> {$order->getAmazonTotal()} <br> ({$order->getCheckoutOrderMetadataProperty('order_total_amount')})</td>
                     <td> {$order->getDiscount()} </td>
                     <td style="max-width: 70px;word-wrap: break-word"> {$order->getBuyerName()} </td>
                     <td> {$order->getStatus()} </td>

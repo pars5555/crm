@@ -30,7 +30,8 @@ namespace crm\actions\api\checkout {
             $qty = max(intval(NGS()->args()->qty), 1);
             $price = floatval(NGS()->args()->price);
             $imageUrl = trim(NGS()->args()->image_url);
-            PurseOrderManager::getInstance()->addCheckoutOrder($orderId, $shipping_carrier, $customer_name, $asin, $productName, $qty, $price, $unitAddress, $imageUrl, 0);
+            $metadata = trim(NGS()->args()->metadata);
+            PurseOrderManager::getInstance()->addCheckoutOrder($orderId, $shipping_carrier, $customer_name, $asin, $productName, $qty, $price, $unitAddress, $imageUrl, $metadata);
         }
 
         public function getRequestGroup() {

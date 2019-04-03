@@ -23,6 +23,7 @@ namespace crm\dal\dto {
         const CHECKOUT_ORDER_STATUSES = [0 => 'waitin_for_payment', 5 => 'confirmed', 10 => 'processing', 15 => 'purchased', 20 => 'cancelled', 25 => 'done'];
 
         private $histores = [];
+        private $checkoutObjectData = null;
         // Map of DB value to Field value
         private $mapArray = array("id" => "id", "order_number" => "orderNumber", "amazon_order_number" => "amazonOrderNumber",
             "delivery_date" => "deliveryDate", "carrier_delivery_date" => "carrierDeliveryDate", "unit_address" => "unitAddress",
@@ -37,6 +38,7 @@ namespace crm\dal\dto {
             'checkout_order_id' => 'checkoutOrderId',
             'checkout_customer_name' => 'checkoutCustomerName',
             'checkout_order_status' => 'checkoutOrderStatus',
+            'checkout_order_metadata' => 'checkoutOrderMetadata',
             'external_merchant_name' => 'externalMerchantName',
             'external_product_number' => 'externalProductNumber'
         );
@@ -82,6 +84,41 @@ namespace crm\dal\dto {
                 $ret[] = $history->getAmazonOrderNumber() . ' (' . $history->getCreatedAt() . ')';
             }
             return implode('&#013;', $ret);
+        }
+
+        function getCheckoutOrderProductLink() {
+
+            switch (strtolower($this->getCheckoutOrderMetadataProperty('external_website_name', ''))) {
+                case 'newegg':
+                    return "https://www.newegg.com/Product/Product.aspx?Item=" . $this->external_product_number;
+                default:
+                    return "https://amazon.com/dp/" . $this->external_product_number . '?th=1&psc=1';
+            }
+        }
+
+        function getCheckoutOrderMetadataProperty($propertyName, $defaultValue = "") {
+            $checkoutOrderObject = $this->getCheckoutOrderObject();
+            if (empty($checkoutOrderObject)) {
+                return $defaultValue;
+            }
+            $perpetyList = explode('->', $propertyName);
+            foreach ($perpetyList as $pName) {
+                if (!isset($checkoutOrderObject->$pName))
+                {
+                    return $defaultValue;
+                }
+                $checkoutOrderObject = $checkoutOrderObject->$pName;
+            }
+            return $checkoutOrderObject;
+        }
+
+        private function getCheckoutOrderObject() {
+            if (empty($this->checkoutObjectData)) {
+                if (!empty($this->checkout_order_metadata)) {
+                    $this->checkoutObjectData = json_decode($this->checkout_order_metadata);
+                }
+            }
+            return $this->checkoutObjectData;
         }
 
         function hasMoreThanOneAmazonOrder() {

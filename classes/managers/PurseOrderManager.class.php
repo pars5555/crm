@@ -328,12 +328,13 @@ namespace crm\managers {
             return false;
         }
 
-        public function addCheckoutOrder($orderId, $shipping_carrier, $customer_name, $asin, $productName, $qty, $price, $unitAddress, $imageUrl, $external = 1) {
+        public function addCheckoutOrder($orderId, $shipping_carrier, $customer_name, $asin, $productName, $qty, $price, $unitAddress, $imageUrl, $metadata) {
             $carrierUnitAddress = SettingManager::getInstance()->getSetting($shipping_carrier . '_unit_address');
-            $id = $this->addManualOrder($productName, $qty, $price, $carrierUnitAddress, $imageUrl, $external, $asin);
+            $id = $this->addManualOrder($productName, $qty, $price, $carrierUnitAddress, $imageUrl, 0, $asin);
             $dto = $this->selectByPk($id);
             $dto->setCheckoutCustomerName($customer_name);
             $dto->setCheckoutOrderId($orderId);
+            $dto->setCheckoutOrderMetadata($metadata);
             $dto->setStatus('open');
             $dto->setCheckoutCustomerUnitAddress($unitAddress);
             $this->updateByPk($dto);
