@@ -7,7 +7,8 @@
         {/if}
         <a target="_blank" href="{$SITE_PATH}/dyn/attachment/do_get_attachment?id={$attachment->getId()}">
             <div class="left " style="margin:10px;border:1px solid gray">
-                <img src="{$SITE_PATH}/img/attachment.png" width="50"/>
+               
+                <img src="{$attachment->getImageHref()}" width="100"/>
                 {$attachment->getUploadedFileName()}
                 <a class="button_icon f_remove_attachment link" data-id="{$attachment->getId()}" title="delete attachment">
                     <i class="fa fa-trash-o"></i>
