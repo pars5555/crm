@@ -26,6 +26,18 @@ namespace crm\dal\dto {
         public function getMapArray() {
             return $this->mapArray;
         }
+        
+        public function getImageHref() {
+            if ($this->getEntityName() === 'checkout'){
+                $order = \crm\managers\PurseOrderManager::getInstance()->selectByPk($this->getEntityId());
+                $checkoutOrderId = $order->getCheckoutOrderId();
+                if (empty($checkoutOrderId)) {
+                    return "/img/attachment.png";
+                }
+                $fileName = $this->getFileName();
+                return "https://checkout.am/img/wh/$checkoutOrderId/pictures/$fileName";
+            }
+        }
 
 
     }
