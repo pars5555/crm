@@ -105,7 +105,7 @@
                                                 {assign productName $p->getName()}
                                             {/if}
                                         {/foreach}
-                                        <select class="saleOrderLinesSelectProduct" title="{$productName}" style="max-width: 500px" disabled>
+                                        <select class="saleOrderLinesSelectProduct" title="{$productName|escape}" style="max-width: 500px" disabled>
                                             {foreach from=$ns.products item=p}
                                                 <option value="{$p->getId()}" {if $p->getId() == $saleOrderLine->getProductId()}selected{/if}>{$p->getName()}</option>
                                             {/foreach}
