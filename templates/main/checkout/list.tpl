@@ -49,6 +49,7 @@
                 <tr {if $order->getHidden()==1} style="background: lightgray;"{else}{if $order->isDelayed()} style="background: orange;"{/if}{if $order->getProblematic() == 1 && $order->getProblemSolved() == 0} style="background: yellow;"{/if}{/if} data-type="checkout" data-id="{$order->getId()}">
                     <td>
                         <a href="{$SITE_PATH}/btc/{$order->getId()}" class="link" target="_blank">{$order->getId()}</a><br/>
+                        {$order->getCheckoutOrderMetadataProperty('name')}
 
                         {if $order->getHidden()==0}
                             <a href="javascript:void(0);" class="fa fa-eye-slash fa-1x f_hide left" data-id='{$order->getId()}'></a>

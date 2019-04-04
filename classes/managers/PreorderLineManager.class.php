@@ -72,17 +72,19 @@ namespace crm\managers {
 
         public function updatePreorderLine($preorderId, $id, $productId, $quantity, $unitPrice, $currencyId) {
             $dto = $this->selectByPk($id);
-            $dto->setProductId($productId);
-            $dto->setQuantity($quantity);
-            $dto->setUnitPrice($unitPrice);
-            $dto->setCurrencyId($currencyId);
-            $po = PreorderManager::getInstance()->selectByPk($preorderId);
-            $orderDate = $po->getOrderDate();
-            $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
-            $dto->setCurrencyRate($rate);
-            ProductManager::getInstance()->updateProductCostForOneUnit($productId);
-            PartnerManager::getInstance()->setPartnerHidden($po->getPartnerId(), 0);
-            return $this->updateByPk($dto);
+            if (!empty($dto)) {
+                $dto->setProductId($productId);
+                $dto->setQuantity($quantity);
+                $dto->setUnitPrice($unitPrice);
+                $dto->setCurrencyId($currencyId);
+                $preorder = PreorderManager::getInstance()->selectByPk($preorderId);
+                $orderDate = $preorder->getOrderDate();
+                $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
+                $dto->setCurrencyRate($rate);
+                ProductManager::getInstance()->updateProductCostForOneUnit($productId);
+                PartnerManager::getInstance()->setPartnerHidden($preorder->getPartnerId(), 0);
+                return $this->updateByPk($dto);
+            }
         }
 
         public function createPreorderLine($preorderId, $productId, $quantity, $unitPrice, $currencyId) {
@@ -92,13 +94,13 @@ namespace crm\managers {
             $dto->setQuantity($quantity);
             $dto->setUnitPrice($unitPrice);
             $dto->setCurrencyId($currencyId);
-            $po = PreorderManager::getInstance()->selectByPk($preorderId);
-            $orderDate = $po->getOrderDate();
+            $preorder = PreorderManager::getInstance()->selectByPk($preorderId);
+            $orderDate = $preorder->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
             $ret = $this->insertDto($dto);
             ProductManager::getInstance()->updateProductCostForOneUnit($productId);
-            PartnerManager::getInstance()->setPartnerHidden($po->getPartnerId(), 0);
+            PartnerManager::getInstance()->setPartnerHidden($preorder->getPartnerId(), 0);
             return $ret;
         }
 
@@ -123,17 +125,15 @@ namespace crm\managers {
         }
 
         public function getLastDaysPreorders($days = 10) {
-            $pos = PreorderManager::getInstance()->selectAdvance('id', 
-                    ['cancelled', '=', 0, 'AND','ABS(DATEDIFF(DATE(`order_date`), DATE(now())))', '<=', $days], null, null, null, null, true);
-            if (empty($pos))
-            {
+            $pos = PreorderManager::getInstance()->selectAdvance('id', ['cancelled', '=', 0, 'AND', 'ABS(DATEDIFF(DATE(`order_date`), DATE(now())))', '<=', $days], null, null, null, null, true);
+            if (empty($pos)) {
                 return [];
             }
             $poIdsSql = '(' . implode(',', array_keys($pos)) . ')';
             $pols = $this->selectAdvance('product_id', ['preorder_id', 'in', $poIdsSql]);
             $ret = [];
             foreach ($pols as $pol) {
-                $ret[] = $pol->getProductId(); 
+                $ret[] = $pol->getProductId();
             }
             return $ret;
         }
