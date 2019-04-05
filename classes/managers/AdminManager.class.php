@@ -44,6 +44,10 @@ namespace crm\managers {
       return AdminMapper::getInstance()->getByUsernamePassword($username, md5($password));
     }
     
+    public function getById($id) {
+      return AdminMapper::getInstance()->selectByPk($id);
+    }
+    
     /**
      * get user by id and hash
      *

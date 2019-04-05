@@ -16,6 +16,9 @@ namespace crm\actions\login {
                 $this->redirect('login');
             }
             NGS()->getSessionManager()->login(UserGroups::$ADMIN, $adminDto->getId());
+            if ($adminDto->getType() == 'checkout') {
+                $this->redirect('/checkout/list');
+            }
             $this->redirect('');
         }
 

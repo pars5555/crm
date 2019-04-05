@@ -37,6 +37,8 @@ namespace crm\loads {
         public function initialize() {
             parent::initialize();
             $lm = TranslationManager::getInstance();
+            $adminId = NGS()->getSessionManager()->getUserId();
+            $this->addParam('user', \crm\managers\AdminManager::getInstance()->getById($adminId));
             $this->addParam('userId', NGS()->getSessionManager()->getUserId());
             $this->addParam('userType', NGS()->getSessionManager()->getUserType());
             $this->addParam('userTypeAdmin', UserGroups::$ADMIN);
