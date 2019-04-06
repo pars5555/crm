@@ -135,6 +135,9 @@ NGS.createLoad("crm.loads.main.index", {
     initEditableCells: function () {
         $(document).on('dblclick', '.f_editable_cell', function () {
             var cellValue = $(this).text().trim();
+            if ($(this).hasClass('f_empty_value')){
+                cellValue = "";
+            }
             var cellFieldName = $(this).data('field-name');
             var cellListName = $(this).data('list');
             var type = $(this).data('type');
