@@ -32,6 +32,7 @@ namespace crm\actions\api\checkout {
             $imageUrl = trim(NGS()->args()->image_url);
             $metadata = trim(NGS()->args()->metadata);
             PurseOrderManager::getInstance()->addCheckoutOrder($orderId, $shipping_carrier, $customer_name, $asin, $productName, $qty, $price, $unitAddress, $imageUrl, $metadata);
+            $this->addParam('success', true);
         }
 
         public function getRequestGroup() {

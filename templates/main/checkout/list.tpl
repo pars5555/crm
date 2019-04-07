@@ -46,20 +46,25 @@
             </tr>
 
             {foreach from=$ns.orders item=order}
-                <tr {if $order->getHidden()==1} style="background: lightgray;"{else}{if $order->isDelayed()} style="background: orange;"{/if}{if $order->getProblematic() == 1 && $order->getProblemSolved() == 0} style="background: yellow;"{/if}{/if} data-type="checkout" data-id="{$order->getId()}">
+                <tr {if $order->getHidden()==1} style="background: lightgray;"{else}{if $order->isDelayed()} style="background: orange;"{/if}{if $order->getProblematic() == 1 && $order->getProblemSolved() == 0} style="background: orange;"{/if}{/if} data-type="checkout" data-id="{$order->getId()}">
                     <td>
                         <a href="{$SITE_PATH}/btc/{$order->getId()}" class="link" target="_blank">{$order->getId()}</a><br/>
                         {$order->getCheckoutOrderMetadataProperty('name')}
-
-                        {if $order->getHidden()==0}
-                            <a href="javascript:void(0);" class="fa fa-eye-slash fa-1x f_hide left" data-id='{$order->getId()}'></a>
-                        {/if}
 
 
                         <a href="javascript:void(0);" {if $ns.problematic == 1}style="color: red"{/if} id="problematic_{$order->getId()}" class="fa fa-exclamation-triangle fa-1x f_problematic right" data-id='{$order->getId()}'></a>
                         <br/>
                         {if $order->getUnreadMessages() > 0}
                             <span class="fa fa-envelope" style="color: red">{$order->getUnreadMessages()}</span>
+                        {/if}
+                        {assign notifications $order->getCheckoutOrderMetadataProperty('notifications')}
+                        {assign notificationText ''}
+                        {if !empty($notifications)}
+                            
+                            {foreach from=$notifications item=notification}
+                                {assign notificationText "`$notificationText` `$notification->body` \r\n"}
+                            {/foreach}
+                            <span class="fa fa-2x fa-commenting" title="{$notificationText}" style="color: red">{count($notifications)}</span>
                         {/if}
                         <br/>
 
