@@ -283,6 +283,14 @@ namespace crm\managers {
             $xmlDoc = new \DOMDocument();
             $xmlDoc->loadHTML($content);
             $finder = new \DOMXPath($xmlDoc);
+            $exceptionFound = $finder->query("//*[contains(@class, 'grayExceptionBtn-group')]");
+            if ($exceptionFound->length > 0) {
+                $this->updateField($row->getId(), 'amazon_primary_status_text', 'Not found! maybe cancelled');
+                $this->updateField($row->getId(), 'status', 'canceled');
+                $this->updateField($row->getId(), 'cancelled_at', date('Y-m-d H:i:s'));
+                return;
+            }
+
             $ps = $finder->query("//*[@id='primaryStatus']");
             if ($ps->length > 0) {
                 $primaryStatusText = trim($ps->item(0)->nodeValue);
@@ -322,7 +330,8 @@ namespace crm\managers {
             $dto = $this->selectByField('checkout_order_id', $orderId);
             if (!empty($dto)) {
                 $this->updateField($dto[0]->getId(), 'checkout_order_status', $status);
-                var_dump($dto[0]->getId());exit;
+                var_dump($dto[0]->getId());
+                exit;
                 return true;
             }
             return false;
