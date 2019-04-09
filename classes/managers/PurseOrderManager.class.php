@@ -283,7 +283,7 @@ namespace crm\managers {
             $xmlDoc = new \DOMDocument();
             $xmlDoc->loadHTML($content);
             $finder = new \DOMXPath($xmlDoc);
-            $exceptionFound = $finder->query("//*[contains(@class, 'grayExceptionBtn-group')]");
+            $exceptionFound = $finder->query("//*[contains(@class, 'errorPage')]");
             if ($exceptionFound->length > 0) {
                 $this->updateField($row->getId(), 'amazon_primary_status_text', 'Not found! maybe cancelled');
                 $this->updateField($row->getId(), 'status', 'canceled');
