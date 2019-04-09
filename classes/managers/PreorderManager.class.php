@@ -135,6 +135,9 @@ namespace crm\managers {
 
         public function getPerndingPreordersText() {
             $pendingPreordersOrderIds = $this->getNotFinishedPreordersOrderIds();
+            if (empty($pendingPreordersOrderIds)){
+                return ['','',[]];
+            }
             $btcOrders = PurseOrderManager::getInstance()->selectByPKs($pendingPreordersOrderIds);
             $cancelledMessages = [];
             foreach ($btcOrders as $btcOrder) {
