@@ -26,15 +26,12 @@ namespace crm\loads\main\purse {
             $order = PurseOrderManager::getInstance()->selectByPk($id);
 
             $meta = json_decode($order->getMeta());
-            if (empty($meta) || !isset($meta->items) || empty($meta)) {
+            if (empty($meta) || !isset($meta->items)) {
                 $meta = new \stdClass();
                 $product = new \stdClass();
                 $product->name = $order->getProductName();
                 $product->quantity = intval($order->getQuantity());
-                $product->fiat_price = $order->getAmazonTotal() / intval(max($product->quantity, 1));
-                if ($order->getSupposedPurchasePrice() > 0) {
-                    $product->fiat_price = floatval($order->getSupposedPurchasePrice()) / intval(max($product->quantity, 1));
-                }
+                $product->fiat_price = $order->getAmazonTotal();
                 $meta->items = [$product];
             }
             $ret = [];
