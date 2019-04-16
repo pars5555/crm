@@ -72,6 +72,10 @@ namespace crm\loads\main\purse {
                     $totalPuposedToNotReceived += floatval($order->getAmazonTotal());
                 }
                 $this->addParam('total_puposed_to_not_received', $totalPuposedToNotReceived);
+
+                $all_merchant_names_list = explode(',', SettingManager::getInstance()->getSetting('all_merchant_names_list'));
+                $this->addParam('all_merchant_names_list', $all_merchant_names_list);
+
                 $this->addParam('not_received_orders_count', count($ordersPuposedToNotReceivedToDestinationCounty));
                 $this->addParam('searchedItemPuposedCount', $searchedItemCount);
                 $this->addParam('searchedItemCountThatHasTrackingNumber', $searchedItemCountThatHasTrackingNumber);
@@ -182,6 +186,10 @@ namespace crm\loads\main\purse {
             if (isset(NGS()->args()->acc)) {
                 $selectedFilterAccount = strtolower(NGS()->args()->acc);
             }
+            $selectedFilterMerchant= 'all';
+            if (isset(NGS()->args()->mrch)) {
+                $selectedFilterMerchant= strtolower(NGS()->args()->mrch);
+            }
             $selectedFilterStatus = 'active';
             if (isset(NGS()->args()->stts)) {
                 if (in_array(strtolower(NGS()->args()->stts), ['all', 'active', 'inactive'])) {
@@ -222,7 +230,8 @@ namespace crm\loads\main\purse {
                 $problematic = 0;
                 $new_changed = 0;
                 $searchText = '';
-                $selectedFilterAccount = '';
+                $selectedFilterAccount = 'all';
+                $selectedFilterMerchant= 'all';
                 $selectedFilterHidden = 'no';
                 $selectedFilterStatus = 'all';
                 $selectedFilterShippingType = 'all';
@@ -237,6 +246,7 @@ namespace crm\loads\main\purse {
                 $load->addParam('searchText', $searchText);
                 $load->addParam('selectedFilterRecipientId', $selectedFilterRecipientId);
                 $load->addParam('selectedFilterAccount', $selectedFilterAccount);
+                $load->addParam('selectedFilterMerchant', $selectedFilterMerchant);
                 $load->addParam('notRegOrdersInWarehouse', $regOrdersInWarehouse);
                 $load->addParam('selectedFilterHidden', $selectedFilterHidden);
                 $load->addParam('selectedFilterStatus', $selectedFilterStatus);
@@ -249,6 +259,9 @@ namespace crm\loads\main\purse {
             $where = ['1', '=', '1'];
             if ($selectedFilterAccount !== 'all') {
                 $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
+            }
+            if ($selectedFilterMerchant!== 'all') {
+                $where = array_merge($where, ['AND ', 'account_name', 'like', "'%$selectedFilterMerchant%'"]);
             }
             $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered', 'under_balance','under_balance.confirming', 'accepted')";
             if ($selectedFilterStatus === 'active') {

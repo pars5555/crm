@@ -31,11 +31,20 @@
             </select>
         </div>
         <div class="filter">
+            <label>Merchant</label>
+            <select name="mrch">
+                <option value="all" {if $ns.selectedFilterMerchant == 'all'}selected{/if}>All</option>
+                {foreach from=$ns.all_merchant_names_list item=merchant_name}
+                    <option value="{$merchant_name}" {if $ns.selectedFilterMerchant=== $merchant_name}selected{/if}>{$merchant_name}</option>
+                {/foreach}
+            </select>
+            
+        </div>
+        <div class="filter">
             <label>Account</label>
             <select name="acc">
                 <option value="all" {if $ns.selectedFilterAccount == 'all'}selected{/if}>All</option>
                 {foreach from=$ns.account_names item=account_name}
-                    {$fieldName}
                     <option value="{$account_name}" {if $ns.selectedFilterAccount === $account_name}selected{/if}>{$account_name}</option>
                 {/foreach}
             </select>
