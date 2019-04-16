@@ -15,7 +15,7 @@ NGS.createLoad("crm.loads.main.partner_warehouse", {
                 contentAsHTML: true,
                 interactive: true,
                 theme: 'tooltipster-shadow',
-                'minWidth': 500
+                minWidth: 300
             });
         });
         $("#partner_select").chosen({

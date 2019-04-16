@@ -14,6 +14,7 @@ NGS.createLoad("crm.loads.main.warehouse", {
                 trigger: 'hover',
                 contentAsHTML: true,
                 interactive: true,
+                minWidth: 300,
                 theme: 'tooltipster-shadow'
             });
         });

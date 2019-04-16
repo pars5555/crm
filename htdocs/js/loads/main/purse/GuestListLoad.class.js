@@ -27,6 +27,7 @@ NGS.createLoad("crm.loads.main.purse.guest_list", {
                 trigger: 'hover',
                 contentAsHTML: true,
                 interactive: true,
+                minWidth: 300,
                 theme: 'tooltipster-shadow'
             });
         });       

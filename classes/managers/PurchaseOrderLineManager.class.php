@@ -145,9 +145,9 @@ namespace crm\managers {
             $poLines = $this->mapper->getNonCancelledProductsPurchaseOrders($productIds);
             $poIdsMappedByProductId = [];
             $allPurchaseOrdersIds = [];
-            foreach ($poLines as $po) {
-                $poIdsMappedByProductId [$po->getProductId()][] = $po->getPurchaseOrderId();
-                $allPurchaseOrdersIds[] = intval($po->getPurchaseOrderId());
+            foreach ($poLines as $pol) {
+                $poIdsMappedByProductId [$pol->getProductId()][] = $pol->getPurchaseOrderId();
+                $allPurchaseOrdersIds[] = intval($pol->getPurchaseOrderId());
             }
             $allPurchaseOrdersIds = array_unique($allPurchaseOrdersIds);
             if (!empty($allPurchaseOrdersIds)) {
