@@ -494,9 +494,9 @@ namespace crm\managers {
                 '(',
                 '(',
                 'status', 'in', "('shipping', 'shipped', 'accepted')", 'AND',
-                "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
-                'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date')),
-                ')', 'OR', 'account_name', '=', "'external'",
+                "length(COALESCE(`serial_number`,''))", '<', 2, 
+                //'AND', 'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date')),
+                ')',
                 ')'
             ]);
             $rows1 = $this->selectAdvance('*', $where);
