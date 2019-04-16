@@ -171,8 +171,12 @@ namespace crm\managers {
             return $dto->getExternalProductNumber();
         }
 
-        public function getAllAccountNames() {
-            $rows = $this->selectAdvance(['account_name'], [], [], "", null, null, false, "", 'GROUP BY account_name');
+        public function getAllAccountNames($merchant) {
+            $where = [];
+            if (!empty($merchant)) {
+                $where = ['account_name', 'like', "'%$merchant%'"];
+            }
+            $rows = $this->selectAdvance(['account_name'], $where, [], "", null, null, false, "", 'GROUP BY account_name');
             $accountNames = [];
             foreach ($rows as $row) {
                 $accountNames[] = $row->getAccountName();
@@ -494,7 +498,7 @@ namespace crm\managers {
                 '(',
                 '(',
                 'status', 'in', "('shipping', 'shipped', 'accepted')", 'AND',
-                "length(COALESCE(`serial_number`,''))", '<', 2, 
+                "length(COALESCE(`serial_number`,''))", '<', 2,
                 //'AND', 'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date')),
                 ')',
                 ')'

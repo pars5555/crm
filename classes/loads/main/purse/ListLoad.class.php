@@ -73,8 +73,7 @@ namespace crm\loads\main\purse {
                 }
                 $this->addParam('total_puposed_to_not_received', $totalPuposedToNotReceived);
 
-                $all_merchant_names_list = explode(',', SettingManager::getInstance()->getSetting('all_merchant_names_list'));
-                $this->addParam('all_merchant_names_list', $all_merchant_names_list);
+
 
                 $this->addParam('not_received_orders_count', count($ordersPuposedToNotReceivedToDestinationCounty));
                 $this->addParam('searchedItemPuposedCount', $searchedItemCount);
@@ -99,8 +98,7 @@ namespace crm\loads\main\purse {
             $btc_products_days_diff_for_delivery_date = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             $this->addParam('btc_products_days_diff_for_delivery_date', $btc_products_days_diff_for_delivery_date);
 
-            $accountNames = PurseOrderManager::getInstance()->getAllAccountNames();
-            $this->addParam('account_names', $accountNames);
+
 
             $purse_checkout_meta = json_decode(SettingManager::getInstance()->getSetting('purse_checkout_meta', '{}'));
             $purse_pars_meta = json_decode(SettingManager::getInstance()->getSetting('purse_pars_meta', '{}'));
@@ -186,15 +184,22 @@ namespace crm\loads\main\purse {
             if (isset(NGS()->args()->acc)) {
                 $selectedFilterAccount = strtolower(NGS()->args()->acc);
             }
-            $selectedFilterMerchant= 'all';
+            $selectedFilterMerchant = 'all';
             if (isset(NGS()->args()->mrch)) {
-                $selectedFilterMerchant= strtolower(NGS()->args()->mrch);
+                $selectedFilterMerchant = strtolower(NGS()->args()->mrch);
             }
             $selectedFilterStatus = 'active';
             if (isset(NGS()->args()->stts)) {
                 if (in_array(strtolower(NGS()->args()->stts), ['all', 'active', 'inactive'])) {
                     $selectedFilterStatus = strtolower(NGS()->args()->stts);
                 }
+            }
+            if (!empty($load)) {
+                $all_merchant_names_list = explode(',', SettingManager::getInstance()->getSetting('all_merchant_names_list'));
+                $load->addParam('all_merchant_names_list', $all_merchant_names_list);
+
+                $accountNames = PurseOrderManager::getInstance()->getAllAccountNames($selectedFilterMerchant);
+                $load->addParam('account_names', $accountNames);
             }
             $selectedFilterRecipientId = 0;
             if (isset(NGS()->args()->rcpt)) {
@@ -231,7 +236,7 @@ namespace crm\loads\main\purse {
                 $new_changed = 0;
                 $searchText = '';
                 $selectedFilterAccount = 'all';
-                $selectedFilterMerchant= 'all';
+                $selectedFilterMerchant = 'all';
                 $selectedFilterHidden = 'no';
                 $selectedFilterStatus = 'all';
                 $selectedFilterShippingType = 'all';
@@ -260,7 +265,7 @@ namespace crm\loads\main\purse {
             if ($selectedFilterAccount !== 'all') {
                 $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
             }
-            if ($selectedFilterMerchant!== 'all') {
+            if ($selectedFilterMerchant !== 'all') {
                 $where = array_merge($where, ['AND ', 'account_name', 'like', "'%$selectedFilterMerchant%'"]);
             }
             $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered', 'under_balance','under_balance.confirming', 'accepted')";
