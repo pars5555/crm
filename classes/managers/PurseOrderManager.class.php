@@ -171,6 +171,15 @@ namespace crm\managers {
             return $dto->getExternalProductNumber();
         }
 
+        public function getAllAccountNames() {
+            $rows = $this->selectAdvance(['account_name'], [], [], "", null, null, false, "", 'GROUP BY account_name');
+            $accountNames = [];
+            foreach ($rows as $row) {
+                $accountNames[] = $row->getAccountName();
+            }
+            return $accountNames;
+        }
+
         public function getAccountUpdatedDateString($accountName) {
             $row = $this->selectOneByField('account_name', $accountName);
             if (!empty($row)) {
@@ -356,7 +365,7 @@ namespace crm\managers {
             $dto->setQuantity($qty);
             $dto->setDiscount(0);
             $dto->setAmazonTotal($price);
-            $dto->setAccountName('external');
+            $dto->setAccountName('amazon');
             $dto->setStatus('shipping');
             $dto->setExternal($external);
             $dto->setExternalProductNumber($externalProductNumber);

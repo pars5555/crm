@@ -34,9 +34,10 @@
             <label>Account</label>
             <select name="acc">
                 <option value="all" {if $ns.selectedFilterAccount == 'all'}selected{/if}>All</option>
-                <option value="pars" {if $ns.selectedFilterAccount == 'pars'}selected{/if}>pars5555@yahoo.com</option>
-                <option value="info" {if $ns.selectedFilterAccount == 'info'}selected{/if}>info@pcstore.am</option>
-                <option value="checkout" {if $ns.selectedFilterAccount == 'checkout'}selected{/if}>checkoutarmenia@gmail.am</option>
+                {foreach from=$ns.account_names item=account_name}
+                    {$fieldName}
+                    <option value="{$account_name}" {if $ns.selectedFilterAccount === $account_name}selected{/if}>{$account_name}</option>
+                {/foreach}
             </select>
         </div>
         <div class="filter">

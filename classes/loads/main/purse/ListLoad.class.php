@@ -32,14 +32,14 @@ namespace crm\loads\main\purse {
             $this->addParam('preorder_text2', $text2);
             $this->addParam('preorder_order_ids', $pendingPreordersOrderIds);
             list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $where, $words, $searchText,
-                    $problematic,$new_changed, $local_carrier_name, $regOrdersInWarehouse) = $this->initFilters($limit, $this);
+                    $problematic, $new_changed, $local_carrier_name, $regOrdersInWarehouse) = $this->initFilters($limit, $this);
             if (!empty($regOrdersInWarehouse)) {
                 $orders = PurseOrderManager::getInstance()->getNotRegisteredOrdersInWarehouse($regOrdersInWarehouse, $local_carrier_name);
                 $count = count($orders);
             } else {
                 if ($problematic == 1) {
                     $orders = PurseOrderManager::getInstance()->getProblematicOrders($where);
-                }elseif ($new_changed== 1) {
+                } elseif ($new_changed == 1) {
                     $idsArray = \crm\managers\PurseOrderHistoryManager::getInstance()->getLast12HoursChangedOrderIds();
                     $orders = PurseOrderManager::getInstance()->selectByPKs($idsArray);
                 } else {
@@ -94,6 +94,9 @@ namespace crm\loads\main\purse {
 
             $btc_products_days_diff_for_delivery_date = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             $this->addParam('btc_products_days_diff_for_delivery_date', $btc_products_days_diff_for_delivery_date);
+
+            $accountNames = PurseOrderManager::getInstance()->getAllAccountNames();
+            $this->addParam('account_names', $accountNames);
 
             $purse_checkout_meta = json_decode(SettingManager::getInstance()->getSetting('purse_checkout_meta', '{}'));
             $purse_pars_meta = json_decode(SettingManager::getInstance()->getSetting('purse_pars_meta', '{}'));
@@ -177,9 +180,7 @@ namespace crm\loads\main\purse {
             }
             $selectedFilterAccount = 'all';
             if (isset(NGS()->args()->acc)) {
-                if (in_array(strtolower(NGS()->args()->acc), ['pars', 'info', 'checkout'])) {
-                    $selectedFilterAccount = strtolower(NGS()->args()->acc);
-                }
+                $selectedFilterAccount = strtolower(NGS()->args()->acc);
             }
             $selectedFilterStatus = 'active';
             if (isset(NGS()->args()->stts)) {
@@ -209,7 +210,7 @@ namespace crm\loads\main\purse {
                 $new_changed = intval(NGS()->args()->nc);
                 NGS()->args()->pr = 0;
                 $problematic = 0;
-            }          
+            }
             $searchText = '';
             if (isset(NGS()->args()->st)) {
 
@@ -247,7 +248,7 @@ namespace crm\loads\main\purse {
 
             $where = ['1', '=', '1'];
             if ($selectedFilterAccount !== 'all') {
-                $where = array_merge($where, ['AND ', 'account_name', '=', "'purse_$selectedFilterAccount'"]);
+                $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
             }
             $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered', 'under_balance','under_balance.confirming', 'accepted')";
             if ($selectedFilterStatus === 'active') {
@@ -290,7 +291,7 @@ namespace crm\loads\main\purse {
                     }
                 }
             }
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $where, $words, $searchText, $problematic,$new_changed, $local_carrier_name, $regOrdersInWarehouse];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $where, $words, $searchText, $problematic, $new_changed, $local_carrier_name, $regOrdersInWarehouse];
         }
 
         public function getTemplate() {

@@ -33,6 +33,7 @@
                 <th> Product Name </th>
                 <th> Total </th>
                 <th> Caluclation Price</th>
+                <th> Account </th>
                 <th> % </th>
                 <th> Buyer </th>
                 <th> Status </th>
@@ -97,6 +98,8 @@
                                                     </td>
                                                     <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="amazon_total"> {$order->getAmazonTotal()} </td>
                                                     <td class="f_editable_cell" data-field-name="supposed_purchase_price"> {$order->getSupposedPurchasePrice()} </td>
+                                                    <td class="f_editable_cell" data-list="account_name_list" data-field-name="account_name"> {$order->getAccountName()} </td>
+
                                                     <td> {$order->getDiscount()} </td>
                                                     <td style="max-width: 70px;word-wrap: break-word"> {$order->getBuyerName()} </td>
                                                     <td> {$order->getStatus()} </td>
@@ -143,3 +146,9 @@
                                                 </table>
                 </div>
             </div>
+
+            <datalist id="account_name_list">
+                {foreach from=$ns.account_names item=an}
+                    <option value="{$an}"/>
+                {/foreach}
+            </datalist>
