@@ -199,6 +199,7 @@ namespace crm\loads\main\purse {
                 $load->addParam('all_merchant_names_list', $all_merchant_names_list);
 
                 $accountNames = PurseOrderManager::getInstance()->getAllAccountNames($selectedFilterMerchant);
+                
                 $load->addParam('account_names', $accountNames);
             }
             $selectedFilterRecipientId = 0;

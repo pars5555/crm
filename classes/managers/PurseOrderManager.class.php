@@ -173,7 +173,7 @@ namespace crm\managers {
 
         public function getAllAccountNames($merchant) {
             $where = [];
-            if (!empty($merchant)) {
+            if (!empty($merchant) &&  $merchant !== 'all') {
                 $where = ['account_name', 'like', "'%$merchant%'"];
             }
             $rows = $this->selectAdvance(['account_name'], $where, [], "", null, null, false, "", 'GROUP BY account_name');
