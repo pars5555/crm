@@ -99,7 +99,7 @@
 
                     <td > {$order->getQuantity()} </td>
                     <td >
-                        <a class="link " target="_black" href="https://www.amazon.com/returns/cart/{$order->getAmazonOrderNumber()}" >{$order->getProductName()}</a>
+                        <a class="link " target="_black" href="https://www.amazon.com/returns/cart?orderId={$order->getAmazonOrderNumber()}" >{$order->getProductName()}</a>
                     </td>
                     <td> {$order->getAmazonTotal()} <br> ({$order->getCheckoutOrderMetadataProperty('order_total_amount')})</td>
                     <td> {$order->getDiscount()} </td>
