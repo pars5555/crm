@@ -60,7 +60,7 @@
                         {assign notifications $order->getCheckoutOrderMetadataProperty('notifications')}
                         {assign notificationText ''}
                         {if !empty($notifications)}
-                            
+
                             {foreach from=$notifications item=notification}
                                 {assign notificationText "`$notificationText` `$notification->body` \r\n"}
                             {/foreach}
@@ -98,8 +98,12 @@
                         <a target="_blank" href="{$order->getCheckoutOrderProductLink()}"><img src="{$SITE_PATH}/img/link.png" width="32"/></a> </td>
 
                     <td > {$order->getQuantity()} </td>
-                    <td >
-                        <a class="link " target="_black" href="https://www.amazon.com/returns/cart?orderId={$order->getAmazonOrderNumber()}" >{$order->getProductName()}</a>
+                    <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="product_name">
+                        {if $order->getAmazonOrderNumber()|count_characters > 5}
+                            <a class="link " target="_black" href="https://www.amazon.com/returns/cart?orderId={$order->getAmazonOrderNumber()}">{$order->getProductName()}</a>
+                        {else}
+                            {$order->getProductName()}
+                        {/if}
                     </td>
                     <td> {$order->getAmazonTotal()} <br> ({$order->getCheckoutOrderMetadataProperty('order_total_amount')})</td>
                     <td> {$order->getDiscount()} </td>
