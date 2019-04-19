@@ -91,6 +91,7 @@ namespace crm\actions\main {
             if ($fieldName === 'category_id' && $objectType === 'product') {
                 $this->addParam('display_value', ProductCategoryManager::getInstance()->selectByPk($fieldValue)->getName());
             }
+            $this->addParam('success', true);
         }
 
         public function handleCheckoutOrdersChanged($purseManager, $rowId, $fieldName, $fieldValue) {
