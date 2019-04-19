@@ -630,6 +630,13 @@
                 }
             }
         }
+
+    ],
+
+    "export_warehouse_csv": [
+        {
+            "action": "actions.main.warehouse.do_export_sale_price_csv"
+        }
     ],
     "sharewarehouse": [
         {
