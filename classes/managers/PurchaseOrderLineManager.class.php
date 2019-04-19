@@ -145,9 +145,11 @@ namespace crm\managers {
             $poLines = $this->mapper->getNonCancelledProductsPurchaseOrders($productIds);
             $poIdsMappedByProductId = [];
             $allPurchaseOrdersIds = [];
+            $purchaseOrdersProductPrice = [];
             foreach ($poLines as $pol) {
                 $poIdsMappedByProductId [$pol->getProductId()][] = $pol->getPurchaseOrderId();
                 $allPurchaseOrdersIds[] = intval($pol->getPurchaseOrderId());
+                $purchaseOrdersProductPrice[intval($pol->getPurchaseOrderId())][$pol->getProductId()] = $pol->getUnitPrice();
             }
             $allPurchaseOrdersIds = array_unique($allPurchaseOrdersIds);
             if (!empty($allPurchaseOrdersIds)) {
@@ -163,7 +165,7 @@ namespace crm\managers {
             foreach ($poIdsMappedByProductId as &$r) {
                 $r = array_unique($r);
             }
-            $ret = [];
+            $ret = [];            
             foreach ($productIds as $productId) {
                 if (!array_key_exists($productId, $poIdsMappedByProductId)) {
                     $poIdsMappedByProductId[$productId] = [];
@@ -172,12 +174,13 @@ namespace crm\managers {
                 foreach ($poIdsMappedByProductId[$productId] as $poId) {
                     if (array_key_exists($poId, $pos)) {
                         $ret[$productId][] = $pos[$poId];
+                        $pos[$poId]->setProductPrice($productId, $purchaseOrdersProductPrice[$poId][$productId]);
                     }
                 }
             }
             return $ret;
         }
-
+        
         public function getAllProductCountInNonCancelledPurchaseOrders($partnerId = false, $excludePartnerIdsStr = '0') {
             return $this->mapper->getAllProductCountInNonCancelledPurchaseOrders($partnerId, $excludePartnerIdsStr);
         }

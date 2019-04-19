@@ -29,12 +29,12 @@ namespace crm\dal\dto {
         private $mapArray = array("id" => "id", "purchase_order_id" => "purchaseOrderId", "product_id" => "productId",
             "product_name" => "productName", "quantity" => "quantity", "unit_price" => "unitPrice",
             "currency_id" => "currencyId", "currency_rate" => "currencyRate");
-
+       
         // returns map array
         public function getMapArray() {
             return $this->mapArray;
         }
-
+ 
     }
 
 }
