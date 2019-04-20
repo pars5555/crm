@@ -298,7 +298,7 @@ namespace crm\managers {
                 }
                 return $lineId;
             }
-            throw new NgsErrorException('Insuficient product (function findFirstNonZeroQuantityLineId)!');
+            throw new InsufficientProductException($dto->getProductId());
         }
 
         private function findMaxProductPriceLineId($productPurchaseOrderLines, $beforeDate = null) {

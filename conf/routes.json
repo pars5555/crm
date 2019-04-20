@@ -149,6 +149,15 @@
         },
         {
             "action": "loads.main.index",
+            "route": "createFromPurchase",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.sale.create_from_purchase"
+                }
+            }
+        },
+        {
+            "action": "loads.main.index",
             "route": "edit/[:id]",
             "constraints": {
                 "id": "[0-9]+"

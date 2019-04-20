@@ -29,10 +29,15 @@ namespace crm\actions\main\sale {
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
+            $urlParams = "";
+            if (isset(NGS()->args()->poid)) {
+                $poId = intval(NGS()->args()->poid);
+                $urlParams = "?poid=".$poId;
+            }
             $saleOrderId = SaleOrderManager::getInstance()->createSaleOrder($partnerId, $date, $billingDeadlineDate, $isExpense, $note);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Sale Order Successfully created!';
-            $this->redirect('sale/' . $saleOrderId);
+            $this->redirect('sale/' . $saleOrderId . $urlParams);
         }
 
         private function getFormData() {

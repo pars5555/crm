@@ -55,6 +55,7 @@
                     <a class="button blue" id="cancelPurchaseOrderButton" href="javascript:void(0);">Cancel</a>
                     <a class="button blue" href="{$SITE_PATH}/dyn/main_payment/do_redirect?partnerId={$ns.purchaseOrder->getPartnerId()}&note=Payment for Purchase Order No-{$ns.purchaseOrder->getId()}">Pay</a>
                     <a class="button blue" href="{$SITE_PATH}/purchase/warranty/{$ns.purchaseOrder->getId()}">Warranty</a>
+                    <a class="button blue" href="{$SITE_PATH}/sale/create?poid={$ns.purchaseOrder->getId()}">Create SaleOrder</a>
                 </div>
             </form>
         {else}

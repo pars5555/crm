@@ -217,6 +217,14 @@ use crm\dal\mappers\SaleOrderMapper;
         }
 
 
+        public function createSaleOrderLinesFromPurchaseOrder($poId, $saleorderId) {
+            $pos = PurchaseOrderManager::getInstance()->getPurchaseOrdersFull(['id', '=', $poId]);
+            $po = $pos[0]; 
+            $po->setId($saleorderId);
+            $po->setSaleOrderLinesDtos($po->getPurchaseOrderLinesDtos());
+            return $po;
+        }
+        
         public function getSaleOrdersFull($where = [], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
             $rows = $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit);
             $partnerIds = array();

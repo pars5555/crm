@@ -48,5 +48,6 @@
             <textarea class="text" name="note">{$ns.req.note|default:''}</textarea>
         </div>
         <input class="button blue" type="submit" value="Save"/>
+        <input type="hidden" name="poid" value="{$ns.purchase_order_id}"/>
     </form>
 </div>

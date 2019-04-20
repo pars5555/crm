@@ -30,6 +30,10 @@ namespace crm\actions\main\sale {
                 $this->redirect('sale/list');
             }
             $saleOrderId = intval(NGS()->args()->sale_order_id);
+            $createdFromPurchaseOrder = false;
+            if (isset(NGS()->args()->poid)) {
+                $createdFromPurchaseOrder = true;
+            }
             try {
                 SaleOrderLineManager::getInstance()->startTransaction();
                 if (isset(NGS()->args()->lines)) {
@@ -38,7 +42,8 @@ namespace crm\actions\main\sale {
                     if (!empty($jsonLinesArray)) {
                         foreach ($jsonLinesArray as $jsonLine) {
                             $line = json_decode($jsonLine);
-                            if (isset($line->line_id)) {
+                            
+                            if (isset($line->line_id) && !$createdFromPurchaseOrder) {
                                 $linesIdsToNotDelete[] = $line->line_id;
                                 SaleOrderLineManager::getInstance()->updateSaleOrderLine($saleOrderId, $line->line_id, $line->product_id, $line->quantity, $line->unit_price, $line->currency_id);
                             } else {

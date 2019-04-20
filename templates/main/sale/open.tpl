@@ -144,6 +144,7 @@
                     </table>
                 </div>
                 <input type="hidden" value="{$ns.saleOrder->getId()}" name="sale_order_id"/>
+                <input type="hidden" name="poid" value="{$ns.purchase_order_id}"/>
         </form>
 
         {*                           ADD NEW SALE OREDER LINE                                 *}

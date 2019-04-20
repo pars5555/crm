@@ -23,10 +23,20 @@ namespace crm\loads\main\sale {
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
+            $poId = 0;
+            if (isset(NGS()->args()->poid)) {
+                $poId = intval(NGS()->args()->poid);
+            }
+            $this->addParam('purchase_order_id', $poId);
             $this->addParam('products', ProductManager::getInstance()->selectAdvance('*', [], ['name']));
             $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
             $saleorderId = NGS()->args()->id;
-            $saleOrders = SaleOrderManager::getInstance()->getSaleOrdersFull(['id', '=', $saleorderId]);
+            if ($poId > 0) {
+                $saleOrders = [SaleOrderManager::getInstance()->createSaleOrderLinesFromPurchaseOrder($poId, $saleorderId)];
+            } else {
+                $saleOrders = SaleOrderManager::getInstance()->getSaleOrdersFull(['id', '=', $saleorderId]);
+            }
+            
             $attachments = AttachmentManager::getInstance()->getEntityAttachments($saleorderId, 'sale_order');
             if (!empty($saleOrders)) {
                 $saleOrder = $saleOrders[0];
