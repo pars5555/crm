@@ -36,10 +36,14 @@ namespace crm\managers {
         public function getAllProductsPrice($productsIds) {
             $ret = [];
             $usdRate = floatval(\crm\managers\CurrencyRateManager::getInstance()->getCurrencyRate(1));
+            $productsMappedById = ProductManager::getInstance()->selectAdvance('*',[], 'category_id', 'ASC', null,null,true);
             foreach ($productsIds as $pid) {
                 $prCosts = ProductManager::getInstance()->calculateProductCost($pid, 1, 0, true, true);
                 $costInUsd = ProductManager::getInstance()->calculateProductTotalCost($prCosts);
                 $ret[$pid] = $costInUsd / $usdRate;
+                if (floatval($ret[$pid]) > floatval($productsMappedById[$pid]->getStockPrice()) && floatval($productsMappedById[$pid]->getStockPrice()) > 1) {
+                    $ret[$pid] = floatval($productsMappedById[$pid]->getStockPrice());
+                }
             }
             return $ret;
         }
@@ -66,8 +70,7 @@ namespace crm\managers {
 
         public function getAllProductsQuantity($includePartnerWarehase = False) {
             $excludePartnerIdsStr = '0';
-            if ($includePartnerWarehase)
-            {        
+            if ($includePartnerWarehase) {
                 $excludePartnerIdsStr = SettingManager::getInstance()->getSetting('warehouse_partners');
             }
 
