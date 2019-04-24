@@ -87,9 +87,12 @@
                         {/if}
                         {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})
                     </td>
-                    <td class="f_editable_cell" data-field-name="checkout_customer_unit_address"> 
+                    <td> 
                         {$order->getCheckoutCustomerName()} {$order->getCheckoutCustomerUnitAddress()}
                         {$order->getCheckoutOrderMetadataProperty('user_object->email')}
+                        {if $order->getCheckoutOrderMetadataProperty('user_object->referrer_id')>0}
+                        ({$order->getCheckoutOrderMetadataProperty('user_object->referrer->email')|default:'missing info...'})
+                        {/if}
                         <a class="button blue f_confirm_order" data-id="{$order->getId()}">Confirm</a>
                     </td>
 

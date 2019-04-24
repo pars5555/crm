@@ -38,7 +38,7 @@
                     <option value="{$merchant_name}" {if $ns.selectedFilterMerchant=== $merchant_name}selected{/if}>{$merchant_name}</option>
                 {/foreach}
             </select>
-            
+
         </div>
         <div class="filter">
             <label>Account</label>
@@ -104,12 +104,12 @@
         <a href="javascript:void(0);" class="inline-block" id="export_csv"><img src="{$SITE_PATH}/img/csv.png" width="45"/></a>
     </div>
     <div class="filter">
-            <div class="add-new-btn">
-                <a id="add_external_order_button" >+</a>
-            </div>
+        <div class="add-new-btn">
+            <a id="add_external_order_button" >+</a>
         </div>
+    </div>
 </form>
-    <button class="button blue small inline f_update_purse" data-account_name='purse_pars'>Pars ({$ns.parsUpdatedDate}) </br><span style="color: #c77405">{$ns.pars_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.pars_btc_balance)|number_format}</button>
+<button class="button blue small inline f_update_purse" data-account_name='purse_pars'>Pars ({$ns.parsUpdatedDate}) </br><span style="color: #c77405">{$ns.pars_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.pars_btc_balance)|number_format}</button>
 <button class="button blue small inline f_update_purse" data-account_name='purse_info'>Info ({$ns.infoUpdatedDate}) </br><span style="color: #c77405">{$ns.info_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.info_btc_balance)|number_format}</button>
 <button class="button blue small inline f_update_purse" data-account_name='purse_checkout'>Checkout ({$ns.checkoutUpdatedDate}) </br><span style="color: #c77405">{$ns.checkout_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.checkout_btc_balance)|number_format}</button>
 <br/>
@@ -157,7 +157,7 @@ checkout: {$ns.checkout_btc_address|default:'N/A'}<br/>
 </div>
 
 <div id="hide_modalBox" class="modal modal-large">
-    
+
 </div>
 
 <div id="hide_by_trackings_modalBox" class="modal modal-large">
@@ -210,7 +210,16 @@ checkout: {$ns.checkout_btc_address|default:'N/A'}<br/>
             <h1 class="modal-headline">Product Url</h1>
             <div class="modal-content observers-detail-modal-content form-group" id="observer_details_container">
                 <label>Unit Address</label>
-                <input class="text"  id="external_order_unit_address_input" style="width: 100%" type="text"/>
+                <input class="text" id="external_order_unit_address_input" style="width: 100%" type="text"/>
+                <br/>
+                corresponding item: 
+                <select class="f_purchase_item" id="external_order_product_id" 
+                        style="max-width: 500px" data-autocomplete="true" data-no-wrap="true">
+                    <option value="0">Create New Item</option>
+                    {foreach from=$product_row['product_list'] item=p}
+                        <option value="{$p->getId()}" {if $product_row['product'] && $p->getId() == $product_row['product']->getId()}selected{/if}>{$p->getName()}</option>
+                    {/foreach}
+                </select>
                 <br/>
                 <label>Product Url</label>
                 <input class="text"  id="external_order_url_input" style="width: 100%" type="text"/>
