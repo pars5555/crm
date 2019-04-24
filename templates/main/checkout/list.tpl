@@ -81,13 +81,14 @@
                         <br/>
                         <span {if $order->getShippingType()=='standard'}style='color:red'{/if} >{$order->getShippingType()}</span>
                     </td>
-                    <td> 
-                        {if not $order->getRecipientName()}
-                            <a href="javascript:void(0);" class="fa fa-refresh f_refresh_recipient" data-id='{$order->getId()}'></a>
+                    <td class="f_selectable_cell" data-value="{if $order->getUnitAddress() === $order->getCheckoutCustomerUnitAddress()}actual{else}internal{/if}" data-field-name="unit_address" data-template-select-id="checkout_order_unit_address"> 
+                        {if $order->getUnitAddress() === $order->getCheckoutCustomerUnitAddress()}
+                            {$order->getCheckoutCustomerName()} {$order->getUnitAddress()}
+                        {else}
+                            {$order->getRecipientName()} {$order->getUnitAddress()}
                         {/if}
-                        {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})
                     </td>
-                    <td> 
+                    <td>
                         {$order->getCheckoutCustomerName()} {$order->getCheckoutCustomerUnitAddress()}
                         {$order->getCheckoutOrderMetadataProperty('user_object->email')}
                         {if $order->getCheckoutOrderMetadataProperty('user_object->referrer_id')>0}
@@ -163,5 +164,9 @@
     {foreach from=$ns.checkout_order_statuses key=status_id item=status_name}
         <option value="{$status_id}">{$status_name}</option>
     {/foreach}
+</select>
+<select id='checkout_order_unit_address' class="hidden" style="width: 120px" >
+        <option value="actual">Actual</option>
+        <option value="internal">Internal</option>
 </select>
 

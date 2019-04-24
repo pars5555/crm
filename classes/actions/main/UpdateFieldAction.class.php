@@ -85,12 +85,26 @@ namespace crm\actions\main {
                 SettingManager::getInstance()->setSetting('capital_data', json_encode($capitalData));
                 return;
             }
+            if ($fieldName === 'unit_address' && $objectType === 'checkout') {
+                $row = $manager->selectByPk($id);
+                if ($fieldValue === 'actual') {
+                    $ua = $row->getCheckoutCustomerUnitAddress();
+                    $manager->updateField($id, $fieldName, $ua);
+                } else {
+                    $ua = SettingManager::getInstance()->getSetting($row->getCheckoutOrderMetadataProperty('shipping_carrier') . '_unit_address');
+                    $manager->updateField($id, $fieldName, $ua);
+                }
+                $this->addParam('display_value', $ua);
+                $this->addParam('success', true);
+                return;
+            }
             $manager->updateField($id, $fieldName, $fieldValue);
             $valueAfterSave = $manager->selectByPk($id);
             $this->addParam('value', $valueAfterSave->$fieldName);
             if ($fieldName === 'category_id' && $objectType === 'product') {
                 $this->addParam('display_value', ProductCategoryManager::getInstance()->selectByPk($fieldValue)->getName());
             }
+
             $this->addParam('success', true);
         }
 
