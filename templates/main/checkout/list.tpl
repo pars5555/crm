@@ -35,13 +35,13 @@
                 <th> Total </th>
                 <th> % </th>
                 <th> Account </th>
-                <th> Status </th>
+{*                <th> Status </th>*}
                 <th> Checkout Status </th>
                 <th> Note </th>
-                <th> S/N </th>
+{*                <th> S/N </th>*}
                 <th> amazon Order Number </th>
                 <th> Tracking Number </th>
-                <th> hidden At </th>
+{*                <th> hidden At </th>*}
                 <th> created </th>
             </tr>
 
@@ -112,10 +112,10 @@
                     <td> {$order->getAmazonTotal()} <br> ({$order->getCheckoutOrderMetadataProperty('order_total_amount')})</td>
                     <td> {$order->getDiscount()} </td>
                     <td class="f_editable_cell" data-list="account_name_list" data-field-name="account_name"> {$order->getAccountName()} </td>
-                    <td> {$order->getStatus()} </td>
+{*                    <td> {$order->getStatus()} </td>*}
                     <td class="f_selectable_cell" data-value="{$order->getCheckoutOrderStatus()}" data-field-name="checkout_order_status" data-template-select-id="checkout_order_status_select"> {$ns.checkout_order_statuses[$order->getCheckoutOrderStatus()]} </td>
                     <td class="table-cell f_editable_cell" data-field-name="note" data-type="richtext" style="min-width: 100px"> {$order->getNote()} </td>
-                    <td class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </td>
+{*                    <td class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </td>*}
                     <td class="table-cell f_editable_cell"  data-field-name="amazon_order_number">
                         <a class="link" target="_black" href="https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jnljnvjtqlspon&orderId={$order->getAmazonOrderNumber()}" > {$order->getAmazonOrderNumber()} </a>
                         <br/>
@@ -124,7 +124,7 @@
                     <td class="f_editable_cell" data-field-name="tracking_number" >
                         {$order->getTrackingNumber()}
                     </td>
-                    <td> 
+                    {*<td> 
                         {$order->getHiddenAt()} 
                         {if isset($ns.btc_purchase_orders[$order->getId()])}
                             <br/>
@@ -133,7 +133,7 @@
                                 <span>PO#{$ns.btc_purchase_orders[$order->getId()]} </span>
                             </a>
                         {/if}
-                    </td>
+                    </td>*}
                     <td> {$order->getCreatedAt()} </td>
                 </tr>
             {/foreach}
