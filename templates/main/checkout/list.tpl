@@ -26,7 +26,6 @@
         <table>
             <tr>
                 <th>Actions</th>
-                <th>Order Number</th>
                 <th>Internal Recipient</th>
                 <th>Actual Recipient</th>
                 <th>Img</th>
@@ -76,11 +75,6 @@
                         {/if}
                     </td>
 
-                    <td>
-                        <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a>
-                        <br/>
-                        <span {if $order->getShippingType()=='standard'}style='color:red'{/if} >{$order->getShippingType()}</span>
-                    </td>
                     <td class="f_selectable_cell" data-value="{if $order->getUnitAddress() === $order->getCheckoutCustomerUnitAddress()}actual{else}internal{/if}" data-field-name="unit_address" data-template-select-id="checkout_order_unit_address"> 
                         {if $order->getUnitAddress() === $order->getCheckoutCustomerUnitAddress()}
                             {$order->getCheckoutCustomerName()} {$order->getUnitAddress()}
