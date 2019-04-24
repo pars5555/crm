@@ -88,7 +88,9 @@
                         {if $order->getCheckoutOrderMetadataProperty('user_object->referrer_id')>0}
                             ({$order->getCheckoutOrderMetadataProperty('user_object->referrer->email')|default:'missing info...'})
                         {/if}
+                        {if $order->getCheckoutOrderStatus() == 0}
                         <a class="button blue f_confirm_order" data-id="{$order->getId()}">Confirm</a>
+                        {/if}
                     </td>
 
                     <td> 
