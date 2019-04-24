@@ -30,7 +30,7 @@ namespace crm\loads\main\checkout {
             if ($problematic == 1) {
                 $orders = PurseOrderManager::getInstance()->getProblematicOrders($where, true);
             } else {
-                
+
                 $orders = PurseOrderManager::getInstance()->getOrders($where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             }
             $count = PurseOrderManager::getInstance()->getLastSelectAdvanceRowsCount();
@@ -147,6 +147,18 @@ namespace crm\loads\main\checkout {
                     $selectedFilterStatus = strtolower(NGS()->args()->stts);
                 }
             }
+            $selectedFilterMerchant = 'all';
+            if (isset(NGS()->args()->mrch)) {
+                $selectedFilterMerchant = strtolower(NGS()->args()->mrch);
+            }
+            if (!empty($load)) {
+                $all_merchant_names_list = explode(',', SettingManager::getInstance()->getSetting('all_merchant_names_list'));
+                $load->addParam('all_merchant_names_list', $all_merchant_names_list);
+
+                $accountNames = PurseOrderManager::getInstance()->getAllAccountNames($selectedFilterMerchant);
+
+                $load->addParam('account_names', $accountNames);
+            }
             $selectedFilterRecipientId = 0;
             if (isset(NGS()->args()->rcpt)) {
                 $selectedFilterRecipientId = intval(NGS()->args()->rcpt);
@@ -232,8 +244,7 @@ namespace crm\loads\main\checkout {
             if ($showUnitAddressesOrdersOnly == 1) {
                 $fakeRecipientUnitAddressesSql = RecipientManager::getInstance()->getFakeRecipientUnitAddressesSql();
                 $where = array_merge($where, ['AND', 'unit_address', 'in', "($fakeRecipientUnitAddressesSql)"]);
-                    
-            }else{
+            } else {
                 $where = array_merge($where, ['AND', 'checkout_order_id', '>', 0]);
             }
             $words = [];

@@ -92,7 +92,7 @@
                         {$order->getCheckoutCustomerName()} {$order->getCheckoutCustomerUnitAddress()}
                         {$order->getCheckoutOrderMetadataProperty('user_object->email')}
                         {if $order->getCheckoutOrderMetadataProperty('user_object->referrer_id')>0}
-                        ({$order->getCheckoutOrderMetadataProperty('user_object->referrer->email')|default:'missing info...'})
+                            ({$order->getCheckoutOrderMetadataProperty('user_object->referrer->email')|default:'missing info...'})
                         {/if}
                         <a class="button blue f_confirm_order" data-id="{$order->getId()}">Confirm</a>
                     </td>
@@ -166,7 +166,12 @@
     {/foreach}
 </select>
 <select id='checkout_order_unit_address' class="hidden" style="width: 120px" >
-        <option value="actual">Actual</option>
-        <option value="internal">Internal</option>
+    <option value="actual">Actual</option>
+    <option value="internal">Internal</option>
 </select>
 
+<datalist id="account_name_list">
+    {foreach from=$ns.account_names item=an}
+        <option value="{$an}"/>
+    {/foreach}
+</datalist>
