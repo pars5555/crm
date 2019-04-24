@@ -32,8 +32,8 @@ img {
 table { border-collapse: collapse; }
 tr { border: none; }
 td {
-    border-right: solid 1px #000; 
-    border-left: solid 1px #000;
+    border-right: solid 1px #aaa; 
+    border-left: solid 1px #aaa;
 }
 
 /**************************************************************************************/
