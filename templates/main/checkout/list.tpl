@@ -34,7 +34,7 @@
                 <th> Product Name </th>
                 <th> Total </th>
                 <th> % </th>
-                <th> Buyer </th>
+                <th> Account </th>
                 <th> Status </th>
                 <th> Checkout Status </th>
                 <th> Note </th>
@@ -111,7 +111,7 @@
                     </td>
                     <td> {$order->getAmazonTotal()} <br> ({$order->getCheckoutOrderMetadataProperty('order_total_amount')})</td>
                     <td> {$order->getDiscount()} </td>
-                    <td style="max-width: 70px;word-wrap: break-word"> {$order->getBuyerName()} </td>
+                    <td class="f_editable_cell" data-list="account_name_list" data-field-name="account_name"> {$order->getAccountName()} </td>
                     <td> {$order->getStatus()} </td>
                     <td class="f_selectable_cell" data-value="{$order->getCheckoutOrderStatus()}" data-field-name="checkout_order_status" data-template-select-id="checkout_order_status_select"> {$ns.checkout_order_statuses[$order->getCheckoutOrderStatus()]} </td>
                     <td class="table-cell f_editable_cell" data-field-name="note" data-type="richtext" style="min-width: 100px"> {$order->getNote()} </td>
