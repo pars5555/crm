@@ -20,7 +20,7 @@ namespace crm\dal\dto {
 
     class PurseOrderDto extends AbstractDto {
 
-        const CHECKOUT_ORDER_STATUSES = [0 => 'waitin_for_payment', 5 => 'confirmed', 10 => 'processing', 15 => 'purchased', 20 => 'cancelled', 25 => 'done'];
+        const CHECKOUT_ORDER_STATUSES = [0 => 'draft', 5 => 'confirmed', 10 => 'processing', 15 => 'purchased', 20 => 'cancelled', 25 => 'done'];
 
         private $histores = [];
         private $checkoutObjectData = null;
@@ -34,6 +34,7 @@ namespace crm\dal\dto {
             "quantity" => "quantity", "cancelled_at" => "cancelledAt", "image_url" => "imageUrl", "shipping_carrier" => "shippingCarrier", "status" => "status", "note" => 'note', "unread_messages" => 'unreadMessages',
             "account_name" => "accountName", "created_at" => "createdAt", "updated_at" => "updatedAt", "hidden_at" => "hiddenAt", 'meta' => 'meta',
             'external' => 'external',
+            'product_id' => 'productId',
             'checkout_customer_unit_address' => 'checkoutCustomerUnitAddress',
             'checkout_order_id' => 'checkoutOrderId',
             'checkout_customer_name' => 'checkoutCustomerName',

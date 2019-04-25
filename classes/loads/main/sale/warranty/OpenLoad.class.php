@@ -27,21 +27,21 @@ namespace crm\loads\main\sale\warranty {
             $this->initSuccessMessages();
             $this->addParam('products', ProductManager::getInstance()->selectAdvance('*', [], ['name']));
             $this->addParam('currencies', CurrencyManager::getInstance()->selectAdvance('*', ['active', '=', 1], ['name']));
-            $paymentId = NGS()->args()->id;
-            $saleOrders = SaleOrderManager::getInstance()->getSaleOrdersFull(['id', '=', $paymentId]);
+            $soId = NGS()->args()->id;
+            $saleOrders = SaleOrderManager::getInstance()->getSaleOrdersFull(['id', '=', $soId]);
             if (!empty($saleOrders)) {
                 $saleOrder = $saleOrders[0];
                 $this->addParam('saleOrder', $saleOrder);
             }
 
-            $polSerialNumbersDtos = [];
+            $solSerialNumbersDtos = [];
             $saleOrderLineIds = $this->getSaleOrderLineIds($saleOrders);
             if (!empty($saleOrderLineIds)) {
                 $saleOrderLineIdsSql = '(' . implode(',', $saleOrderLineIds) . ')';
-                $polSerialNumbersDtos = SaleOrderLineSerialNumberManager::getInstance()->selectAdvance('*', ['line_id', 'IN', $saleOrderLineIdsSql]);
-                $polSerialNumbersDtos = $this->mapDtosByLineId($polSerialNumbersDtos);
+                $solSerialNumbersDtos = SaleOrderLineSerialNumberManager::getInstance()->selectAdvance('*', ['line_id', 'IN', $saleOrderLineIdsSql]);
+                $solSerialNumbersDtos = $this->mapDtosByLineId($solSerialNumbersDtos);
             }
-            $this->addParam("polSerialNumbersDtos", $polSerialNumbersDtos);
+            $this->addParam("polSerialNumbersDtos", $solSerialNumbersDtos);
         }
 
         private function mapDtosByLineId($polSerialNumbersDtos) {
