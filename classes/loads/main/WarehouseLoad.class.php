@@ -67,9 +67,9 @@ namespace crm\loads\main {
             $usdRate = CurrencyRateManager::getInstance()->getCurrencyRate(1);
 
             $products = $this->initSorting($productsMappedById, $productsSaleOrders, $productsPurchaseOrders);
-            $loadOrdersPuposedToNotReceivedToDestinationCounty = $this->loadOrdersPuposedToNotReceivedToDestinationCounty($products);
+            //$loadOrdersPuposedToNotReceivedToDestinationCounty = $this->loadOrdersPuposedToNotReceivedToDestinationCounty($products);
 
-            $this->addParam('productsNotReceivedToDestinationCounty', $loadOrdersPuposedToNotReceivedToDestinationCounty);
+            //$this->addParam('productsNotReceivedToDestinationCounty', $loadOrdersPuposedToNotReceivedToDestinationCounty);
             $this->addParam('categoriesMappedById', $categoriesMappedById);
             $this->addParam('pwarehousesProductsQuantity', $pwarehousesProductsQuantity);
             $this->addParam('products', $products);
@@ -177,24 +177,6 @@ namespace crm\loads\main {
                 krsort($productsMappedByLastSaleOrderDate);
             }
             $productsMappedById = array_values($productsMappedByLastSaleOrderDate);
-        }
-
-        private function loadOrdersPuposedToNotReceivedToDestinationCounty($products) {
-            $ordersPuposedToNotReceivedToDestinationCounty = PurseOrderManager::getInstance()->getOrdersPuposedToNotReceivedToDestinationCounty();
-            $ret = [];
-            foreach ($ordersPuposedToNotReceivedToDestinationCounty as $order) {
-                $productName = $order->getProductName();
-                $qty = max(1, intval($order->getQuantity()));
-                $productPrice = $order->getAmazonTotal() / $qty;
-                $product = ProductManager::getInstance()->findMatchedProduct($productName, $productPrice, $products);
-                if (!empty($product)) {
-                    if (!isset($ret[$product->getId()])){
-                        $ret[$product->getId()] = [];
-                    }
-                    $ret[$product->getId()][] = ['qty'=>$qty, 'name'=>$productName];
-                }
-            }
-            return $ret;
         }
 
     }

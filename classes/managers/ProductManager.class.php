@@ -59,42 +59,6 @@ namespace crm\managers {
             return [array_unique($models), array_unique($brands)];
         }
 
-        public function findMatchedProduct($name, $price, $products = [], $minAcceptablePercent = 78) {
-            if (empty($products)) {
-                $products = ProductManager::getInstance()->selectAll();
-            }
-            $maxPercent = 0;
-            $selectedProduct = null;
-
-            foreach ($products as $product) {
-                $percent = 0;
-                similar_text($product->getName(), $name, $percent);
-                $stockPrice = $product->getStockPrice();
-                if ($percent > $maxPercent) {
-                    if ((self::calculatePercentage($price, $stockPrice * 0.8) > $minAcceptablePercent)) {
-                        if (strpos($name, '250GB') > 0) {
-                            var_dump($price, $stockPrice, $product);
-                            exit;
-                        }
-                    }
-                    $maxPercent = $percent;
-                    $selectedProduct = $product;
-                }
-            }
-            if ($maxPercent > $minAcceptablePercent) {
-                return $selectedProduct;
-            }
-            return null;
-        }
-
-        private static function calculatePercentage($num1, $num2) {
-            if ($num1 == 0 || $num2 == 0) {
-                return 0;
-            }
-            $percentChange = 1 - abs((($num1 - $num2) / $num1)) * 100;
-            return round($percentChange);
-        }
-
         public function getMostSimilarProduct($name) {
             $products = ProductManager::getInstance()->selectAll();
             $maxPercent = 0;

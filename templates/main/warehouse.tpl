@@ -92,12 +92,12 @@
                                 {if isset($ns.pwarehousesProductsQuantity[$product->getId()])}
                                     <span style="color:red">{$pwarehousesProductsQuantity[$product->getId()]|default:'0'}</span>
                                 {/if}
-                                {if isset($ns.productsNotReceivedToDestinationCounty[$product->getId()])}
+                               {* {if isset($ns.productsNotReceivedToDestinationCounty[$product->getId()])}
                                     {foreach from=$ns.productsNotReceivedToDestinationCounty[$product->getId()] item=pair}
                                     <span style="color:green" title='{$pair['name']}'>+ {$pair['qty']|default:'0'}</span>
                                         
                                         {/foreach}
-                                {/if}
+                                {/if}*}
 
                             </td>
                             <td {if !empty($ns.reservations[$product->getId()])}class="tooltipster"{/if}>
