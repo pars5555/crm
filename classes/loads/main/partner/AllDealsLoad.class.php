@@ -82,9 +82,9 @@ namespace crm\loads\main\partner {
 
         public function getRequestGroup() {
             if (isset(NGS()->args()->sam)) {
-                return RequestGroups::$adminRequest;
+                return RequestGroups::$guestRequest;
             }
-            return RequestGroups::$guestRequest;
+            return RequestGroups::$adminRequest;
         }
 
         private static function mergeAllDeals($sale, $purchase, $payment, $billing, $partnerSaleOrders, $partnerPurchaseOrders, $partnerPaymentTransactions, $partnerBillingTransactions) {
