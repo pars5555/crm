@@ -74,13 +74,14 @@ namespace crm\loads\main\partner {
                 $selectedFilterDays= intval(NGS()->args()->day);
             }
             $this->addParam('selectedFilterDays', $selectedFilterDays);
-            $days_ago = date('Y-m-d', strtotime("-$selectedFilterDays days"));
+            $days_ago = date('Y-m-d', strtotime("-$selectedFilterDays-> days"));
             $this->addParam('days_ago', $days_ago);
+            $this->addParam('sam', !empty(NGS()->args()->sam)?1:0);
             return [$selectedFilterDays];
         }
 
         public function getRequestGroup() {
-            if (isset(NGS()->args()->id)) {
+            if (isset(NGS()->args()->sam)) {
                 return RequestGroups::$adminRequest;
             }
             return RequestGroups::$guestRequest;

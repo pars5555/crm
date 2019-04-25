@@ -11,6 +11,9 @@
                 {/for}
             </select>
         </div>
+        {if $ns.sam > 0}
+            <input type="hidden" name="sam" value="{$ns.sam}"/>
+        {/if}
     </form>
     <div class="filter csv">
         <a href="{$SITE_PATH}/dyn/main_partner/do_export_partner_all_deals_csv?id={$ns.partner->getId()}" class="inline-block" id="export_csv"><img src="/img/csv.png" width="45"/></a>
