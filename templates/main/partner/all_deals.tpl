@@ -1,5 +1,17 @@
 <div class="container partner--list--container">
     <h1 class="main_title">{$ns.partner->getName()} All Deals</h1>
+
+    <form class="filters--form" id="partnerFilters" autocomplete="off" action="{$SITE_PATH}/partner/all/{$ns.partner->getId()}" method="GET">
+        <div class="form-group">     
+            <label>Ignore Billings by Days count</label>
+            {$ns.days_ago}
+            <select name="day">
+                {for $day=0 to 40}
+                    <option value="{$day}" {if $ns.selectedFilterDays == $day}selected{/if}>{$day}</option>
+                {/for}
+            </select>
+        </div>
+    </form>
     <div class="filter csv">
         <a href="{$SITE_PATH}/dyn/main_partner/do_export_partner_all_deals_csv?id={$ns.partner->getId()}" class="inline-block" id="export_csv"><img src="/img/csv.png" width="45"/></a>
     </div>

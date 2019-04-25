@@ -12,8 +12,8 @@
 
 namespace crm\managers {
 
-use crm\dal\mappers\PaymentTransactionMapper;
-use ngs\framework\exceptions\NgsErrorException;
+    use crm\dal\mappers\PaymentTransactionMapper;
+    use ngs\framework\exceptions\NgsErrorException;
 
     class PaymentTransactionManager extends AdvancedAbstractManager {
 
@@ -170,8 +170,16 @@ use ngs\framework\exceptions\NgsErrorException;
             return $this->selectAdvance('*', ['deleted', '=', 0, 'AND', 'partner_id', '=', $partnerId, 'AND', 'amount', '>', 0]);
         }
 
-        public function getPartnerBillingTransactions($partnerId) {
-            return $this->selectAdvance('*', ['deleted', '=', 0, 'AND', 'partner_id', '=', $partnerId, 'AND', 'amount', '<', 0]);
+        public function getPartnerBillingTransactions($partnerId, $days = false) {
+            $where = ['deleted', '=', 0, 'AND', 'partner_id', '=', $partnerId, 'AND', 'amount', '<', 0];
+            if ($days > 0) {
+                $days_ago = date('Y-m-d', strtotime("-$days days"));
+                $where[] = 'AND';
+                $where[] = '`date`';
+                $where[] = '<';
+                $where[] = "'$days_ago'";
+            }
+            return $this->selectAdvance('*', $where);
         }
 
         public function getPartnersPaymentTransactions($partnerIds) {

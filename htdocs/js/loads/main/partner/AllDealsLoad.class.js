@@ -8,6 +8,9 @@ NGS.createLoad("crm.loads.main.partner.all_deals", {
     afterLoad: function () {
         this.initChecked();
         this.initCheckAllCheckbox();
+        $('#partnerFilters').find('select, checkbox').change(function () {
+            $('#partnerFilters').trigger('submit');
+        });
     },
     initChecked: function () {
         $('.f_checked_checkbox').change(function () {

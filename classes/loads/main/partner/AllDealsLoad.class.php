@@ -26,10 +26,11 @@ namespace crm\loads\main\partner {
         public function load() {
             $this->initErrorMessages();
             $this->initSuccessMessages();
-            self::loadParams($this);
+            list($days) = $this->initFilters();
+            self::loadParams($this, $days);
         }
 
-        public static function loadParams($load = false) {
+        public static function loadParams($load = false, $days = false) {
             if (isset(NGS()->args()->id)) {
                 $partnerId = intval(NGS()->args()->id);
                 $partner = PartnerManager::getInstance()->selectByPk($partnerId);
@@ -51,7 +52,7 @@ namespace crm\loads\main\partner {
             $partnerSaleOrders = SaleOrderManager::mapDtosById(SaleOrderManager::getInstance()->getPartnerSaleOrders($partnerId));
             $partnerPurchaseOrders = PurchaseOrderManager::mapDtosById(PurchaseOrderManager::getInstance()->getPartnerPurchaseOrders($partnerId));
             $partnerPaymentTransactions = PaymentTransactionManager::mapDtosById(PaymentTransactionManager::getInstance()->getPartnerPaymentTransactions($partnerId));
-            $partnerBillingTransactions = PaymentTransactionManager::mapDtosById(PaymentTransactionManager::getInstance()->getPartnerBillingTransactions($partnerId));
+            $partnerBillingTransactions = PaymentTransactionManager::mapDtosById(PaymentTransactionManager::getInstance()->getPartnerBillingTransactions($partnerId, $days));
             $sales = self::mapByIdAndGivenField('sale_', 'order_date', $partnerSaleOrders);
             $purchases = self::mapByIdAndGivenField('purchase_', 'order_date', $partnerPurchaseOrders);
             $paments = self::mapByIdAndGivenField('payment_', 'date', $partnerPaymentTransactions);
@@ -63,6 +64,19 @@ namespace crm\loads\main\partner {
 
             CalculationManager::getInstance()->calculatePartnerAllDealesDebtHistory($partnerId, array_reverse($allDeals, true));
             return $allDeals;
+        }
+        
+        
+        private function initFilters() {
+            //pageing
+            $selectedFilterDays = 0;
+            if (isset(NGS()->args()->day)) {
+                $selectedFilterDays= intval(NGS()->args()->day);
+            }
+            $this->addParam('selectedFilterDays', $selectedFilterDays);
+            $days_ago = date('Y-m-d', strtotime("-$selectedFilterDays days"));
+            $this->addParam('days_ago', $days_ago);
+            return [$selectedFilterDays];
         }
 
         public function getRequestGroup() {
