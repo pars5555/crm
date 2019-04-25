@@ -98,6 +98,12 @@ namespace crm\actions\main {
                 $this->addParam('success', true);
                 return;
             }
+            if ($fieldName === 'unit_address' && $objectType === 'btc') {
+                $recipient = RecipientManager::getInstance()->getRecipientByUnitAddress($fieldValue);
+                if (!empty($recipient)) {
+                    $manager->updateField($id, 'recipient_name', $recipient->getFirstName() . ' ' . $recipient->getLastName());
+                }
+            }
             $manager->updateField($id, $fieldName, $fieldValue);
             $valueAfterSave = $manager->selectByPk($id);
             $this->addParam('value', $valueAfterSave->$fieldName);
