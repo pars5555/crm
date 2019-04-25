@@ -14,8 +14,11 @@ namespace crm\loads\main {
     use crm\loads\AdminLoad;
     use crm\managers\CurrencyRateManager;
     use crm\managers\PartnerManager;
+    use crm\managers\ProductCategoryManager;
     use crm\managers\ProductManager;
+    use crm\managers\ProductReservationManager;
     use crm\managers\PurchaseOrderLineManager;
+    use crm\managers\PurseOrderManager;
     use crm\managers\SaleOrderLineManager;
     use crm\managers\SettingManager;
     use crm\managers\WarehouseManager;
@@ -26,17 +29,21 @@ namespace crm\loads\main {
 
         public function load() {
             $pwarehousesProductsQuantity = $this->loadPartnersWarehouses();
-            $reservations = \crm\managers\ProductReservationManager::getInstance()->getReservedProducts();
+            $reservations = ProductReservationManager::getInstance()->getReservedProducts();
             $this->addParam('reservations', $reservations);
             $this->loadProductModelsAndBrands();
-            $categories = \crm\managers\ProductCategoryManager::getInstance()->selectAll();
+
+
+
+
+            $categories = ProductCategoryManager::getInstance()->selectAll();
             $categoriesMappedById = [];
             foreach ($categories as $category) {
                 $categoriesMappedById[$category->getId()] = $category->getName();
             }
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity(true);
             $productsPrice = WarehouseManager::getInstance()->getAllProductsPrice(array_keys($productsQuantity));
-            $productsMappedById = ProductManager::getInstance()->selectAdvance('*',[], 'category_id', 'ASC', null,null,true);
+            $productsMappedById = ProductManager::getInstance()->selectAdvance('*', [], 'category_id', 'ASC', null, null, true);
             $productIds = array_keys($productsMappedById);
 
             $days = SettingManager::getInstance()->getSetting('new_items_days');
@@ -60,7 +67,9 @@ namespace crm\loads\main {
             $usdRate = CurrencyRateManager::getInstance()->getCurrencyRate(1);
 
             $products = $this->initSorting($productsMappedById, $productsSaleOrders, $productsPurchaseOrders);
+            $loadOrdersPuposedToNotReceivedToDestinationCounty = $this->loadOrdersPuposedToNotReceivedToDestinationCounty($products);
 
+            $this->addParam('productsNotReceivedToDestinationCounty', $loadOrdersPuposedToNotReceivedToDestinationCounty);
             $this->addParam('categoriesMappedById', $categoriesMappedById);
             $this->addParam('pwarehousesProductsQuantity', $pwarehousesProductsQuantity);
             $this->addParam('products', $products);
@@ -168,6 +177,24 @@ namespace crm\loads\main {
                 krsort($productsMappedByLastSaleOrderDate);
             }
             $productsMappedById = array_values($productsMappedByLastSaleOrderDate);
+        }
+
+        private function loadOrdersPuposedToNotReceivedToDestinationCounty($products) {
+            $ordersPuposedToNotReceivedToDestinationCounty = PurseOrderManager::getInstance()->getOrdersPuposedToNotReceivedToDestinationCounty();
+            $ret = [];
+            foreach ($ordersPuposedToNotReceivedToDestinationCounty as $order) {
+                $productName = $order->getProductName();
+                $qty = max(1, intval($order->getQuantity()));
+                $productPrice = $order->getAmazonTotal() / $qty;
+                $product = ProductManager::getInstance()->findMatchedProduct($productName, $productPrice, $products);
+                if (!empty($product)) {
+                    if (!isset($ret[$product->getId()])){
+                        $ret[$product->getId()] = [];
+                    }
+                    $ret[$product->getId()][] = ['qty'=>$qty, 'name'=>$productName];
+                }
+            }
+            return $ret;
         }
 
     }

@@ -299,8 +299,8 @@ namespace crm\managers {
             $exceptionFound = $finder->query("//*[contains(@class, 'errorPage')]");
             if ($exceptionFound->length > 0) {
                 $this->updateField($row->getId(), 'amazon_primary_status_text', 'Not found! maybe cancelled');
-                $this->updateField($row->getId(), 'status', 'canceled');
-                $this->updateField($row->getId(), 'cancelled_at', date('Y-m-d H:i:s'));
+                $this->updateField($row->getId(), 'problematic', 1);
+//                $this->updateField($row->getId(), 'cancelled_at', date('Y-m-d H:i:s'));
                 return;
             }
 
