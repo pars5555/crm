@@ -510,7 +510,7 @@ namespace crm\managers {
             if (!empty($checoutOnly)) {
                 $where = ['(','unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', '>', 0,')'];
             } else {
-                $where = ['AND', '(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', 'IS NULL',')'];
+                $where = ['(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', 'IS NULL',')'];
             }
             $where = array_merge($where, ['AND', 'hidden', '=', 0, 'AND',
                 '(',
@@ -527,7 +527,7 @@ namespace crm\managers {
             if (!empty($checoutOnly)) {
                 $where = ['(','unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', '>', 0,')'];
             } else {
-                $where = ['AND', '(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', 'IS NULL',')'];
+                $where = ['(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', 'IS NULL',')'];
             }
             $where = array_merge($where, ['AND', 'hidden', '=', 0, 'AND',
                 'status', 'in', "('feedback', 'finished',  'partially_delivered', 'delivered')", 'AND',

@@ -87,13 +87,14 @@
                                     {if isset($ns.pwarehousesProductsQuantity[$product->getId()])}
                                         {assign qty $qty-$ns.pwarehousesProductsQuantity[$product->getId()]}
                                     {/if}
-                                    {$qty}<br/>
-                                {/if}
-                                {if isset($ns.pwarehousesProductsQuantity[$product->getId()])}
-                                    <span style="color:red">{$pwarehousesProductsQuantity[$product->getId()]|default:'0'}</span>
+                                    {$qty}
                                 {/if}
                                 {if isset($ns.productsNotReceivedToDestinationCounty[$product->getId()])}
-                                    <span style="color:green">+ $ns.productsNotReceivedToDestinationCounty[$product->getId()]['qty']}</span>
+                                    <span style="color:green">+ {$ns.productsNotReceivedToDestinationCounty[$product->getId()]}</span>
+                                {/if}
+                                {if isset($ns.pwarehousesProductsQuantity[$product->getId()])}
+                                    <br/>
+                                    <span style="color:red">{$pwarehousesProductsQuantity[$product->getId()]|default:'0'}</span>
                                 {/if}
 
                             </td>

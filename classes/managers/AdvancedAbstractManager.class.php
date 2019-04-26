@@ -122,7 +122,6 @@ namespace crm\managers {
             return $this->mapper->countAdvance($where);
         }
         public function selectAdvance($fieldsArray = '*', $filters = null, $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null, $mapByIds = False, $leftJoin = "", $groupBy = "") {
-
             $where = $this->getWhereSubQueryByFilters($filters);
             $fields = $fieldsArray;
             if (is_array($fieldsArray)) {
