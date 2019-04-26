@@ -30,10 +30,14 @@ namespace crm\loads\main\product {
                 $where = array_merge($where, ['AND ', 'hidden', '=', 0]);
             }
             if (!empty($searchText)) {
-                $where = array_merge($where, ['AND', '(', 'name', 'like', "'%$searchText%'"]);
-                $where = array_merge($where, ['OR', 'model', 'like', "'%$searchText%'", ')']);
+                $words = $parts = preg_split('/\s+/', $searchText);
+                foreach ($words as $word) {
+                    $where = array_merge($where, ['AND', '(', 'name', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'model', 'like', "'%$word%'", ')']);
+                }
             }
-            $products = ProductManager::getInstance()->selectAdvance('*',$where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
+
+            $products = ProductManager::getInstance()->selectAdvance('*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $productIds = ProductManager::getDtosIdsArray($products);
             $productsPurchaseOrders = PurchaseOrderLineManager::getInstance()->getProductsPurchaseOrders($productIds);
             $productsSaleOrders = SaleOrderLineManager::getInstance()->getProductsSaleOrders($productIds);
@@ -61,7 +65,7 @@ namespace crm\loads\main\product {
             }
             $partnerIdsSql = implode(',', array_unique($partnerIds));
             $partnersMappedByIds = [];
-            if (!empty($partnerIdsSql)){
+            if (!empty($partnerIdsSql)) {
                 $partnersMappedByIds = PartnerManager::getInstance()->selectAdvance(['name', 'id'], ['id', 'in', "($partnerIdsSql)"], null, null, null, null, true);
             }
             $this->addParam('partnersMappedByIds', $partnersMappedByIds);
