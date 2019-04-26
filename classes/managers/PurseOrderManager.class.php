@@ -487,9 +487,9 @@ namespace crm\managers {
 
         public function getProblematicOrders($where, $checoutOnly = false) {
             if (!empty($checoutOnly)) {
-                $where = $where = array_merge($where, ['AND', 'unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)"]);
+                $where = array_merge($where, ['AND', '(','unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', '>', 0,')']);
             } else {
-                $where = $where = array_merge($where, ['AND', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)"]);
+                $where = array_merge($where, ['AND', '(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', 'IS NULL',')']);
             }
 
             $days = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
@@ -508,9 +508,9 @@ namespace crm\managers {
 
         public function getOrdersPuposedToNotReceivedToDestinationCounty($checoutOnly = false) {
             if (!empty($checoutOnly)) {
-                $where = ['unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)"];
+                $where = ['(','unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', '>', 0,')'];
             } else {
-                $where = ['checkout_order_id', '>', "($this->fakeRecipientUnitAddressesStr)"];
+                $where = ['AND', '(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', 'IS NULL',')'];
             }
             $where = array_merge($where, ['AND', 'hidden', '=', 0, 'AND',
                 '(',
@@ -525,9 +525,9 @@ namespace crm\managers {
 
             //if delivery date in none
             if (!empty($checoutOnly)) {
-                $where = ['unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)"];
+                $where = ['(','unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', '>', 0,')'];
             } else {
-                $where = ['unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)"];
+                $where = ['AND', '(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', 'IS NULL',')'];
             }
             $where = array_merge($where, ['AND', 'hidden', '=', 0, 'AND',
                 'status', 'in', "('feedback', 'finished',  'partially_delivered', 'delivered')", 'AND',
