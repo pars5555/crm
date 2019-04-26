@@ -67,9 +67,9 @@ namespace crm\loads\main {
             $usdRate = CurrencyRateManager::getInstance()->getCurrencyRate(1);
 
             $products = $this->initSorting($productsMappedById, $productsSaleOrders, $productsPurchaseOrders);
-            //$loadOrdersPuposedToNotReceivedToDestinationCounty = $this->loadOrdersPuposedToNotReceivedToDestinationCounty($products);
+            $expectingProducts = PurseOrderManager::getInstance()->getExpectingProducts($products);
 
-            //$this->addParam('productsNotReceivedToDestinationCounty', $loadOrdersPuposedToNotReceivedToDestinationCounty);
+            $this->addParam('productsNotReceivedToDestinationCounty', $expectingProducts);
             $this->addParam('categoriesMappedById', $categoriesMappedById);
             $this->addParam('pwarehousesProductsQuantity', $pwarehousesProductsQuantity);
             $this->addParam('products', $products);

@@ -15,7 +15,9 @@ namespace crm\loads\main\purse {
     use crm\managers\AttachmentManager;
     use crm\managers\CryptoRateManager;
     use crm\managers\PreorderManager;
+    use crm\managers\ProductManager;
     use crm\managers\PurchaseOrderManager;
+    use crm\managers\PurseOrderHistoryManager;
     use crm\managers\PurseOrderManager;
     use crm\managers\RecipientManager;
     use crm\managers\SettingManager;
@@ -40,7 +42,7 @@ namespace crm\loads\main\purse {
                 if ($problematic == 1) {
                     $orders = PurseOrderManager::getInstance()->getProblematicOrders($where);
                 } elseif ($new_changed == 1) {
-                    $idsArray = \crm\managers\PurseOrderHistoryManager::getInstance()->getLast12HoursChangedOrderIds();
+                    $idsArray = PurseOrderHistoryManager::getInstance()->getLast12HoursChangedOrderIds();
                     $orders = PurseOrderManager::getInstance()->selectByPKs($idsArray);
                 } else {
                     $where = array_merge($where, ['AND', 'checkout_order_id', 'IS NULL']);
@@ -78,6 +80,9 @@ namespace crm\loads\main\purse {
                 $this->addParam('not_received_orders_count', count($ordersPuposedToNotReceivedToDestinationCounty));
                 $this->addParam('searchedItemPuposedCount', $searchedItemCount);
                 $this->addParam('searchedItemCountThatHasTrackingNumber', $searchedItemCountThatHasTrackingNumber);
+
+                $allProducts = ProductManager::getInstance()->selectAll(true);
+                $this->addParam('all_products', $allProducts);
             }
 
 
@@ -199,7 +204,7 @@ namespace crm\loads\main\purse {
                 $load->addParam('all_merchant_names_list', $all_merchant_names_list);
 
                 $accountNames = PurseOrderManager::getInstance()->getAllAccountNames($selectedFilterMerchant);
-                
+
                 $load->addParam('account_names', $accountNames);
             }
             $selectedFilterRecipientId = 0;

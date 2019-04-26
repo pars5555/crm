@@ -85,10 +85,11 @@ NGS.createLoad("crm.loads.main.purse.list", {
     initAddExternalOrderConfirm: function () {
         $('#add_external_order_confirm').click(function () {
             var unit_address = $('#external_order_unit_address_input').val();
+            var product_id = $('#external_order_product_id').val();
             var url = $('#external_order_url_input').val();
             var qty = $('#external_order_qty_input').val();
             var price = $('#external_order_price_input').val();
-            var params = {url: url, qty: qty, price: price, unit_address: unit_address};
+            var params = {url: url, qty: qty, price: price, unit_address: unit_address, product_id:product_id};
             NGS.action('crm.actions.main.purse.add_external_order', params);
             $(this).remove();
         });

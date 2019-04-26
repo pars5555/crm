@@ -95,9 +95,9 @@
                                                     <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="quantity"> {$order->getQuantity()} </td>
                                                     <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="product_name">
                                                         {if $order->getAmazonOrderNumber()|count_characters > 5}
-                                                        <a class="link " target="_black" href="https://www.amazon.com/returns/cart?orderId={$order->getAmazonOrderNumber()}">{$order->getProductName()}</a>
+                                                            <a class="link " target="_black" href="https://www.amazon.com/returns/cart?orderId={$order->getAmazonOrderNumber()}">{$order->getProductName()}</a>
                                                         {else}
-                                                        {$order->getProductName()}
+                                                            {$order->getProductName()}
                                                         {/if}
                                                     </td>
                                                     <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="amazon_total"> {$order->getAmazonTotal()} </td>

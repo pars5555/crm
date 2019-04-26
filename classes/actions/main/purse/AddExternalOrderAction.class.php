@@ -24,6 +24,7 @@ namespace crm\actions\main\purse {
             $unitAddress = trim(NGS()->args()->unit_address);
             $url = trim(NGS()->args()->url);
             $qty = intval(NGS()->args()->qty);
+            $product_id = intval(NGS()->args()->product_id);
             $price = floatval(NGS()->args()->price);
             $html = $this->curl_get_contents($url);
             $productName = $this->get_title($html);
@@ -33,7 +34,7 @@ namespace crm\actions\main\purse {
             $imageUrl = $this->extractImagesFromWebPage($html);
 
             $asin = PurseOrderManager::getItemAsinFromUrl($url);
-            PurseOrderManager::getInstance()->addManualOrder($productName, $qty, $price, $unitAddress, $imageUrl, 1, $asin);
+            PurseOrderManager::getInstance()->addManualOrder($productName, $product_id, $qty, $price, $unitAddress, $imageUrl, 1, $asin);
         }
 
         private function curl_get_contents($url, $headers = [], $cookie = '') {

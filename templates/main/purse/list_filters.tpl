@@ -213,13 +213,13 @@ checkout: {$ns.checkout_btc_address|default:'N/A'}<br/>
                 <input class="text" id="external_order_unit_address_input" style="width: 100%" type="text"/>
                 <br/>
                 corresponding item: 
-                <select class="f_purchase_item" id="external_order_product_id" 
-                        style="max-width: 500px" data-autocomplete="true" data-no-wrap="true">
-                    <option value="0">Create New Item</option>
-                    {foreach from=$product_row['product_list'] item=p}
-                        <option value="{$p->getId()}" {if $product_row['product'] && $p->getId() == $product_row['product']->getId()}selected{/if}>{$p->getName()}</option>
+                <select class="f_purchase_item" id="external_order_product_id" style="max-width: 500px" data-autocomplete="true" data-no-wrap="true">
+                    <option value="0">New Item</option>
+                    {foreach from=$ns.all_products item=p}
+                        <option value="{$p->getId()}">{$p->getName()}</option>
                     {/foreach}
                 </select>
+                <br/>
                 <br/>
                 <label>Product Url</label>
                 <input class="text"  id="external_order_url_input" style="width: 100%" type="text"/>

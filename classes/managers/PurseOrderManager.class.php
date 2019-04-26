@@ -68,6 +68,23 @@ namespace crm\managers {
             return 0;
         }
 
+        public function getExpectingProducts($products) {
+            $productIds = [];
+            foreach ($products as $product) {
+                $productIds[] = $product->getId();
+            }
+            $productIdsSql = "(" . implode(',', $productIds) . ")";
+            $orders = $this->selectAdvance('SUM(`quantity`) as qty , SUM(`amazon_total`) as total_amount, `product_id`', [
+                'product_id', 'in', $productIdsSql, 'AND',
+                'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
+                'hidden', '=', 0], 'id', 'desc', null, null, false, "", 'GROUP BY product_id');
+            $ret = [];
+            foreach ($orders as $order) {
+                $ret[$order->product_id] = $order->qty;
+            }
+            return $ret;
+        }
+
         public function getRecipientsRecentOrders($recipientIds) {
             $recipients = RecipientManager::getInstance()->selectByPKs($recipientIds);
             $partnerIdMappedByExpressUnitAddresses = [];
@@ -173,7 +190,7 @@ namespace crm\managers {
 
         public function getAllAccountNames($merchant) {
             $where = [];
-            if (!empty($merchant) &&  $merchant !== 'all') {
+            if (!empty($merchant) && $merchant !== 'all') {
                 $where = ['account_name', 'like', "'%$merchant%'"];
             }
             $rows = $this->selectAdvance(['account_name'], $where, [], "", null, null, false, "", 'GROUP BY account_name');
@@ -352,7 +369,7 @@ namespace crm\managers {
 
         public function addCheckoutOrder($orderId, $shipping_carrier, $customer_name, $asin, $productName, $qty, $price, $unitAddress, $imageUrl, $metadata) {
             $carrierUnitAddress = SettingManager::getInstance()->getSetting($shipping_carrier . '_unit_address');
-            $id = $this->addManualOrder($productName, $qty, $price, $carrierUnitAddress, $imageUrl, 0, $asin);
+            $id = $this->addManualOrder($productName, 0, $qty, $price, $carrierUnitAddress, $imageUrl, 0, $asin);
             $dto = $this->selectByPk($id);
             $dto->setCheckoutCustomerName($customer_name);
             $dto->setCheckoutOrderId($orderId);
@@ -362,10 +379,11 @@ namespace crm\managers {
             $this->updateByPk($dto);
         }
 
-        public function addManualOrder($productName, $qty, $price, $unitAddress, $imageUrl, $external = 1, $externalProductNumber = "") {
+        public function addManualOrder($productName, $product_id, $qty, $price, $unitAddress, $imageUrl, $external = 1, $externalProductNumber = "") {
             $dto = $this->createDto();
             $dto->setProductName($productName);
             $dto->setImageUrl($imageUrl);
+            $dto->setProductId($product_id);
             $dto->setQuantity($qty);
             $dto->setDiscount(0);
             $dto->setAmazonTotal($price);
@@ -492,7 +510,7 @@ namespace crm\managers {
             if (!empty($checoutOnly)) {
                 $where = ['unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)"];
             } else {
-                $where = ['unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)"];
+                $where = ['checkout_order_id', '>', "($this->fakeRecipientUnitAddressesStr)"];
             }
             $where = array_merge($where, ['AND', 'hidden', '=', 0, 'AND',
                 '(',
