@@ -93,7 +93,7 @@
                                                     <td> 
                                                         <img src="{$order->getImageUrl()}" width="100"/>
                                                         <a target="_blank" href="{$order->getCheckoutOrderProductLink()}"><img src="{$SITE_PATH}/img/link.png" width="32"/></a> </td>
-                                                    <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="product_id"> {$order->getProductId()|default:'N/A'} </td>
+                                                    <td class="f_editable_cell" data-field-name="product_id"> {$order->getProductId()|default:'N/A'} </td>
                                                     <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="quantity"> {$order->getQuantity()} </td>
                                                     <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="product_name">
                                                         {if $order->getAmazonOrderNumber()|count_characters > 5}
