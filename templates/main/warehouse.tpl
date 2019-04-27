@@ -70,7 +70,7 @@
                         <td>{$product->getId()}</td>
                         <td class="f_editable_image_cell" data-field-name="image_url"> <img src="{$product->getImageUrl()}" width="100"/> </td>
                         <td style="min-width: 250px; {if $product->getId()|in_array:$ns.newProductIds} color:blue; {/if}" data-field-name="name">{$product->getName()}</td>
-                        <td class="f_editable_cell f_empty_value" data-list="brand_list" data-field-name="manufacturer">{$product->getManufacturer()}</td>
+                        <td class="f_editable_cell" data-list="brand_list" data-field-name="manufacturer">{$product->getManufacturer()}</td>
                         <td class="f_editable_cell" data-list="model_list" data-field-name="model">{$product->getModel()}</td>
                         <td class="f_selectable_cell" data-value="{$product->getCategoryId()}" data-field-name="category_id" data-template-select-id="category_select">
                             {$ns.categoriesMappedById[$product->getCategoryId()]}

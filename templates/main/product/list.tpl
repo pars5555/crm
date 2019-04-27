@@ -35,7 +35,7 @@
                     <td class="f_editable_cell" data-field-name="name">{$product->getName()}</td>
                     <td class="f_editable_cell" data-field-name="model">{$product->getModel()}</td>
                     <td>{$product->getUnitWeight()|number_format:2}</td>
-                    <td class="f_editable_cell f_empty_value" data-list="brand_list" data-field-name="manufacturer">{$product->getManufacturer()}</td>
+                    <td class="f_editable_cell" data-list="brand_list" data-field-name="manufacturer">{$product->getManufacturer()}</td>
                     <td>{$product->getUomId()}</td>
                     <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
                         {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
