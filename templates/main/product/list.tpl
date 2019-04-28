@@ -26,16 +26,16 @@
                 <th class="icon-cell">Hidden</th>
             </tr>
             {foreach from=$ns.products item=product}
-                <tr>
+                <tr data-id="{$product->getId()}" data-type="product">
                     <td class="link-cell id">
                         <a href="{$SITE_PATH}/product/{$product->getId()}">
                             <span>{$product->getId()} </span>
                         </a>
                     </td>
-                    <td>{$product->getName()}</td>
-                    <td>{$product->getModel()}</td>
+                    <td class="f_editable_cell" data-field-name="name">{$product->getName()}</td>
+                    <td class="f_editable_cell" data-field-name="model">{$product->getModel()}</td>
                     <td>{$product->getUnitWeight()|number_format:2}</td>
-                    <td>{$product->getManufacturer()}</td>
+                    <td class="f_editable_cell" data-list="brand_list" data-field-name="manufacturer">{$product->getManufacturer()}</td>
                     <td>{$product->getUomId()}</td>
                     <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
                         {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
@@ -81,3 +81,8 @@
         </table>
     </div>
 </div>
+        <datalist id="brand_list">
+    {foreach from=$ns.brands item=brand}
+        <option value="{$brand}"/>
+    {/foreach}
+</datalist>

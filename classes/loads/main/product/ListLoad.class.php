@@ -69,6 +69,13 @@ namespace crm\loads\main\product {
                 $partnersMappedByIds = PartnerManager::getInstance()->selectAdvance(['name', 'id'], ['id', 'in', "($partnerIdsSql)"], null, null, null, null, true);
             }
             $this->addParam('partnersMappedByIds', $partnersMappedByIds);
+            $this->loadProductModelsAndBrands();
+        }
+        
+        private function loadProductModelsAndBrands() {
+            list($models, $brands) = ProductManager::getInstance()->getBrandsAndModels();
+            $this->addParam('models', $models);
+            $this->addParam('brands', $brands);
         }
 
         private function redirectIncludedParamsExeptPaging() {
