@@ -15,7 +15,9 @@
 namespace crm\actions\main {
 
     use crm\actions\BaseAction;
+    use crm\dal\dto\PurseOrderDto;
     use crm\managers\CheckoutManager;
+    use crm\managers\OnlineShopsManager;
     use crm\managers\PaymentTransactionManager;
     use crm\managers\ProductCategoryManager;
     use crm\managers\ProductManager;
@@ -26,6 +28,7 @@ namespace crm\actions\main {
     use crm\managers\SettingManager;
     use crm\managers\TranslationManager;
     use crm\managers\WhishlistManager;
+    use NGS;
 
     class UpdateFieldAction extends BaseAction {
 
@@ -62,6 +65,9 @@ namespace crm\actions\main {
                     break;
                 case 'recipient':
                     $manager = RecipientManager::getInstance();
+                    break;
+                case 'online_shop':
+                    $manager = OnlineShopsManager::getInstance();
                     break;
                 case 'whishlist':
                     $manager = WhishlistManager::getInstance();
@@ -142,7 +148,7 @@ namespace crm\actions\main {
                     if ($ret === true && $fieldValue > 25) {
                         $purseManager->updateField($rowId, 'status', 'finished');
                     }
-                    $this->addParam('display_value', \crm\dal\dto\PurseOrderDto::CHECKOUT_ORDER_STATUSES[intval($fieldValue)]);
+                    $this->addParam('display_value', PurseOrderDto::CHECKOUT_ORDER_STATUSES[intval($fieldValue)]);
                     break;
                 default:
                     return true;
