@@ -396,7 +396,7 @@ namespace crm\managers {
             $dto->setShippingType($shippingType);
             $recipient = RecipientManager::getInstance()->getRecipientByUnitAddress($unitAddress);
             if (!empty($recipient)) {
-                $dto->setRecipientName($recipient->getFirstName() . ' ' . $recipient->getLastName());                
+                $dto->setRecipientName($recipient->getFirstName() . ' ' . $recipient->getLastName());
             }
             $dto->setCreatedAt(date('Y-m-d H:i:s'));
             return $this->insertDto($dto);
@@ -441,7 +441,9 @@ namespace crm\managers {
             $dto->setQuantity($totalQty);
             $dto->setAmazonOrderNumber($order['shipping']['purchase_order']);
             $unitAddress = trim($order['shipping']['verbose']['street2']);
-            $dto->setUnitAddress($unitAddress);
+            if (empty($dtos)) {
+                $dto->setUnitAddress($unitAddress);
+            }
             $shippingType = RecipientManager::getInstance()->getShippingTypeByUnitAddress($unitAddress);
             $dto->setShippingType($shippingType);
             $dto->setDeliveryDate($order['shipping']['delivery_date']);
@@ -487,9 +489,9 @@ namespace crm\managers {
 
         public function getProblematicOrders($where, $checoutOnly = false) {
             if (!empty($checoutOnly)) {
-                $where = array_merge($where, ['AND', '(','unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', '>', 0,')']);
+                $where = array_merge($where, ['AND', '(', 'unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)", 'OR', 'checkout_order_id', '>', 0, ')']);
             } else {
-                $where = array_merge($where, ['AND', '(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', 'IS NULL',')']);
+                $where = array_merge($where, ['AND', '(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR', 'checkout_order_id', 'IS NULL', ')']);
             }
 
             $days = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
@@ -508,9 +510,9 @@ namespace crm\managers {
 
         public function getOrdersPuposedToNotReceivedToDestinationCounty($checoutOnly = false) {
             if (!empty($checoutOnly)) {
-                $where = ['(','unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', '>', 0,')'];
+                $where = ['(', 'unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)", 'OR', 'checkout_order_id', '>', 0, ')'];
             } else {
-                $where = ['(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', 'IS NULL',')'];
+                $where = ['(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR', 'checkout_order_id', 'IS NULL', ')'];
             }
             $where = array_merge($where, ['AND', 'hidden', '=', 0, 'AND',
                 '(',
@@ -525,9 +527,9 @@ namespace crm\managers {
 
             //if delivery date in none
             if (!empty($checoutOnly)) {
-                $where = ['(','unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', '>', 0,')'];
+                $where = ['(', 'unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)", 'OR', 'checkout_order_id', '>', 0, ')'];
             } else {
-                $where = ['(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR' , 'checkout_order_id', 'IS NULL',')'];
+                $where = ['(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR', 'checkout_order_id', 'IS NULL', ')'];
             }
             $where = array_merge($where, ['AND', 'hidden', '=', 0, 'AND',
                 'status', 'in', "('feedback', 'finished',  'partially_delivered', 'delivered')", 'AND',

@@ -84,7 +84,7 @@
                                                         <br/>
                                                         <span {if $order->getShippingType()=='standard'}style='color:red'{/if} >{$order->getShippingType()}</span>
                                                     </td>
-                                                    <td {if $order->getExternal() == 1}class="f_editable_cell" data-field-name="unit_address"{/if}> 
+                                                    <td class="f_editable_cell" data-field-name="unit_address"> 
                                                         {if not $order->getRecipientName()}
                                                             <a href="javascript:void(0);" class="fa fa-refresh f_refresh_recipient" data-id='{$order->getId()}'></a>
                                                         {/if}
