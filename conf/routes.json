@@ -462,6 +462,17 @@
             }
         }
     ],
+    "chusers": [
+        {
+            "action": "loads.main.index",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.chusers.list"
+                }
+            }
+        }
+    ],
     "product": [
         {
             "action": "loads.main.index",
@@ -506,6 +517,17 @@
             }
         }
 
+    ],
+    "websites": [
+        {
+            "action": "loads.main.index",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.onlineshops.list"
+                }
+            }
+        }
     ],
     "recipient": [
         {
