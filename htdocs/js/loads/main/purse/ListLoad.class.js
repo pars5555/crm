@@ -7,6 +7,12 @@ NGS.createLoad("crm.loads.main.purse.list", {
 
     },
     afterLoad: function () {
+        $('.f_received_checkbox').change(function () {
+            var id = $(this).data('id');
+            var checked = $(this).is(':checked') ? 1 : 0;
+            NGS.action('crm.actions.main.UpdateField', {'id': id, 'object_type': 'btc', 'field_name': 'delivered', "field_value": checked});
+        });
+
         $('#productFilters').find('input[name="st"]').keyup(function () {
             if (this.search_timout_handler > 0) {
                 window.clearTimeout(this.search_timout_handler);
@@ -89,7 +95,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
             var url = $('#external_order_url_input').val();
             var qty = $('#external_order_qty_input').val();
             var price = $('#external_order_price_input').val();
-            var params = {url: url, qty: qty, price: price, unit_address: unit_address, product_id:product_id};
+            var params = {url: url, qty: qty, price: price, unit_address: unit_address, product_id: product_id};
             NGS.action('crm.actions.main.purse.add_external_order', params);
             $(this).remove();
         });
@@ -105,7 +111,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
         $('#not_registered_trackings_confirm').click(function () {
             var trackingNumbers = $('#not_registered_trackings_input').val();
             trackingNumbers = trackingNumbers.replace(/\s/g, ";");
-            var cn = $('#local_carrier_name').val();            
+            var cn = $('#local_carrier_name').val();
             window.location.href = "/purse/list?cn=" + cn + "&roiw=" + trackingNumbers;
         });
     },
@@ -142,7 +148,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
     initDelete: function () {
         $('.f_delete').click(function () {
             var row = $(this);
-            Modals.showConfirmDlg('Confirm','are you sure you want to delete order?', null, null, function () {
+            Modals.showConfirmDlg('Confirm', 'are you sure you want to delete order?', null, null, function () {
                 $(row).closest('tr').remove();
                 NGS.action('crm.actions.main.purse.delete', {id: row.closest('tr').data('id')});
             });
@@ -165,7 +171,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
     initRefreshRecipient: function () {
         $('.f_refresh_recipient').click(function () {
             var id = $(this).data('id');
-            NGS.action('crm.actions.main.purse.refresh_recipient', {id: id}, function(){
+            NGS.action('crm.actions.main.purse.refresh_recipient', {id: id}, function () {
                 window.location.reload();
             });
         });
