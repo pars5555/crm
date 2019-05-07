@@ -131,7 +131,17 @@ namespace crm\loads\main\purse {
             $this->addParam('btc_rate', CryptoRateManager::getInstance()->getBtcRate());
 
 
-            $this->addParam('recipients', RecipientManager::getInstance()->selectAdvance('*', [], ['first_name', 'last_name']));
+            $allRecipients = RecipientManager::getInstance()->selectAdvance('*', [], ['email','first_name', 'last_name']);
+            $recipientsMappedByUnitAddress = [];
+            foreach ($allRecipients as $recipient) {
+                $recipientsMappedByUnitAddress [$recipient->getExpressUnitAddress()] = $recipient;
+                $recipientsMappedByUnitAddress [$recipient->getStandardUnitAddress()] = $recipient;
+                $recipientsMappedByUnitAddress [$recipient->getOnexExpressUnit()] = $recipient;
+                $recipientsMappedByUnitAddress [$recipient->getOnexStandardUnit()] = $recipient;
+                $recipientsMappedByUnitAddress [$recipient->getNovaExpressUnit()] = $recipient;
+                $recipientsMappedByUnitAddress [$recipient->getNovaStandardUnit()] = $recipient;
+            }
+            $this->addParam('recipientsMappedByUnitAddress', $recipientsMappedByUnitAddress);
         }
 
         public static function initFilters($limit = 10000, $load = null) {

@@ -36,14 +36,13 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function addRow($name) {
+        public function addRowIfNotExist($name) {
+            $row = $this->selectOneByField('name', $name);
+            if (empty($row )){
             $dto = $this->createDto();
             $dto->setName($name);
             return $this->insertDto($dto);
-        }
-
-        public function getBtcRate() {
-            return $this->selectAdvance('*', ['name', '=', "'BTC'"], 'id', 'DESC', 0, 1)[0]->getRate();
+            }
         }
 
     }

@@ -26,7 +26,12 @@ namespace crm\dal\dto {
         }
 
         // Map of DB value to Field value
-        private $mapArray = array("id" => "id", "name" => "name", "url" => "url", "index" => "index");
+        private $mapArray = array("id" => "id", 
+            "name" => "name",
+            "login" => "login",
+            "password" => "password",
+            "closed" => "closed",            
+            "url" => "url", "index" => "index");
 
         // returns map array
         public function getMapArray() {

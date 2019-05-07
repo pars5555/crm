@@ -24,12 +24,12 @@ namespace crm\loads\main\onlineshops {
             foreach ($accountNames as $accountName){
                 $accountName = trim($accountName);
                 if (!empty($accountName)){
-                    OnlineShopsManager::getInstance()->addRow($accountName);
+                    OnlineShopsManager::getInstance()->addRowIfNotExist($accountName);
                 }
             }
             
             
-            $rows = OnlineShopsManager::getInstance()->selectAdvance('*', [], 'index', 'desc');
+            $rows = OnlineShopsManager::getInstance()->selectAdvance('*', [], 'index');
             $this->addParam('rows', $rows);
         }
 

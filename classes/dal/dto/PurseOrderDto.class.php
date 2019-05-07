@@ -34,6 +34,7 @@ namespace crm\dal\dto {
             "quantity" => "quantity", "cancelled_at" => "cancelledAt", "image_url" => "imageUrl", "shipping_carrier" => "shippingCarrier", "status" => "status", "note" => 'note', "unread_messages" => 'unreadMessages',
             "account_name" => "accountName", "created_at" => "createdAt", "updated_at" => "updatedAt", "hidden_at" => "hiddenAt", 'meta' => 'meta',
             'external' => 'external',
+            'delivered' => 'delivered',
             'product_id' => 'productId',
             'checkout_customer_unit_address' => 'checkoutCustomerUnitAddress',
             'checkout_order_id' => 'checkoutOrderId',
@@ -57,6 +58,17 @@ namespace crm\dal\dto {
             return round(abs(strtotime(date('Y-m-d H:i:s')) - strtotime($this->getCreatedAt())) / 86400);
         }
 
+        public function getLocalCarrierName() {
+            $carrierFirst2Letter = substr(strtolower($this->getUnitAddress()), 0, 2);
+                if ($carrierFirst2Letter == 'nv') {
+                    return "nova";
+                }
+                if ($carrierFirst2Letter == 'ar') {
+                    return "onex";
+                }
+                return "globbing";
+        }
+        
         public function getCarrierTrackingUrl() {
             $trackingNumber = $this->getTrackingNumber();
             if (strpos(strtolower($this->getShippingCarrier()), 'usps') !== false) {

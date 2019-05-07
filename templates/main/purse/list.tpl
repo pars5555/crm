@@ -36,12 +36,12 @@
                 <th> Caluclation Price</th>
                 <th> Account </th>
                 <th> % </th>
-                <th> Buyer </th>
                 <th> Status </th>
                 <th> Note </th>
                 <th> S/N </th>
                 <th> amazon Order Number </th>
                 <th> Tracking Number </th>
+                <th> delivered </th>
                 <th> hidden At </th>
                 <th> created </th>
             </tr>
@@ -84,77 +84,83 @@
                                                         <br/>
                                                         <span {if $order->getShippingType()=='standard'}style='color:red'{/if} >{$order->getShippingType()}</span>
                                                     </td>
-                                                    <td {if $order->getExternal() == 1}class="f_editable_cell" data-field-name="unit_address"{/if}> 
+                                                    <td class="f_editable_cell" data-field-name="unit_address"> 
                                                         {if not $order->getRecipientName()}
                                                             <a href="javascript:void(0);" class="fa fa-refresh f_refresh_recipient" data-id='{$order->getId()}'></a>
                                                         {/if}
-                                                        {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})</td>
+                                                        {$order->getRecipientName()} {$order->getUnitAddress()} 
+                                                    {if $order->getLocalCarrierName() === 'globbing' && isset($recipientsMappedByUnitAddress[$order->getUnitAddress()])}{$recipientsMappedByUnitAddress[$order->getUnitAddress()]->getEmail()|truncate:4:""}{/if} ({$order->getAccountName()|replace:'purse_':''})</td>
 
-                                                    <td> 
-                                                        <img src="{$order->getImageUrl()}" width="100"/>
-                                                        <a target="_blank" href="{$order->getCheckoutOrderProductLink()}"><img src="{$SITE_PATH}/img/link.png" width="32"/></a> </td>
-                                                    <td class="f_editable_cell" data-field-name="product_id"> {$order->getProductId()|default:'N/A'} </td>
-                                                    <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="quantity"> {$order->getQuantity()} </td>
-                                                    <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="product_name">
-                                                        {if $order->getAmazonOrderNumber()|count_characters > 5}
-                                                            <a class="link " target="_black" href="https://www.amazon.com/returns/cart?orderId={$order->getAmazonOrderNumber()}">{$order->getProductName()}</a>
+                                                <td> 
+                                                    <img src="{$order->getImageUrl()}" width="100"/>
+                                                    <a target="_blank" href="{$order->getCheckoutOrderProductLink()}"><img src="{$SITE_PATH}/img/link.png" width="32"/></a> </td>
+                                                <td class="f_editable_cell" data-field-name="product_id"> {$order->getProductId()|default:'N/A'} </td>
+                                                <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="quantity"> {$order->getQuantity()} </td>
+                                                <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="product_name">
+                                                    {if $order->getAmazonOrderNumber()|count_characters > 5}
+                                                        <a class="link " target="_black" href="https://www.amazon.com/returns/cart?orderId={$order->getAmazonOrderNumber()}">{$order->getProductName()}</a>
+                                                    {else}
+                                                        {$order->getProductName()}
+                                                    {/if}
+                                                </td>
+                                                <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="amazon_total"> {$order->getAmazonTotal()} </td>
+                                                <td class="f_editable_cell" data-field-name="supposed_purchase_price"> {$order->getSupposedPurchasePrice()} </td>
+                                                <td class="f_editable_cell" data-list="account_name_list" data-field-name="account_name"> {$order->getAccountName()} </td>
+
+                                                <td> {$order->getDiscount()} </td>
+                                                <td> {$order->getStatus()} </td>
+                                                <td class="table-cell f_editable_cell" data-field-name="note" data-type="richtext" style="min-width: 100px"> {$order->getNote()} </td>
+                                                <td class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </td>
+                                                <td class="table-cell f_editable_cell"  data-field-name="amazon_order_number">
+                                                    <a class="link" target="_black" href="https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jnljnvjtqlspon&orderId={$order->getAmazonOrderNumber()}" > {$order->getAmazonOrderNumber()} </a>
+                                                    <br/>
+                                                    {$order->getAmazonPrimaryStatusText()}
+                                                </td>
+                                                <td class="{if $order->getExternal() == 1}f_editable_cell{/if}" data-field-name="tracking_number" >
+                                                    <div class="f_tracking" id="tracking_{$order->getId()}">
+
+                                                        {if $order->getCarrierTrackingUrl() !== false}
+                                                            <a class="link" target="_black" href="{$order->getCarrierTrackingUrl()}" >{$order->getTrackingNumber()}</a>
                                                         {else}
-                                                            {$order->getProductName()}
+                                                            {$order->getTrackingNumber()}
                                                         {/if}
-                                                    </td>
-                                                    <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="amazon_total"> {$order->getAmazonTotal()} </td>
-                                                    <td class="f_editable_cell" data-field-name="supposed_purchase_price"> {$order->getSupposedPurchasePrice()} </td>
-                                                    <td class="f_editable_cell" data-list="account_name_list" data-field-name="account_name"> {$order->getAccountName()} </td>
-
-                                                    <td> {$order->getDiscount()} </td>
-                                                    <td style="max-width: 70px;word-wrap: break-word"> {$order->getBuyerName()} </td>
-                                                    <td> {$order->getStatus()} </td>
-                                                    <td class="table-cell f_editable_cell" data-field-name="note" data-type="richtext" style="min-width: 100px"> {$order->getNote()} </td>
-                                                    <td class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </td>
-                                                    <td class="table-cell f_editable_cell"  data-field-name="amazon_order_number">
-                                                        <a class="link" target="_black" href="https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jnljnvjtqlspon&orderId={$order->getAmazonOrderNumber()}" > {$order->getAmazonOrderNumber()} </a>
+                                                        {if $order->getExternal() == 0}
+                                                            <a href="javascript:void(0);" class="fa fa-refresh f_refresh_tracking" data-id='{$order->getId()}'></a>
+                                                        {/if}
+                                                    </div>
+                                                    {if $order->getDeliveryDate()>0}
+                                                        <br/><br/>delivered at: {$order->getDeliveryDate()}
+                                                    {/if}
+                                                    <br/>
+                                                    <span id="carrier_tracking_status_{$order->getId()}">{$order->getCarrierTrackingStatus()}</span>:
+                                                    <span id="carrier_delivery_details_{$order->getId()}" style="color:#46AF04">{$order->getCarrierDeliveryDate()}</span>
+                                                    <a href="javascript:void(0);" class="fa fa-refresh f_refresh_carrier_delivery_details" data-id='{$order->getId()}'></a>
+                                                </td>
+                                                <td > 
+                                                    <input class="f_received_checkbox"
+                                                           data-id="{$order->getId()}"
+                                                           type="checkbox" value="1"
+                                                           {if $order->getDelivered() ==1}checked{/if}/>
+                                                </td> 
+                                                <td> 
+                                                    {$order->getHiddenAt()} 
+                                                    {if isset($ns.btc_purchase_orders[$order->getId()])}
                                                         <br/>
-                                                        {$order->getAmazonPrimaryStatusText()}
-                                                    </td>
-                                                    <td class="{if $order->getExternal() == 1}f_editable_cell{/if}" data-field-name="tracking_number" >
-                                                        <div class="f_tracking" id="tracking_{$order->getId()}">
-
-                                                            {if $order->getCarrierTrackingUrl() !== false}
-                                                                <a class="link" target="_black" href="{$order->getCarrierTrackingUrl()}" >{$order->getTrackingNumber()}</a>
-                                                            {else}
-                                                                {$order->getTrackingNumber()}
-                                                            {/if}
-                                                            {if $order->getExternal() == 0}
-                                                                <a href="javascript:void(0);" class="fa fa-refresh f_refresh_tracking" data-id='{$order->getId()}'></a>
-                                                            {/if}
-                                                        </div>
-                                                        {if $order->getDeliveryDate()>0}
-                                                            <br/><br/>delivered at: {$order->getDeliveryDate()}
-                                                        {/if}
                                                         <br/>
-                                                        <span id="carrier_tracking_status_{$order->getId()}">{$order->getCarrierTrackingStatus()}</span>:
-                                                        <span id="carrier_delivery_details_{$order->getId()}" style="color:#46AF04">{$order->getCarrierDeliveryDate()}</span>
-                                                        <a href="javascript:void(0);" class="fa fa-refresh f_refresh_carrier_delivery_details" data-id='{$order->getId()}'></a>
-                                                    </td>
-                                                    <td> 
-                                                        {$order->getHiddenAt()} 
-                                                        {if isset($ns.btc_purchase_orders[$order->getId()])}
-                                                            <br/>
-                                                            <br/>
-                                                            <a target="_blank" href="{$SITE_PATH}/purchase/{$ns.btc_purchase_orders[$order->getId()]}">
-                                                                <span>PO#{$ns.btc_purchase_orders[$order->getId()]} </span>
-                                                            </a>
-                                                        {/if}
-                                                    </td>
-                                                    <td> {$order->getCreatedAt()} </td>
-                                                </tr>
-                                                {/foreach}
-                                                </table>
-                </div>
-            </div>
-
-            <datalist id="account_name_list">
-                {foreach from=$ns.account_names item=an}
-                    <option value="{$an}"/>
+                                                        <a target="_blank" href="{$SITE_PATH}/purchase/{$ns.btc_purchase_orders[$order->getId()]}">
+                                                            <span>PO#{$ns.btc_purchase_orders[$order->getId()]} </span>
+                                                        </a>
+                                                    {/if}
+                                                </td>
+                                                <td> {$order->getCreatedAt()} </td>
+                </tr>
                 {/foreach}
-            </datalist>
+                </table>
+            </div>
+        </div>
+
+        <datalist id="account_name_list">
+            {foreach from=$ns.account_names item=an}
+                <option value="{$an}"/>
+            {/foreach}
+        </datalist>
