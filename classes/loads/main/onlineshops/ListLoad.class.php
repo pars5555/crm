@@ -29,7 +29,7 @@ namespace crm\loads\main\onlineshops {
             }
             
             
-            $rows = OnlineShopsManager::getInstance()->selectAdvance('*', [], 'index', 'desc');
+            $rows = OnlineShopsManager::getInstance()->selectAdvance('*', [], 'index');
             $this->addParam('rows', $rows);
         }
 
