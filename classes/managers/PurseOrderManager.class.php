@@ -443,12 +443,12 @@ namespace crm\managers {
             $unitAddress = trim($order['shipping']['verbose']['street2']);
             if (empty($dtos)) {
                 $dto->setUnitAddress($unitAddress);
+                $dto->setRecipientName($order['shipping']['verbose']['full_name']);
             }
             $shippingType = RecipientManager::getInstance()->getShippingTypeByUnitAddress($unitAddress);
             $dto->setShippingType($shippingType);
             $dto->setDeliveryDate($order['shipping']['delivery_date']);
             $dto->setUnreadMessages($order['unread_messages']);
-            $dto->setRecipientName($order['shipping']['verbose']['full_name']);
             $dto->setAmazonTotal($order['pricing']['buyer_pays_fiat']);
             $dto->setBtcRate($order['pricing']['market_exchange_rate']['rate']);
             $dto->setDiscount(floatval($order['items'][0]['discount_rate'] * 100));
