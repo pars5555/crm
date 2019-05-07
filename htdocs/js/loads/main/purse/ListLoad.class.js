@@ -130,6 +130,7 @@ NGS.createLoad("crm.loads.main.purse.list", {
         $('.f_update_purse').click(function () {
             var account = $(this).data('account_name');
             NGS.action('crm.actions.main.purse.update_orders', {account_name: account});
+            $(this).remove();
         });
     },
     initHide: function () {
