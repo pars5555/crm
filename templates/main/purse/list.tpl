@@ -88,7 +88,8 @@
                                                         {if not $order->getRecipientName()}
                                                             <a href="javascript:void(0);" class="fa fa-refresh f_refresh_recipient" data-id='{$order->getId()}'></a>
                                                         {/if}
-                                                        {$order->getRecipientName()} {$order->getUnitAddress()} ({$order->getAccountName()|replace:'purse_':''})</td>
+                                                        {$order->getRecipientName()} {$order->getUnitAddress()} 
+                                                    {if $order->getLocalCarrierName() === 'globbing' && isset($recipientsMappedByUnitAddress[$order->getUnitAddress()])}{$recipientsMappedByUnitAddress[$order->getUnitAddress()]->getEmail()|truncate:4:""}{/if} ({$order->getAccountName()|replace:'purse_':''})</td>
 
                                                     <td> 
                                                         <img src="{$order->getImageUrl()}" width="100"/>

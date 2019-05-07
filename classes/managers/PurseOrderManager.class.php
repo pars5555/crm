@@ -396,7 +396,7 @@ namespace crm\managers {
             $dto->setShippingType($shippingType);
             $recipient = RecipientManager::getInstance()->getRecipientByUnitAddress($unitAddress);
             if (!empty($recipient)) {
-                $dto->setRecipientName($recipient->getFirstName() . ' ' . $recipient->getLastName());
+                $dto->setRecipientName($recipient->getFirstName() . ' ' . $recipient->getLastName());                
             }
             $dto->setCreatedAt(date('Y-m-d H:i:s'));
             return $this->insertDto($dto);

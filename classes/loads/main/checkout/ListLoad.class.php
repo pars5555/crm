@@ -86,7 +86,18 @@ namespace crm\loads\main\checkout {
             $this->addParam('btc_products_days_diff_for_delivery_date', $btc_products_days_diff_for_delivery_date);
 
 
-            $this->addParam('recipients', RecipientManager::getInstance()->selectAdvance('*', [], ['first_name', 'last_name']));
+            $allRecipients = RecipientManager::getInstance()->selectAdvance('*', [], ['email','first_name', 'last_name']);
+            $recipientsMappedByUnitAddress = [];
+            foreach ($allRecipients as $recipient) {
+                $recipientsMappedByUnitAddress [$recipient->getExpressUnitAddress()] = $recipient;
+                $recipientsMappedByUnitAddress [$recipient->getStandardUnitAddress()] = $recipient;
+                $recipientsMappedByUnitAddress [$recipient->getOnexExpressUnit()] = $recipient;
+                $recipientsMappedByUnitAddress [$recipient->getOnexStandardUnit()] = $recipient;
+                $recipientsMappedByUnitAddress [$recipient->getNovaExpressUnit()] = $recipient;
+                $recipientsMappedByUnitAddress [$recipient->getNovaStandardUnit()] = $recipient;
+            }
+            $this->addParam('recipientsMappedByUnitAddress', $recipientsMappedByUnitAddress);
+            
             $this->addParam('checkout_order_statuses', PurseOrderDto::CHECKOUT_ORDER_STATUSES);
 
 

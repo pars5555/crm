@@ -57,6 +57,17 @@ namespace crm\dal\dto {
             return round(abs(strtotime(date('Y-m-d H:i:s')) - strtotime($this->getCreatedAt())) / 86400);
         }
 
+        public function getLocalCarrierName() {
+            $carrierFirst2Letter = substr(strtolower($this->getUnitAddress()), 0, 2);
+                if ($carrierFirst2Letter == 'nv') {
+                    return "nova";
+                }
+                if ($carrierFirst2Letter == 'ar') {
+                    return "onex";
+                }
+                return "globbing";
+        }
+        
         public function getCarrierTrackingUrl() {
             $trackingNumber = $this->getTrackingNumber();
             if (strpos(strtolower($this->getShippingCarrier()), 'usps') !== false) {
