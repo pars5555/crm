@@ -24,7 +24,7 @@ namespace crm\loads\main\onlineshops {
             foreach ($accountNames as $accountName){
                 $accountName = trim($accountName);
                 if (!empty($accountName)){
-                    OnlineShopsManager::getInstance()->addRow($accountName);
+                    OnlineShopsManager::getInstance()->addRowIfNotExist($accountName);
                 }
             }
             
