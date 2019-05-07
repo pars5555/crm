@@ -131,8 +131,9 @@
                                 </td>
                             {/if}
 
-                            <td class="f_editable_cell" {if isset($ns.productsPrice[$product->getId()]) && $product->getStockPrice()<=$ns.productsPrice[$product->getId()]}style="color:orange"{/if} 
-                                data-field-name="stock_price">{$product->getStockPrice()|number_format:2}</td>                            
+                            <td {if $ns.userType == $ns.userTypeAdmin}class="f_editable_cell" data-field-name="stock_price"{/if}
+                                {if isset($ns.productsPrice[$product->getId()]) && $product->getStockPrice()<=$ns.productsPrice[$product->getId()]}style="color:orange"{/if} 
+                                >{$product->getStockPrice()|number_format:2}</td>                            
 
                             <td class="icon-cell">
                                 <input class="f_qty_checked_checkbox"

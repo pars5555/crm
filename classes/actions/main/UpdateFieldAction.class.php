@@ -164,6 +164,10 @@ namespace crm\actions\main {
                 return false;
             }
         }
+        
+        public function getRequestGroup() {            
+            return \crm\security\RequestGroups::$guestRequest;
+        }
 
     }
 
