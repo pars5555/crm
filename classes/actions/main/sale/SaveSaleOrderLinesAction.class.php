@@ -31,7 +31,7 @@ namespace crm\actions\main\sale {
             }
             $saleOrderId = intval(NGS()->args()->sale_order_id);
             $createdFromPurchaseOrder = false;
-            if (isset(NGS()->args()->poid) && NGS()->args()->poid == 1) {
+            if (isset(NGS()->args()->poid) && intval(NGS()->args()->poid) > 1) {
                 $createdFromPurchaseOrder = true;
             }
             try {
