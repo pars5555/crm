@@ -28,8 +28,8 @@ namespace crm\actions\main\warehouse {
 
         public function exportCsv($products, $productsQuantity, $categoryNamesMappedById) {
 
-            header('Content-type: application/vnd.ms-excel;');
-            header('Content-Disposition: attachment;filename="ExportScan.xls;');
+            header('Content-type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment;filename="ExportScan.xls');
             header('Cache-Control: max-age=0;');
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
