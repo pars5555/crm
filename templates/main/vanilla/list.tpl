@@ -23,7 +23,7 @@
             </tr>
 
             {foreach from=$ns.rows item=row}
-                <tr class="table-row"  data-type="vanilla" data-id="{$row->getId()}">
+                <tr {if $row->getClosed()==1} style="background: lightgray;"{/if} class="table-row"  data-type="vanilla" data-id="{$row->getId()}">
                     <td class="table-cell f_editable_cell" data-field-name="number">{$row->getNumber()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="month">{$row->getMonth()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="year">{$row->getYear()}</td>
