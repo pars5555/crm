@@ -27,7 +27,9 @@ namespace crm\actions\main {
     use crm\managers\SaleOrderManager;
     use crm\managers\SettingManager;
     use crm\managers\TranslationManager;
+    use crm\managers\VanillaCardsManager;
     use crm\managers\WhishlistManager;
+    use crm\security\RequestGroups;
     use NGS;
 
     class UpdateFieldAction extends BaseAction {
@@ -65,6 +67,9 @@ namespace crm\actions\main {
                     break;
                 case 'recipient':
                     $manager = RecipientManager::getInstance();
+                    break;
+                case 'vanilla':
+                    $manager = VanillaCardsManager::getInstance();
                     break;
                 case 'online_shop':
                     $manager = OnlineShopsManager::getInstance();
@@ -164,9 +169,9 @@ namespace crm\actions\main {
                 return false;
             }
         }
-        
-        public function getRequestGroup() {            
-            return \crm\security\RequestGroups::$guestRequest;
+
+        public function getRequestGroup() {
+            return RequestGroups::$guestRequest;
         }
 
     }

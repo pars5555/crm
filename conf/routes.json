@@ -529,6 +529,17 @@
             }
         }
     ],
+    "vanilla": [
+        {
+            "action": "loads.main.index",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.vanilla.list"
+                }
+            }
+        }
+    ],
     "recipient": [
         {
             "action": "loads.main.index",

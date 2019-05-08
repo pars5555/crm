@@ -8,7 +8,9 @@
                 <th>Name</th>
                 <th>Login</th>
                 <th>Password</th>
+                <th>VM</th>
                 <th>Closed</th>
+                <th>note</th>
                 <th>Url</th>
             </tr>
 
@@ -18,7 +20,9 @@
                     <td>{$row->getName()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="login">{$row->getLogin()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="password">{$row->getPassword()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="vm">{$row->getVm()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="closed">{$row->getClosed()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="note">{$row->getNote()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="url">{$row->getUrl()}</td>
                 </tr>
             {/foreach}
