@@ -23,7 +23,8 @@
         "php": ">=5.2.0",
         "ext-curl": "*",        
         "php-curl-class/php-curl-class": "*",
-        "salsify/json-streaming-parser": "*"
+        "salsify/json-streaming-parser": "*",
+        "phpoffice/phpspreadsheet": "^1.6"
     }
 
 }

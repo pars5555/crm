@@ -22,6 +22,12 @@ NGS.createLoad("crm.loads.main.warehouse", {
         this.initReserve();
         this.initSort();
         this.initQtyChecked();
+        $('.f_include_in_price_xlsx_checkbox').change(function () {
+            var id = $(this).data('product_id');
+            var checked = $(this).is(':checked') ? 1 : 0;
+            NGS.action('crm.actions.main.UpdateField', {'id': id, 'object_type': 'product', 'field_name': 'include_in_price_xlsx', "field_value": checked});
+        });
+        
         $("#partner_select").chosen({
             search_contains: true
         });
