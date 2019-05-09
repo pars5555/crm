@@ -49,7 +49,7 @@
                                    value="1" {if $row->getClosed() == 1}checked{/if}/>
                         {/if}
                     </td>
-                    <td class="table-cell {if $ns.user->getType() != 'barney'}f_editable_cell{/if}" data-field-name="updated_at">{$row->getUpdatedAt()}
+                    <td class="table-cell" data-field-name="updated_at">{$row->getUpdatedAt()}
                         {if $ns.user->getType() != 'barney'}
                             <a href="javascript:void(0);" class="f_update_card" data-id="{$row->getId()}"><img width="20" src="{$SITE_PATH}/img/update.png"/></a>
                         {/if}</td>
