@@ -17,10 +17,10 @@ namespace crm\actions\login {
             }
             NGS()->getSessionManager()->login(UserGroups::$ADMIN, $adminDto->getId());
             if ($adminDto->getType() == 'checkout') {
-                $this->redirect('/checkout/list');
+                $this->redirect('checkout/list');
             }
-            if ($adminDto->getType() == 'adex') {
-                $this->redirect('/vanilla/list');
+            if ($adminDto->getType() == 'adex' || $adminDto->getType() == 'barney') {
+                $this->redirect('vanilla/list');
             }
             $this->redirect('');
         }

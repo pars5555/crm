@@ -44,7 +44,7 @@ namespace crm\loads\main\vanilla {
 
             $externalOrderIdsArray = [];
             foreach ($rows as $row) {
-                $externalOrdersIds = $row->getExternalOrdersIds();
+                $externalOrdersIds = intval($row->getExternalOrdersIds());
                 if (!empty($externalOrdersIds)) {
                     $externalOrderIdsArray = array_merge($externalOrderIdsArray, explode(',', $externalOrdersIds));
                 }

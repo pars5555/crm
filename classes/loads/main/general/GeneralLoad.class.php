@@ -18,6 +18,12 @@ namespace crm\loads\main\general {
     class GeneralLoad extends AdminLoad {
 
         public function load() {
+            $adminId = NGS()->getSessionManager()->getUserId();
+            if (\crm\managers\AdminManager::getInstance()->getById($adminId)->getType() !== 'root'){
+                NGS()->getSessionManager()->logout();
+                $this->redirect('login');
+                exit;
+            }
             $capitalData = json_decode(SettingManager::getInstance()->getSetting('capital_data', '{}'), true);
             $warehouseTotal = $capitalData['warehouse_total'];
             $purseTotal = $capitalData['purse_total'];
