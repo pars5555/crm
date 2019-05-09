@@ -142,10 +142,10 @@ NGS.createLoad("crm.loads.main.index", {
             var cellListName = $(this).data('list');
             var type = $(this).data('type');
             var object_type = $(this).parent('div').data('type');
-            var id = $(this).parent('div').data('id');
+            var id = $(this).closest('div').data('id');
             if (typeof object_type === 'undefined') {
-                object_type = $(this).parent('tr').data('type');
-                id = $(this).parent('tr').data('id');
+                object_type = $(this).closest('tr').data('type');
+                id = $(this).closest('tr').data('id');
 
             }
             if (type === 'richtext') {

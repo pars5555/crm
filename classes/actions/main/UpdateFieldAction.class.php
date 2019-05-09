@@ -88,6 +88,15 @@ namespace crm\actions\main {
                 $manager->setSetting($fieldName, $fieldValue);
                 return;
             }
+            if ($objectType === 'vanilla') {
+                $row = $manager->selectByField('number', $fieldValue);
+                if (!empty($row)){
+                    $this->addParam('value', 'Already exists');
+                    $this->addParam('message', 'Already exists');
+                    $this->addParam('success', false); 
+                    return;
+                }
+            }
             if ($objectType === 'settings_name') {
                 $manager->setSetting($fieldName, $fieldValue);
                 $this->addParam('value', $fieldValue);
@@ -113,6 +122,8 @@ namespace crm\actions\main {
                 $recipient = RecipientManager::getInstance()->getRecipientByUnitAddress($fieldValue);
                 if (!empty($recipient)) {
                     $manager->updateField($id, 'recipient_name', $recipient->getFirstName() . ' ' . $recipient->getLastName());
+                }else{
+                    $manager->updateField($id, 'recipient_name', 'N/A');
                 }
             }
             $manager->updateField($id, $fieldName, $fieldValue);

@@ -23,10 +23,13 @@
                     <li><a {if $ns.loadName=='product'}class="active"{/if} href="{$SITE_PATH}/product/list">Products</a></li>
                     <li><a {if $ns.loadName=='manufacturer'}class="active"{/if} href="{$SITE_PATH}/manufacturer/list">Manufacturers</a></li>
                     <li><a {if $ns.loadName=='recipient'}class="active"{/if} href="{$SITE_PATH}/recipient/list">Recipients</a></li>
-                    <li><a {if $ns.loadName=='vanilla'}class="active"{/if} href="{$SITE_PATH}/vanilla/list">Vanilla</a></li>
+
                     <li><a {if $ns.loadName=='websites'}class="active"{/if} href="{$SITE_PATH}/websites/list">Online Shops</a></li>
                         {*                    <li><a {if $ns.loadName=='rorder'}class="active"{/if} href="{$SITE_PATH}/rorder/list?srt=order_date&ascdesc=DESC">Recipient Orders</a></li>*}
                     <li><a {if $ns.loadName=='purse'}class="active"{/if} href="{$SITE_PATH}/purse/list">BTC-Products</a></li>
+                    {/if}
+                    {if $ns.user->getType() == 'root' || $ns.user->getType() == 'adex'}
+                    <li><a {if $ns.loadName=='vanilla'}class="active"{/if} href="{$SITE_PATH}/vanilla/list">Vanilla</a></li>
                     {/if}
                     {if $ns.user->getType() == 'root' || $ns.user->getType() == 'checkout'}
                     <li><a {if $ns.loadName=='checkout'}class="active"{/if} href="{$SITE_PATH}/checkout/list">Checkout.am</a></li>

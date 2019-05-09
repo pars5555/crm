@@ -84,11 +84,14 @@
                                                         <br/>
                                                         <span {if $order->getShippingType()=='standard'}style='color:red'{/if} >{$order->getShippingType()}</span>
                                                     </td>
-                                                    <td class="f_editable_cell" data-field-name="unit_address"> 
+                                                    <td > 
                                                         {if not $order->getRecipientName()}
                                                             <a href="javascript:void(0);" class="fa fa-refresh f_refresh_recipient" data-id='{$order->getId()}'></a>
                                                         {/if}
-                                                        {$order->getRecipientName()} {$order->getUnitAddress()} 
+                                                        {$order->getRecipientName()} 
+                                                        <span class="f_editable_cell" data-field-name="unit_address">
+                                                        {$order->getUnitAddress()} 
+                                                        </span>
                                                     {if $order->getLocalCarrierName() === 'globbing' && isset($recipientsMappedByUnitAddress[$order->getUnitAddress()])}{$recipientsMappedByUnitAddress[$order->getUnitAddress()]->getEmail()|truncate:4:""}{/if} ({$order->getAccountName()|replace:'purse_':''})</td>
 
                                                 <td> 

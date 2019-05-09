@@ -33,9 +33,6 @@ namespace crm\loads\main {
             $this->addParam('reservations', $reservations);
             $this->loadProductModelsAndBrands();
 
-
-
-
             $categories = ProductCategoryManager::getInstance()->selectAll();
             $categoriesMappedById = [];
             foreach ($categories as $category) {

@@ -37,6 +37,10 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function getAllDeliveredTotal() {
+            return $this->mapper->getAllCeliveredTotal();
+        }
+        
         public function addRow() {
             $dto = $this->createDto();
             $dto->setCreatedAt(date('Y-m-d H:i:s'));

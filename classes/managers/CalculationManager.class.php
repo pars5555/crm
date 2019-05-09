@@ -235,6 +235,7 @@ namespace crm\managers {
                     }
                 }
             }
+            $partnersZeroDebt = [];
             foreach ($partnersDebt as $partnerId => $partnerDebt) {
                 $zeroDebt = 1;
                 foreach ($partnerDebt as $currencyId => &$debt) {
