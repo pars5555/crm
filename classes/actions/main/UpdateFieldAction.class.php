@@ -88,7 +88,7 @@ namespace crm\actions\main {
                 $manager->setSetting($fieldName, $fieldValue);
                 return;
             }
-            if ($objectType === 'vanilla') {
+            if ($objectType === 'vanilla' && $fieldName === 'number') {
                 $row = $manager->selectByField('number', $fieldValue);
                 if (!empty($row)){
                     $this->addParam('value', 'Already exists');

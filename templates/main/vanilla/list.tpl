@@ -34,7 +34,7 @@
                     <td class="table-cell f_editable_cell" data-field-name="month">{$row->getMonth()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="year">{$row->getYear()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="cvv">{$row->getCvv()}</td>
-                    <td class="table-cell f_editable_cell" data-field-name="Initial Balance">{$row->getBalance()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="initial_balance">{$row->getInitialBalance()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="balance">{$row->getBalance()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="external_orders_ids">{$row->getExternalOrdersIds()}</td>
                     <td >{$row->getOrdersAmountsText()}</td>
