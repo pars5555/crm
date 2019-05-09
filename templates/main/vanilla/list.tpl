@@ -34,7 +34,7 @@
                 <tr {if $row->getDeleted()==1} style="background: #cc0000;"{else}{if $row->getClosed()==1} style="background: lightgray;"{/if}{/if}  class="table-row"  data-type="vanilla" data-id="{$row->getId()}">
                     <td class="table-cell {if $ns.user->getType() != 'barney'}f_editable_cell{/if}" data-field-name="number">{$row->getNumber()}</td>
                     <td class="table-cell {if $ns.user->getType() != 'barney'}f_editable_cell{/if}" data-field-name="month">{$row->getMonth()}</td>
-                    <td class="table-cell {if $ns.user->getType() != 'barney'}f_editable_cell{/if}l" data-field-name="year">{$row->getYear()}</td>
+                    <td class="table-cell {if $ns.user->getType() != 'barney'}f_editable_cell{/if}" data-field-name="year">{$row->getYear()}</td>
                     <td class="table-cell {if $ns.user->getType() != 'barney'}f_editable_cell{/if}" data-field-name="cvv">{$row->getCvv()}</td>
                     <td class="table-cell {if $ns.user->getType() != 'barney'}f_editable_cell{/if}" data-field-name="initial_balance">{$row->getInitialBalance()}</td>
                     <td class="table-cell {if $ns.user->getType() != 'barney'}f_editable_cell{/if}" data-field-name="balance">{$row->getBalance()}</td>
