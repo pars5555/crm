@@ -71,10 +71,15 @@
                 {if (isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]!=0) || 
                     (isset($ns.pwarehousesProductsQuantity[$product->getId()]) && $ns.pwarehousesProductsQuantity[$product->getId()]!=0) ||
                     (isset($ns.productsNotReceivedToDestinationCounty[$product->getId()]) && $ns.productsNotReceivedToDestinationCounty[$product->getId()]>0)}
-                <tr {if (isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]<0) || 
-                    (isset($ns.pwarehousesProductsQuantity[$product->getId()]) && $ns.pwarehousesProductsQuantity[$product->getId()]<0)}style="background: yellow"{else}{if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}{/if} 
-                    data-id="{$product->getId()}" data-type="product" 
-                    >
+
+                {if isset($ns.productsQuantity[$product->getId()])}
+                    {assign qty $ns.productsQuantity[$product->getId()]|default:0}
+                    {if isset($ns.pwarehousesProductsQuantity[$product->getId()])}
+                        {assign qty $qty-$ns.pwarehousesProductsQuantity[$product->getId()]}
+                    {/if}
+                {/if}
+                <tr {if $qty<0 || (isset($ns.pwarehousesProductsQuantity[$product->getId()]) && $ns.pwarehousesProductsQuantity[$product->getId()]<0)}style="background: yellow"{else}{if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}{/if} 
+                    data-id="{$product->getId()}" data-type="product">
                     <td>{$product->getId()}</td>
                     <td class="f_editable_image_cell" data-field-name="image_url"> <img src="{$product->getImageUrl()}" width="100"/> </td>
                     <td style="min-width: 250px; {if $product->getId()|in_array:$ns.newProductIds} color:blue; {/if}" data-field-name="name">{$product->getName()}</td>
@@ -97,11 +102,7 @@
                             </td>
                         {/if}
                         <td>
-                            {if isset($ns.productsQuantity[$product->getId()])}
-                                {assign qty $ns.productsQuantity[$product->getId()]|default:0}
-                                {if isset($ns.pwarehousesProductsQuantity[$product->getId()])}
-                                    {assign qty $qty-$ns.pwarehousesProductsQuantity[$product->getId()]}
-                                {/if}
+                            {if isset($ns.productsQuantity[$product->getId()])}                                
                                 {$qty}
                             {/if}
                             {if isset($ns.productsNotReceivedToDestinationCounty[$product->getId()])}
