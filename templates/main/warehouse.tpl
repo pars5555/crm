@@ -71,8 +71,8 @@
                 {if (isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]!=0) || 
                     (isset($ns.pwarehousesProductsQuantity[$product->getId()]) && $ns.pwarehousesProductsQuantity[$product->getId()]!=0) ||
                     (isset($ns.productsNotReceivedToDestinationCounty[$product->getId()]) && $ns.productsNotReceivedToDestinationCounty[$product->getId()]>0)}
-                <tr {if (isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]<0) || 
-                    (isset($ns.pwarehousesProductsQuantity[$product->getId()]) && $ns.pwarehousesProductsQuantity[$product->getId()]<0)}style="background: yellow"{else}{if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}{/if} 
+                <tr {if (isset($ns.productsQuantity[$product->getId()]) && $ns.productsQuantity[$product->getId()]<0)) || 
+                    (isset($ns.pwarehousesProductsQuantity[$product->getId()]) && $ns.pwarehousesProductsQuantity[$product->getId()]<0))}style="background: yellow"{else}{if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}{/if} 
                     data-id="{$product->getId()}" data-type="product" 
                     >
                     <td>{$product->getId()}</td>
