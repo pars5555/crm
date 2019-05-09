@@ -529,6 +529,11 @@
             }
         }
     ],
+    "onevanilla": [
+        {
+            "action": "loads.main.vanilla.guest_list"
+        }
+    ],
     "vanilla": [
         {
             "action": "loads.main.index",

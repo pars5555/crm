@@ -19,7 +19,7 @@ namespace crm\actions\login {
             if ($adminDto->getType() == 'checkout') {
                 $this->redirect('checkout/list');
             }
-            if ($adminDto->getType() == 'adex' || $adminDto->getType() == 'barney') {
+            if ($adminDto->getType() == 'adex') {
                 $this->redirect('vanilla/list');
             }
             $this->redirect('');

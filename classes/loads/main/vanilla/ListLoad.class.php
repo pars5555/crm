@@ -20,8 +20,12 @@ namespace crm\loads\main\vanilla {
     class ListLoad extends AdminLoad {
 
         public function load() {
+            self::initLoad($this);
+        }
+        
+        public static function initLoad($load){
             $limit = 100;
-            list($offset, $balance) = $this->initFilters($limit);
+            list($offset, $balance) = self::initFilters($limit, $load);
             $where = ['1', '=', '1'];
             //$where = array_merge($where, ['AND','deleted', '=', '0']);
             if ($balance > 0) {
@@ -37,10 +41,10 @@ namespace crm\loads\main\vanilla {
             $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, 'id', 'desc', $offset, $limit);
             $count = VanillaCardsManager::getInstance()->getLastSelectAdvanceRowsCount();
             $pagesCount = ceil($count / $limit);
-            $this->addParam('pagesCount', $pagesCount);
-            $this->addParam('rows', $rows);
-            $this->addParam('totalSuccess', $totalSuccess);
-            $this->addParam('debt', $dollarDebt);
+            $load->addParam('pagesCount', $pagesCount);
+            $load->addParam('rows', $rows);
+            $load->addParam('totalSuccess', $totalSuccess);
+            $load->addParam('debt', $dollarDebt);
 
             $externalOrderIdsArray = [];
             foreach ($rows as $row) {
@@ -51,16 +55,16 @@ namespace crm\loads\main\vanilla {
             }
             $exOrdersMappedById = \crm\managers\PurseOrderManager::getInstance()->selectByPKs($externalOrderIdsArray, true);
 
-            $this->addOrdersInfoToRows($rows, $exOrdersMappedById);
+            self::addOrdersInfoToRows($rows, $exOrdersMappedById);
         }
 
-        private function initFilters($limit) {
+        private static function initFilters($limit, $load) {
             //pageing
             $selectedFilterPage = 1;
             if (isset(NGS()->args()->pg)) {
                 $selectedFilterPage = intval(NGS()->args()->pg);
             }
-            $this->addParam('selectedFilterPage', $selectedFilterPage);
+            $load->addParam('selectedFilterPage', $selectedFilterPage);
             $offset = 0;
             if ($selectedFilterPage > 1) {
                 $offset = ($selectedFilterPage - 1) * intval($limit);
@@ -71,7 +75,7 @@ namespace crm\loads\main\vanilla {
                 $balance = floatval(NGS()->args()->bal);
             }
 
-            $this->addParam('balance', $balance);
+            $load->addParam('balance', $balance);
             return [$offset, $balance];
         }
 
@@ -79,7 +83,7 @@ namespace crm\loads\main\vanilla {
             return NGS()->getTemplateDir() . "/main/vanilla/list.tpl";
         }
 
-        private function addOrdersInfoToRows($rows, $exOrdersMappedById) {
+        private static function addOrdersInfoToRows($rows, $exOrdersMappedById) {
             foreach ($rows as $row) {
                 $externalOrdersIds = $row->getExternalOrdersIds();
                 if (!empty($externalOrdersIds)) {
