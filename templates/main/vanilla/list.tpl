@@ -24,12 +24,13 @@
                 <th>Note</th>
                 <th>Closed</th>
                 <th>Updated At</th>
+                <th>Balance Grow</th>
                 <th>Created At</th>
                 <th>Delete</th>
             </tr>
 
             {foreach from=$ns.rows item=row}
-                <tr {if $row->getDeleted()==1} style="background: #cc0000;"{else}{if $row->getClosed()==1} style="background: lightgray;"{/if}{/if}  class="table-row"  data-type="vanilla" data-id="{$row->getId()}">
+                <tr {if $row->getDeleted()==1} style="background: #cc0000;"{else}{if $row->getClosed()==1} style="background: lightgray;"{else}{if $row->getBalanceGrow()==1} style="background: orange;"{/if}{/if}{/if}  class="table-row"  data-type="vanilla" data-id="{$row->getId()}">
                     <td class="table-cell f_editable_cell" data-field-name="number">{$row->getNumber()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="month">{$row->getMonth()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="year">{$row->getYear()}</td>
@@ -43,32 +44,35 @@
                     <td class="icon-cell">
 
                         <input class="f_closed"
-                               data-id="{$row->getId()}" type="checkbox"
-                               value="1" {if $row->getClosed() == 1}checked{/if}/>
-                        </td>
-                        <td class="table-cell" data-field-name="updated_at">{$row->getUpdatedAt()}
+                               data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getClosed() == 1}checked{/if}/>
+                    </td>
+                    <td class="table-cell" data-field-name="updated_at">{$row->getUpdatedAt()}
 
-                            <a href="javascript:void(0);" class="f_update_card" data-id="{$row->getId()}"><img width="20" src="{$SITE_PATH}/img/update.png"/></a>
-                        </td>
-                        <td class="table-cell " data-field-name="created_at">{$row->getCreatedAt()}</td>
-                        <td class="icon-cell">
-                            {if $row->getClosed() == 1}
-                                Closed<br>
-                            {/if}
-                            {if $row->getDeleted() == 1}
-                                Deleted
-                            {else}
+                        <a href="javascript:void(0);" class="f_update_card" data-id="{$row->getId()}"><img width="20" src="{$SITE_PATH}/img/update.png"/></a>
+                    </td>
+                    <td class="icon-cell">
+                        <input class="f_balance_grow"
+                               data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getBalanceGrow() == 1}checked{/if}/>
+                    </td>
+                    <td class="table-cell " data-field-name="created_at">{$row->getCreatedAt()}</td>
+                    <td class="icon-cell">
+                        {if $row->getClosed() == 1}
+                            Closed<br>
+                        {/if}
+                        {if $row->getDeleted() == 1}
+                            Deleted
+                        {else}
 
-                                <a href="{$SITE_PATH}/dyn/main_vanilla/do_delete?id={$row->getId()}">
-                                    <span class="button_icon" title="delete">
-                                        <i class="fa fa-trash-o"></i>
-                                    </span>
-                                </a>
+                            <a href="{$SITE_PATH}/dyn/main_vanilla/do_delete?id={$row->getId()}">
+                                <span class="button_icon" title="delete">
+                                    <i class="fa fa-trash-o"></i>
+                                </span>
+                            </a>
 
-                            {/if}
-                        </td>
-                    </tr>
-                    {/foreach}
-                    </table>
-                </div>
-            </div>
+                        {/if}
+                    </td>
+                </tr>
+            {/foreach}
+        </table>
+    </div>
+</div>
