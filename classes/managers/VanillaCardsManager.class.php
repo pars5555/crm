@@ -38,7 +38,7 @@ namespace crm\managers {
         }
 
         public function getAllDeliveredTotal() {
-            return $this->mapper->getAllCeliveredTotal();
+            return $this->mapper->getAllDeliveredTotal();
         }
         
         public function addRow() {

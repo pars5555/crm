@@ -34,7 +34,6 @@ namespace crm\dal\dto {
             "quantity" => "quantity", "cancelled_at" => "cancelledAt", "image_url" => "imageUrl", "shipping_carrier" => "shippingCarrier", "status" => "status", "note" => 'note', "unread_messages" => 'unreadMessages',
             "account_name" => "accountName", "created_at" => "createdAt", "updated_at" => "updatedAt", "hidden_at" => "hiddenAt", 'meta' => 'meta',
             'external' => 'external',
-            'delivered' => 'delivered',
             'product_id' => 'productId',
             'checkout_customer_unit_address' => 'checkoutCustomerUnitAddress',
             'checkout_order_id' => 'checkoutOrderId',

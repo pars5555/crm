@@ -93,9 +93,8 @@ namespace crm\loads\main\vanilla {
                             continue;
                         }
                         $amazonTotal = $exOrdersMappedById[$orderId]->getAmazonTotal();
-                        $delivered = $exOrdersMappedById[$orderId]->getDelivered();
                         $row->addOrderAmount($amazonTotal);
-                        if ($delivered == 1) {
+                        if ($exOrdersMappedById[$orderId]->getStatus() === 'delivered') {
                             $row->addSucceedAmountsText($amazonTotal);
                         }
                     }

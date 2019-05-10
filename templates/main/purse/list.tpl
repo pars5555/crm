@@ -41,7 +41,6 @@
                 <th> S/N </th>
                 <th> amazon Order Number </th>
                 <th> Tracking Number </th>
-                <th> delivered </th>
                 <th> hidden At </th>
                 <th> created </th>
             </tr>
@@ -139,12 +138,6 @@
                                                     <span id="carrier_delivery_details_{$order->getId()}" style="color:#46AF04">{$order->getCarrierDeliveryDate()}</span>
                                                     <a href="javascript:void(0);" class="fa fa-refresh f_refresh_carrier_delivery_details" data-id='{$order->getId()}'></a>
                                                 </td>
-                                                <td > 
-                                                    <input class="f_received_checkbox"
-                                                           data-id="{$order->getId()}"
-                                                           type="checkbox" value="1"
-                                                           {if $order->getDelivered() ==1}checked{/if}/>
-                                                </td> 
                                                 <td> 
                                                     {$order->getHiddenAt()} 
                                                     {if isset($ns.btc_purchase_orders[$order->getId()])}
