@@ -111,7 +111,7 @@
                                                 <td class="f_editable_cell" data-list="account_name_list" data-field-name="account_name"> {$order->getAccountName()} </td>
 
                                                 <td> {$order->getDiscount()} </td>
-                                                <td> {$order->getStatus()} </td>
+                                                <td {if $order->getExternal() == 1}class="f_selectable_cell"{/if} data-value="{$order->getStatus()}" data-field-name="status" data-template-select-id="order_status_select"> {$order->getStatus()} </td>
                                                 <td class="table-cell f_editable_cell" data-field-name="note" data-type="richtext" style="min-width: 100px"> {$order->getNote()} </td>
                                                 <td class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </td>
                                                 <td class="table-cell f_editable_cell"  data-field-name="amazon_order_number">
@@ -167,3 +167,9 @@
                 <option value="{$an}"/>
             {/foreach}
         </datalist>
+        
+        <select id='order_status_select' class="hidden" style="width: 120px" >
+        <option value="shipping">shipping</option>
+        <option value="canceled">canceled</option>
+        <option value="delivered">delivered</option>
+</select>

@@ -121,7 +121,7 @@ NGS.createLoad("crm.loads.main.index", {
                             "field_value": value}, function (ret) {
                             if (ret.success === true){
                     cellElement.data('value', ret.value);
-                    cellElement.html(ret.display_value);
+                    cellElement.html(typeof ret.display_value!== 'undefined'?ret.display_value:ret.value);
                 }else{
                     cellElement.data('value', value);
                     cellElement.html(displayValue);
