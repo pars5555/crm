@@ -90,7 +90,7 @@ namespace crm\actions\main {
             }
             if ($objectType === 'vanilla' && $fieldName === 'number') {
                 $row = $manager->selectByField('number', $fieldValue);
-                if (!empty($row)){
+                if (!empty($row) && $row[0]->getId()!=$id){                    
                     $this->addParam('value', 'Already exists');
                     $this->addParam('message', 'Already exists');
                     $this->addParam('success', false); 
