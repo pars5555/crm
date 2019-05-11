@@ -545,6 +545,17 @@
             }
         }
     ],
+    "cc": [
+        {
+            "action": "loads.main.index",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.ccards.list"
+                }
+            }
+        }
+    ],
     "recipient": [
         {
             "action": "loads.main.index",

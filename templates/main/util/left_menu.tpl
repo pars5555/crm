@@ -23,6 +23,7 @@
                     <li><a {if $ns.loadName=='product'}class="active"{/if} href="{$SITE_PATH}/product/list">Products</a></li>
                     <li><a {if $ns.loadName=='manufacturer'}class="active"{/if} href="{$SITE_PATH}/manufacturer/list">Manufacturers</a></li>
                     <li><a {if $ns.loadName=='recipient'}class="active"{/if} href="{$SITE_PATH}/recipient/list">Recipients</a></li>
+                    <li><a {if $ns.loadName=='cc'}class="active"{/if} href="{$SITE_PATH}/cc/list">CC</a></li>
 
                     <li><a {if $ns.loadName=='websites'}class="active"{/if} href="{$SITE_PATH}/websites/list">Online Shops</a></li>
                         {*                    <li><a {if $ns.loadName=='rorder'}class="active"{/if} href="{$SITE_PATH}/rorder/list?srt=order_date&ascdesc=DESC">Recipient Orders</a></li>*}

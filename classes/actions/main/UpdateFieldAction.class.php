@@ -17,6 +17,7 @@ namespace crm\actions\main {
     use crm\actions\BaseAction;
     use crm\dal\dto\PurseOrderDto;
     use crm\managers\CheckoutManager;
+    use crm\managers\CreditCardsManager;
     use crm\managers\OnlineShopsManager;
     use crm\managers\PaymentTransactionManager;
     use crm\managers\ProductCategoryManager;
@@ -71,6 +72,9 @@ namespace crm\actions\main {
                 case 'vanilla':
                     $manager = VanillaCardsManager::getInstance();
                     break;
+                case 'cc':
+                    $manager = CreditCardsManager::getInstance();
+                    break;
                 case 'online_shop':
                     $manager = OnlineShopsManager::getInstance();
                     break;
@@ -90,10 +94,10 @@ namespace crm\actions\main {
             }
             if ($objectType === 'vanilla' && $fieldName === 'number') {
                 $row = $manager->selectByField('number', $fieldValue);
-                if (!empty($row) && $row[0]->getId()!=$id){                    
+                if (!empty($row) && $row[0]->getId() != $id) {
                     $this->addParam('value', 'Already exists');
                     $this->addParam('message', 'Already exists');
-                    $this->addParam('success', false); 
+                    $this->addParam('success', false);
                     return;
                 }
             }
@@ -122,7 +126,7 @@ namespace crm\actions\main {
                 $recipient = RecipientManager::getInstance()->getRecipientByUnitAddress($fieldValue);
                 if (!empty($recipient)) {
                     $manager->updateField($id, 'recipient_name', $recipient->getFirstName() . ' ' . $recipient->getLastName());
-                }else{
+                } else {
                     $manager->updateField($id, 'recipient_name', 'N/A');
                 }
             }
