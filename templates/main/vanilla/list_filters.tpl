@@ -1,4 +1,4 @@
-<form class="filters--form" id="productFilters" autocomplete="off" action="{$SITE_PATH}/vanilla/list" method="GET">
+<form class="filters--form" id="vanillaFilters" autocomplete="off" action="{$SITE_PATH}/vanilla/list" method="GET">
     <div class="form-group filters-group">
        
         <div class="filter search">

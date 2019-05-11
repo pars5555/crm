@@ -7,6 +7,9 @@ NGS.createLoad("crm.loads.main.vanilla.list", {
 
     },
     afterLoad: function () {
+        $('#vanillaFilters').find('select').change(function () {
+            $('#vanillaFilters').trigger('submit');
+        });
         $('.f_update_card').click(function () {
             var id = $(this).data('id');
             NGS.action('crm.actions.main.vanilla.set_updated_at', {'id': id}, function(){
