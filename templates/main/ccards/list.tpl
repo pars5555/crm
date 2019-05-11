@@ -26,7 +26,7 @@
             </tr>
 
             {foreach from=$ns.rows item=row}
-                <tr   class="table-row"  data-type="cc" data-id="{$row->getId()}">
+                <tr class="table-row"  data-type="cc" data-id="{$row->getId()}">
                     <td class="table-cell f_editable_cell" data-field-name="description">{$row->getDescription()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="number">{$row->getNumber()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="month">{$row->getMonth()}</td>
@@ -42,7 +42,7 @@
                     <td class="table-cell f_editable_cell" data-field-name="billing_address" data-type="richtext" style="min-width: 100px">{$row->getBillingAddress()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="note" data-type="richtext" style="min-width: 100px">{$row->getNote()}</td>
                     <td >
-                        <a href="{$SITE_PATH}/dyn/main_ccards/do_delete?id={$row->getId()}">
+                        <a href="javascript:void(0);" class="f_delete">
                             <span class="button_icon" title="delete">
                                 <i class="fa fa-trash-o"></i>
                             </span>
