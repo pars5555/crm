@@ -84,10 +84,12 @@ namespace crm\loads\main\vanilla {
             $minBalance = 0;
             if (isset(NGS()->args()->bal)) {
                 $minBalance = floatval(NGS()->args()->bal);
+                $offset = 0;
             }
             $searchText = '';
             if (isset(NGS()->args()->st)) {
                 $searchText = trim(NGS()->args()->st);
+                $offset = 0;
             }
             $load->addParam('searchText', $searchText);
             $load->addParam('minBalance', $minBalance);
