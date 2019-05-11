@@ -5,6 +5,7 @@
             <button style="color: #63B4FB; font-size: 18px; background: none; border: 1px solid #63B4FB; padding: 10px">Add</button>
         </form>
     </div>
+            {include file="{ngs cmd=get_template_dir}/main/vanilla/list_filters.tpl"}
     {assign payable $ns.totalSuccess*0.7}
     total success: ${$ns.totalSuccess|number_format:2:",":"."} (payable 70%: ${$payable|round:2|number_format:2:",":"."})<br>
     total paid in USD: {$ns.debt}

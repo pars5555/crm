@@ -22,14 +22,25 @@ namespace crm\loads\main\vanilla {
         public function load() {
             self::initLoad($this);
         }
-        
-        public static function initLoad($load){
+
+        public static function initLoad($load) {
             $limit = 100;
-            list($offset, $balance) = self::initFilters($limit, $load);
+            list($offset, $balance, $searchText) = self::initFilters($limit, $load);
             $where = ['1', '=', '1'];
             //$where = array_merge($where, ['AND','deleted', '=', '0']);
             if ($balance > 0) {
                 $where = array_merge($where, ['AND', 'balance', '>=', $balance]);
+            }
+            if (!empty($searchText)) {
+
+                $words = $parts = preg_split('/\s+/', $searchText);
+                foreach ($words as $word) {
+                    $where = array_merge($where, ['AND', '(', 'number', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'note', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'year', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'cvv', 'like', "'%$word%'"]);
+                    $where = array_merge($where, ['OR', 'month', 'like', "'%$word%'", ')']);
+                }
             }
             $barney_partner_id = intval(SettingManager::getInstance()->getSetting('barney_partner_id'));
             $debt = PartnerManager::getInstance()->calculatePartnerDebtBySalePurchaseAndPaymentTransations($barney_partner_id);
@@ -70,13 +81,18 @@ namespace crm\loads\main\vanilla {
                 $offset = ($selectedFilterPage - 1) * intval($limit);
             }
 
-            $balance = 0;
+            $minBalance = 0;
             if (isset(NGS()->args()->bal)) {
-                $balance = floatval(NGS()->args()->bal);
+                $minBalance = floatval(NGS()->args()->bal);
             }
-
-            $load->addParam('balance', $balance);
-            return [$offset, $balance];
+            $searchText = '';
+            if (isset(NGS()->args()->st)) {
+                $searchText = trim(NGS()->args()->st);
+            }
+            $load->addParam('searchText', $searchText);
+            $load->addParam('minBalance', $minBalance);
+            
+            return [$offset, $minBalance, $searchText];
         }
 
         public function getTemplate() {
