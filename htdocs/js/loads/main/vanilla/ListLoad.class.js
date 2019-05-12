@@ -21,6 +21,11 @@ NGS.createLoad("crm.loads.main.vanilla.list", {
             var checked = $(this).is(':checked') ? 1 : 0;
             NGS.action('crm.actions.main.UpdateField', {'id': id, 'object_type': 'vanilla', 'field_name': 'closed', "field_value": checked});
         });
+        $('.f_attention').change(function () {
+            var id = $(this).data('id');
+            var checked = $(this).is(':checked') ? 1 : 0;
+            NGS.action('crm.actions.main.UpdateField', {'id': id, 'object_type': 'vanilla', 'field_name': 'attention', "field_value": checked});
+        });
         $('.f_balance_grow').change(function () {
             var id = $(this).data('id');
             var checked = $(this).is(':checked') ? 1 : 0;

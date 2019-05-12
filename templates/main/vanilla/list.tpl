@@ -22,6 +22,7 @@
                 <th>ExternalOrderIds</th>
                 <th>order amounts</th>
                 <th>Succeed amounts</th>
+                <th>Attention</th>
                 <th>Note</th>
                 <th>Closed</th>
                 <th>Updated At</th>
@@ -31,7 +32,7 @@
             </tr>
 
             {foreach from=$ns.rows item=row}
-                <tr {if $row->getDeleted()==1} style="background: #cc0000;"{else}{if $row->getClosed()==1} style="background: lightgray;"{else}{if $row->getBalanceGrow()==1} style="background: orange;"{/if}{/if}{/if}  class="table-row"  data-type="vanilla" data-id="{$row->getId()}">
+                <tr {if $row->getDeleted()==1} style="background: #cc0000;"{else}{if $row->getClosed()==1} style="background: lightgray;"{else}{if $row->getBalanceGrow()==1} style="background: orange;"{else}{if $row->getAttention()==1} style="background: yellow;"{/if}{/if}{/if}{/if}  class="table-row"  data-type="vanilla" data-id="{$row->getId()}">
                     <td class="table-cell f_editable_cell" data-field-name="number">{$row->getNumber()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="month">{$row->getMonth()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="year">{$row->getYear()}</td>
@@ -41,6 +42,11 @@
                     <td class="table-cell f_editable_cell" data-field-name="external_orders_ids">{$row->getExternalOrdersIds()}</td>
                     <td >{$row->getOrdersAmountsText()}</td>
                     <td >{$row->getSucceedAmountsText()}</td>
+                    <td class="icon-cell">
+
+                        <input class="f_attention"
+                               data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getAttention() == 1}checked{/if}/>
+                    </td>
                     <td class="table-cell f_editable_cell" data-field-name="note">{$row->getNote()}</td>
                     <td class="icon-cell">
 

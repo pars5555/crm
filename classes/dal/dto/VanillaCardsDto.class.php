@@ -36,6 +36,7 @@ namespace crm\dal\dto {
             "initial_balance" => "initialBalance",
             "balance" => "balance",
             "external_orders_ids" => "external_orders_ids",
+            "attention" => "attention",
             "note" => "note",
             "closed" => "closed",
             "balance_grow" => "balanceGrow",
