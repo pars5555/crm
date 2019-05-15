@@ -43,6 +43,11 @@ NGS.createLoad("crm.loads.main.all.index", {
     },
     initEditableCells: function () {
         $('.f_editable_cell').dblclick(function () {
+            if ($(this).hasClass('f_locked')){
+                alert('editting is Locked');
+                return;
+            }
+            
             var cellValues = $(this).text().trim();
             var cellFieldName = $(this).data('field-name');
             var id = $(this).parent('div').data('id');

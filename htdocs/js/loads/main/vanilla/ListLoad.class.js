@@ -7,6 +7,16 @@ NGS.createLoad("crm.loads.main.vanilla.list", {
 
     },
     afterLoad: function () {
+        $('.f_editable_cell').addClass('f_locked');
+        $('#lock_checkbox').change(function () {
+            if ($(this).is(":checked"))
+            {
+                $('.f_editable_cell').addClass('f_locked');
+            }else{
+                $('.f_editable_cell').removeClass('f_locked');
+                
+            }
+        });
         $('#vanillaFilters').find('select').change(function () {
             $('#vanillaFilters').trigger('submit');
         });

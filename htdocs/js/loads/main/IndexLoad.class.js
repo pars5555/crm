@@ -134,6 +134,10 @@ NGS.createLoad("crm.loads.main.index", {
     },
     initEditableCells: function () {
         $(document).on('dblclick', '.f_editable_cell', function () {
+            if ($(this).hasClass('f_locked')){
+                alert('editting is Locked');
+                return;
+            }
             var cellValue = $(this).text().trim();
             if ($(this).hasClass('f_empty_value')){
                 cellValue = "";

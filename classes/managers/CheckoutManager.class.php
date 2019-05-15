@@ -22,6 +22,7 @@ namespace crm\managers {
         const CHECKOUT_HOST = "https://api.checkout.am";
         const CHECKOUT_CONFIRM_ACTION_PATH = "/_sys_/orders/Confirm";
         const CHECKOUT_SET_TRACKING_ACTION_PATH = "/_sys_/orders/SetTracking";
+        const CHECKOUT_GET_USER_ACTION_PATH = "/_sys_/users/GetUsers";
         const CHECKOUT_SET_AMAZON_ORDER_NUMBER_ACTION_PATH = "/_sys_/orders/SetAmazonOrderNumber";
         const CHECKOUT_CHANGE_UNIT_ADDRESS_ACTION_PATH = "/_sys_/orders/ChangeUnitAddress";
         const CHECKOUT_CHANGE_ORDER_STATUS_ACTION_PATH = "/_sys_/orders/ChangeStatus";
@@ -60,6 +61,17 @@ namespace crm\managers {
             return $this->returnCheckoutResponse($actionPath);
         }
         
+        public function getCheckoutUsers($offset = 0 , $limit = 500) {
+            $urlParams = ['offset' => $offset, 'limit' => $limit];
+            $actionPath = self::CHECKOUT_GET_USER_ACTION_PATH;
+            $retObject = null;
+            $success = $this->returnCheckoutResponse($actionPath. '?' . http_build_query($urlParams), $retObject);
+            if ($success === true){
+                return $retObject;
+            }
+            return false;
+        }
+        
         public function setCheckoutOrderTrackingNumber($checkoutOrderId, $trackingNumber) {
             $urlParams = ['order_id' => $checkoutOrderId, 'tracking_number' => $trackingNumber];
             $actionPath = self::CHECKOUT_SET_TRACKING_ACTION_PATH . '?' . http_build_query($urlParams);
@@ -72,7 +84,7 @@ namespace crm\managers {
             return $this->returnCheckoutResponse($actionPath);
         }
 
-        private function returnCheckoutResponse($actionPath) {
+        private function returnCheckoutResponse($actionPath, &$responseObject = null) {
             $host = self::CHECKOUT_HOST;
             if (\ngs\framework\util\NgsUtils::isWindows()) {
                 $host = "http://api.checkoutdev.am";
@@ -80,6 +92,7 @@ namespace crm\managers {
             $stream = $this->prepareCheckoutRequest();
             $res = @file_get_contents($host . $actionPath, false, $stream);
             $data = json_decode($res, true);
+            $responseObject = $data;
             if (isset($data['success']) && $data['success'] === true) {
                 return true;
             }

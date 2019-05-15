@@ -3,7 +3,10 @@
     <div class="filter">
         <form class="filters--form" id="partnerFilters" autocomplete="off" action="{$SITE_PATH}/dyn/main_vanilla/do_add" method="POST">
             <button style="color: #63B4FB; font-size: 18px; background: none; border: 1px solid #63B4FB; padding: 10px">Add</button>
+        
         </form>
+            <label for="lock_checkbox">Lock edittable fields</label>
+            <input id='lock_checkbox' type="checkbox" value="1" checked=""/>
     </div>
             {include file="{ngs cmd=get_template_dir}/main/vanilla/list_filters.tpl"}
     {assign payable $ns.totalSuccess*0.7}
@@ -24,6 +27,7 @@
                 <th>Succeed amounts</th>
                 <th>Attention</th>
                 <th>Note</th>
+                <th>Transactions History</th>
                 <th>Closed</th>
                 <th>Updated At</th>
                 <th>Balance Grow</th>
@@ -48,6 +52,7 @@
                                data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getAttention() == 1}checked{/if}/>
                     </td>
                     <td class="table-cell f_editable_cell" data-field-name="note">{$row->getNote()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="transaction_history">{$row->getTransactionHistory()}</td>
                     <td class="icon-cell">
 
                         <input class="f_closed"

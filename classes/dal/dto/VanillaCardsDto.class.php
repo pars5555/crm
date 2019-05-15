@@ -38,6 +38,7 @@ namespace crm\dal\dto {
             "external_orders_ids" => "external_orders_ids",
             "attention" => "attention",
             "note" => "note",
+            "transaction_history" => "transactionHistory",
             "closed" => "closed",
             "balance_grow" => "balanceGrow",
             "deleted" => "deleted",
