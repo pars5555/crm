@@ -26,6 +26,7 @@
         <table>
             <tr>
                 <th>Actions</th>
+                <th>Fox Order number</th>
                 <th>Internal Recipient</th>
                 <th>Actual Recipient</th>
                 <th>Img</th>
@@ -34,13 +35,13 @@
                 <th> Total </th>
                 <th> % </th>
                 <th> Account </th>
-{*                <th> Status </th>*}
+                    {*                <th> Status </th>*}
                 <th> Checkout Status </th>
                 <th> Note </th>
-{*                <th> S/N </th>*}
+                    {*                <th> S/N </th>*}
                 <th> amazon Order Number </th>
                 <th> Tracking Number </th>
-{*                <th> hidden At </th>*}
+                    {*                <th> hidden At </th>*}
                 <th> created </th>
             </tr>
 
@@ -74,7 +75,7 @@
                             <img src="{$SITE_PATH}/img/attachment.png" width="32"/>
                         {/if}
                     </td>
-
+                    <td class="table-cell f_editable_cell"  data-field-name="order_number">{$order->getOrderNumber()}</td>
                     <td class="f_selectable_cell" data-value="{if $order->getUnitAddress() === $order->getCheckoutCustomerUnitAddress()}actual{else}internal{/if}" data-field-name="unit_address" data-template-select-id="checkout_order_unit_address"> 
                         {if $order->getUnitAddress() === $order->getCheckoutCustomerUnitAddress()}
                             {$order->getCheckoutCustomerName()} {$order->getUnitAddress()}
@@ -89,7 +90,7 @@
                             ({$order->getCheckoutOrderMetadataProperty('user_object->referrer->email')|default:'missing info...'})
                         {/if}
                         {if $order->getCheckoutOrderStatus() == 0}
-                        <a class="button blue f_confirm_order" data-id="{$order->getId()}">Confirm</a>
+                            <a class="button blue f_confirm_order" data-id="{$order->getId()}">Confirm</a>
                         {/if}
                     </td>
 
@@ -108,10 +109,10 @@
                     <td> {$order->getAmazonTotal()} <br> ({$order->getCheckoutOrderMetadataProperty('order_total_amount')})</td>
                     <td> {$order->getDiscount()} </td>
                     <td class="f_editable_cell" data-list="account_name_list" data-field-name="account_name"> {$order->getAccountName()} </td>
-{*                    <td> {$order->getStatus()} </td>*}
+                    {*                    <td> {$order->getStatus()} </td>*}
                     <td class="f_selectable_cell" data-value="{$order->getCheckoutOrderStatus()}" data-field-name="checkout_order_status" data-template-select-id="checkout_order_status_select"> {$ns.checkout_order_statuses[$order->getCheckoutOrderStatus()]} </td>
                     <td class="table-cell f_editable_cell" data-field-name="note" data-type="richtext" style="min-width: 100px"> {$order->getNote()} </td>
-{*                    <td class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </td>*}
+                    {*                    <td class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </td>*}
                     <td class="table-cell f_editable_cell"  data-field-name="amazon_order_number">
                         <a class="link" target="_black" href="https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jnljnvjtqlspon&orderId={$order->getAmazonOrderNumber()}" > {$order->getAmazonOrderNumber()} </a>
                         <br/>
@@ -121,14 +122,14 @@
                         {$order->getTrackingNumber()}
                     </td>
                     {*<td> 
-                        {$order->getHiddenAt()} 
-                        {if isset($ns.btc_purchase_orders[$order->getId()])}
-                            <br/>
-                            <br/>
-                            <a target="_blank" href="{$SITE_PATH}/purchase/{$ns.btc_purchase_orders[$order->getId()]}">
-                                <span>PO#{$ns.btc_purchase_orders[$order->getId()]} </span>
-                            </a>
-                        {/if}
+                    {$order->getHiddenAt()} 
+                    {if isset($ns.btc_purchase_orders[$order->getId()])}
+                    <br/>
+                    <br/>
+                    <a target="_blank" href="{$SITE_PATH}/purchase/{$ns.btc_purchase_orders[$order->getId()]}">
+                    <span>PO#{$ns.btc_purchase_orders[$order->getId()]} </span>
+                    </a>
+                    {/if}
                     </td>*}
                     <td> {$order->getCreatedAt()} </td>
                 </tr>
