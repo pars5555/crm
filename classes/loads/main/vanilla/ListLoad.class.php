@@ -25,9 +25,11 @@ namespace crm\loads\main\vanilla {
 
         public static function initLoad($load) {
             $limit = 100;
-            list($offset, $balance, $searchText) = self::initFilters($limit, $load);
+            list($offset, $balance, $searchText, $selectedFilterShowDeleted) = self::initFilters($limit, $load);
             $where = ['1', '=', '1'];
-            //$where = array_merge($where, ['AND','deleted', '=', '0']);
+            if ($selectedFilterShowDeleted === 'no') {
+                $where = array_merge($where, ['AND', 'deleted', '=', '0']);
+            }
             if ($balance > 0) {
                 $where = array_merge($where, ['AND', 'balance', '>=', $balance]);
             }
@@ -91,10 +93,17 @@ namespace crm\loads\main\vanilla {
                 $searchText = trim(NGS()->args()->st);
                 $offset = 0;
             }
+            $selectedFilterShowDeleted = 'no';
+            if (isset(NGS()->args()->shd)) {
+                if (in_array(strtolower(NGS()->args()->shd), ['no', 'yes'])) {
+                    $selectedFilterShowDeleted = strtolower(NGS()->args()->shd);
+                }
+            }
             $load->addParam('searchText', $searchText);
+            $load->addParam('selectedFilterShowDeleted', $selectedFilterShowDeleted);
             $load->addParam('minBalance', $minBalance);
-            
-            return [$offset, $minBalance, $searchText];
+
+            return [$offset, $minBalance, $searchText, $selectedFilterShowDeleted];
         }
 
         public function getTemplate() {
