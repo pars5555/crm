@@ -37,11 +37,11 @@
 
             {foreach from=$ns.rows item=row}
                 <tr {if $row->getDeleted()==1} style="background: #cc0000;"{else}{if $row->getClosed()==1} style="background: lightgray;"{else}{if $row->getBalanceGrow()==1} style="background: orange;"{else}{if $row->getAttention()==1} style="background: yellow;"{/if}{/if}{/if}{/if}  class="table-row"  data-type="vanilla" data-id="{$row->getId()}">
-                    <td class="table-cell f_editable_cell" data-field-name="number">{$row->getNumber()}</td>
-                    <td class="table-cell f_editable_cell" data-field-name="month">{$row->getMonth()}</td>
-                    <td class="table-cell f_editable_cell" data-field-name="year">{$row->getYear()}</td>
-                    <td class="table-cell f_editable_cell" data-field-name="cvv">{$row->getCvv()}</td>
-                    <td class="table-cell f_editable_cell" data-field-name="initial_balance">{$row->getInitialBalance()}</td>
+                    <td class="table-cell f_editable_cell f_lockable" data-field-name="number">{$row->getNumber()}</td>
+                    <td class="table-cell f_editable_cell f_lockable" data-field-name="month">{$row->getMonth()}</td>
+                    <td class="table-cell f_editable_cell f_lockable" data-field-name="year">{$row->getYear()}</td>
+                    <td class="table-cell f_editable_cell f_lockable" data-field-name="cvv">{$row->getCvv()}</td>
+                    <td class="table-cell f_editable_cell f_lockable" data-field-name="initial_balance">{$row->getInitialBalance()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="balance">{$row->getBalance()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="external_orders_ids">{$row->getExternalOrdersIds()}</td>
                     <td >{$row->getOrdersAmountsText()}</td>
