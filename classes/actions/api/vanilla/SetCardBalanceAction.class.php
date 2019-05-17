@@ -23,6 +23,11 @@ namespace crm\actions\api\vanilla {
         public function service() {
             $id = intval(NGS()->args()->card_id);
             $balance = floatval(NGS()->args()->balance);
+            VanillaCardsManager::getInstance()->updateField($id, 'updated_at', date('Y-m-d H:i:s'));
+            if (isset(NGS()->args()->skip) && NGS()->args()->skip === 1) {
+                $this->addParam('success', true);
+                return;
+            }
             VanillaCardsManager::getInstance()->updateField($id, 'balance', $balance);
             $this->addParam('success', true);
         }

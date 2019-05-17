@@ -24,7 +24,7 @@ namespace crm\loads\main\vanilla {
         }
 
         public static function initLoad($load) {
-            $limit = 100;
+            $limit = 10;
             list($offset, $balance, $searchText, $selectedFilterShowDeleted) = self::initFilters($limit, $load);
             $where = ['1', '=', '1'];
             if ($selectedFilterShowDeleted === 'no') {
@@ -53,6 +53,11 @@ namespace crm\loads\main\vanilla {
             $totalSuccess = VanillaCardsManager::getInstance()->getAllDeliveredTotal();
             $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, 'id', 'desc', $offset, $limit);
             $count = VanillaCardsManager::getInstance()->getLastSelectAdvanceRowsCount();
+            if (count($rows) === 0){
+                $load->addParam('selectedFilterPage', 1);
+                $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, 'id', 'desc', $offset, 0);
+                $count = VanillaCardsManager::getInstance()->getLastSelectAdvanceRowsCount();
+            }
             $pagesCount = ceil($count / $limit);
             $load->addParam('pagesCount', $pagesCount);
             $load->addParam('rows', $rows);
@@ -86,12 +91,10 @@ namespace crm\loads\main\vanilla {
             $minBalance = 0;
             if (isset(NGS()->args()->bal)) {
                 $minBalance = floatval(NGS()->args()->bal);
-                $offset = 0;
             }
             $searchText = '';
             if (isset(NGS()->args()->st)) {
                 $searchText = trim(NGS()->args()->st);
-                $offset = 0;
             }
             $selectedFilterShowDeleted = 'no';
             if (isset(NGS()->args()->shd)) {
