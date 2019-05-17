@@ -24,7 +24,7 @@ namespace crm\loads\main\vanilla {
         }
 
         public static function initLoad($load) {
-            $limit = 10;
+            $limit = 100;
             list($offset, $balance, $searchText, $selectedFilterShowDeleted) = self::initFilters($limit, $load);
             $where = ['1', '=', '1'];
             if ($selectedFilterShowDeleted === 'no') {
