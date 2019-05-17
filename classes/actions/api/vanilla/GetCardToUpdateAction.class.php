@@ -21,9 +21,9 @@ namespace crm\actions\api\vanilla {
     class GetCardToUpdateAction extends BaseAction {
 
         public function service() {
-            $where = ['number', 'like', "'%4'"];
+            $where = ['number', 'like', "'4%'"];
             if (isset(NGS()->args()->mastercard) && NGS()->args()->mastercard === 1) {
-                $where = ['number', 'like', "'%5'"];
+                $where = ['number', 'like', "'5%'"];
             }
             $hourAgo = date('Y-m-d H:i:s', strtotime('-1 hour'));
             $where = array_merge($where, ['AND','updated_at', '<', "'$hourAgo'"]);
