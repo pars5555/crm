@@ -30,7 +30,8 @@ namespace crm\actions\api\vanilla {
             $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, 'updated_at', 'DESC', 0, 1);
             if (empty($rows)){
                 $this->addParam('success', true);                
-                $this->addParam('finish', true);                
+                $this->addParam('finish', true);    
+                return;
             }
             $this->addParam('card', $rows[0]);
             $this->addParam('success', true);
