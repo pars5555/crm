@@ -27,8 +27,12 @@ namespace crm\actions\api\vanilla {
             }
             $hourAgo = date('Y-m-d H:i:s', strtotime('-1 hour'));
             $where = array_merge(['AND','updated_at', '<', "'$hourAgo'"]);
-            $row = VanillaCardsManager::getInstance()->selectAdvance('*', $where, 'updated_at', 'DESC', 0, 1)[0];
-            $this->addParam('card', $row);
+            $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, 'updated_at', 'DESC', 0, 1);
+            if (empty($rows)){
+                $this->addParam('success', true);                
+                $this->addParam('finish', true);                
+            }
+            $this->addParam('card', $rows[0]);
             $this->addParam('success', true);
         }
 
