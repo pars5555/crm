@@ -24,7 +24,7 @@ namespace crm\actions\api\vanilla {
             $id = intval(NGS()->args()->card_id);
             $balance = floatval(NGS()->args()->balance);
             VanillaCardsManager::getInstance()->updateField($id, 'updated_at', date('Y-m-d H:i:s'));
-            if (isset(NGS()->args()->skip) && NGS()->args()->skip === 1) {
+            if (isset(NGS()->args()->skip) && NGS()->args()->skip == 1) {
                 $this->addParam('success', true);
                 return;
             }
