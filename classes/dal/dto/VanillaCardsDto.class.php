@@ -40,7 +40,7 @@ namespace crm\dal\dto {
             "note" => "note",
             "transaction_history" => "transactionHistory",
             "closed" => "closed",
-            "balance_grow" => "balanceGrow",
+            "invalid" => "invalid",
             "deleted" => "deleted",
             "updated_at" => "updatedAt",
             "created_at" => "createdAt"

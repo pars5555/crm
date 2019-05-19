@@ -30,7 +30,7 @@
                 <th>Transactions History</th>
                 <th>Closed</th>
                 <th>Updated At</th>
-                <th>Balance Grow</th>
+                <th>Invalid</th>
                 <th>Created At</th>
                 <th>Delete</th>
             </tr>
@@ -63,8 +63,8 @@
                         <a href="javascript:void(0);" class="f_update_card" data-id="{$row->getId()}"><img width="20" src="{$SITE_PATH}/img/update.png"/></a>
                     </td>
                     <td class="icon-cell">
-                        <input class="f_balance_grow"
-                               data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getBalanceGrow() == 1}checked{/if}/>
+                        <input class="f_invalid"
+                               data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getInvalid() == 1}checked{/if}/>
                     </td>
                     <td class="table-cell " data-field-name="created_at">{$row->getCreatedAt()}</td>
                     <td class="icon-cell">
