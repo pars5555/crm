@@ -21,16 +21,16 @@ namespace crm\actions\api\vanilla {
     class SetCardBalanceAction extends BaseAction {
 
         public function service() {
-            $id = intval(NGS()->args()->card_id);
             $closedCardIds = trim(NGS()->args()->closed_cards_ids);
             if (!empty($closedCardIds)) {
                 $idsArray = explode(',', $closedCardIds);
-                foreach ($idsArray as $id) {
-                    VanillaCardsManager::getInstance()->updateField($id, 'updated_at', date('Y-m-d H:i:s'));
-                    VanillaCardsManager::getInstance()->updateField($id, 'closed', 1);
+                foreach ($idsArray as $ccid) {
+                    VanillaCardsManager::getInstance()->updateField($ccid, 'updated_at', date('Y-m-d H:i:s'));
+                    VanillaCardsManager::getInstance()->updateField($ccid, 'closed', 1);
                 }
             }
 
+            $id = intval(NGS()->args()->card_id);
             $balance = floatval(NGS()->args()->balance);
             VanillaCardsManager::getInstance()->updateField($id, 'updated_at', date('Y-m-d H:i:s'));
             if (isset(NGS()->args()->skip) && NGS()->args()->skip == 1) {
