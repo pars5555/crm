@@ -53,7 +53,7 @@ namespace crm\actions\main\warehouse {
                 }
                 
 
-                if (isset($productsQuantity[$product->getId()]) && $productsQuantity[$product->getId()] > 0) {
+                if (isset($productsQuantity[$product->getId()])) {
                     $rowIndex++;
                     $sheet->setCellValue("A$rowIndex", $product->getName());
                     $sheet->setCellValue("B$rowIndex", $product->getSalePrice());
