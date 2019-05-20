@@ -157,13 +157,14 @@ namespace crm\loads\main\partner {
             return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $selectedFilterHidden, $selectedFilterHasDebt, $searchText];
         }
 
+        public function getSortByFields() {
+            return ['name' => 'Name', 'email' => 'Email'];
+        }
+        
         public function getTemplate() {
             return NGS()->getTemplateDir() . "/main/partner/list.tpl";
         }
 
-        public function getSortByFields() {
-            return ['name' => 'Name', 'email' => 'Email'];
-        }
 
     }
 

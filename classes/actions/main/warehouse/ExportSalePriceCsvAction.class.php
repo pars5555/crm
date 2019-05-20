@@ -13,7 +13,7 @@ namespace crm\actions\main\warehouse {
         public function service() {
 
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity();
-            $products = ProductManager::getInstance()->selectAdvance('*', [], 'category_id', 'ASC', null, null, true);
+            $products = ProductManager::getInstance()->selectAdvance('*', ['include_in_price_xlsx', '=', 1], 'category_id', 'ASC', null, null, true);
             $categories = ProductCategoryManager::getInstance()->selectAll();
             $categoryNamesMappedById = [];
             foreach ($categories as $category) {
