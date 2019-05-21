@@ -28,7 +28,7 @@ namespace crm\loads\main\vanilla {
             list($offset, $balance, $searchText, $selectedFilterShowDeleted) = self::initFilters($limit, $load);
             $where = ['1', '=', '1'];
             if ($selectedFilterShowDeleted === 'no') {
-                $where = array_merge($where, ['AND', 'deleted', '=', '0']);
+                $where = array_merge($where, ['AND', 'deleted', '=', '0', 'AND', 'closed', '=', '0']);
             }
             if ($balance > 0) {
                 $where = array_merge($where, ['AND', 'balance', '>=', $balance]);

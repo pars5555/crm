@@ -14,10 +14,10 @@
             </div>
         </div>  
         <div class="filter">
-            <label>Show Deleted</label>
+            <label>Show Deleted/Closed</label>
             <select name="shd">
                 <option value="no" {if $ns.selectedFilterShowDeleted == 'no'}selected{/if}>No</option>
-                <option value="yes" {if $ns.selectedFilterShowDeleted == 'yes'}selected{/if}>Yes</option>
+                <option value="yes" {if $ns.selectedFilterShowDeleted == 'yes'}selected{/if}>All</option>
             </select>
         </div>
         <button type="submit" style="visibility: hidden">search</button>
