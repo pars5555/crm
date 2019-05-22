@@ -101,12 +101,12 @@ namespace crm\managers {
             }
             $stream = $this->prepareCheckoutRequest();
             $res = file_get_contents($host . $actionPath, false, $stream);
-            $data = json_decode($res, $assoc);
+            $data = json_decode($res, $assoc);            
             $responseObject = $data;
-            if (isset($data->success) && $data->success === true) {
+            if ((isset($data->success) && $data->success === true) || (isset($data['success']) && $data['success'] === true)) {
                 return true;
             }
-            if (isset($data->message)) {
+            if (isset($data->message) || isset($data['message'])) {
                 return ($data->message);
             }
             if (empty($res)) {
