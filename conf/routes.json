@@ -556,6 +556,17 @@
             }
         }
     ],
+    "vproducts": [
+        {
+            "action": "loads.main.index",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.vproducts.list"
+                }
+            }
+        }
+    ],
     "recipient": [
         {
             "action": "loads.main.index",

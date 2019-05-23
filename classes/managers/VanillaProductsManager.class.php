@@ -39,7 +39,7 @@ namespace crm\managers {
         
         public function addRow() {
             $dto = $this->createDto();
-            $dto->setDescription('N/A');
+            $dto->setName('Product Name');
             
             return $this->insertDto($dto);
         }

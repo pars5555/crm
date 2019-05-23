@@ -29,6 +29,7 @@ namespace crm\actions\main {
     use crm\managers\SettingManager;
     use crm\managers\TranslationManager;
     use crm\managers\VanillaCardsManager;
+    use crm\managers\VanillaProductsManager;
     use crm\managers\WhishlistManager;
     use crm\security\RequestGroups;
     use NGS;
@@ -61,6 +62,9 @@ namespace crm\actions\main {
                 case 'settings':
                 case 'settings_name':
                     $manager = SettingManager::getInstance();
+                    break;
+                case 'vproducts':
+                    $manager = VanillaProductsManager::getInstance();
                     break;
                 case 'checkout':
                 case 'btc':
