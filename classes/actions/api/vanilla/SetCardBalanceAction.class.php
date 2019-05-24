@@ -21,12 +21,21 @@ namespace crm\actions\api\vanilla {
     class SetCardBalanceAction extends BaseAction {
 
         public function service() {
+            $telegramToken = SettingManager::getInstance()->getSetting('telegram_bot_token');
+            $telegramCrmChannelId = SettingManager::getInstance()->getSetting('telegram_crm_channel_id');
+            $vanilla_telegram_notification_min_balance = SettingManager::getInstance()->getSetting('vanilla_telegram_notification_min_balance');
+                    
             $closedCardIds = trim(NGS()->args()->closed_cards_ids);
             if (!empty($closedCardIds)) {
                 $idsArray = explode(',', $closedCardIds);
                 foreach ($idsArray as $ccid) {
+                    $card = VanillaCardsManager::getInstance()->selectByPK($ccid);
                     VanillaCardsManager::getInstance()->updateField($ccid, 'updated_at', date('Y-m-d H:i:s'));
-                    VanillaCardsManager::getInstance()->updateField($ccid, 'closed', 1);
+                    if ($card->getClosed() == 0) {
+                        $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
+                        $manager->postMessage($card->getNumber() . ' is closed!');
+                        VanillaCardsManager::getInstance()->updateField($ccid, 'closed', 1);
+                    }
                 }
             }
 
@@ -37,7 +46,12 @@ namespace crm\actions\api\vanilla {
                 $this->addParam('success', true);
                 return;
             }
-            
+
+            if ($balance >= $vanilla_telegram_notification_min_balance) {
+                $card = VanillaCardsManager::getInstance()->selectByPK($id);
+                $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
+                $manager->postMessage($card->getNumber() . ' balance is: $'. $balance);
+            }
             VanillaCardsManager::getInstance()->updateField($id, 'balance', $balance);
             $this->addParam('success', true);
         }
