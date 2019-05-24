@@ -15,13 +15,13 @@
 namespace crm\actions\main\vproducts {
 
     use crm\actions\BaseAction;
-    use crm\managers\CreditCardsManager;
+    use crm\managers\VanillaProductsManager;
 
     class AddAction extends BaseAction {
 
         public function service() {
-            CreditCardsManager::getInstance()->addRow();
-            $this->redirect('vproduct/list');
+            VanillaProductsManager::getInstance()->addRow();
+            $this->redirect('vproducts/list');
         }
 
     }

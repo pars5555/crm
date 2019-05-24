@@ -12,7 +12,7 @@
  *
  */
 
-namespace crm\actions\main\ccards {
+namespace crm\actions\main\vproducts {
 
     use crm\actions\BaseAction;
     use crm\managers\CreditCardsManager;
@@ -23,7 +23,7 @@ namespace crm\actions\main\ccards {
         public function service() {
             $id = intval(NGS()->args()->id);
             CreditCardsManager::getInstance()->deleteByPk($id);
-            $this->redirect('/cc/list');
+            $this->redirect('/vproducts/list');
         }
 
     }
