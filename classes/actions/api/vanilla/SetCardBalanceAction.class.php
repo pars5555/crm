@@ -15,6 +15,7 @@
 namespace crm\actions\api\vanilla {
 
     use crm\actions\BaseAction;
+    use crm\managers\SettingManager;
     use crm\managers\VanillaCardsManager;
     use crm\security\RequestGroups;
 
@@ -24,7 +25,7 @@ namespace crm\actions\api\vanilla {
             $telegramToken = SettingManager::getInstance()->getSetting('telegram_bot_token');
             $telegramCrmChannelId = SettingManager::getInstance()->getSetting('telegram_crm_channel_id');
             $vanilla_telegram_notification_min_balance = SettingManager::getInstance()->getSetting('vanilla_telegram_notification_min_balance');
-                    
+
             $closedCardIds = trim(NGS()->args()->closed_cards_ids);
             if (!empty($closedCardIds)) {
                 $idsArray = explode(',', $closedCardIds);
@@ -50,7 +51,7 @@ namespace crm\actions\api\vanilla {
             if ($balance >= $vanilla_telegram_notification_min_balance) {
                 $card = VanillaCardsManager::getInstance()->selectByPK($id);
                 $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
-                $manager->postMessage($card->getNumber() . ' balance is: $'. $balance);
+                $manager->postMessage($card->getNumber() . ' balance is: $' . $balance);
             }
             VanillaCardsManager::getInstance()->updateField($id, 'balance', $balance);
             $this->addParam('success', true);
