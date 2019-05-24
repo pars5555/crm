@@ -20,6 +20,8 @@ namespace crm\loads\main\vanilla {
     class ListLoad extends AdminLoad {
 
         public function load() {
+            $manager = new \naffiq\telegram\channel\Manager('778700480:AAFWdx4fwl345dcnwr8MBJLEZR4iu7CSEGE', 'crm.pc.am');
+            $manager->postMessage('Hello from crm.pc.am!');
             self::initLoad($this);
         }
 
