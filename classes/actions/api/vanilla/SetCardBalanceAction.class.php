@@ -34,7 +34,7 @@ namespace crm\actions\api\vanilla {
                     VanillaCardsManager::getInstance()->updateField($ccid, 'updated_at', date('Y-m-d H:i:s'));
                     if ($card->getClosed() == 0) {
                         $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
-                        $manager->postMessage($card->getNumber() . ' is closed!');
+                        $manager->postMessage('****'.substr($card->getNumber(),-6) . ' is closed!');
                         VanillaCardsManager::getInstance()->updateField($ccid, 'closed', 1);
                     }
                 }
@@ -51,7 +51,7 @@ namespace crm\actions\api\vanilla {
             if ($balance >= $vanilla_telegram_notification_min_balance) {
                 $card = VanillaCardsManager::getInstance()->selectByPK($id);
                 $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
-                $manager->postMessage($card->getNumber() . ' balance is: $' . $balance);
+                $manager->postMessage('****'.substr($card->getNumber(),-6) . ' balance is: $' . $balance);
             }
             VanillaCardsManager::getInstance()->updateField($id, 'balance', $balance);
             $this->addParam('success', true);
