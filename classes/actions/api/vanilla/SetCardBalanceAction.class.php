@@ -44,7 +44,7 @@ namespace crm\actions\api\vanilla {
             $balance = floatval(NGS()->args()->balance);
             $transaction_history = trim(urldecode(trim(NGS()->args()->transaction_history)));
             $transaction_history = preg_replace('/\s+/', ' ', $transaction_history);
-            $transaction_history = preg_replace('^\\d{1,2}/\\d{2}/\\d{4}^', '\r\n', $transaction_history);
+            $transaction_history = preg_replace('^\\d{1,2}/\\d{2}/\\d{4}^', "\r\n", $transaction_history);
             VanillaCardsManager::getInstance()->updateField($id, 'updated_at', date('Y-m-d H:i:s'));
             if (isset(NGS()->args()->skip) && NGS()->args()->skip == 1) {
                 $this->addParam('success', true);
