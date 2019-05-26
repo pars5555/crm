@@ -42,7 +42,7 @@ namespace crm\actions\api\vanilla {
 
             $id = intval(NGS()->args()->card_id);
             $balance = floatval(NGS()->args()->balance);
-            $transaction_hostory = trim(NGS()->args()->transaction_hostory);
+            $transaction_history = trim(NGS()->args()->transaction_history);
             VanillaCardsManager::getInstance()->updateField($id, 'updated_at', date('Y-m-d H:i:s'));
             if (isset(NGS()->args()->skip) && NGS()->args()->skip == 1) {
                 $this->addParam('success', true);
@@ -55,7 +55,7 @@ namespace crm\actions\api\vanilla {
                 $manager->postMessage('****'.substr($card->getNumber(),-6) . ' balance is: $' . $balance);
             }
             VanillaCardsManager::getInstance()->updateField($id, 'balance', $balance);
-            VanillaCardsManager::getInstance()->updateField($id, 'transaction_hostory', $transaction_hostory);
+            VanillaCardsManager::getInstance()->updateField($id, 'transaction_history', $transaction_history);
             $this->addParam('success', true);
         }
 
