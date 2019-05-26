@@ -62,6 +62,20 @@ namespace crm\dal\dto {
         public function addSucceedAmountsText($orderAmount) {
             $this->succeed_order_amounts[] = $orderAmount;
         }
+        
+        public function getTransactionHistoryText() {
+            //$0.00
+            $ths = explode("\r\n",$this->transaction_history);
+            if (count($ths)>2){
+                foreach ($ths as &$th) {
+                    if (strpos($th, '$0.00') !== false){
+                        $th = '<span style="color:red">' . $th.'</span>';
+                    }
+                }
+                return implode("\r\n", array_slice($ths, 1, -1));
+            }
+            return $ths;
+        }
 
         public function getSucceedAmountsText() {
             return implode(' ; ', $this->succeed_order_amounts);
