@@ -1,5 +1,5 @@
 <div class="container partner--list--container">
-    <h1 class="main_title">CC</h1>
+    <h1 class="main_title">Vanilla Products</h1>
     <div class="filter">
         <form class="filters--form" id="partnerFilters" autocomplete="off" action="{$SITE_PATH}/dyn/main_vproducts/do_add" method="POST">
             <button style="color: #63B4FB; font-size: 18px; background: none; border: 1px solid #63B4FB; padding: 10px">Add</button>
