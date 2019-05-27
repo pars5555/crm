@@ -24,7 +24,9 @@
         "ext-curl": "*",        
         "php-curl-class/php-curl-class": "*",
         "salsify/json-streaming-parser": "*",
-        "phpoffice/phpspreadsheet": "^1.6"
+        "phpoffice/phpspreadsheet": "^1.6",
+        "formapro/telegram-bot": "^0.1.14",
+        "naffiq/telegram-channel-php": "^1.0"
     }
 
 }

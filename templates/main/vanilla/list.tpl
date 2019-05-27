@@ -52,7 +52,7 @@
                                data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getAttention() == 1}checked{/if}/>
                     </td>
                     <td class="table-cell f_editable_cell" data-field-name="note">{$row->getNote()}</td>
-                    <td class="table-cell f_editable_cell" data-field-name="transaction_history">{$row->getTransactionHistory()}</td>
+                    <td style="white-space: pre-line" class="table-cell">{$row->getTransactionHistoryText()}</td>
                     <td class="icon-cell">
 
                         <input class="f_closed"

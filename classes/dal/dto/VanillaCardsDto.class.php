@@ -26,7 +26,7 @@ namespace crm\dal\dto {
         }
 
         private $order_amounts = [];
-        private $succeed_order_amounts  = [];
+        private $succeed_order_amounts = [];
         // Map of DB value to Field value
         private $mapArray = array("id" => "id",
             "number" => "number",
@@ -61,6 +61,36 @@ namespace crm\dal\dto {
 
         public function addSucceedAmountsText($orderAmount) {
             $this->succeed_order_amounts[] = $orderAmount;
+        }
+
+        public function getTransactionHistoryText() {
+            //$0.00
+            $ths = explode("\r\n", $this->transaction_history);
+            if (count($ths) > 2) {
+                $ths = array_slice($ths, 1, -1);
+                $ret = [];
+                $merchantAmountMap = [];
+                foreach (array_reverse($ths) as &$th) {
+                    //12:08 PM WINN-DIXIE #03 7024 BER - $12.84 
+                    $_th = substr($th, 9);
+                    //WINN-DIXIE #03 7024 BER - $12.84 
+                    $parts = explode('-', $_th);
+                    $amount = trim(trim($parts[count($parts)-1]), '$');
+                    //12.84 
+                    $merchant = trim(explode('-', $_th)[0]);
+                    //WINN-DIXIE #03 7024 BER
+                    if ($amount === '0.00' || isset($merchantAmountMap[$merchant.'_'. $amount])) {
+                        $merchantAmountMap[$merchant.'_'. $amount] = 1;
+                        $ret[] = '<span style="color:red">' . $th . '</span>';
+                    } else {
+                        $ret[] = $th;
+                        $merchantAmountMap[$merchant.'_'. $amount] = 1;
+                    }
+                }
+                return implode("\r\n", array_reverse($ret));
+            }
+
+            return implode("\r\n", $ths);
         }
 
         public function getSucceedAmountsText() {
