@@ -39,7 +39,7 @@
                 {if isset($ns.productsQuantity[$product->getId()]) && abs($ns.productsQuantity[$product->getId()])>0.01}
                     {assign lastSale $ns.productsSaleOrder[$product->getId()]|@end}
                     
-                    <tr data-id="{$product->getId()}" data-type="product" style="{if $ns.productsQuantity[$product->getId()]<0 or $lastSale->getOrderDateDiffWithNow()>60}color:red;{/if} {if $ns.productLastSellPrice[$product->getId()] >= $product->getSalePrice()} background:yellow;{/if}" >
+                    <tr data-id="{$product->getId()}" data-type="product" style="{if $ns.productsQuantity[$product->getId()]<0 or $lastSale->getOrderDateDiffWithNow()>60}color:red;{/if} {if $ns.productLastSellPrice[$product->getId()] > 0 && $ns.productLastSellPrice[$product->getId()] >= $product->getSalePrice()} background:yellow;{/if}" >
                         <td>{$product->getId()}</td>
                         <td class="f_editable_cell" data-field-name="name">{$product->getName()} </td>
                         <td class="f_editable_cell" data-field-name="model">{$product->getModel()} </td>
