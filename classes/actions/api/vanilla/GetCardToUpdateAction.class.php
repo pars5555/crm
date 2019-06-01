@@ -21,13 +21,7 @@ namespace crm\actions\api\vanilla {
     class GetCardToUpdateAction extends BaseAction {
 
         public function service() {
-            $where = ['number', 'like', "'4%'"];
-            if (isset(NGS()->args()->mastercard) && NGS()->args()->mastercard === 1) {
-                $where = ['number', 'like', "'5%'"];
-            }
-            $hourAgo = date('Y-m-d H:i:s', strtotime('-1 hour'));
-            //$where = array_merge($where, ['AND', 'closed', '=', 0,'AND', 'invalid', '=', 0, 'AND','(','updated_at', '<', "'$hourAgo'",'OR','updated_at', 'IS NULL', ')']);
-            $where = array_merge($where, ['AND', 'closed', '=', 0,'AND', 'invalid', '=', 0]);
+            $where = ['closed', '=', 0,'AND', 'invalid', '=', 0];
             $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, 'updated_at', 'ASC', 0, 1);
             if (empty($rows)){
                 $this->addParam('success', true);                
