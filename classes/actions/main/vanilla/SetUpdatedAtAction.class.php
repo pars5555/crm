@@ -21,7 +21,8 @@ namespace crm\actions\main\vanilla {
 
         public function service() {
             $id = intval(NGS()->args()->id);
-            VanillaCardsManager::getInstance()->updateField($id, 'updated_at', date('Y-m-d H:i:s'));
+            $days_ago = date('Y-m-d', strtotime("-10 days"));
+            VanillaCardsManager::getInstance()->updateField($id, 'updated_at', $days_ago);
         }
 
     }
