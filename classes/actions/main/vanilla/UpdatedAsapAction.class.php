@@ -17,12 +17,11 @@ namespace crm\actions\main\vanilla {
     use crm\actions\BaseAction;
     use crm\managers\VanillaCardsManager;
 
-    class SetUpdatedAtAction extends BaseAction {
+    class UpdatedAsapAction extends BaseAction {
 
         public function service() {
             $id = intval(NGS()->args()->id);
-            $days_ago = date('Y-m-d', strtotime("-10 days"));
-            VanillaCardsManager::getInstance()->updateField($id, 'updated_at', $days_ago);
+            VanillaCardsManager::getInstance()->updateField($id, 'updated_at', null);
         }
 
     }

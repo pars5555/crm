@@ -58,10 +58,7 @@
                         <input class="f_closed"
                                data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getClosed() == 1}checked{/if}/>
                     </td>
-                    <td class="table-cell" data-field-name="updated_at">{$row->getUpdatedAt()}
-
-                        <a href="javascript:void(0);" class="f_update_card" data-id="{$row->getId()}"><img width="20" src="{$SITE_PATH}/img/update.png"/></a>
-                    </td>
+                    <td class="table-cell" data-field-name="updated_at">{$row->getUpdatedAt()}</td>
                     <td class="icon-cell">
                         <input class="f_invalid"
                                data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getInvalid() == 1}checked{/if}/>
@@ -71,6 +68,9 @@
                         {if $row->getClosed() == 1}
                             Closed<br>
                         {/if}
+                        <a href="javascript:void(0);" title="Update card balance as soon as possible" class="f_update_card" data-id="{$row->getId()}"><img width="20" src="{$SITE_PATH}/img/update.png"/></a>
+                        
+                        
                         {if $row->getDeleted() == 1}
                             Deleted
                         {else}

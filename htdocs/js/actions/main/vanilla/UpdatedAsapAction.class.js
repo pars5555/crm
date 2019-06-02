@@ -1,4 +1,4 @@
-NGS.createAction("crm.actions.main.vanilla.set_updated_at", {
+NGS.createAction("crm.actions.main.vanilla.updated_asap", {
     onError: function (res) {
     },
     afterAction: function (res) {

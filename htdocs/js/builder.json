@@ -158,7 +158,7 @@
                     "actions/main/purse/RefreshCarrierDeliveryDetailsAction.class.js",
                     "actions/main/purse/HideByTrackingsAction.class.js",
                     "actions/main/purse/SetHiddenAndCreatePurchaseAction.class.js",
-                    "actions/main/vanilla/SetUpdatedAtAction.class.js",
+                    "actions/main/vanilla/UpdatedAsapAction.class.js",
                     "actions/main/ccards/DeleteAction.class.js",
                     "actions/main/checkout/ConfirmAction.class.js",
                     "actions/main/UpdateFieldAction.class.js",

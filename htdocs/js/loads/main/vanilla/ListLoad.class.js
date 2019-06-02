@@ -22,7 +22,7 @@ NGS.createLoad("crm.loads.main.vanilla.list", {
         });
         $('.f_update_card').click(function () {
             var id = $(this).data('id');
-            NGS.action('crm.actions.main.vanilla.set_updated_at', {'id': id}, function(){
+            NGS.action('crm.actions.main.vanilla.updated_asap', {'id': id}, function(){
                 window.location.reload();
             });
         });
