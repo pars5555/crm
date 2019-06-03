@@ -12,7 +12,8 @@
                     "lib/jquery.cookie.js",
                     "lib/chosen/chosen.jquery.min.js",
                     "lib/jSignature.min.js",
-                    "lib/jquery.tooltipster.min.js",
+                    "lib/tooltipster.main.min.js",
+                    "lib/tooltipster.bundle.min.js",
                     "lib/jquery.datetimepicker.js"
                 ]
             },

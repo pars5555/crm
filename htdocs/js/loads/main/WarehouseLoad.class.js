@@ -11,11 +11,18 @@ NGS.createLoad("crm.loads.main.warehouse", {
             $(this).tooltipster({
                 content: $(content),
                 animation: 'fade',
-                trigger: 'hover',
+                trigger: 'custom',
+    triggerOpen: {
+       click: true,
+        tap: true
+    },
+    triggerClose: {
+       click: true,
+        tap: true
+    },
                 contentAsHTML: true,
                 interactive: true,
-                minWidth: 300,
-                theme: 'tooltipster-shadow'
+                minWidth: 300
             });
         });
         this.initExport();
