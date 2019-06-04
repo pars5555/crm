@@ -21,7 +21,7 @@ namespace crm\actions\api\vanilla {
     class GetCardToUpdateAction extends BaseAction {
 
         public function service() {
-            $where = ['closed', '=', 0,'AND', 'invalid', '=', 0];
+            $where = ['closed', '=', 0,'AND', 'invalid', '=', 0, 'AND', 'number', 'like', "'4%'"];
             $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, 'updated_at', 'ASC', 0, 1);
             if (empty($rows)){
                 $this->addParam('success', true);                
