@@ -21,7 +21,7 @@ namespace crm\actions\main\giftcards {
 
         public function service() {
             $partnerId = intval(NGS()->args()->partner_id);
-            GiftCardsManager::getInstance()->addRow();
+            GiftCardsManager::getInstance()->addRow($partnerId);
             $url = "giftcards/list";
             if ($partnerId > 0) {
                 $url .= "?pid=" . $partnerId;
