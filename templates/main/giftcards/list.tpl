@@ -1,10 +1,12 @@
 <div class="container partner--list--container">
     <h1 class="main_title">Vanilla Cards Report</h1>
     <div class="filter">
+        {if $ns.selectedFilterPartnerId > 0}
         <form class="filters--form" id="partnerFilters" autocomplete="off" action="{$SITE_PATH}/dyn/main_giftcards/do_add" method="POST">
             <input type="hidden" value="{$ns.selectedFilterPartnerId}" name="partner_id"/>
             <button type="submit" style="color: #63B4FB; font-size: 18px; background: none; border: 1px solid #63B4FB; padding: 10px">Add</button>
         </form>
+            {/if}
     </div>
     {include file="{ngs cmd=get_template_dir}/main/giftcards/list_filters.tpl"}
     total dept: {$ns.debt}
