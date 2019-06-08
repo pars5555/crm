@@ -32,6 +32,7 @@
                     {/if}
                     {if $ns.user->getType() == 'root' || $ns.user->getType() == 'vanillaupdater'}
                     <li><a {if $ns.loadName=='vanilla'}class="active"{/if} href="{$SITE_PATH}/vanilla/list">Vanilla</a></li>
+                    <li><a {if $ns.loadName=='giftcards'}class="active"{/if} href="{$SITE_PATH}/giftcards/list">Gift Cards</a></li>
                     {/if}
                     {if $ns.user->getType() == 'root' || $ns.user->getType() == 'checkout'}
                     <li><a {if $ns.loadName=='checkout'}class="active"{/if} href="{$SITE_PATH}/checkout/list">Checkout.am</a></li>

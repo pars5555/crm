@@ -14,25 +14,26 @@
 
 namespace crm\actions\main {
 
-    use crm\actions\BaseAction;
-    use crm\dal\dto\PurseOrderDto;
-    use crm\managers\CheckoutManager;
-    use crm\managers\CreditCardsManager;
-    use crm\managers\OnlineShopsManager;
-    use crm\managers\PaymentTransactionManager;
-    use crm\managers\ProductCategoryManager;
-    use crm\managers\ProductManager;
-    use crm\managers\PurchaseOrderManager;
-    use crm\managers\PurseOrderManager;
-    use crm\managers\RecipientManager;
-    use crm\managers\SaleOrderManager;
-    use crm\managers\SettingManager;
-    use crm\managers\TranslationManager;
-    use crm\managers\VanillaCardsManager;
-    use crm\managers\VanillaProductsManager;
-    use crm\managers\WhishlistManager;
-    use crm\security\RequestGroups;
-    use NGS;
+use crm\actions\BaseAction;
+use crm\dal\dto\PurseOrderDto;
+use crm\managers\CheckoutManager;
+use crm\managers\CreditCardsManager;
+use crm\managers\GiftCardsManager;
+use crm\managers\OnlineShopsManager;
+use crm\managers\PaymentTransactionManager;
+use crm\managers\ProductCategoryManager;
+use crm\managers\ProductManager;
+use crm\managers\PurchaseOrderManager;
+use crm\managers\PurseOrderManager;
+use crm\managers\RecipientManager;
+use crm\managers\SaleOrderManager;
+use crm\managers\SettingManager;
+use crm\managers\TranslationManager;
+use crm\managers\VanillaCardsManager;
+use crm\managers\VanillaProductsManager;
+use crm\managers\WhishlistManager;
+use crm\security\RequestGroups;
+use NGS;
 
     class UpdateFieldAction extends BaseAction {
 
@@ -75,6 +76,9 @@ namespace crm\actions\main {
                     break;
                 case 'vanilla':
                     $manager = VanillaCardsManager::getInstance();
+                    break;
+                case 'giftcards':
+                    $manager = GiftCardsManager::getInstance();
                     break;
                 case 'cc':
                     $manager = CreditCardsManager::getInstance();

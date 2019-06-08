@@ -545,6 +545,17 @@
             }
         }
     ],
+    "giftcards": [
+        {
+            "action": "loads.main.index",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.giftcards.list"
+                }
+            }
+        }
+    ],
     "cc": [
         {
             "action": "loads.main.index",

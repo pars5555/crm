@@ -16,22 +16,22 @@
 
 namespace crm\dal\mappers {
 
-    use crm\dal\dto\PolSerialNumberDto;
+    use crm\dal\dto\GiftCardsDto;
 
-    class PolSerialNumbersMapper extends AdvancedAbstractMysqlMapper {
+    class GiftCardsMapper extends AdvancedAbstractMysqlMapper {
 
         private static $instance;
-        public $tableName = "pol_serial_numbers";
+        public $tableName = "gift_cards";
 
         public static function getInstance() {
             if (self::$instance == null) {
-                self::$instance = new PolSerialNumbersMapper();
+                self::$instance = new GiftCardsMapper();
             }
             return self::$instance;
         }
 
         public function createDto() {
-            return new PolSerialNumberDto();
+            return new GiftCardsDto();
         }
 
         public function getPKFieldName() {
@@ -40,6 +40,16 @@ namespace crm\dal\mappers {
 
         public function getTableName() {
             return $this->tableName;
+        }
+
+        public function getAllDeliveredTotal() {
+            $sql = "SELECT SUM(amazon_total) as total FROM `%s` "
+                    . "INNER JOIN purse_orders ON "
+                    . "FIND_IN_SET(`purse_orders`.id , vanilla_cards.`external_orders_ids`) "
+                    . "WHERE status='delivered'";
+            $sqlQuery = sprintf($sql, $this->getTableName());
+            $total = $this->fetchField($sqlQuery, 'total');
+            return floatval($total);
         }
 
     }
