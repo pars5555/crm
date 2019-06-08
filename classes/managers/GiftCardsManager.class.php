@@ -37,9 +37,10 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function addRow() {
+        public function addRow($partnerId) {
             $dto = $this->createDto();
             $dto->setCreatedAt(date('Y-m-d H:i:s'));
+            $dto->setPartnerId($partnerId);
             return $this->insertDto($dto);
         }
         
