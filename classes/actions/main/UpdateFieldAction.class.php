@@ -100,6 +100,9 @@ use NGS;
                 $manager->setSetting($fieldName, $fieldValue);
                 return;
             }
+            if ($objectType === 'giftcards' && $fieldName === 'code') {
+                $fieldValue = preg_replace("/[^a-zA-Z0-9]+/", "", $fieldValue);
+            }
             if ($objectType === 'vanilla' && $fieldName === 'number') {
                 $row = $manager->selectByField('number', $fieldValue);
                 if (!empty($row) && $row[0]->getId() != $id) {
