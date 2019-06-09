@@ -2,11 +2,11 @@
     <h1 class="main_title">Vanilla Cards Report</h1>
     <div class="filter">
         {if $ns.selectedFilterPartnerId > 0}
-        <form class="filters--form" id="partnerFilters" autocomplete="off" action="{$SITE_PATH}/dyn/main_giftcards/do_add" method="POST">
-            <input type="hidden" value="{$ns.selectedFilterPartnerId}" name="partner_id"/>
-            <button type="submit" style="color: #63B4FB; font-size: 18px; background: none; border: 1px solid #63B4FB; padding: 10px">Add</button>
-        </form>
-            {/if}
+            <form class="filters--form" id="partnerFilters" autocomplete="off" action="{$SITE_PATH}/dyn/main_giftcards/do_add" method="POST">
+                <input type="hidden" value="{$ns.selectedFilterPartnerId}" name="partner_id"/>
+                <button type="submit" style="color: #63B4FB; font-size: 18px; background: none; border: 1px solid #63B4FB; padding: 10px">Add</button>
+            </form>
+        {/if}
     </div>
     {include file="{ngs cmd=get_template_dir}/main/giftcards/list_filters.tpl"}
     total dept: {$ns.debt}
@@ -14,6 +14,8 @@
     <div class="main-table">
         <table>
             <tr>
+                <th>ID</th>
+                <th>Attachments</th>
                 <th>Code</th>
                 <th>Balance</th>
                 <th>Account</th>
@@ -25,6 +27,14 @@
 
             {foreach from=$ns.rows item=row}
                 <tr {if $row->getAttention()==1} style="background: yellow;"{/if}  class="table-row"  data-type="giftcards" data-id="{$row->getId()}">
+                    <td>
+                        <a href="{$SITE_PATH}/giftcards/{$row->getId()}" class="link" target="_blank">{$row->getId()}</a><br/>
+                    </td>
+                    <td>
+                        {if isset($ns.attachments[$row->getId()])}
+                            <img src="{$SITE_PATH}/img/attachment.png" width="32"/>
+                        {/if}
+                    </td>
                     <td class="table-cell f_editable_cell" data-field-name="code">{$row->getCode()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="amount">{$row->getAmount()}</td>
                     <td class="f_selectable_cell" data-value="{$row->getAccountName()}" data-template-select-id="account_name_list" data-field-name="account_name"> {$row->getAccountName()}</td>

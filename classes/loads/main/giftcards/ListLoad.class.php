@@ -12,6 +12,7 @@
 namespace crm\loads\main\giftcards {
 
     use crm\loads\AdminLoad;
+    use crm\managers\AttachmentManager;
     use crm\managers\GiftCardsManager;
     use crm\managers\PartnerManager;
     use crm\managers\PurseOrderManager;
@@ -68,6 +69,10 @@ namespace crm\loads\main\giftcards {
             $exOrdersMappedById = PurseOrderManager::getInstance()->selectByPKs($externalOrderIdsArray, true);
 
             self::addOrdersInfoToRows($rows, $exOrdersMappedById);
+
+
+            $attachments = AttachmentManager::getInstance()->getEntitiesAttachments($rows, 'giftcard');
+            $load->addParam('attachments', $attachments);
         }
 
         private static function initFilters($limit, $load) {
@@ -75,7 +80,7 @@ namespace crm\loads\main\giftcards {
             $load->addParam('partner_ids', $supplier_partner_ids);
             $supplierPartners = PartnerManager::getInstance()->selectByPks($supplier_partner_ids, true);
             $load->addParam('partner_ids', $supplier_partner_ids);
-            
+
             $selectedFilterMerchant = 'all';
             if (isset(NGS()->args()->mrch)) {
                 $selectedFilterMerchant = strtolower(NGS()->args()->mrch);

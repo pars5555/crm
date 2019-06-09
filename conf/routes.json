@@ -554,6 +554,18 @@
                     "action": "loads.main.giftcards.list"
                 }
             }
+        },
+        {
+            "action": "loads.main.index",
+            "route": "[:id]",
+            "constraints": {
+                "id": "[0-9]+"
+            },
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.giftcards.open"
+                }
+            }
         }
     ],
     "cc": [
