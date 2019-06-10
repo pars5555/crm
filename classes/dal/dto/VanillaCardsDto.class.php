@@ -57,7 +57,13 @@ namespace crm\dal\dto {
         }
 
         public function getOrdersAmountsText() {
-            return implode(' ; ', $this->order_amounts);
+            if (!empty($this->order_amounts)) {
+                if (count($this->order_amounts) === 1) {
+                    return '$' . implode(' ; $', $this->order_amounts);
+                }
+                return '$' . implode(' ; $', $this->order_amounts) . '  <br> total: $' . array_sum($this->order_amounts);
+            }
+            return "";
         }
 
         public function addSucceedAmountsText($orderAmount) {
@@ -76,16 +82,16 @@ namespace crm\dal\dto {
                     $_th = substr($th, 9);
                     //WINN-DIXIE #03 7024 BER - $12.84 
                     $parts = explode('-', $_th);
-                    $amount = trim(trim($parts[count($parts)-1]), '$');
+                    $amount = trim(trim($parts[count($parts) - 1]), '$');
                     //12.84 
                     $merchant = trim(explode('-', $_th)[0]);
                     //WINN-DIXIE #03 7024 BER
-                    if ($amount === '0.00' || isset($merchantAmountMap[$merchant.'_'. $amount])) {
-                        $merchantAmountMap[$merchant.'_'. $amount] = 1;
+                    if ($amount === '0.00' || isset($merchantAmountMap[$merchant . '_' . $amount])) {
+                        $merchantAmountMap[$merchant . '_' . $amount] = 1;
                         $ret[] = '<span style="color:red">' . $th . '</span>';
                     } else {
                         $ret[] = $th;
-                        $merchantAmountMap[$merchant.'_'. $amount] = 1;
+                        $merchantAmountMap[$merchant . '_' . $amount] = 1;
                     }
                 }
                 return implode("\r\n", array_reverse($ret));

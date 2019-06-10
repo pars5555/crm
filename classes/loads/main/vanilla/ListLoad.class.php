@@ -53,7 +53,7 @@ namespace crm\loads\main\vanilla {
             $totalSuccess = VanillaCardsManager::getInstance()->getAllDeliveredTotal();
             $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, 'id', 'desc', $offset, $limit);
             $count = VanillaCardsManager::getInstance()->getLastSelectAdvanceRowsCount();
-            if (count($rows) === 0){
+            if (count($rows) === 0) {
                 $load->addParam('selectedFilterPage', 1);
                 $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, 'id', 'desc', $offset, 0);
                 $count = VanillaCardsManager::getInstance()->getLastSelectAdvanceRowsCount();
@@ -66,9 +66,9 @@ namespace crm\loads\main\vanilla {
 
             $externalOrderIdsArray = [];
             foreach ($rows as $row) {
-                $externalOrdersIds = intval($row->getExternalOrdersIds());
+                $externalOrdersIds = $row->getExternalOrdersIds();
                 if (!empty($externalOrdersIds)) {
-                    $externalOrderIdsArray = array_merge($externalOrderIdsArray, explode(',', $externalOrdersIds));
+                    $externalOrderIdsArray = array_merge($externalOrderIdsArray, array_map('intval',explode(',', $externalOrdersIds)));
                 }
             }
             $exOrdersMappedById = \crm\managers\PurseOrderManager::getInstance()->selectByPKs($externalOrderIdsArray, true);
@@ -76,7 +76,6 @@ namespace crm\loads\main\vanilla {
             self::addOrdersInfoToRows($rows, $exOrdersMappedById);
             $totalBalance = VanillaCardsManager::getInstance()->getTotalBalance(10);
             $load->addParam('total_balance', $totalBalance);
-            
         }
 
         private static function initFilters($limit, $load) {
@@ -122,11 +121,14 @@ namespace crm\loads\main\vanilla {
                 if (!empty($externalOrdersIds)) {
                     $orderIds = explode(',', $externalOrdersIds);
                     foreach ($orderIds as $orderId) {
+                        $orderId = trim($orderId);
                         if (!isset($exOrdersMappedById[$orderId])) {
                             continue;
                         }
                         $amazonTotal = $exOrdersMappedById[$orderId]->getAmazonTotal();
-                        $row->addOrderAmount($amazonTotal);
+                        if ($exOrdersMappedById[$orderId]->getStatus() !== 'cancelled') {
+                            $row->addOrderAmount($amazonTotal);
+                        }
                         if ($exOrdersMappedById[$orderId]->getStatus() === 'delivered') {
                             $row->addSucceedAmountsText($amazonTotal);
                         }
