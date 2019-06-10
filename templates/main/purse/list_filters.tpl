@@ -58,6 +58,15 @@
             </select>
         </div>
         <div class="filter">
+            <label>Exact Status</label>
+            <select name="estts">
+                <option value="all" {if $ns.selectedFiltereStatus == 'all'}selected{/if}>All</option>
+                <option value="delivered" {if $ns.selectedFiltereStatus == 'delivered'}selected{/if}>Delivered</option>
+                <option value="canceled" {if $ns.selectedFiltereStatus == 'canceled'}selected{/if}>Canceled</option>
+                <option value="shipping" {if $ns.selectedFiltereStatus == 'shipping'}selected{/if}>Shipping</option>
+            </select>
+        </div>
+        <div class="filter">
             <label>Shipping Type</label>
             <select name="sht">
                 <option value="all" {if $ns.selectedFilterShippingType == 'all'}selected{/if}>All</option>

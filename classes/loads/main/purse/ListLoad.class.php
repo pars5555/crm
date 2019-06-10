@@ -131,7 +131,7 @@ namespace crm\loads\main\purse {
             $this->addParam('btc_rate', CryptoRateManager::getInstance()->getBtcRate());
 
 
-            $allRecipients = RecipientManager::getInstance()->selectAdvance('*', [], ['email','first_name', 'last_name']);
+            $allRecipients = RecipientManager::getInstance()->selectAdvance('*', [], ['email', 'first_name', 'last_name']);
             $recipientsMappedByUnitAddress = [];
             foreach ($allRecipients as $recipient) {
                 $recipientsMappedByUnitAddress [$recipient->getExpressUnitAddress()] = $recipient;
@@ -209,6 +209,10 @@ namespace crm\loads\main\purse {
                     $selectedFilterStatus = strtolower(NGS()->args()->stts);
                 }
             }
+            $selectedFiltereStatus = 'all';
+            if (isset(NGS()->args()->estts)) {
+                $selectedFiltereStatus = strtolower(NGS()->args()->estts);
+            }
             if (!empty($load)) {
                 $all_merchant_names_list = explode(',', SettingManager::getInstance()->getSetting('all_merchant_names_list'));
                 $load->addParam('all_merchant_names_list', $all_merchant_names_list);
@@ -255,6 +259,7 @@ namespace crm\loads\main\purse {
                 $selectedFilterMerchant = 'all';
                 $selectedFilterHidden = 'no';
                 $selectedFilterStatus = 'all';
+                $selectedFiltereStatus = 'all';
                 $selectedFilterShippingType = 'all';
                 $orderType = 'all';
                 $selectedFilterRecipientId = 0;
@@ -271,6 +276,7 @@ namespace crm\loads\main\purse {
                 $load->addParam('notRegOrdersInWarehouse', $regOrdersInWarehouse);
                 $load->addParam('selectedFilterHidden', $selectedFilterHidden);
                 $load->addParam('selectedFilterStatus', $selectedFilterStatus);
+                $load->addParam('selectedFiltereStatus', $selectedFiltereStatus);
                 $load->addParam('selectedFilterShippingType', $selectedFilterShippingType);
                 $load->addParam('orderType', $orderType);
                 $load->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
@@ -290,6 +296,9 @@ namespace crm\loads\main\purse {
             }
             if ($selectedFilterStatus === 'inactive') {
                 $where = array_merge($where, ['AND ', 'status', 'not in', $activeStatusesSql]);
+            }
+            if ($selectedFiltereStatus !== 'all') {
+                $where = array_merge($where, ['AND ', 'status', '=', "'$selectedFiltereStatus'"]);
             }
             if ($selectedFilterHidden !== 'all') {
                 $where = array_merge($where, ['AND ', 'hidden', '=', 0]);
