@@ -41,6 +41,10 @@ namespace crm\managers {
             return $this->mapper->getAllDeliveredTotal();
         }
         
+        public function getTotalBalance($ignoreLessThan = 10) {
+            return $this->mapper->getTotalBalance($ignoreLessThan) ;
+        }
+        
         public function addRow() {
             $dto = $this->createDto();
             $dto->setCreatedAt(date('Y-m-d H:i:s'));

@@ -11,7 +11,8 @@
             {include file="{ngs cmd=get_template_dir}/main/vanilla/list_filters.tpl"}
     {assign payable $ns.totalSuccess*0.7}
     total success: ${$ns.totalSuccess|number_format:2:",":"."} (payable 70%: ${$payable|round:2|number_format:2:",":"."})<br>
-    total paid in USD: {$ns.debt}
+    total paid in USD: {$ns.debt}<br>
+    total available gift cards balance ($10 and less ignores): <span style="font-size: 16px; font-weight: 800">{$ns.total_balance}</span>
 
     <div class="main-table">
         <table>
@@ -26,6 +27,7 @@
                 <th>order amounts</th>
                 <th>Succeed amounts</th>
                 <th>Attention</th>
+                <th>Sold to others Total</th>
                 <th>Note</th>
                 <th>Transactions History</th>
                 <th>Closed</th>
@@ -51,6 +53,7 @@
                         <input class="f_attention"
                                data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getAttention() == 1}checked{/if}/>
                     </td>
+                    <td class="table-cell f_editable_cell" data-field-name="sold_amount">{$row->getSoldAmount()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="note">{$row->getNote()}</td>
                     <td style="white-space: pre-line" class="table-cell">{$row->getTransactionHistoryText()}</td>
                     <td class="icon-cell">

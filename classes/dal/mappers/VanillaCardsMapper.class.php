@@ -41,6 +41,21 @@ namespace crm\dal\mappers {
         public function getTableName() {
             return $this->tableName;
         }
+        
+        public function getTotalBalance($ignoreLessThan = 0) {
+            $sql = "SELECT SUM(balance) as total FROM `%s` "
+                    . "WHERE `balance` > %s and closed=0 and invalid=0 and deleted=0";
+            $sqlQuery = sprintf($sql, $this->getTableName(), $ignoreLessThan);
+            $total = $this->fetchField($sqlQuery, 'total');
+            
+            $sql = "SELECT SUM(`sold_amount`) as `sold_total` FROM `%s` "
+                    . "WHERE `balance` > %s  and `balance` >= `sold_amount` and closed=0 and invalid=0 and deleted=0";
+            $sqlQuery = sprintf($sql, $this->getTableName(), $ignoreLessThan);
+            $soldTotal = $this->fetchField($sqlQuery, 'sold_total');
+            
+            
+            return floatval($total) - floatval($soldTotal);
+        }
 
         public function getAllDeliveredTotal() {
             $sql = "SELECT SUM(amazon_total) as total FROM `%s` "

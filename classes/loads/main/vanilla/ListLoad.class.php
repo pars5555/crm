@@ -74,6 +74,9 @@ namespace crm\loads\main\vanilla {
             $exOrdersMappedById = \crm\managers\PurseOrderManager::getInstance()->selectByPKs($externalOrderIdsArray, true);
 
             self::addOrdersInfoToRows($rows, $exOrdersMappedById);
+            $totalBalance = VanillaCardsManager::getInstance()->getTotalBalance(10);
+            $load->addParam('total_balance', $totalBalance);
+            
         }
 
         private static function initFilters($limit, $load) {
