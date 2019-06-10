@@ -126,7 +126,7 @@ namespace crm\loads\main\vanilla {
                             continue;
                         }
                         $amazonTotal = $exOrdersMappedById[$orderId]->getAmazonTotal();
-                        if ($exOrdersMappedById[$orderId]->getStatus() !== 'cancelled') {
+                        if ($exOrdersMappedById[$orderId]->getStatus() !== 'canceled') {
                             $row->addOrderAmount($amazonTotal);
                         }
                         if ($exOrdersMappedById[$orderId]->getStatus() === 'delivered') {
