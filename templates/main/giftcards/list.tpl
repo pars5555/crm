@@ -14,8 +14,7 @@
     <div class="main-table">
         <table>
             <tr>
-                <th>ID</th>
-                <th>Attachments</th>
+                <th>Id</th>
                 <th>Code</th>
                 <th>Balance</th>
                 <th>Account</th>
@@ -29,8 +28,6 @@
                 <tr {if $row->getAttention()==1} style="background: yellow;"{/if}  class="table-row"  data-type="giftcards" data-id="{$row->getId()}">
                     <td>
                         <a href="{$SITE_PATH}/giftcards/{$row->getId()}" class="link" target="_blank">{$row->getId()}</a><br/>
-                    </td>
-                    <td>
                         {if isset($ns.attachments[$row->getId()])}
                             <img src="{$SITE_PATH}/img/attachment.png" width="32"/>
                         {/if}
