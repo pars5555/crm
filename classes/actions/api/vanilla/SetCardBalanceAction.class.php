@@ -59,7 +59,11 @@ namespace crm\actions\api\vanilla {
             if ($balance >= $vanilla_telegram_notification_min_balance) {
                 $card = VanillaCardsManager::getInstance()->selectByPK($id);
                 $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
-                $manager->postMessage('****'.substr($card->getNumber(),-6) . ' balance is: $' . $balance);
+                $note = trim($card->getNote());
+                        if (!empty($note)){
+                            $note = ' note: '.$note;
+                        }
+                $manager->postMessage('****'.substr($card->getNumber(),-6) . ' balance is: $' . $balance . $note);
             }
             VanillaCardsManager::getInstance()->updateField($id, 'balance', $balance);
             VanillaCardsManager::getInstance()->updateField($id, 'transaction_history', $transaction_history);
