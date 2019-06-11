@@ -39,7 +39,7 @@ namespace crm\actions\api\vanilla {
                         if (!empty($note)){
                             $note = ' note: '.$note;
                         }
-                        $manager->postMessage('****'.substr($card->getNumber(),-6) . ' is closed! last available balance was: $' . $card->getBalance(). ' initial balance was: '. $card->getInitialBalance(). $note); 
+                        $manager->postMessage('****'.substr($card->getNumber(),-6) . ' is closed! last available balance was: $' . $card->getBalance(). ' initial balance was: '. $card->getInitialBalance(). $note. ' card supplied at: '. $card->getCreatedAt()); 
                         VanillaCardsManager::getInstance()->updateField($ccid, 'closed', 1);
                     }
                 }
@@ -63,7 +63,7 @@ namespace crm\actions\api\vanilla {
                         if (!empty($note)){
                             $note = ' note: '.$note;
                         }
-                $manager->postMessage('****'.substr($card->getNumber(),-6) . ' balance is: $' . $balance . $note);
+                $manager->postMessage('****'.substr($card->getNumber(),-6) . ' balance is: $' . $balance . $note. ' card supplied at: '. $card->getCreatedAt());
             }
             VanillaCardsManager::getInstance()->updateField($id, 'balance', $balance);
             VanillaCardsManager::getInstance()->updateField($id, 'transaction_history', $transaction_history);
