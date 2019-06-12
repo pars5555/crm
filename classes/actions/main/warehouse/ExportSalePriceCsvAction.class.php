@@ -15,14 +15,14 @@ namespace crm\actions\main\warehouse {
             $productsQuantity = WarehouseManager::getInstance()->getAllProductsQuantity();
             $products = ProductManager::getInstance()->selectAdvance('*', ['include_in_price_xlsx', '=', 1], 'category_id', 'ASC', null, null, true);
             $categories = ProductCategoryManager::getInstance()->selectAll();
-            $categoryNamesMappedById = [];
+            $categoryMappedById = [];
             foreach ($categories as $category) {
-                $categoryNamesMappedById[$category->getId()] = $category->getName();
+                $categoryMappedById[$category->getId()] = $category;
             }
-            $this->exportCsv($products, $productsQuantity, $categoryNamesMappedById);
+            $this->exportCsv($products, $productsQuantity, $categoryMappedById);
         }
 
-        public function exportCsv($products, $productsQuantity, $categoryNamesMappedById) {
+        public function exportCsv($products, $productsQuantity, $categoryMappedById) {
 
             header('Content-type: text/csv; charset=UTF-8');
             header('Content-Disposition: attachment; filename=export.csv');
@@ -32,21 +32,17 @@ namespace crm\actions\main\warehouse {
             //fputcsv($output, ['Item Name', 'Model', 'Quantity','Sale Price']);
             fputcsv($output, ['']);
             $catId = -1;
-            $categories = ProductCategoryManager::getInstance()->selectAll();
-            $categoriesMappedById = [];
-            foreach ($categories as $category) {
-                $categoriesMappedById[$category->getId()] = $category->getName();
-            }
+
             foreach ($products as $product) {
                 if ($catId != $product->getCategoryId()) {
                     $catId = $product->getCategoryId();
                     fputcsv($output, []);
-                    fputcsv($output, [$categoryNamesMappedById[$product->getCategoryId()], '', '', '']);
+                    fputcsv($output, [$categoryMappedById[$product->getCategoryId()]->getName(), '', '', '']);
                 }
 
                 if (isset($productsQuantity[$product->getId()]) && $productsQuantity[$product->getId()] > 0) {
                     $categoryId = $product->getCategoryId();
-                    $row = [$product->getId(), $product->getName(), $product->getModel(), $productsQuantity[$product->getId()] ?: 0, isset($categoriesMappedById[$categoryId]) ?$categoriesMappedById[$categoryId]->getWarrantyMonths(): 0];
+                    $row = [$product->getId(), $product->getName(), $product->getModel(), $productsQuantity[$product->getId()] ?: 0, isset($categoryMappedById[$categoryId]) ? $categoryMappedById[$categoryId]->getWarrantyMonths() : 0];
                     $row = array_map(function(&$el) {
                         return '="' . $el . '"';
                     }, $row);
