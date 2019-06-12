@@ -46,7 +46,7 @@ namespace crm\actions\main\warehouse {
 
                 if (isset($productsQuantity[$product->getId()]) && $productsQuantity[$product->getId()] > 0) {
                     $categoryId = $product->getCategoryId();
-                    $row = [$product->getId(), $product->getName(), $product->getModel(), $productsQuantity[$product->getId()] ?: 0, isset($categoriesMappedById[$product->getSalePrice()]) ?$categoriesMappedById[$product->getSalePrice()]->getWarrantyMonths(): 0];
+                    $row = [$product->getId(), $product->getName(), $product->getModel(), $productsQuantity[$product->getId()] ?: 0, isset($categoriesMappedById[$categoryId]) ?$categoriesMappedById[$categoryId]->getWarrantyMonths(): 0];
                     $row = array_map(function(&$el) {
                         return '="' . $el . '"';
                     }, $row);
