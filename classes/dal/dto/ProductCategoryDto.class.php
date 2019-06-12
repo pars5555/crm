@@ -21,7 +21,7 @@ namespace crm\dal\dto {
     class ProductCategoryDto extends AbstractDto {
 
         // Map of DB value to Field value
-        private $mapArray = array("id" => "id", "name" => "name", "sort_index" => "sortIndex");
+        private $mapArray = array("id" => "id", "name" => "name", "warranty_months" => "warrantyMonths", "sort_index" => "sortIndex");
 
         // returns map array
         public function getMapArray() {

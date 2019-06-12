@@ -32,6 +32,11 @@ namespace crm\actions\main\warehouse {
             //fputcsv($output, ['Item Name', 'Model', 'Quantity','Sale Price']);
             fputcsv($output, ['']);
             $catId = -1;
+            $categories = ProductCategoryManager::getInstance()->selectAll();
+            $categoriesMappedById = [];
+            foreach ($categories as $category) {
+                $categoriesMappedById[$category->getId()] = $category->getName();
+            }
             foreach ($products as $product) {
                 if ($catId != $product->getCategoryId()) {
                     $catId = $product->getCategoryId();
@@ -40,7 +45,8 @@ namespace crm\actions\main\warehouse {
                 }
 
                 if (isset($productsQuantity[$product->getId()]) && $productsQuantity[$product->getId()] > 0) {
-                    $row = [$product->getId(), $product->getName(), $product->getModel(), $productsQuantity[$product->getId()] ?: 0, $product->getSalePrice() ?: 0];
+                    $categoryId = $product->getCategoryId();
+                    $row = [$product->getId(), $product->getName(), $product->getModel(), $productsQuantity[$product->getId()] ?: 0, isset($categoriesMappedById[$product->getSalePrice()]) ?$categoriesMappedById[$product->getSalePrice()]->getWarrantyMonths(): 0];
                     $row = array_map(function(&$el) {
                         return '="' . $el . '"';
                     }, $row);
