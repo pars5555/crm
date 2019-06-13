@@ -24,9 +24,9 @@ namespace crm\actions\api\fedex {
             $primary_status = trim(NGS()->args()->primary_status);
             $error = trim(NGS()->args()->error);
             $primary_status_date = trim(NGS()->args()->primary_status_date);
-            $travel_history = trim(NGS()->args()->travel_history);
-            $shipment_facts = trim(NGS()->args()->shipment_facts);
-            var_dump($travel_history);
+            $travel_history = NGS()->args()->travel_history;
+            $shipment_facts = NGS()->args()->shipment_facts;
+            var_dump($travel_history, $travel_history);
             exit;
             // $trackingNumber = \crm\managers\PurseOrderManager::getInstance()->setFedexTrackingStatus($tracking_number, );
 //            if (!empty($trackingNumber)) {
