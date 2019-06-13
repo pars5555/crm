@@ -78,6 +78,7 @@ namespace crm\managers {
                 $row = $rows[0];
                 $trackingNumber = trim(preg_replace('/[^A-Za-z0-9\-]/', '', $row->getTrackingNumber()));
                 $this->updateField($row->getId(), 'tracking_number', $trackingNumber);
+                return $trackingNumber;
             }
 
             return false;
