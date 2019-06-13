@@ -41,7 +41,8 @@ namespace crm\dal\dto {
             'checkout_order_status' => 'checkoutOrderStatus',
             'checkout_order_metadata' => 'checkoutOrderMetadata',
             'external_merchant_name' => 'externalMerchantName',
-            'external_product_number' => 'externalProductNumber'
+            'external_product_number' => 'externalProductNumber',
+            'tracking_number_checked_at' => 'trackingNumberCheckedAt'
         );
 
         // returns map array

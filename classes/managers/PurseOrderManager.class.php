@@ -68,6 +68,18 @@ namespace crm\managers {
             return 0;
         }
 
+        public function getFedexTrackingsToCheck() {
+            $rows = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
+                'status', 'not in', "('delivered')", 'AND',
+                'shipping_carrier', '=', "'fedex'", 'AND',
+                "length(COALESCE(`tracking_number`, ''))", '>', 5
+                    ], 'tracking_number_checked_at', 'ASC', 0, 1);
+            if (!empty($rows)) {
+                return $rows[0]->getTrackngNumber();
+            }
+            return false;
+        }
+
         public function getExpectingProducts($products) {
             $productIds = [];
             foreach ($products as $product) {
