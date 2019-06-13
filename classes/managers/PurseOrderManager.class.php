@@ -75,8 +75,11 @@ namespace crm\managers {
                 "length(COALESCE(`tracking_number`, ''))", '>', 5
                     ], 'tracking_number_checked_at', 'ASC', 0, 1);
             if (!empty($rows)) {
-                return $rows[0]->getTrackingNumber();
+                $row = $rows[0];
+                $trackingNumber = trim(preg_replace('/[^A-Za-z0-9\-]/', '', $row->getTrackingNumber()));
+                $this->updateField($row->getId(), 'tracking_number', $trackingNumber);
             }
+
             return false;
         }
 
