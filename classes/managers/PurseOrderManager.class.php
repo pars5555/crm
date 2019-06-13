@@ -75,7 +75,7 @@ namespace crm\managers {
                 "length(COALESCE(`tracking_number`, ''))", '>', 5
                     ], 'tracking_number_checked_at', 'ASC', 0, 1);
             if (!empty($rows)) {
-                return $rows[0]->getTrackngNumber();
+                return $rows[0]->getTrackingNumber();
             }
             return false;
         }
