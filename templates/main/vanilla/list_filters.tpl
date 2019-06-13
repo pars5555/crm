@@ -12,7 +12,21 @@
             <div class="search-container">
                 <input class="text" style="max-width: 200px;" type="text" name="bal" value="{$ns.minBalance}"/>
             </div>
-        </div>  
+        </div>
+
+        <div class="filter group">
+            <label>Sort by </label>
+            <select name="srt">
+                {foreach from=$ns.sortFields key=fieldName item=fieldDisplayName}
+                    {$fieldName}
+                    <option value="{$fieldName}" {if $ns.selectedFilterSortBy === $fieldName}selected{/if}>{$fieldDisplayName}</option>
+                {/foreach}
+            </select>
+            <select name="ascdesc">
+                <option value="ASC" {if $ns.selectedFilterSortByAscDesc== 'ASC'}selected{/if}>ASC</option>
+                <option value="DESC" {if $ns.selectedFilterSortByAscDesc== 'DESC'}selected{/if}>DESC</option>
+            </select>
+        </div>
         <div class="filter">
             <label>Show Deleted/Closed</label>
             <select name="shd">

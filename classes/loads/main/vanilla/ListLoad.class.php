@@ -25,7 +25,7 @@ namespace crm\loads\main\vanilla {
 
         public static function initLoad($load) {
             $limit = 100;
-            list($offset, $balance, $searchText, $selectedFilterShowDeleted) = self::initFilters($limit, $load);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $balance, $searchText, $selectedFilterShowDeleted) = self::initFilters($limit, $load);
             $where = ['1', '=', '1'];
             if ($selectedFilterShowDeleted === 'no') {
                 $where = array_merge($where, ['AND', 'deleted', '=', '0', 'AND', 'closed', '=', '0']);
@@ -51,11 +51,11 @@ namespace crm\loads\main\vanilla {
                 $dollarDebt = floatval($debt[1]);
             }
             $totalSuccess = VanillaCardsManager::getInstance()->getAllDeliveredTotal();
-            $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, 'id', 'desc', $offset, $limit);
+            $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $count = VanillaCardsManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($rows) === 0) {
                 $load->addParam('selectedFilterPage', 1);
-                $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, 'id', 'desc', $offset, 0);
+                $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, 0);
                 $count = VanillaCardsManager::getInstance()->getLastSelectAdvanceRowsCount();
             }
             $pagesCount = ceil($count / $limit);
@@ -68,7 +68,7 @@ namespace crm\loads\main\vanilla {
             foreach ($rows as $row) {
                 $externalOrdersIds = $row->getExternalOrdersIds();
                 if (!empty($externalOrdersIds)) {
-                    $externalOrderIdsArray = array_merge($externalOrderIdsArray, array_map('intval',explode(',', $externalOrdersIds)));
+                    $externalOrderIdsArray = array_merge($externalOrderIdsArray, array_map('intval', explode(',', $externalOrdersIds)));
                 }
             }
             $exOrdersMappedById = \crm\managers\PurseOrderManager::getInstance()->selectByPKs($externalOrderIdsArray, true);
@@ -90,6 +90,25 @@ namespace crm\loads\main\vanilla {
                 $offset = ($selectedFilterPage - 1) * intval($limit);
             }
 
+            //sorting
+            $sortByFields = $load->getSortByFields();
+            $load->addParam('sortFields', $sortByFields);
+            $selectedFilterSortBy = 'id';
+            if (isset(NGS()->args()->srt)) {
+                if (array_key_exists(NGS()->args()->srt, $sortByFields)) {
+                    $selectedFilterSortBy = NGS()->args()->srt;
+                }
+            }
+            //var_dump($selectedFilterSortBy);exit;
+            $selectedFilterSortByAscDesc = 'DESC';
+            if (isset(NGS()->args()->ascdesc)) {
+                if (in_array(strtoupper(NGS()->args()->ascdesc), ['ASC', 'DESC'])) {
+                    $selectedFilterSortByAscDesc = strtoupper(NGS()->args()->ascdesc);
+                }
+            }
+
+
+
             $minBalance = 0;
             if (isset(NGS()->args()->bal)) {
                 $minBalance = floatval(NGS()->args()->bal);
@@ -107,8 +126,9 @@ namespace crm\loads\main\vanilla {
             $load->addParam('searchText', $searchText);
             $load->addParam('selectedFilterShowDeleted', $selectedFilterShowDeleted);
             $load->addParam('minBalance', $minBalance);
-
-            return [$offset, $minBalance, $searchText, $selectedFilterShowDeleted];
+            $load->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
+            $load->addParam('selectedFilterSortBy', $selectedFilterSortBy);
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $minBalance, $searchText, $selectedFilterShowDeleted];
         }
 
         public function getTemplate() {
@@ -135,6 +155,10 @@ namespace crm\loads\main\vanilla {
                     }
                 }
             }
+        }
+
+        public function getSortByFields() {
+            return ['id' => 'ID', 'balance' => 'Balance'];
         }
 
     }
