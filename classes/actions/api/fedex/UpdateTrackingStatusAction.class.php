@@ -26,7 +26,8 @@ namespace crm\actions\api\fedex {
             $primary_status_date = trim(NGS()->args()->primary_status_date);
             $travel_history = NGS()->args()->travel_history;
             $shipment_facts = NGS()->args()->shipment_facts;
-            $trackingNumber = \crm\managers\PurseOrderManager::getInstance()->setFedexTrackingStatus($tracking_number, );
+            
+           // $trackingNumber = \crm\managers\PurseOrderManager::getInstance()->setFedexTrackingStatus($tracking_number, );
 //            if (!empty($trackingNumber)) {
 //                $this->addParam('tracking_number', $trackingNumber);
 //            }
