@@ -31,7 +31,6 @@ namespace crm\actions\api\vanilla {
                 $idsArray = explode(',', $closedCardIds);
                 foreach ($idsArray as $ccid) {
                     $card = VanillaCardsManager::getInstance()->selectByPK($ccid);
-                    VanillaCardsManager::getInstance()->updateField($ccid, 'updated_at', date('Y-m-d H:i:s'));
                     if ($card->getClosed() == 0) {
                         $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
                         
@@ -41,6 +40,7 @@ namespace crm\actions\api\vanilla {
                         }
                         $manager->postMessage('****'.substr($card->getNumber(),-6) . ' is closed! last available balance was: $' . $card->getBalance(). ' initial balance was: '. $card->getInitialBalance(). $note. ' card supplied at: '. $card->getCreatedAt()); 
                         VanillaCardsManager::getInstance()->updateField($ccid, 'closed', 1);
+                        VanillaCardsManager::getInstance()->updateField($ccid, 'updated_at', date('Y-m-d H:i:s'));
                     }
                 }
             }
