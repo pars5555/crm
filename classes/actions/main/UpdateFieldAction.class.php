@@ -103,6 +103,10 @@ use NGS;
             if ($objectType === 'giftcards' && $fieldName === 'code') {
                 $fieldValue = strtoupper(preg_replace("/[^a-zA-Z0-9]+/", "", $fieldValue));
             }
+            if ($objectType === 'giftcards' && $fieldName === 'discount_percent') {
+                $fieldValue = min(100, intval($fieldValue));
+                $fieldValue = max(0, intval($fieldValue));
+            }
             if ($objectType === 'vanilla' && $fieldName === 'number') {
                 $row = $manager->selectByField('number', $fieldValue);
                 if (!empty($row) && $row[0]->getId() != $id) {
