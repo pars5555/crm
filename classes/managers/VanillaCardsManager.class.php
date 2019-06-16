@@ -40,17 +40,26 @@ namespace crm\managers {
         public function getAllDeliveredTotal() {
             return $this->mapper->getAllDeliveredTotal();
         }
-        
+
         public function getTotalBalance($ignoreLessThan = 10) {
-            return $this->mapper->getTotalBalance($ignoreLessThan) ;
+            return $this->mapper->getTotalBalance($ignoreLessThan);
         }
-        
+
+        public function isBotWorking() {
+            $twoMinuteAgo = date('Y-m-d', strtotime("-2 minutes"));
+            $row = $this->selectAdvance('updated_at', [], 'updated_at', 'desc', 0, 1);
+            if ($row->getUpdatedAt() <= $twoMinuteAgo) {
+                return $row->getUpdatedAt();
+            }
+            return true;
+        }
+
         public function addRow() {
             $dto = $this->createDto();
             $dto->setCreatedAt(date('Y-m-d H:i:s'));
             return $this->insertDto($dto);
         }
-        
+
         public function getBtcRate() {
             return $this->selectAdvance('*', ['name', '=', "'BTC'"], 'id', 'DESC', 0, 1)[0]->getRate();
         }
