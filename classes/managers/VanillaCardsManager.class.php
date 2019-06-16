@@ -47,7 +47,12 @@ namespace crm\managers {
 
         public function isBotWorking() {
             $twoMinuteAgo = date('Y-m-d', strtotime("-2 minutes"));
-            $row = $this->selectAdvance('updated_at', [], 'updated_at', 'desc', 0, 1);
+            $rows = $this->selectAdvance('updated_at', [], 'updated_at', 'desc', 0, 1);
+            if (empty($rows ))
+            {
+                return true;
+            }
+            $row = $rows[0];
             if ($row->getUpdatedAt() <= $twoMinuteAgo) {
                 return $row->getUpdatedAt();
             }
