@@ -26,13 +26,8 @@ namespace crm\actions\api\fedex {
             $primary_status_date = trim(NGS()->args()->primary_status_date);
             $travel_history = NGS()->args()->travel_history;
             $shipment_facts = NGS()->args()->shipment_facts;
-            var_dump($travel_history, $shipment_facts);
-            exit;
-            // $trackingNumber = \crm\managers\PurseOrderManager::getInstance()->setFedexTrackingStatus($tracking_number, );
-//            if (!empty($trackingNumber)) {
-//                $this->addParam('tracking_number', $trackingNumber);
-//            }
-//            $this->addParam('success', true);
+            \crm\managers\PurseOrderManager::getInstance()->setFedexTrackingStatus($tracking_number, $primary_status,$error ,$primary_status_date, $travel_history, $shipment_facts);
+            $this->addParam('success', true);
         }
 
         public function getRequestGroup() {

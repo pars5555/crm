@@ -29,6 +29,7 @@
                 <th>Attention</th>
                 <th>Sold to others Total</th>
                 <th>Note</th>
+                <th>Pending Amounts</th>
                 <th>Transactions History</th>
                 <th>Closed</th>
                 <th>Updated At</th>
@@ -38,8 +39,9 @@
             </tr>
 
             {foreach from=$ns.rows item=row}
-                <tr {if $row->getDeleted()==1} style="background: #cc0000;"{else}{if $row->getClosed()==1} style="background: lightgray;"{else}{if $row->getBalanceGrow()==1} style="background: orange;"{else}{if $row->getAttention()==1} style="background: yellow;"{/if}{/if}{/if}{/if}  class="table-row"  data-type="vanilla" data-id="{$row->getId()}">
-                    <td class="table-cell f_editable_cell f_lockable" data-field-name="number">{$row->getNumber()}</td>
+                {assign pams $row->calcPendingAmounts()}
+                <tr style="{if $row->getDeleted()==1} background: #cc0000;{else}{if $row->getClosed()==1} background: lightgray; {else}{if $row->getBalanceGrow()==1} background: orange;{else}{if $row->getAttention()==1} background: yellow; {/if}{/if}{/if}{/if}"  class="table-row"  data-type="vanilla" data-id="{$row->getId()}">
+                    <td class="table-cell f_editable_cell f_lockable" style="{if $pams[0] <= 1}color: green;font-weight:800{/if}" data-field-name="number">{$row->getNumber()}</td>
                     <td class="table-cell f_editable_cell f_lockable" data-field-name="month">{$row->getMonth()}</td>
                     <td class="table-cell f_editable_cell f_lockable" data-field-name="year">{$row->getYear()}</td>
                     <td class="table-cell f_editable_cell f_lockable" data-field-name="cvv">{$row->getCvv()}</td>
@@ -55,6 +57,8 @@
                     </td>
                     <td class="table-cell f_editable_cell" data-field-name="sold_amount">{$row->getSoldAmount()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="note">{$row->getNote()}</td>
+                    
+                    <td style="white-space: pre-line" class="table-cell">{if $pams[0] > 0}${$pams[0]} ({foreach from=$pams[1] item=pam}${$pam|number_format:2:".":""}   {/foreach}){/if}</td>
                     <td style="white-space: pre-line" class="table-cell">{$row->getTransactionHistoryText()}</td>
                     <td class="icon-cell">
 

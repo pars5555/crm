@@ -68,6 +68,14 @@ namespace crm\managers {
             return 0;
         }
 
+        public function setFedexTrackingStatus($tracking_number, $primary_status, $error ,$primary_status_date, $travel_history, $shipment_facts) {
+            $row = $this->selectByField('tracking_number', $tracking_number);
+            if ($row){
+                $row ->set;
+                
+            }
+        }
+        
         public function getFedexTrackingsToCheck() {
             $rows = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
                 'status', 'not in', "('delivered')", 'AND',

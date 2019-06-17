@@ -70,6 +70,29 @@ namespace crm\dal\dto {
             $this->succeed_order_amounts[] = $orderAmount;
         }
 
+        public function calcPendingAmounts() {
+            //$0.00
+            $ths = explode("\r\n", $this->transaction_history);
+            if (count($ths) > 2) {
+                $ths = array_slice($ths, 1, -1);
+                $pendingAmounts = [];
+                foreach (array_reverse($ths) as &$th) {
+                    //12:08 PM WINN-DIXIE #03 7024 BER - $12.84 
+                    $_th = substr($th, 9);
+                    //WINN-DIXIE #03 7024 BER - $12.84 
+                    $parts = explode('-', $_th);
+                    $amount = trim(trim($parts[count($parts) - 1]), '$');
+                    //12.84 
+                    if (strpos($_th, 'Pending')) {
+                        $pendingAmounts[] = $amount;
+                    }
+                }
+                return [array_sum($pendingAmounts), array_reverse($pendingAmounts)];
+            }
+
+            return [0, []];
+        }
+
         public function getTransactionHistoryText() {
             //$0.00
             $ths = explode("\r\n", $this->transaction_history);
