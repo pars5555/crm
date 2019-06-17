@@ -71,7 +71,7 @@
                                     {if $currencyDto->getSymbolPosition() == 'left'}
                                         {$currencyDto->getTemplateChar()}
                                     {/if}
-                                    {$amount|number_format:2}
+                                    {$amount|number_format:2:".":""}
                                     {if $currencyDto->getSymbolPosition() == 'right'}
                                         {$currencyDto->getTemplateChar()}
                                     {/if}
@@ -83,7 +83,7 @@
                                 {if $currencyDto->getSymbolPosition() == 'left'}
                                     {$currencyDto->getTemplateChar()}
                                 {/if}
-                                {$deal[1]->getAmount()|number_format:2}
+                                {$deal[1]->getAmount()|number_format:2:".":""}
                                 {if $currencyDto->getSymbolPosition() == 'right'}
                                     {$currencyDto->getTemplateChar()}
                                 {/if}
@@ -99,7 +99,7 @@
                                     {if $currencyDto->getSymbolPosition() == 'left'}
                                         {$currencyDto->getTemplateChar()}
                                     {/if}
-                                    {$amount}
+                                    {$amount|number_format:2:".":""}
                                     {if $currencyDto->getSymbolPosition() == 'right'}
                                         {$currencyDto->getTemplateChar()}
                                     {/if}

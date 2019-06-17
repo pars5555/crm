@@ -45,6 +45,14 @@ namespace crm\actions\cron {
             $capitalData['cashbox_total'] = round($cashboxTotal);
             SettingManager::getInstance()->setSetting('capital_data', json_encode($capitalData));
             CapitalHistoryManager::getInstance()->addRow();
+
+            $telegramToken = SettingManager::getInstance()->getSetting('telegram_bot_token');
+            $telegramCrmChannelId = SettingManager::getInstance()->getSetting('telegram_crm_channel_id');
+            $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
+            $botDateOrBool = \crm\managers\VanillaCardsManager::getInstance()->isBotWorking();
+            if ($botDateOrBool !== true) {
+                $manager->postMessage('Vanilla checker stopped! last updated date: '. $botDateOrBool);
+            }
         }
 
         private function getPurseTotalUsdAmount() {
@@ -112,7 +120,7 @@ namespace crm\actions\cron {
             $partnersPaymentTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersPaymentTransactions($partnerIds);
             $partnersBillingTransactionsMappedByPartnerId = PaymentTransactionManager::getInstance()->getPartnersBillingTransactions($partnerIds);
             $partnersInitialDebt = PartnerInitialDebtManager::getInstance()->getPartnersInitialDebt($partnerIds);
-            list($partnersDebt,$partnersZeroDebt) = CalculationManager::getInstance()->calculatePartnersDebtBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId, $partnersInitialDebt);
+            list($partnersDebt, $partnersZeroDebt) = CalculationManager::getInstance()->calculatePartnersDebtBySalePurchaseAndPaymentTransations($partnersSaleOrdersMappedByPartnerId, $partnersPurchaseOrdersMappedByPartnerId, $partnersPaymentTransactionsMappedByPartnerId, $partnersBillingTransactionsMappedByPartnerId, $partnersInitialDebt);
             $totalUsd = 0;
             $totalAmd = 0;
             foreach ($partnersDebt as $partnerId => $debt) {

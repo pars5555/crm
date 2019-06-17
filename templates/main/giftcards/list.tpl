@@ -17,6 +17,7 @@
                 <th>Id</th>
                 <th>Code</th>
                 <th>Balance</th>
+                <th>Discount</th>
                 <th>Account</th>
                 <th>ExternalOrderIds</th>
                 <th>Attention</th>
@@ -34,6 +35,7 @@
                     </td>
                     <td class="table-cell f_editable_cell" data-field-name="code">{$row->getCode()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="amount">{$row->getAmount()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="discount_percent">{$row->getDiscountPercent()}</td>
                     <td class="f_selectable_cell" data-value="{$row->getAccountName()}" data-template-select-id="account_name_list" data-field-name="account_name"> {$row->getAccountName()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="external_order_ids">{$row->getExternalOrderIds()}</td>
                     <td class="icon-cell">
