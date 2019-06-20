@@ -37,13 +37,18 @@ namespace crm\managers {
             return self::$instance;
         }
 
+        public function getPartnerTotalGiftCardsSum($partnerId) {
+            return $this->mapper->getPartnerTotalGiftCardsSum($partnerId);
+            
+        }
+
         public function addRow($partnerId) {
             $dto = $this->createDto();
             $dto->setCreatedAt(date('Y-m-d H:i:s'));
             $dto->setPartnerId($partnerId);
             return $this->insertDto($dto);
         }
-        
+
     }
 
 }

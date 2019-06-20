@@ -10,8 +10,11 @@
     </div>
             {include file="{ngs cmd=get_template_dir}/main/vanilla/list_filters.tpl"}
     {assign payable $ns.totalSuccess*0.7}
-    total success: ${$ns.totalSuccess|number_format:2:",":"."} (payable 70%: ${$payable|round:2|number_format:2:",":"."})<br>
-    total paid in USD: {$ns.debt}<br>
+    total success: ${$ns.totalSuccess|number_format:2:",":"."}<br>    
+    total confirmed clothing: ${$ns.totalConfirmedClothing|number_format:2:",":"."}<br>    
+    total pending clothing: ${$ns.totalPendingClothing|number_format:2:",":"."}<br>    
+    pending orders total amount : ${$ns.totalPending|number_format:2:",":"."}<br>    
+    total_supplied: ${$ns.total_supplied|number_format:2:",":"."}<br>    
     total available gift cards balance ($10 and less ignores): <span style="font-size: 16px; font-weight: 800">{$ns.total_balance}</span>
 
     <div class="main-table">

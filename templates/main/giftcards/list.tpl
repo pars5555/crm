@@ -9,7 +9,12 @@
         {/if}
     </div>
     {include file="{ngs cmd=get_template_dir}/main/giftcards/list_filters.tpl"}
-    total dept: {$ns.debt}
+    
+    {if $ns.selectedFilterPartnerId > 0}
+        total supplied: {$ns.total}<br>
+        total discounted amount: {$ns.total_discounted}<br>
+        debt: {$ns.debt}<br>
+    {/if}
 
     <div class="main-table">
         <table>
@@ -18,6 +23,7 @@
                 <th>Code</th>
                 <th>Balance</th>
                 <th>Discount</th>
+                <th>Dscounted Amount</th>
                 <th>Account</th>
                 <th>ExternalOrderIds</th>
                 <th>Attention</th>
@@ -36,6 +42,7 @@
                     <td class="table-cell f_editable_cell" data-field-name="code">{$row->getCode()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="amount">{$row->getAmount()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="discount_percent">{$row->getDiscountPercent()}</td>
+                    <td class="table-cell">{$row->getAmountDiscounted()}</td>
                     <td class="f_selectable_cell" data-value="{$row->getAccountName()}" data-template-select-id="account_name_list" data-field-name="account_name"> {$row->getAccountName()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="external_order_ids">{$row->getExternalOrderIds()}</td>
                     <td class="icon-cell">

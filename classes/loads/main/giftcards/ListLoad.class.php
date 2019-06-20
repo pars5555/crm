@@ -28,8 +28,18 @@ namespace crm\loads\main\giftcards {
             $limit = 100;
             list($offset, $searchText, $partnerId) = self::initFilters($limit, $load);
             $where = ['1', '=', 1];
+            $dollarDebt = 0;
             if ($partnerId > 0) {
                 $where = ['partner_id', '=', $partnerId, 'or', 'partner_id', '=', 0, 'or', 'partner_id', 'IS NULL'];
+                $debt = PartnerManager::getInstance()->calculatePartnerDebtBySalePurchaseAndPaymentTransations($partnerId);
+                if (isset($debt[1])) {
+                    $dollarDebt = floatval($debt[1]);
+                }
+                list($total, $totalDiscounted) = GiftCardsManager::getInstance()->getPartnerTotalGiftCardsSum($partnerId);
+                $load->addParam('total', $total);
+                $load->addParam('total_discounted', $totalDiscounted);
+                
+                $load->addParam('debt', $dollarDebt - $totalDiscounted);
             }
             if (!empty($searchText)) {
                 $words = $parts = preg_split('/\s+/', $searchText);
@@ -40,11 +50,6 @@ namespace crm\loads\main\giftcards {
                 }
             }
 
-            $debt = PartnerManager::getInstance()->calculatePartnerDebtBySalePurchaseAndPaymentTransations($partnerId);
-            $dollarDebt = 0;
-            if (isset($debt[1])) {
-                $dollarDebt = floatval($debt[1]);
-            }
             $rows = GiftCardsManager::getInstance()->selectAdvance('*', $where, 'id', 'desc', $offset, $limit);
             $count = GiftCardsManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($rows) === 0) {
@@ -56,7 +61,11 @@ namespace crm\loads\main\giftcards {
 
             $load->addParam('pagesCount', $pagesCount);
             $load->addParam('rows', $rows);
-            $load->addParam('debt', $dollarDebt);
+
+
+
+
+            
 
 
             $externalOrderIdsArray = [];

@@ -41,6 +41,15 @@ namespace crm\dal\mappers {
         public function getTableName() {
             return $this->tableName;
         }
+        
+         public function getPartnerTotalGiftCardsSum($partnerId) {
+            $sql = "SELECT SUM(amount) as `total`, SUM(amount_discounted) AS `total_discounted` FROM `%s`"
+                    . "WHERE `partner_id` = :partner_id";
+            $sqlQuery = sprintf($sql, $this->getTableName());
+            $row = $this->fetchRow($sqlQuery, ['partner_id' => $partnerId]);
+            return [$row->total, $row->total_discounted];
+        }
+
 
     }
 

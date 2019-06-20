@@ -37,8 +37,53 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function getDeliveredOrdersTotal() {
-            return $this->mapper->getDeliveredOrdersTotal();
+        public function getDeliveredOrdersTotal($monthsCount = 0) {
+            $date = null;
+            if ($monthsCount > 0) {
+                $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
+            }
+            return $this->mapper->getDeliveredOrdersTotal($date);
+        }
+
+        
+        public function getConfirmedTransactionsTotalByTransactionNames($merchartNammes = [], $monthsCount = null) {
+            $date = null;
+            if ($monthsCount > 0) {
+                $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
+            }
+            $where = ['1', '=', '1', 'AND', '('];
+            foreach ($merchartNammes as $word) {
+                $where = array_merge($where, ['transaction_history', 'like', "'%$word%'", 'OR']);
+            }
+            $where = array_slice($where, 0, -1);
+            $where[]= ')';            
+            if (!empty($date)) {
+                $where = array_merge($where, ['AND', 'created_at', '>=', "'$date'"]);
+            }
+            $rows = $this->selectAdvance('*', $where);
+            $totalConfirmed = 0;
+            $totalPending = 0;
+            foreach ($rows as $row) {
+                $totalConfirmed +=$row->getNotPendingAmountByMerchantName($merchartNammes);
+                $totalPending +=$row->getPendingAmountByMerchantName($merchartNammes);
+            }
+            return [$totalConfirmed, $totalPending];
+        }
+
+        public function getPendingOrdersTotal($monthsCount = 0) {
+            $date = null;
+            if ($monthsCount > 0) {
+                $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
+            }
+            return $this->mapper->getPendingOrdersTotal($date);
+        }
+
+        public function getTotalInitialBalanceExcludeSaleToOthers($monthsCount = 0) {
+            $date = null;
+            if ($monthsCount > 0) {
+                $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
+            }
+            return $this->mapper->getTotalInitialBalanceExcludeSaleToOthers($date);
         }
 
         public function getTotalBalance($ignoreLessThan = 10) {
@@ -48,8 +93,7 @@ namespace crm\managers {
         public function isBotWorking() {
             $twoMinuteAgo = date('Y-m-d H:i:s', strtotime("-2 minutes"));
             $rows = $this->selectAdvance('updated_at', [], 'updated_at', 'desc', 0, 1);
-            if (empty($rows ))
-            {
+            if (empty($rows)) {
                 return true;
             }
             $row = $rows[0];

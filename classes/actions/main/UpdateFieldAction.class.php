@@ -106,6 +106,13 @@ use NGS;
             if ($objectType === 'giftcards' && $fieldName === 'discount_percent') {
                 $fieldValue = min(100, intval($fieldValue));
                 $fieldValue = max(0, intval($fieldValue));
+                $row = $manager->selectByPk($id);
+                $manager->updateField($id, 'amount_discounted', intval($fieldValue) * floatval($row->getAmount()) / 100);
+            }
+            if ($objectType === 'giftcards' && $fieldName === 'amount') {
+                $row = $manager->selectByPk($id);
+                $manager->updateField($id, 'amount_discounted', intval($fieldValue) * intval($row->getDiscountPercent()) / 100);
+                
             }
             if ($objectType === 'vanilla' && $fieldName === 'number') {
                 $row = $manager->selectByField('number', $fieldValue);

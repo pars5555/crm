@@ -33,12 +33,14 @@ namespace crm\dal\dto {
             "month" => "month",
             "year" => "year",
             "cvv" => "cvv",
+            "partner_id" => "partnerId",
             "initial_balance" => "initialBalance",
             "balance" => "balance",
             "external_orders_ids" => "external_orders_ids",
             "attention" => "attention",
             "sold_amount" => "soldAmount",
             "note" => "note",
+            "bonus_supplied" => "bonusSupplied",
             "transaction_history" => "transactionHistory",
             "closed" => "closed",
             "invalid" => "invalid",
@@ -70,6 +72,52 @@ namespace crm\dal\dto {
             $this->succeed_order_amounts[] = $orderAmount;
         }
 
+        public function getPendingAmountByMerchantName($merchantNames = []) {
+            if (empty($merchantNames)) {
+                return 0;
+            }
+            $total = 0;
+            $ths = explode("\r\n", $this->transaction_history);
+            if (count($ths) > 2) {
+                $ths = array_slice($ths, 1, -1);
+                foreach (array_reverse($ths) as &$th) {
+                    //12:08 PM WINN-DIXIE #03 7024 BER - $12.84 
+                    $_th = substr($th, 9);
+                    //WINN-DIXIE #03 7024 BER - $12.84 
+                    if (strpos($_th, 'Pending') !== false && self::strposa($_th, $merchantNames)) {
+                        $parts = explode('-', $_th);
+                        $amount = trim(trim($parts[count($parts) - 1]), '$');
+                        $total += $amount;
+                    }
+                }
+                return $total;
+            }
+            return $total;
+        }
+        
+        public function getNotPendingAmountByMerchantName($merchantNames = []) {
+            if (empty($merchantNames)) {
+                return 0;
+            }
+            $total = 0;
+            $ths = explode("\r\n", $this->transaction_history);
+            if (count($ths) > 2) {
+                $ths = array_slice($ths, 1, -1);
+                foreach (array_reverse($ths) as &$th) {
+                    //12:08 PM WINN-DIXIE #03 7024 BER - $12.84 
+                    $_th = substr($th, 9);
+                    //WINN-DIXIE #03 7024 BER - $12.84 
+                    if (strpos($_th, 'Pending') === false && self::strposa($_th, $merchantNames)) {
+                        $parts = explode('-', $_th);
+                        $amount = trim(trim($parts[count($parts) - 1]), '$');
+                        $total += $amount;
+                    }
+                }
+                return $total;
+            }
+            return $total;
+        }
+
         public function calcPendingAmounts() {
             //$0.00
             $ths = explode("\r\n", $this->transaction_history);
@@ -83,7 +131,7 @@ namespace crm\dal\dto {
                     $parts = explode('-', $_th);
                     $amount = trim(trim($parts[count($parts) - 1]), '$');
                     //12.84 
-                    if (strpos($_th, 'Pending')) {
+                    if (strpos($_th, 'Pending') !== false) {
                         $pendingAmounts[] = $amount;
                     }
                 }
@@ -125,6 +173,18 @@ namespace crm\dal\dto {
 
         public function getSucceedAmountsText() {
             return implode(' ; ', $this->succeed_order_amounts);
+        }
+
+        private static function strposa($haystack, $needles = array(), $offset = 0) {
+            $chr = array();
+            foreach ($needles as $needle) {
+                $res = strpos($haystack, $needle, $offset);
+                if ($res !== false)
+                    $chr[$needle] = $res;
+            }
+            if (empty($chr))
+                return false;
+            return min($chr);
         }
 
     }

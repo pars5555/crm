@@ -25,7 +25,7 @@ namespace crm\loads\main\vanilla {
 
         public static function initLoad($load) {
             $limit = 100;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $balance, $searchText, $selectedFilterShowDeleted) = self::initFilters($limit, $load);
+            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $balance, $searchText, $selectedFilterShowDeleted, $selectedFilterCalculationMonths) = self::initFilters($limit, $load);
             $where = ['1', '=', '1'];
             if ($selectedFilterShowDeleted === 'no') {
                 $where = array_merge($where, ['AND', 'deleted', '=', '0', 'AND', 'closed', '=', '0']);
@@ -50,7 +50,10 @@ namespace crm\loads\main\vanilla {
             if (isset($debt[1])) {
                 $dollarDebt = floatval($debt[1]);
             }
-            $totalSuccess = VanillaCardsManager::getInstance()->getDeliveredOrdersTotal();
+            $totalSuccess = VanillaCardsManager::getInstance()->getDeliveredOrdersTotal($selectedFilterCalculationMonths);
+            $totalPending = VanillaCardsManager::getInstance()->getPendingOrdersTotal($selectedFilterCalculationMonths);
+            $totalSuppliedBalance = VanillaCardsManager::getInstance()->getTotalInitialBalanceExcludeSaleToOthers($selectedFilterCalculationMonths);
+            list($totalConfirmedClothing, $totalPendingClothing) = VanillaCardsManager::getInstance()->getConfirmedTransactionsTotalByTransactionNames(['Zara.com','OLD NAVY','carters', 'THECHILDRENSPLACE'], $selectedFilterCalculationMonths);
             $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $count = VanillaCardsManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($rows) === 0) {
@@ -62,6 +65,7 @@ namespace crm\loads\main\vanilla {
             $load->addParam('pagesCount', $pagesCount);
             $load->addParam('rows', $rows);
             $load->addParam('totalSuccess', $totalSuccess);
+            $load->addParam('totalPending', $totalPending);
             $load->addParam('debt', $dollarDebt);
 
             $externalOrderIdsArray = [];
@@ -76,6 +80,9 @@ namespace crm\loads\main\vanilla {
             self::addOrdersInfoToRows($rows, $exOrdersMappedById);
             $totalBalance = VanillaCardsManager::getInstance()->getTotalBalance(10);
             $load->addParam('total_balance', $totalBalance);
+            $load->addParam('total_supplied', $totalSuppliedBalance);
+            $load->addParam('totalConfirmedClothing', $totalConfirmedClothing);
+            $load->addParam('totalPendingClothing', $totalPendingClothing);
         }
 
         private static function initFilters($limit, $load) {
@@ -130,10 +137,11 @@ namespace crm\loads\main\vanilla {
             }
             $load->addParam('searchText', $searchText);
             $load->addParam('selectedFilterShowDeleted', $selectedFilterShowDeleted);
+            $load->addParam('selectedFilterCalculationMonths', $selectedFilterCalculationMonths);
             $load->addParam('minBalance', $minBalance);
             $load->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $load->addParam('selectedFilterSortBy', $selectedFilterSortBy);
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $minBalance, $searchText, $selectedFilterShowDeleted];
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $minBalance, $searchText, $selectedFilterShowDeleted, $selectedFilterCalculationMonths];
         }
 
         public function getTemplate() {
