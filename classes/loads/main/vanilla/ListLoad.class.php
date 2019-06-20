@@ -50,7 +50,7 @@ namespace crm\loads\main\vanilla {
             if (isset($debt[1])) {
                 $dollarDebt = floatval($debt[1]);
             }
-            $totalSuccess = VanillaCardsManager::getInstance()->getAllDeliveredTotal();
+            $totalSuccess = VanillaCardsManager::getInstance()->getDeliveredOrdersTotal();
             $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $count = VanillaCardsManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($rows) === 0) {
@@ -106,8 +106,13 @@ namespace crm\loads\main\vanilla {
                     $selectedFilterSortByAscDesc = strtoupper(NGS()->args()->ascdesc);
                 }
             }
-
-
+            
+            $selectedFilterCalculationMonths = 1;
+            if (isset(NGS()->args()->cms)) {
+                if (in_array(strtoupper(NGS()->args()->cms), ['0', '1','2', '3','4'])) {
+                    $selectedFilterCalculationMonths = strtoupper(NGS()->args()->cms);
+                }
+            }
 
             $minBalance = 0;
             if (isset(NGS()->args()->bal)) {

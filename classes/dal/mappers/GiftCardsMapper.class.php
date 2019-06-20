@@ -42,16 +42,6 @@ namespace crm\dal\mappers {
             return $this->tableName;
         }
 
-        public function getAllDeliveredTotal() {
-            $sql = "SELECT SUM(amazon_total) as total FROM `%s` "
-                    . "INNER JOIN purse_orders ON "
-                    . "FIND_IN_SET(`purse_orders`.id , vanilla_cards.`external_orders_ids`) "
-                    . "WHERE status='delivered'";
-            $sqlQuery = sprintf($sql, $this->getTableName());
-            $total = $this->fetchField($sqlQuery, 'total');
-            return floatval($total);
-        }
-
     }
 
 }

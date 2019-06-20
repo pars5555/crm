@@ -37,8 +37,8 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function getAllDeliveredTotal() {
-            return $this->mapper->getAllDeliveredTotal();
+        public function getDeliveredOrdersTotal() {
+            return $this->mapper->getDeliveredOrdersTotal();
         }
 
         public function getTotalBalance($ignoreLessThan = 10) {

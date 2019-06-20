@@ -34,6 +34,16 @@
                 <option value="yes" {if $ns.selectedFilterShowDeleted == 'yes'}selected{/if}>All</option>
             </select>
         </div>
+        <div class="filter">
+            <label>Calculation Period</label>
+            <select name="cms">
+                <option value="0" {if $ns.selectedFilterCalculationMonths == '0'}selected{/if}>All time</option>
+                <option value="1" {if $ns.selectedFilterCalculationMonths == '1'}selected{/if}>1</option>
+                <option value="2" {if $ns.selectedFilterCalculationMonths == '2'}selected{/if}>2</option>
+                <option value="3" {if $ns.selectedFilterCalculationMonths == '3'}selected{/if}>3</option>
+                <option value="4" {if $ns.selectedFilterCalculationMonths == '4'}selected{/if}>4</option>
+            </select>
+        </div>
         <button type="submit" style="visibility: hidden">search</button>
     </div>
 
