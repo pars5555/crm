@@ -30,7 +30,7 @@ namespace crm\dal\dto {
             "carrier_delivery_date" => "carrierDeliveryDate",
             "unit_address" => "unitAddress",
             "carrier_tracking_status" => "carrierTrackingStatus",
-            "carrier_delivery_date" => "setCarrierDeliveryDate",
+            "carrier_delivery_date" => "carrierDeliveryDate",
             "carrier_tracking_history" => "carrierTrackingHistory",
             "carrier_shipment_facts" => "carrierShipmentFacts",
             'tracking_number_checked_at' => 'trackingNumberCheckedAt',
