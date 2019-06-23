@@ -26,8 +26,15 @@ namespace crm\dal\dto {
         private $checkoutObjectData = null;
         // Map of DB value to Field value
         private $mapArray = array("id" => "id", "order_number" => "orderNumber", "amazon_order_number" => "amazonOrderNumber",
-            "delivery_date" => "deliveryDate", "carrier_delivery_date" => "carrierDeliveryDate", "unit_address" => "unitAddress",
-            "carrier_tracking_status" => "carrierTrackingStatus", "tracking_number" => "trackingNumber", "supposed_purchase_price" => "supposedPurchasePrice",
+            "delivery_date" => "deliveryDate",
+            "carrier_delivery_date" => "carrierDeliveryDate",
+            "unit_address" => "unitAddress",
+            "carrier_tracking_status" => "carrierTrackingStatus",
+            "carrier_delivery_date" => "setCarrierDeliveryDate",
+            "carrier_tracking_history" => "carrierTrackingHistory",
+            "carrier_shipment_facts" => "carrierShipmentFacts",
+            'tracking_number_checked_at' => 'trackingNumberCheckedAt',
+            "tracking_number" => "trackingNumber", "supposed_purchase_price" => "supposedPurchasePrice",
             "amazon_total" => "amazonTotal", "buyer_name" => "buyerName", "problematic" => "problematic", "hidden" => "hidden",
             "amazon_primary_status_text" => 'amazonPrimaryStatusText', 'problem_solved' => 'problemSolved', 'shipping_type' => 'shipping_type',
             "discount" => "discount", "serial_number" => "serial_number", "btc_rate" => "btcRate", "recipient_name" => "recipientName", "product_name" => "productName",
@@ -41,8 +48,7 @@ namespace crm\dal\dto {
             'checkout_order_status' => 'checkoutOrderStatus',
             'checkout_order_metadata' => 'checkoutOrderMetadata',
             'external_merchant_name' => 'externalMerchantName',
-            'external_product_number' => 'externalProductNumber',
-            'tracking_number_checked_at' => 'trackingNumberCheckedAt'
+            'external_product_number' => 'externalProductNumber'
         );
 
         // returns map array
@@ -60,15 +66,15 @@ namespace crm\dal\dto {
 
         public function getLocalCarrierName() {
             $carrierFirst2Letter = substr(strtolower($this->getUnitAddress()), 0, 2);
-                if ($carrierFirst2Letter == 'nv') {
-                    return "nova";
-                }
-                if ($carrierFirst2Letter == 'ar') {
-                    return "onex";
-                }
-                return "globbing";
+            if ($carrierFirst2Letter == 'nv') {
+                return "nova";
+            }
+            if ($carrierFirst2Letter == 'ar') {
+                return "onex";
+            }
+            return "globbing";
         }
-        
+
         public function getCarrierTrackingUrl() {
             $trackingNumber = $this->getTrackingNumber();
             if (strpos(strtolower($this->getShippingCarrier()), 'usps') !== false) {
@@ -116,8 +122,7 @@ namespace crm\dal\dto {
             }
             $perpetyList = explode('->', $propertyName);
             foreach ($perpetyList as $pName) {
-                if (!isset($checkoutOrderObject->$pName))
-                {
+                if (!isset($checkoutOrderObject->$pName)) {
                     return $defaultValue;
                 }
                 $checkoutOrderObject = $checkoutOrderObject->$pName;

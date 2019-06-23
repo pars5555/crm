@@ -68,14 +68,22 @@ namespace crm\managers {
             return 0;
         }
 
-        public function setFedexTrackingStatus($tracking_number, $primary_status, $error ,$primary_status_date, $travel_history, $shipment_facts) {
+        public function setFedexTrackingStatus($tracking_number, $primary_status, $error, $primary_status_date, $travel_history, $shipment_facts) {
             $row = $this->selectByField('tracking_number', $tracking_number);
-            if ($row){
-                $row ->set;
-                
+            if ($row) {
+                $row->setCarrierTrackingStatus($primary_status);
+                $row->setCarrierDeliveryDate($primary_status_date);
+                $row->setCarrierTrackingHistory(json_encode($travel_history));
+                $row->setCarrierShipmentFacts(json_encode($shipment_facts));
+                $row->setTrackingNumberCheckedAt(date('Y-m-d H:i:s'));
+                $row->set(json_encode($shipment_facts));
+                if ($error == 1) {
+                    $row->setProblematic(1);
+                }
+                $this->updateByPk($dto);
             }
         }
-        
+
         public function getFedexTrackingsToCheck() {
             $rows = $this->selectAdvance('*', ['hidden', '=', 0, 'AND',
                 'status', 'not in', "('delivered')", 'AND',
