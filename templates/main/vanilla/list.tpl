@@ -13,6 +13,7 @@
     total success: ${$ns.totalSuccess|number_format:2:",":"."}<br>    
     total confirmed clothing: ${$ns.totalConfirmedClothing|number_format:2:",":"."}<br>    
     total pending clothing: ${$ns.totalPendingClothing|number_format:2:",":"."}<br>    
+    total canclled orders that card is still open and pending amount: ${$ns.totalCanclledOrdersPendingBalance|number_format:2:",":"."}<br>    
     pending orders total amount : ${$ns.totalPending|number_format:2:",":"."}<br>    
     total_supplied: ${$ns.total_supplied|number_format:2:",":"."}<br>    
     total available gift cards balance ($10 and less ignores): <span style="font-size: 16px; font-weight: 800">{$ns.total_balance}</span>

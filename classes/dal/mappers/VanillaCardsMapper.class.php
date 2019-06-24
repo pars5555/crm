@@ -54,6 +54,19 @@ namespace crm\dal\mappers {
             return round(floatval($row->initial_balance_total - $row->sold_amount_total), 2);
         }
 
+        public function getTotalCanclledOrdersPendingBalance($datetime = null) {
+            $sql = "SELECT SUM(amazon_total) as total FROM `%s` "
+                    . "INNER JOIN purse_orders ON "
+                    . "FIND_IN_SET(`purse_orders`.id , vanilla_cards.`external_orders_ids`) "
+                    . "WHERE status='cancled' AND vanilla_cards.closed=0 and vanilla_cards.invalid=0 and vanilla_cards.deleted=0";
+            if (!empty($datetime)) {
+                $sql .= " AND vanilla_cards.`created_at` >= '" . $datetime . "'";
+            }
+            $sqlQuery = sprintf($sql, $this->getTableName());
+            $total = $this->fetchField($sqlQuery, 'total');
+            return floatval($total);
+        }
+        
         public function getTotalBalance($ignoreLessThan = 0) {
             $sql = "SELECT SUM(balance) as total FROM `%s` "
                     . "WHERE `balance` > %s and closed=0 and invalid=0 and deleted=0";

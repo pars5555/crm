@@ -45,8 +45,15 @@ namespace crm\managers {
             return $this->mapper->getDeliveredOrdersTotal($date);
         }
 
-        
-        public function getConfirmedTransactionsTotalByTransactionNames($merchartNammes = [], $monthsCount = null) {
+        public function getTotalCanclledOrdersPendingBalance($monthsCount = null) {
+            $date = null;
+            if ($monthsCount > 0) {
+                $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
+            }
+            return $this->mapper->getTotalCanclledOrdersPendingBalance($date);
+        }
+
+        public function getConfirmedAndPendigTransactionsTotalByTransactionNames($merchartNammes = [], $monthsCount = null) {
             $date = null;
             if ($monthsCount > 0) {
                 $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
@@ -56,7 +63,7 @@ namespace crm\managers {
                 $where = array_merge($where, ['transaction_history', 'like', "'%$word%'", 'OR']);
             }
             $where = array_slice($where, 0, -1);
-            $where[]= ')';            
+            $where[] = ')';
             if (!empty($date)) {
                 $where = array_merge($where, ['AND', 'created_at', '>=', "'$date'"]);
             }
@@ -64,8 +71,8 @@ namespace crm\managers {
             $totalConfirmed = 0;
             $totalPending = 0;
             foreach ($rows as $row) {
-                $totalConfirmed +=$row->getNotPendingAmountByMerchantName($merchartNammes);
-                $totalPending +=$row->getPendingAmountByMerchantName($merchartNammes);
+                $totalConfirmed += $row->getNotPendingAmountByMerchantName($merchartNammes);
+                $totalPending += $row->getPendingAmountByMerchantName($merchartNammes);
             }
             return [$totalConfirmed, $totalPending];
         }

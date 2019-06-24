@@ -53,7 +53,9 @@ namespace crm\loads\main\vanilla {
             $totalSuccess = VanillaCardsManager::getInstance()->getDeliveredOrdersTotal($selectedFilterCalculationMonths);
             $totalPending = VanillaCardsManager::getInstance()->getPendingOrdersTotal($selectedFilterCalculationMonths);
             $totalSuppliedBalance = VanillaCardsManager::getInstance()->getTotalInitialBalanceExcludeSaleToOthers($selectedFilterCalculationMonths);
-            list($totalConfirmedClothing, $totalPendingClothing) = VanillaCardsManager::getInstance()->getConfirmedTransactionsTotalByTransactionNames(['Zara.com','OLD NAVY','carters', 'THECHILDRENSPLACE'], $selectedFilterCalculationMonths);
+            list($totalConfirmedClothing, $totalPendingClothing) = VanillaCardsManager::getInstance()->getConfirmedAndPendigTransactionsTotalByTransactionNames(['Zara.com','OLD NAVY','carters', 'THECHILDRENSPLACE'], $selectedFilterCalculationMonths);
+            ['walmart','blinq','frys'];
+            $totalCanclledOrdersPendingBalance = VanillaCardsManager::getInstance()->getTotalCanclledOrdersPendingBalance($selectedFilterCalculationMonths);
             $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $count = VanillaCardsManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($rows) === 0) {
@@ -83,6 +85,7 @@ namespace crm\loads\main\vanilla {
             $load->addParam('total_supplied', $totalSuppliedBalance);
             $load->addParam('totalConfirmedClothing', $totalConfirmedClothing);
             $load->addParam('totalPendingClothing', $totalPendingClothing);
+            $load->addParam('totalCanclledOrdersPendingBalance', $totalCanclledOrdersPendingBalance);
         }
 
         private static function initFilters($limit, $load) {
