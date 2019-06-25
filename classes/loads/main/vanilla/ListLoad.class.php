@@ -52,8 +52,9 @@ namespace crm\loads\main\vanilla {
                     $where = array_merge($where, ['OR', 'month', 'like', "'%$word%'", ')']);
                 }
             }
-            $vanilla_suppliers_ids_comma_separated = SettingManager::getInstance()->getSetting('vanilla_suppliers_ids');
-            $load->addParam('partners', PartnerManager::getInstance()->selectAdvance('*', ['id','in', "($vanilla_suppliers_ids_comma_separated)"], ['name']));
+            $allChatIds = VanillaCardsManager::getInstance()->getAllChatIds();
+            $partners= PartnerManager::getInstance()->getPartnersByTelegramChatIds($allChatIds);
+            $load->addParam('partners', $partners);
 
             $dollarDebt = 0;
             if ($selectedFilterPartnerId > 0) {

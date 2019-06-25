@@ -53,6 +53,18 @@ namespace crm\managers {
             return $this->mapper->getTotalCanclledOrdersPendingBalance($date, $telegramChatIdsSql);
         }
 
+        public function getAllChatIds() {
+            $orders = $this->selectAdvance('*', [], null, null, null, null, false, "", 'GROUP BY telegram_chat_id');
+            $chatIds = [];
+            foreach ($orders as $order) {
+                $telegramChatId = trim($order->getTelegramChatId());
+                if (!empty($telegramChatId)) {
+                    $chatIds[] = $telegramChatId;
+                }
+            }
+            return $chatIds;
+        }
+
         public function getConfirmedAndPendigTransactionsTotalByTransactionNames($merchartNammes = [], $monthsCount = null, $telegramChatIdsSql = "") {
             $date = null;
             if ($monthsCount > 0) {

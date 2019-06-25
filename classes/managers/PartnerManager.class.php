@@ -43,6 +43,18 @@ namespace crm\managers {
             return null;
         }
 
+        public function getPartnersByTelegramChatIds($chatIdsArray) {
+            $partners = [];
+            foreach ($chatIdsArray as $chatId) {
+                $p = $this->selectAdvance('*',["FIND_IN_SET('$chatId', `telegram_chat_ids`)"]);
+                if (!empty($p)){
+                    $partners[$p[0]->getId()] = $p[0];
+                    
+                }
+            }
+            return $partners;
+        }
+        
         public function getTelegramChatIdsArray($id) {
             $partner = $this->selectByPk($id);
             $chatIds = trim($partner->getTelegramChatIds());
