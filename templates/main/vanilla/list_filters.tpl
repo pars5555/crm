@@ -18,7 +18,6 @@
             <label>Sort by </label>
             <select name="srt">
                 {foreach from=$ns.sortFields key=fieldName item=fieldDisplayName}
-                    {$fieldName}
                     <option value="{$fieldName}" {if $ns.selectedFilterSortBy === $fieldName}selected{/if}>{$fieldDisplayName}</option>
                 {/foreach}
             </select>
@@ -35,6 +34,15 @@
             </select>
         </div>
         <div class="filter">
+            <label>Partner</label>
+            <select name="prt">
+                <option value="0" {if $ns.selectedFilterPartnerId == '0'}selected{/if}>All</option>
+                {foreach from=$ns.partners item=partner}
+                    <option value="{$partner->getId()}" {if $ns.selectedFilterPartnerId == $partner->getId()}selected{/if}>{$partner->getName()}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="filter">
             <label>Calculation Period</label>
             <select name="cms">
                 <option value="0" {if $ns.selectedFilterCalculationMonths == '0'}selected{/if}>All time</option>
@@ -44,6 +52,7 @@
                 <option value="4" {if $ns.selectedFilterCalculationMonths == '4'}selected{/if}>4 Month</option>
             </select>
         </div>
+
         <button type="submit" style="visibility: hidden">search</button>
     </div>
 

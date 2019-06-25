@@ -44,17 +44,21 @@ namespace crm\dal\mappers {
 
         
 
-        public function getTotalInitialBalanceExcludeSaleToOthers($datetime = null) {
+        public function getTotalInitialBalanceExcludeSaleToOthers($datetime = null, $telegramChatIdsSql = "") {
             $sql = "SELECT SUM(initial_balance) as initial_balance_total, SUM(sold_amount) as sold_amount_total FROM `%s` WHERE bonus_supplied = 0 ";
+            
             if (!empty($datetime)) {
                 $sql .= " AND created_at >= '" . $datetime . "'";
+            }
+            if (!empty($telegramChatIdsSql)) {
+                $sql .= " AND telegram_chat_id in " . $telegramChatIdsSql. "";
             }
             $sqlQuery = sprintf($sql, $this->getTableName());
             $row = $this->fetchRow($sqlQuery);
             return round(floatval($row->initial_balance_total - $row->sold_amount_total), 2);
         }
 
-        public function getTotalCanclledOrdersPendingBalance($datetime = null) {
+        public function getTotalCanclledOrdersPendingBalance($datetime = null, $telegramChatIdsSql = "") {
             $sql = "SELECT SUM(amazon_total) as total FROM `%s` "
                     . "INNER JOIN purse_orders ON "
                     . "FIND_IN_SET(`purse_orders`.id , vanilla_cards.`external_orders_ids`) "
@@ -62,14 +66,20 @@ namespace crm\dal\mappers {
             if (!empty($datetime)) {
                 $sql .= " AND vanilla_cards.`created_at` >= '" . $datetime . "'";
             }
+            if (!empty($telegramChatIdsSql)) {
+                $sql .= " AND telegram_chat_id in " . $telegramChatIdsSql. "";
+            }
             $sqlQuery = sprintf($sql, $this->getTableName());
             $total = $this->fetchField($sqlQuery, 'total');
             return floatval($total);
         }
         
-        public function getTotalBalance($ignoreLessThan = 0) {
+        public function getTotalBalance($ignoreLessThan = 0, $telegramChatIdsSql = "") {
             $sql = "SELECT SUM(balance) as total FROM `%s` "
                     . "WHERE `balance` > %s and closed=0 and invalid=0 and deleted=0";
+            if (!empty($telegramChatIdsSql)) {
+                $sql .= " AND telegram_chat_id in " . $telegramChatIdsSql. "";
+            }
             $sqlQuery = sprintf($sql, $this->getTableName(), $ignoreLessThan);
             $total = $this->fetchField($sqlQuery, 'total');
 
@@ -82,7 +92,7 @@ namespace crm\dal\mappers {
             return floatval($total) - floatval($soldTotal);
         }
 
-        public function getDeliveredOrdersTotal($datetime = null) {
+        public function getDeliveredOrdersTotal($datetime = null, $telegramChatIdsSql = "") {
             $sql = "SELECT SUM(amazon_total) as total FROM `%s` "
                     . "INNER JOIN purse_orders ON "
                     . "FIND_IN_SET(`purse_orders`.id , vanilla_cards.`external_orders_ids`) "
@@ -90,18 +100,24 @@ namespace crm\dal\mappers {
             if (!empty($datetime)) {
                 $sql .= " AND vanilla_cards.`created_at` >= '" . $datetime . "'";
             }
+            if (!empty($telegramChatIdsSql)) {
+                $sql .= " AND telegram_chat_id in " . $telegramChatIdsSql. "";
+            }
             $sqlQuery = sprintf($sql, $this->getTableName());
             $total = $this->fetchField($sqlQuery, 'total');
             return floatval($total);
         }
 
-        public function getPendingOrdersTotal($datetime = null) {
+        public function getPendingOrdersTotal($datetime = null, $telegramChatIdsSql = "") {
             $sql = "SELECT SUM(amazon_total) as total FROM `%s` "
                     . "INNER JOIN purse_orders ON "
                     . "FIND_IN_SET(`purse_orders`.id , vanilla_cards.`external_orders_ids`) "
                     . "WHERE status='shipping'";
             if (!empty($datetime)) {
                 $sql .= " AND vanilla_cards.`created_at` >= '" . $datetime . "'";
+            }
+            if (!empty($telegramChatIdsSql)) {
+               $sql .= " AND telegram_chat_id in " . $telegramChatIdsSql. "";
             }
             $sqlQuery = sprintf($sql, $this->getTableName());
             $total = $this->fetchField($sqlQuery, 'total');

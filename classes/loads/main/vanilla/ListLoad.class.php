@@ -25,10 +25,18 @@ namespace crm\loads\main\vanilla {
 
         public static function initLoad($load) {
             $limit = 100;
-            list($offset, $sortByFieldName, $selectedFilterSortByAscDesc, $balance, $searchText, $selectedFilterShowDeleted, $selectedFilterCalculationMonths) = self::initFilters($limit, $load);
+            list($offset, $selectedFilterPartnerId, $sortByFieldName, $selectedFilterSortByAscDesc, $balance, $searchText, $selectedFilterShowDeleted, $selectedFilterCalculationMonths) = self::initFilters($limit, $load);
             $where = ['1', '=', '1'];
             if ($selectedFilterShowDeleted === 'no') {
                 $where = array_merge($where, ['AND', 'deleted', '=', '0', 'AND', 'closed', '=', '0']);
+            }
+            $telegramChatIdsSql = "";
+            if ($selectedFilterPartnerId > 0) {
+                $telegramChatIdsArray = PartnerManager::getInstance()->getTelegramChatIdsArray($selectedFilterPartnerId);
+                if (!empty($telegramChatIdsArray)) {
+                    $telegramChatIdsSql = "('" . implode("','", $telegramChatIdsArray) . "')";
+                    $where = array_merge($where, ['AND', 'telegram_chat_id', 'in', $telegramChatIdsSql]);
+                }
             }
             if ($balance > 0) {
                 $where = array_merge($where, ['AND', 'balance', '>=', $balance]);
@@ -44,18 +52,25 @@ namespace crm\loads\main\vanilla {
                     $where = array_merge($where, ['OR', 'month', 'like', "'%$word%'", ')']);
                 }
             }
-            $barney_partner_id = intval(SettingManager::getInstance()->getSetting('barney_partner_id'));
-            $debt = PartnerManager::getInstance()->calculatePartnerDebtBySalePurchaseAndPaymentTransations($barney_partner_id);
+            $vanilla_suppliers_ids_comma_separated = SettingManager::getInstance()->getSetting('vanilla_suppliers_ids');
+            $load->addParam('partners', PartnerManager::getInstance()->selectAdvance('*', ['id','in', "($vanilla_suppliers_ids_comma_separated)"], ['name']));
+
             $dollarDebt = 0;
-            if (isset($debt[1])) {
-                $dollarDebt = floatval($debt[1]);
+            if ($selectedFilterPartnerId > 0) {
+                $debt = PartnerManager::getInstance()->calculatePartnerDebtBySalePurchaseAndPaymentTransations($selectedFilterPartnerId);
+                $dollarDebt = 0;
+                if (isset($debt[1])) {
+                    $dollarDebt = floatval($debt[1]);
+                }
             }
-            $totalSuccess = VanillaCardsManager::getInstance()->getDeliveredOrdersTotal($selectedFilterCalculationMonths);
-            $totalPending = VanillaCardsManager::getInstance()->getPendingOrdersTotal($selectedFilterCalculationMonths);
-            $totalSuppliedBalance = VanillaCardsManager::getInstance()->getTotalInitialBalanceExcludeSaleToOthers($selectedFilterCalculationMonths);
-            list($totalConfirmedClothing, $totalPendingClothing) = VanillaCardsManager::getInstance()->getConfirmedAndPendigTransactionsTotalByTransactionNames(['Zara.com','OLD NAVY','carters', 'THECHILDRENSPLACE'], $selectedFilterCalculationMonths);
-            ['walmart','blinq','frys'];
-            $totalCanclledOrdersPendingBalance = VanillaCardsManager::getInstance()->getTotalCanclledOrdersPendingBalance($selectedFilterCalculationMonths);
+
+
+            $totalSuccess = VanillaCardsManager::getInstance()->getDeliveredOrdersTotal($selectedFilterCalculationMonths, $telegramChatIdsSql);
+            $totalPending = VanillaCardsManager::getInstance()->getPendingOrdersTotal($selectedFilterCalculationMonths, $telegramChatIdsSql);
+            $totalSuppliedBalance = VanillaCardsManager::getInstance()->getTotalInitialBalanceExcludeSaleToOthers($selectedFilterCalculationMonths, $telegramChatIdsSql);
+            list($totalConfirmedClothing, $totalPendingClothing) = VanillaCardsManager::getInstance()->getConfirmedAndPendigTransactionsTotalByTransactionNames(['Zara.com', 'OLD NAVY', 'carters', 'THECHILDRENSPLACE'], $selectedFilterCalculationMonths, $telegramChatIdsSql);
+            ['walmart', 'blinq', 'frys'];
+            $totalCanclledOrdersPendingBalance = VanillaCardsManager::getInstance()->getTotalCanclledOrdersPendingBalance($selectedFilterCalculationMonths, $telegramChatIdsSql);
             $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
             $count = VanillaCardsManager::getInstance()->getLastSelectAdvanceRowsCount();
             if (count($rows) === 0) {
@@ -80,7 +95,7 @@ namespace crm\loads\main\vanilla {
             $exOrdersMappedById = \crm\managers\PurseOrderManager::getInstance()->selectByPKs($externalOrderIdsArray, true);
 
             self::addOrdersInfoToRows($rows, $exOrdersMappedById);
-            $totalBalance = VanillaCardsManager::getInstance()->getTotalBalance(10);
+            $totalBalance = VanillaCardsManager::getInstance()->getTotalBalance(10, $telegramChatIdsSql);
             $load->addParam('total_balance', $totalBalance);
             $load->addParam('total_supplied', $totalSuppliedBalance);
             $load->addParam('totalConfirmedClothing', $totalConfirmedClothing);
@@ -116,10 +131,15 @@ namespace crm\loads\main\vanilla {
                     $selectedFilterSortByAscDesc = strtoupper(NGS()->args()->ascdesc);
                 }
             }
-            
+
+            $selectedFilterPartnerId = 0;
+            if (isset(NGS()->args()->prt)) {
+                $selectedFilterPartnerId = intval(NGS()->args()->prt);
+            }
+
             $selectedFilterCalculationMonths = 1;
             if (isset(NGS()->args()->cms)) {
-                if (in_array(strtoupper(NGS()->args()->cms), ['0', '1','2', '3','4'])) {
+                if (in_array(strtoupper(NGS()->args()->cms), ['0', '1', '2', '3', '4'])) {
                     $selectedFilterCalculationMonths = strtoupper(NGS()->args()->cms);
                 }
             }
@@ -142,9 +162,10 @@ namespace crm\loads\main\vanilla {
             $load->addParam('selectedFilterShowDeleted', $selectedFilterShowDeleted);
             $load->addParam('selectedFilterCalculationMonths', $selectedFilterCalculationMonths);
             $load->addParam('minBalance', $minBalance);
+            $load->addParam('selectedFilterPartnerId', $selectedFilterPartnerId);
             $load->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $load->addParam('selectedFilterSortBy', $selectedFilterSortBy);
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $minBalance, $searchText, $selectedFilterShowDeleted, $selectedFilterCalculationMonths];
+            return [$offset, $selectedFilterPartnerId, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $minBalance, $searchText, $selectedFilterShowDeleted, $selectedFilterCalculationMonths];
         }
 
         public function getTemplate() {

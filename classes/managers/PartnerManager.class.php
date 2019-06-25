@@ -43,6 +43,15 @@ namespace crm\managers {
             return null;
         }
 
+        public function getTelegramChatIdsArray($id) {
+            $partner = $this->selectByPk($id);
+            $chatIds = trim($partner->getTelegramChatIds());
+            if (!empty($chatIds)) {
+                return array_map('trim',explode(',', $chatIds));
+            }
+            return false;
+        }
+
         public function setPartnerIncludedInCapital($id, $hidden) {
             $this->mapper->updateField($id, 'included_in_capital', $hidden);
         }
@@ -102,13 +111,14 @@ namespace crm\managers {
             return $this->insertDto($dto);
         }
 
-        public function updatePartner($id, $name, $email, $address, $phone, $initialDebts) {
+        public function updatePartner($id, $name, $email, $address, $phone, $initialDebts, $telegram_chat_ids) {
             $dto = $this->selectByPk($id);
             if (isset($dto)) {
                 $dto->setName($name);
                 $dto->setEmail($email);
                 $dto->setAddress($address);
                 $dto->setPhone($phone);
+                $dto->setTelegramChatIds($telegram_chat_ids);
                 $dto->setCreateDate(date('Y-m-d H:i:s'));
                 $ret = $this->updateByPk($dto);
                 PartnerInitialDebtManager::getInstance()->deleteByField('partner_id', $id);

@@ -27,6 +27,10 @@
                 <input class="text" type="text" name="phone" value="{$ns.req.phone|default:''}"/>
             </div>
             <div class="form-group">
+                <label class="label">Telegram Chat Ids (comma separated eg. 2345234,65754,2346)</label>
+                <input class="text" type="text" name="telegram_chat_ids" value="{$ns.req.telegram_chat_ids|default:''}"/>
+            </div>
+            <div class="form-group">
                 <label class="label">Initial Debt</label>
                 <div id="initialDebtContainer">
                     {foreach from=$ns.partner->getPartnerInitialDebtDtos() item=initialDebtDto}

@@ -33,6 +33,7 @@ namespace crm\loads\main\partner {
                         'email' => $partner->getEmail(),
                         'address' => $partner->getAddress(),
                         'phone' => $partner->getPhone(),
+                        'telegram_chat_ids' => $partner->getTelegramChatIds(),
                         'initial_debt' => $partner->getPartnerInitialDebtDtos()
                     ];
                 }

@@ -37,23 +37,23 @@ namespace crm\managers {
             return self::$instance;
         }
 
-        public function getDeliveredOrdersTotal($monthsCount = 0) {
+        public function getDeliveredOrdersTotal($monthsCount = 0, $telegramChatIdsSql = "") {
             $date = null;
             if ($monthsCount > 0) {
                 $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
             }
-            return $this->mapper->getDeliveredOrdersTotal($date);
+            return $this->mapper->getDeliveredOrdersTotal($date, $telegramChatIdsSql);
         }
 
-        public function getTotalCanclledOrdersPendingBalance($monthsCount = null) {
+        public function getTotalCanclledOrdersPendingBalance($monthsCount = null, $telegramChatIdsSql = "") {
             $date = null;
             if ($monthsCount > 0) {
                 $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
             }
-            return $this->mapper->getTotalCanclledOrdersPendingBalance($date);
+            return $this->mapper->getTotalCanclledOrdersPendingBalance($date, $telegramChatIdsSql);
         }
 
-        public function getConfirmedAndPendigTransactionsTotalByTransactionNames($merchartNammes = [], $monthsCount = null) {
+        public function getConfirmedAndPendigTransactionsTotalByTransactionNames($merchartNammes = [], $monthsCount = null, $telegramChatIdsSql = "") {
             $date = null;
             if ($monthsCount > 0) {
                 $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
@@ -67,6 +67,9 @@ namespace crm\managers {
             if (!empty($date)) {
                 $where = array_merge($where, ['AND', 'created_at', '>=', "'$date'"]);
             }
+            if (!empty($telegramChatIdsSql)) {
+                $where = array_merge($where, ['AND', 'telegram_chat_id', 'in', $telegramChatIdsSql]);
+            }
             $rows = $this->selectAdvance('*', $where);
             $totalConfirmed = 0;
             $totalPending = 0;
@@ -77,24 +80,24 @@ namespace crm\managers {
             return [$totalConfirmed, $totalPending];
         }
 
-        public function getPendingOrdersTotal($monthsCount = 0) {
+        public function getPendingOrdersTotal($monthsCount = 0, $telegramChatIdsSql = "") {
             $date = null;
             if ($monthsCount > 0) {
                 $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
             }
-            return $this->mapper->getPendingOrdersTotal($date);
+            return $this->mapper->getPendingOrdersTotal($date, $telegramChatIdsSql);
         }
 
-        public function getTotalInitialBalanceExcludeSaleToOthers($monthsCount = 0) {
+        public function getTotalInitialBalanceExcludeSaleToOthers($monthsCount = 0, $telegramChatIdsSql = "") {
             $date = null;
             if ($monthsCount > 0) {
                 $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
             }
-            return $this->mapper->getTotalInitialBalanceExcludeSaleToOthers($date);
+            return $this->mapper->getTotalInitialBalanceExcludeSaleToOthers($date, $telegramChatIdsSql);
         }
 
-        public function getTotalBalance($ignoreLessThan = 10) {
-            return $this->mapper->getTotalBalance($ignoreLessThan);
+        public function getTotalBalance($ignoreLessThan = 10, $telegramChatIdsSql = "") {
+            return $this->mapper->getTotalBalance($ignoreLessThan, $telegramChatIdsSql);
         }
 
         public function isBotWorking() {

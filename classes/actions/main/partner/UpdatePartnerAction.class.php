@@ -23,13 +23,13 @@ namespace crm\actions\main\partner {
 
         public function service() {
             try {
-                list($id, $name, $email, $address, $phone, $initialDebts) = $this->getFormData();
+                list($id, $name, $email, $address, $phone, $initialDebts,$telegram_chat_ids) = $this->getFormData();
             } catch (RedirectException $exc) {
                 $_SESSION['error_message'] = $exc->getMessage();
                 $_SESSION['action_request'] = $_REQUEST;
                 $this->redirect($exc->getRedirectTo());
             }
-            PartnerManager::getInstance()->updatePartner($id, $name, $email, $address, $phone, $initialDebts);
+            PartnerManager::getInstance()->updatePartner($id, $name, $email, $address, $phone, $initialDebts, $telegram_chat_ids);
             unset($_SESSION['action_request']);
             $_SESSION['success_message'] = 'Partner Successfully updated!';
             $this->redirect('partner/' . $id);
@@ -41,6 +41,7 @@ namespace crm\actions\main\partner {
             $name = NGS()->args()->name;
             $email = NGS()->args()->email;
             $initialDebts = NGS()->args()->initialDebts;
+            $telegram_chat_ids = NGS()->args()->telegram_chat_ids;
             $initialDebtsDecoded = [];
             if (!empty($initialDebts)) {
                 foreach ($initialDebts as $initialDebtJson) {
@@ -56,7 +57,7 @@ namespace crm\actions\main\partner {
             if (isset(NGS()->args()->phone)) {
                 $phone = NGS()->args()->phone;
             }
-            return array($id, $name, $email, $address, $phone, $initialDebtsDecoded);
+            return array($id, $name, $email, $address, $phone, $initialDebtsDecoded, $telegram_chat_ids);
         }
 
         private function validateFormData() {
