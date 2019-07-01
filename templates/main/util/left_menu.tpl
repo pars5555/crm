@@ -30,6 +30,11 @@
                         {*                    <li><a {if $ns.loadName=='rorder'}class="active"{/if} href="{$SITE_PATH}/rorder/list?srt=order_date&ascdesc=DESC">Recipient Orders</a></li>*}
                     <li><a {if $ns.loadName=='purse'}class="active"{/if} href="{$SITE_PATH}/purse/list">BTC-Products</a></li>
                     {/if}
+                    {if $ns.user->getType() == 'level3' }
+                        <li><a {if $ns.loadName=='recipient'}class="active"{/if} href="{$SITE_PATH}/recipient/list">Recipients</a></li>
+                    {/if}
+                
+                
                     {if $ns.user->getType() == 'root' || $ns.user->getType() == 'vanillaupdater'}
                     <li><a {if $ns.loadName=='vanilla'}class="active"{/if} href="{$SITE_PATH}/vanilla/list">Vanilla</a></li>
                     <li><a {if $ns.loadName=='giftcards'}class="active"{/if} href="{$SITE_PATH}/giftcards/list">Gift Cards</a></li>

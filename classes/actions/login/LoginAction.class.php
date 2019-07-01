@@ -19,6 +19,9 @@ namespace crm\actions\login {
             if ($adminDto->getType() == 'checkout') {
                 $this->redirect('checkout/list');
             }
+            if ($adminDto->getType() == 'level3') {
+                $this->redirect('recipient/list');
+            }
             if ($adminDto->getType() == 'vanillaupdater') {
                 $this->redirect('vanilla/list');
             }

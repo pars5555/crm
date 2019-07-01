@@ -77,7 +77,7 @@ namespace crm\dal\mappers {
         public function getByUsernamePassword($username, $password) {
             $sqlQuery = sprintf("SELECT * from `%s` WHERE `username` = :username AND `password` = :password", $this->getTableName());
             $result = $this->fetchRow($sqlQuery, array("username" => $username, "password" => $password));
-            if (count($result) === 1) {
+            if (!empty($result)) {
                 return $result;
             }
             return null;
