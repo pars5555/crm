@@ -18,7 +18,11 @@
                 <th>Last Name</th>
                 <th>Email</th>
                     {*                <th>Tel.</th>*}
-                <th>Ex Unit</th>
+                <th>Ex Unit Glob</th>
+                <th>Ex Unit Onex</th>
+                <th>Ex Unit Nova</th>
+                <th>Ex Unit Shipex</th>
+                <th>Ex Unit Cheapex</th>
                     {if $ns.selectedFilterShowStandardUnits == 'yes'}
                     <th>St Unit</th>
                     {/if}
@@ -46,13 +50,17 @@
                     </td>
                     <td>{$recipient->getFirstName()}</td>
                     <td>{$recipient->getLastName()}</td>
-                    <td>{$recipient->getEmail()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="email">{$recipient->getEmail()}</td>
                     {*                    <td style="white-space: nowrap"> {$recipient->getPhoneNumber()|replace:',':'</br>'} </td>*}
-                    <td>{$recipient->getExpressUnitAddress()} {$recipient->getOnexExpressUnit()} {$recipient->getNovaExpressUnit()} {$recipient->getShipexExpressUnit()} {$recipient->getCheapexExpressUnit()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="express_unit_address">{$recipient->getExpressUnitAddress()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="onex_express_unit">{$recipient->getOnexExpressUnit()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="nova_express_unit">{$recipient->getNovaExpressUnit()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="shipex_express_unit">{$recipient->getShipexExpressUnit()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="cheapex_express_unit">{$recipient->getCheapexExpressUnit()}</td>
                     {if $ns.selectedFilterShowStandardUnits == 'yes'}
                         <td>{$recipient->getStandardUnitAddress()} {$recipient->getOnexStandardUnit()} {$recipient->getNovaStandardUnit()} {$recipient->getShipexStandardUnit()} {$recipient->getCheapexStandardUnit()}</td>
                     {/if}
-                    <td>{$recipient->getDocumentNumber()}</td>
+                    <td class="f_editable_cell" data-field-name="document_number">{$recipient->getDocumentNumber()}</td>
                     {*                    <td>{$recipient->getDocumentType()}</td>*}
                     <td class="f_editable_cell" data-field-name="ssid">{$recipient->getSsid()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="note">{$recipient->getNote()}</td>
