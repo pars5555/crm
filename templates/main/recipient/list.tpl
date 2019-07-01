@@ -95,12 +95,16 @@
                         </a>
                     </td>
                     <td class="icon-cell">
+                         {if $ns.user->getType() == 'root' }
                         <input class="f_checked_checkbox" data-recipient_id="{$recipient->getId()}" type="checkbox"
                                value="1" {if $recipient->getChecked() ==1}checked{/if}/>
+                        {/if}
                     </td>
                     <td class="icon-cell">
+                         {if $ns.user->getType() == 'root' }
                         <input class="f_deleted_checkbox" data-recipient_id="{$recipient->getId()}" type="checkbox"
                                value="1" {if $recipient->getDeleted() ==1}checked{/if}/>
+                        {/if}
                     </td>
                 </tr>
             {/foreach}

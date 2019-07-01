@@ -132,6 +132,14 @@ namespace crm\managers {
             $dto->setIsExpense($isExpense);
             $dto->setPaid($paid);
             $dto->setSignature($signature);
+            
+            $paymentTransactionManager = PaymentTransactionManager::getInstance();
+            $usdCashbox = -$paymentTransactionManager->getNonCancelledPaymentOrdersByCurrency($date, 1);
+            $amdCashbox = -$paymentTransactionManager->getNonCancelledPaymentOrdersByCurrency($date, 2);
+            $cb = new \stdClass();
+            $cb->amd = $amdCashbox;
+            $cb->usd= $usdCashbox;
+            $dto->setCashboxAmount(json_encode($cb));
             $dto->setCreatedAt(date('y-m-d H:i:s'));
             return $this->insertDto($dto);
         }

@@ -28,6 +28,7 @@
                            type="checkbox"/>
                 </th>
                 <th>Amount</th>
+                <th>Cashbox</th>
             </tr>
 
             {foreach from=$ns.allDeals item=deal}
@@ -96,6 +97,7 @@
                             </span>
                         {/if}
                     </td>
+                    <td>{$deal[1]->getCashboxAmount()}</td>
                 </tr>
             {/foreach}
         </table>
