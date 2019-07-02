@@ -133,15 +133,18 @@ namespace crm\managers {
             $dto->setPaid($paid);
             $dto->setSignature($signature);
             
+            
+            $dto->setCreatedAt(date('y-m-d H:i:s'));
+            $id = $this->insertDto($dto);
+            
             $paymentTransactionManager = PaymentTransactionManager::getInstance();
             $usdCashbox = -$paymentTransactionManager->getNonCancelledPaymentOrdersByCurrency($date, 1);
             $amdCashbox = -$paymentTransactionManager->getNonCancelledPaymentOrdersByCurrency($date, 2);
             $cb = new \stdClass();
             $cb->amd = $amdCashbox;
             $cb->usd= $usdCashbox;
-            $dto->setCashboxAmount(json_encode($cb));
-            $dto->setCreatedAt(date('y-m-d H:i:s'));
-            return $this->insertDto($dto);
+            $this->updateField($id, 'cashbox_amount', json_encode($cb));
+            return $id;
         }
 
         public function updatePaymentOrder($id, $partnerId, $paymentMethodId, $currencyId, $amount, $date, $note, $signature = "[]", $paid = true, $isExpense = false) {
