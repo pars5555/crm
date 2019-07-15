@@ -31,18 +31,21 @@ namespace crm\managers {
          * @return
          */
         public static function getInstance() {
-            $adminId = NGS()->getSessionManager()->getUserId();
-            $userType = \crm\managers\AdminManager::getInstance()->getById($adminId)->getType();
             if (self::$instance == null) {
                 self::$instance = new PurseOrderManager(PurseOrderMapper::getInstance());
             }
-            if ($userType !== 'root') {
-                self::$instance->globalWhere = [1000 => 'AND', 1001 => 'admin_id', 1002 => '=', 1003 => $adminId];
-            }
+
             return self::$instance;
         }
 
         public function __construct($mapper) {
+            $adminId = NGS()->getSessionManager()->getUserId();
+            if ($adminId > 0) {
+                $userType = \crm\managers\AdminManager::getInstance()->getById($adminId)->getType();
+                if ($userType !== 'root') {
+                    self::$instance->globalWhere = [1000 => 'AND', 1001 => 'admin_id', 1002 => '=', 1003 => $adminId];
+                }
+            }
             parent::__construct($mapper);
             $this->fakeRecipientUnitAddressesStr = RecipientManager::getInstance()->getFakeRecipientUnitAddressesSql();
         }
