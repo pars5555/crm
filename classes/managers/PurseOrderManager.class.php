@@ -189,7 +189,7 @@ namespace crm\managers {
                 'status', 'not in', "('open', 'under_balance', 'accepted', 'canceled', 'under_balance.confirming')", 'AND',
                 "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
                 "length(COALESCE(`tracking_number`, ''))", '>', 3
-            ] + $this->globalWhere);
+                    ] + $this->globalWhere);
             $existingOrdersMappedByTrackingNumbers = [];
             foreach ($ordersThatHasTrackingNumbers as $order) {
                 $trackingNumber = $order->getTrackingNumber();
@@ -420,7 +420,9 @@ namespace crm\managers {
         public function addManualOrder($productName, $product_id, $qty, $price, $unitAddress, $imageUrl, $external = 1, $externalProductNumber = "") {
             $adminId = NGS()->getSessionManager()->getUserId();
             $dto = $this->createDto();
-            $dto->setAdminId($adminId);
+            if ($adminId > 0) {
+                $dto->setAdminId($adminId);
+            }
             $dto->setProductName($productName);
             $dto->setImageUrl($imageUrl);
             $dto->setProductId($product_id);
@@ -516,7 +518,7 @@ namespace crm\managers {
                         "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
                         "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND',
                         "length(COALESCE(`real_delivery_date`, ''))", '<', 3
-            ] + $this->globalWhere);
+                            ] + $this->globalWhere);
         }
 
         public function getTrackingFetchNeededOrders() {
@@ -536,16 +538,16 @@ namespace crm\managers {
 
             $days = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
             return $this->selectAdvance('*', array_merge($where, ['AND', 'problem_solved', '=', 0, 'AND',
-                        '(',
-                        'problematic', '=', 1, 'OR', 'amazon_primary_status_text', 'like', "'%cancel%'", 'OR', 'amazon_primary_status_text', 'like', "'%Was expected%'",
-                        'OR', "length(COALESCE(`unit_address`,''))", '<', 2, 'OR',
-                        "`shipping_type`", 'not in', "('express', 'standard')", 'OR',
-                        '(',
-                        'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
-                        "length(COALESCE(`serial_number`,''))", '<', 2, 'AND', 'ABS(DATEDIFF(`delivery_date`, date(now())))', '>=', $days,
-                        ')',
-                        ')'
-            ] + $this->globalWhere));
+                                '(',
+                                'problematic', '=', 1, 'OR', 'amazon_primary_status_text', 'like', "'%cancel%'", 'OR', 'amazon_primary_status_text', 'like', "'%Was expected%'",
+                                'OR', "length(COALESCE(`unit_address`,''))", '<', 2, 'OR',
+                                "`shipping_type`", 'not in', "('express', 'standard')", 'OR',
+                                '(',
+                                'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
+                                "length(COALESCE(`serial_number`,''))", '<', 2, 'AND', 'ABS(DATEDIFF(`delivery_date`, date(now())))', '>=', $days,
+                                ')',
+                                ')'
+                                    ] + $this->globalWhere));
         }
 
         public function getOrdersPuposedToNotReceivedToDestinationCounty($checoutOnly = false) {
@@ -562,7 +564,7 @@ namespace crm\managers {
                 //'AND', 'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date')),
                 ')',
                 ')'
-            ] + $this->globalWhere);
+                    ] + $this->globalWhere);
             $rows1 = $this->selectAdvance('*', $where);
 
             //if delivery date in none
@@ -580,7 +582,7 @@ namespace crm\managers {
         }
 
         public function getOrders($where = [1, '=', 1], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
-            $where =  $where + $this->globalWhere;
+            $where = $where + $this->globalWhere;
             return $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit, true);
         }
 
