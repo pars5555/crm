@@ -545,6 +545,17 @@
             }
         }
     ],
+    "vanilaanalyze": [
+        {
+            "action": "loads.main.index",
+            "route": "list",
+            "nestedLoad": {
+                "content": {
+                    "action": "loads.main.vanilaanalyze.list"
+                }
+            }
+        }
+    ],
     "giftcards": [
         {
             "action": "loads.main.index",
