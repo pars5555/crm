@@ -38,6 +38,8 @@
                     {if $ns.user->getType() == 'root' || $ns.user->getType() == 'level2'}
                     <li><a {if $ns.loadName=='vanilla'}class="active"{/if} href="{$SITE_PATH}/vanilla/list">Vanilla</a></li>
                     <li><a {if $ns.loadName=='purse'}class="active"{/if} href="{$SITE_PATH}/purse/list">BTC-Products</a></li>
+{*                     <li><a {if $ns.loadName=='vanilaanalyze'}class="active"{/if} href="{$SITE_PATH}/vanilaanalyze/list">Vanilla Analyzer</a></li>*}
+                   
                         
                     {/if}
                     {if $ns.user->getType() == 'root' || $ns.user->getType() == 'checkout'}

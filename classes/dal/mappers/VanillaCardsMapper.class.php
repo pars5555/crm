@@ -74,12 +74,13 @@ namespace crm\dal\mappers {
             return floatval($total);
         }
         
-        public function getTotalBalance($ignoreLessThan = 0, $telegramChatIdsSql = "") {
+        public function getTotalBalance($ignoreLessThan = 0, $telegramChatIdsSql = "", $notRootMaxBalanceToShow = 50) {
             $sql = "SELECT SUM(balance) as total FROM `%s` "
                     . "WHERE `balance` > %s and closed=0 and invalid=0 and deleted=0";
             if (!empty($telegramChatIdsSql)) {
                 $sql .= " AND telegram_chat_id in " . $telegramChatIdsSql. "";
             }
+            $sql .= " AND `balance` <  " . $notRootMaxBalanceToShow;
             $sqlQuery = sprintf($sql, $this->getTableName(), $ignoreLessThan);
             $total = $this->fetchField($sqlQuery, 'total');
 

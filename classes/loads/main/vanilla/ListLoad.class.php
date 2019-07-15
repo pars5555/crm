@@ -13,7 +13,6 @@ namespace crm\loads\main\vanilla {
 
     use crm\loads\AdminLoad;
     use crm\managers\PartnerManager;
-    use crm\managers\SettingManager;
     use crm\managers\VanillaCardsManager;
     use NGS;
 
@@ -40,8 +39,10 @@ namespace crm\loads\main\vanilla {
             }
             $adminId = NGS()->getSessionManager()->getUserId();
             $userType = \crm\managers\AdminManager::getInstance()->getById($adminId)->getType();
+            $maxBalanceToShow = 5000;
             if ($userType === 'level2') {
-                $where = array_merge($where, ['AND', 'balance', '<', '50']);
+                $maxBalanceToShow = 50;
+                $where = array_merge($where, ['AND', 'balance', '<',  $maxBalanceToShow]);
             }
 
             if ($balance > 0) {
@@ -102,7 +103,7 @@ namespace crm\loads\main\vanilla {
             $exOrdersMappedById = \crm\managers\PurseOrderManager::getInstance()->selectByPKs($externalOrderIdsArray, true);
 
             self::addOrdersInfoToRows($rows, $exOrdersMappedById);
-            $totalBalance = VanillaCardsManager::getInstance()->getTotalBalance(10, $telegramChatIdsSql);
+            $totalBalance = VanillaCardsManager::getInstance()->getTotalBalance(10, $telegramChatIdsSql, $maxBalanceToShow);
             $load->addParam('total_balance', $totalBalance);
             $load->addParam('total_supplied', $totalSuppliedBalance);
             $load->addParam('totalConfirmedClothing', $totalConfirmedClothing);

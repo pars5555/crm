@@ -36,7 +36,7 @@ namespace crm\managers {
             }
             return self::$instance;
         }
-
+        
         public function getDeliveredOrdersTotal($monthsCount = 0, $telegramChatIdsSql = "") {
             $date = null;
             if ($monthsCount > 0) {
@@ -108,8 +108,8 @@ namespace crm\managers {
             return $this->mapper->getTotalInitialBalanceExcludeSaleToOthers($date, $telegramChatIdsSql);
         }
 
-        public function getTotalBalance($ignoreLessThan = 10, $telegramChatIdsSql = "") {
-            return $this->mapper->getTotalBalance($ignoreLessThan, $telegramChatIdsSql);
+        public function getTotalBalance($ignoreLessThan = 10, $telegramChatIdsSql = "", $notRootMaxBalanceToShow = 50) {
+            return $this->mapper->getTotalBalance($ignoreLessThan, $telegramChatIdsSql, $notRootMaxBalanceToShow);
         }
 
         public function isBotWorking() {
