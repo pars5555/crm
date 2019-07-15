@@ -21,6 +21,7 @@ namespace crm\managers {
          */
         public static $instance;
         private $fakeRecipientUnitAddressesStr;
+        private $globalWhere = [];
 
         /**
          * Returns an singleton instance of this class
@@ -30,8 +31,13 @@ namespace crm\managers {
          * @return
          */
         public static function getInstance() {
+            $adminId = NGS()->getSessionManager()->getUserId();
+            $userType = \crm\managers\AdminManager::getInstance()->getById($adminId)->getType();
             if (self::$instance == null) {
                 self::$instance = new PurseOrderManager(PurseOrderMapper::getInstance());
+            }
+            if ($userType !== 'root') {
+                self::$instance->globalWhere = [1000 => 'AND', 1001 => 'admin_id', 1002 => '=', 1003 => $adminId];
             }
             return self::$instance;
         }
@@ -90,7 +96,7 @@ namespace crm\managers {
                 'status', 'not in', "('delivered')", 'AND',
                 'shipping_carrier', '=', "'fedex'", 'AND',
                 "length(COALESCE(`tracking_number`, ''))", '>', 5
-                    ], 'tracking_number_checked_at', 'ASC', 0, 1);
+                    ] + $this->globalWhere, 'tracking_number_checked_at', 'ASC', 0, 1);
             if (!empty($rows)) {
                 $row = $rows[0];
                 $trackingNumber = trim(preg_replace('/[^A-Za-z0-9\-]/', '', $row->getTrackingNumber()));
@@ -110,7 +116,8 @@ namespace crm\managers {
             $orders = $this->selectAdvance('SUM(`quantity`) as qty , SUM(`amazon_total`) as total_amount, `product_id`', [
                 'product_id', 'in', $productIdsSql, 'AND',
                 'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", 'AND',
-                'hidden', '=', 0], 'id', 'desc', null, null, false, "", 'GROUP BY product_id');
+                'hidden', '=', 0] + $this->globalWhere, 'id', 'desc', null, null, false, "", 'GROUP BY product_id');
+
             $ret = [];
             foreach ($orders as $order) {
                 $ret[$order->product_id] = $order->qty;
@@ -182,7 +189,7 @@ namespace crm\managers {
                 'status', 'not in', "('open', 'under_balance', 'accepted', 'canceled', 'under_balance.confirming')", 'AND',
                 "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
                 "length(COALESCE(`tracking_number`, ''))", '>', 3
-            ]);
+            ] + $this->globalWhere);
             $existingOrdersMappedByTrackingNumbers = [];
             foreach ($ordersThatHasTrackingNumbers as $order) {
                 $trackingNumber = $order->getTrackingNumber();
@@ -256,7 +263,7 @@ namespace crm\managers {
             $notReceivedOrders = $this->selectAdvance(
                     ['id', 'tracking_number', 'recipient_name', 'quantity', 'product_name',
                 'amazon_total', 'account_name'], ['hidden', '=', 0, 'AND',
-                'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 200]);
+                'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 200] + $this->globalWhere);
             $notReceivedOrdersMappedByTracking = [];
             foreach ($notReceivedOrders as $order) {
                 $trackingNumber = $order->getTrackingNumber();
@@ -393,8 +400,6 @@ namespace crm\managers {
             $dto = $this->selectByField('checkout_order_id', $orderId);
             if (!empty($dto)) {
                 $this->updateField($dto[0]->getId(), 'checkout_order_status', $status);
-                var_dump($dto[0]->getId());
-                exit;
                 return true;
             }
             return false;
@@ -413,7 +418,9 @@ namespace crm\managers {
         }
 
         public function addManualOrder($productName, $product_id, $qty, $price, $unitAddress, $imageUrl, $external = 1, $externalProductNumber = "") {
+            $adminId = NGS()->getSessionManager()->getUserId();
             $dto = $this->createDto();
+            $dto->setAdminId($adminId);
             $dto->setProductName($productName);
             $dto->setImageUrl($imageUrl);
             $dto->setProductId($product_id);
@@ -509,7 +516,7 @@ namespace crm\managers {
                         "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
                         "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND',
                         "length(COALESCE(`real_delivery_date`, ''))", '<', 3
-            ]);
+            ] + $this->globalWhere);
         }
 
         public function getTrackingFetchNeededOrders() {
@@ -517,14 +524,14 @@ namespace crm\managers {
                         'status', 'in', "('shipping', 'shipped', 'feedback', 'finished',  'partially_delivered', 'delivered', 'accepted')", "AND",
                         "length(COALESCE(`amazon_order_number`,''))", '>', 5, 'AND',
                         "length(COALESCE(`tracking_number`, ''))", '<', 3, 'AND',
-                        "length(COALESCE(`serial_number`,''))", '<', 5]);
+                        "length(COALESCE(`serial_number`,''))", '<', 5] + $this->globalWhere);
         }
 
         public function getProblematicOrders($where, $checoutOnly = false) {
             if (!empty($checoutOnly)) {
-                $where = array_merge($where, ['AND', '(', 'unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)", 'OR', 'checkout_order_id', '>', 0, ')']);
+                $where = array_merge($where, ['AND', '(', 'unit_address', 'in', "($this->fakeRecipientUnitAddressesStr)", 'OR', 'checkout_order_id', '>', 0, ')'] + $this->globalWhere);
             } else {
-                $where = array_merge($where, ['AND', '(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR', 'checkout_order_id', 'IS NULL', ')']);
+                $where = array_merge($where, ['AND', '(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR', 'checkout_order_id', 'IS NULL', ')'] + $this->globalWhere);
             }
 
             $days = intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date'));
@@ -538,7 +545,7 @@ namespace crm\managers {
                         "length(COALESCE(`serial_number`,''))", '<', 2, 'AND', 'ABS(DATEDIFF(`delivery_date`, date(now())))', '>=', $days,
                         ')',
                         ')'
-            ]));
+            ] + $this->globalWhere));
         }
 
         public function getOrdersPuposedToNotReceivedToDestinationCounty($checoutOnly = false) {
@@ -555,7 +562,7 @@ namespace crm\managers {
                 //'AND', 'ABS(DATEDIFF(`delivery_date`, date(now())))', '<=', intval(SettingManager::getInstance()->getSetting('btc_products_days_diff_for_delivery_date')),
                 ')',
                 ')'
-            ]);
+            ] + $this->globalWhere);
             $rows1 = $this->selectAdvance('*', $where);
 
             //if delivery date in none
@@ -567,12 +574,13 @@ namespace crm\managers {
             $where = array_merge($where, ['AND', 'hidden', '=', 0, 'AND',
                 'status', 'in', "('feedback', 'finished',  'partially_delivered', 'delivered')", 'AND',
                 "length(COALESCE(`serial_number`,''))", '<', 2, 'AND',
-                'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 30]);
+                'ABS(DATEDIFF(`created_at`, date(now())))', '<=', 30] + $this->globalWhere);
             $rows2 = $this->selectAdvance('*', $where);
             return array_merge($rows1, $rows2);
         }
 
         public function getOrders($where = [1, '=', 1], $orderByFieldsArray = null, $orderByAscDesc = "ASC", $offset = null, $limit = null) {
+            $where =  $where + $this->globalWhere;
             return $this->selectAdvance('*', $where, $orderByFieldsArray, $orderByAscDesc, $offset, $limit, true);
         }
 

@@ -42,6 +42,7 @@ namespace crm\dal\dto {
             "account_name" => "accountName", "created_at" => "createdAt", "updated_at" => "updatedAt", "hidden_at" => "hiddenAt", 'meta' => 'meta',
             'external' => 'external',
             'product_id' => 'productId',
+            'admin_id' => 'adminId',
             'checkout_customer_unit_address' => 'checkoutCustomerUnitAddress',
             'checkout_order_id' => 'checkoutOrderId',
             'checkout_customer_name' => 'checkoutCustomerName',

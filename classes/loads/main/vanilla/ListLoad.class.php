@@ -38,6 +38,12 @@ namespace crm\loads\main\vanilla {
                     $where = array_merge($where, ['AND', 'telegram_chat_id', 'in', $telegramChatIdsSql]);
                 }
             }
+            $adminId = NGS()->getSessionManager()->getUserId();
+            $userType = \crm\managers\AdminManager::getInstance()->getById($adminId)->getType();
+            if ($userType === 'level2') {
+                $where = array_merge($where, ['AND', 'balance', '<', '50']);
+            }
+
             if ($balance > 0) {
                 $where = array_merge($where, ['AND', 'balance', '>=', $balance]);
             }
@@ -53,7 +59,7 @@ namespace crm\loads\main\vanilla {
                 }
             }
             $allChatIds = VanillaCardsManager::getInstance()->getAllChatIds();
-            $partners= PartnerManager::getInstance()->getPartnersByTelegramChatIds($allChatIds);
+            $partners = PartnerManager::getInstance()->getPartnersByTelegramChatIds($allChatIds);
             $load->addParam('partners', $partners);
 
             $dollarDebt = 0;
