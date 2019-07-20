@@ -24,23 +24,23 @@
                     <li><a {if $ns.loadName=='manufacturer'}class="active"{/if} href="{$SITE_PATH}/manufacturer/list">Manufacturers</a></li>
                     <li><a {if $ns.loadName=='recipient'}class="active"{/if} href="{$SITE_PATH}/recipient/list">Recipients</a></li>
                     <li><a {if $ns.loadName=='cc'}class="active"{/if} href="{$SITE_PATH}/cc/list">CC</a></li>
+                    
                     <li><a {if $ns.loadName=='vproducts'}class="active"{/if} href="{$SITE_PATH}/vproducts/list">Vanilla Products</a></li>
 
                     <li><a {if $ns.loadName=='websites'}class="active"{/if} href="{$SITE_PATH}/websites/list">Online Shops</a></li>
                         {*                    <li><a {if $ns.loadName=='rorder'}class="active"{/if} href="{$SITE_PATH}/rorder/list?srt=order_date&ascdesc=DESC">Recipient Orders</a></li>*}
-                    <li><a {if $ns.loadName=='purse'}class="active"{/if} href="{$SITE_PATH}/purse/list">BTC-Products</a></li>
                     {/if}
                     {if $ns.user->getType() == 'level3'  || $ns.user->getType() == 'level2'}
                         <li><a {if $ns.loadName=='recipient'}class="active"{/if} href="{$SITE_PATH}/recipient/list">Recipients</a></li>
                     {/if}
                 
                 
+                    {if $ns.user->getType() == 'root' || $ns.user->getType() == 'level3'}
+                        <li><a {if $ns.loadName=='giftcards'}class="active"{/if} href="{$SITE_PATH}/giftcards/list">Giftcards</a></li>
+                    {/if}
                     {if $ns.user->getType() == 'root' || $ns.user->getType() == 'level2'}
-                    <li><a {if $ns.loadName=='vanilla'}class="active"{/if} href="{$SITE_PATH}/vanilla/list">Vanilla</a></li>
-                    <li><a {if $ns.loadName=='purse'}class="active"{/if} href="{$SITE_PATH}/purse/list">BTC-Products</a></li>
-{*                     <li><a {if $ns.loadName=='vanilaanalyze'}class="active"{/if} href="{$SITE_PATH}/vanilaanalyze/list">Vanilla Analyzer</a></li>*}
-                   
-                        
+                        <li><a {if $ns.loadName=='vanilla'}class="active"{/if} href="{$SITE_PATH}/vanilla/list">Vanilla</a></li>
+                        <li><a {if $ns.loadName=='purse'}class="active"{/if} href="{$SITE_PATH}/purse/list">BTC-Products</a></li>
                     {/if}
                     {if $ns.user->getType() == 'root' || $ns.user->getType() == 'checkout'}
                     <li><a {if $ns.loadName=='checkout'}class="active"{/if} href="{$SITE_PATH}/checkout/list">Checkout.am</a></li>
