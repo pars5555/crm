@@ -158,7 +158,7 @@ namespace crm\loads\main\purse {
                     $limit = 1000;
                 }
             }
-
+            
             //pageing
             $selectedFilterPage = 1;
             if (isset(NGS()->args()->pg)) {
@@ -284,6 +284,8 @@ namespace crm\loads\main\purse {
             }
 
             $where = ['1', '=', '1'];
+            
+            
             if ($selectedFilterAccount !== 'all') {
                 $where = array_merge($where, ['AND ', 'account_name', '=', "'$selectedFilterAccount'"]);
             }
@@ -334,7 +336,22 @@ namespace crm\loads\main\purse {
                     }
                 }
             }
-            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $where, $words, $searchText, $problematic, $new_changed, $local_carrier_name, $regOrdersInWarehouse];
+            
+            $rowIdsArray = [];
+            if (isset(NGS()->args()->ids)) {
+                $rowIdsStr = trim(NGS()->args()->ids);
+                if (!empty($rowIdsStr)) {
+                    $rowIdsStr = preg_replace('/\s+/', ';', $rowIdsStr);
+                    $rowIdsStr = str_replace(',', ';', $rowIdsStr);
+                    $rowIdsArray = explode(';', $rowIdsStr);                    
+                    $rowIdsArray  = array_map('trim', $rowIdsArray );
+                    $rowIdsArraySql = '('.implode(',', $rowIdsArray).')';
+                    $where = ['id', 'in', $rowIdsArraySql];
+                }
+            }
+            
+            
+            return [$offset, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $where, $words, $searchText, $problematic, $new_changed, $local_carrier_name, $regOrdersInWarehouse, $rowIdsArray];
         }
 
         public function getTemplate() {
