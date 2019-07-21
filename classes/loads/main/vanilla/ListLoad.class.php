@@ -41,7 +41,7 @@ namespace crm\loads\main\vanilla {
             $userType = \crm\managers\AdminManager::getInstance()->getById($adminId)->getType();
             $maxBalanceToShow = 5000;
             if ($userType === 'level2') {
-                $maxBalanceToShow = 50;
+                $maxBalanceToShow = 50000;
                 $where = array_merge($where, ['AND', 'balance', '<',  $maxBalanceToShow]);
             }
 
