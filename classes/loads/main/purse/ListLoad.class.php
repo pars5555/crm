@@ -341,7 +341,7 @@ namespace crm\loads\main\purse {
             if (isset(NGS()->args()->ids)) {
                 $rowIdsStr = trim(NGS()->args()->ids);
                 if (!empty($rowIdsStr)) {
-                    $rowIdsStr = preg_replace('/\s+/', ';', $rowIdsStr);
+                    $rowIdsStr = preg_replace('/\s+/', '', $rowIdsStr);
                     $rowIdsStr = str_replace(',', ';', $rowIdsStr);
                     $rowIdsArray = explode(';', $rowIdsStr);                    
                     $rowIdsArray  = array_map('trim', $rowIdsArray );
