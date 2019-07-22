@@ -51,9 +51,9 @@
                     <td class="table-cell f_editable_cell f_lockable" data-field-name="cvv">{$row->getCvv()}</td>
                     <td class="table-cell f_editable_cell f_lockable" data-field-name="initial_balance">{$row->getInitialBalance()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="balance">{$row->getBalance()}</td>
-                    <td class="table-cell " >
+                    <td class="table-cell f_editable_cell" data-field-name="external_orders_ids">
                         {if !empty($row->getExternalOrdersIds())}
-                            <a class="f_editable_cell" style="color:blue" data-field-name="external_orders_ids" href="{$SITE_PATH}/purse/list?ids={$row->getExternalOrdersIds()}">{$row->getExternalOrdersIds()}</a>
+                             <a style="color:blue" href="{$SITE_PATH}/purse/list?ids={$row->getExternalOrdersIds()}">{$row->getExternalOrdersIds()}</a>
                         {/if}
                     </td>
                     <td >{$row->getOrdersAmountsText()}</td>
