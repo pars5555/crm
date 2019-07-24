@@ -133,11 +133,6 @@ namespace crm\managers {
             return $opDtos;
         }
 
-        public function updateAllDependingSaleOrderLines($purchaseOrderId) {
-            $productsIds = $this->getProductsIdsInOrder($purchaseOrderId);
-            SaleOrderManager::getInstance()->updateAllOrderLinesThatContainsProducts($productsIds);
-        }
-
         public function getProductsIdsInOrder($purchaseOrderId) {
             $poLines = PurchaseOrderLineManager::getInstance()->selectAdvance('*', ['purchase_order_id', '=', $purchaseOrderId]);
             $productIds = [];

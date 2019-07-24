@@ -80,7 +80,6 @@ namespace crm\managers {
             $orderDate = $po->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
-            ProductManager::getInstance()->updateProductCostForOneUnit($productId);
             PartnerManager::getInstance()->setPartnerHidden($po->getPartnerId(), 0);
             return $this->updateByPk($dto);
         }
@@ -97,7 +96,6 @@ namespace crm\managers {
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
             $ret = $this->insertDto($dto);
-            ProductManager::getInstance()->updateProductCostForOneUnit($productId);
             PartnerManager::getInstance()->setPartnerHidden($po->getPartnerId(), 0);
             return $ret;
         }

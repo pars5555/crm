@@ -40,7 +40,6 @@ use NGS;
             $note = NGS()->args()->note;
             $saleOrderManager->cancelSaleOrder($saleOrderId, $note);
             $_SESSION['success_message'] = 'Sale Order Successfully cancelled!';
-            //$saleOrderManager->updateAllDependingSaleOrderLines($saleOrderId);
             $this->redirectToReferer();
         }
 

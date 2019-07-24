@@ -191,13 +191,6 @@ namespace crm\managers {
             return $ret;
         }
 
-        public function updateProductCostForOneUnit($productId) {
-//            $productUnitCostInBaseCurrency = ProductManager::getInstance()->calculateProductCost($productId, 1, 0);
-//            $productDto = ProductManager::getInstance()->selectByPk($productId);
-//            $productDto->setUnitCost($this->calculateProductTotalCost($productUnitCostInBaseCurrency));
-//            ProductManager::getInstance()->updateByPK($productDto);
-        }
-
         private function removePurchaseOrderLinesQuantityByProductSale($productPurchaseOrderLines, $productSoldCount, $date) {
             $ret = [];
             if (empty($productPurchaseOrderLines)) {

@@ -42,7 +42,6 @@ namespace crm\actions\main\purchase {
             $note = NGS()->args()->note;
             $purchaseOrderManager->cancelPurchaseOrder($purchaseOrderId, $note);
             try {
-                PurchaseOrderManager::getInstance()->updateAllDependingSaleOrderLines($purchaseOrderId);
                 $_SESSION['success_message'] = 'Purchase Order Successfully cancelled!';
             } catch (InsufficientProductException $exc) {
                 $purchaseOrderManager->restorePurchaseOrder($purchaseOrderId);

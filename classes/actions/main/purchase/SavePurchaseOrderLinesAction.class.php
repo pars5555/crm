@@ -66,7 +66,6 @@ namespace crm\actions\main\purchase {
             }
 
             $_SESSION['success_message'] = 'Purchase Order lines successfully saved.';
-            //PurchaseOrderManager::getInstance()->updateAllDependingSaleOrderLines($purchaseOrderId);
             $this->redirect('purchase/warranty/' . $purchaseOrderId);
         }
 

@@ -73,7 +73,6 @@ namespace crm\managers {
             $orderDate = RecipientOrderManager::getInstance()->selectByPk($recipientOrderId)->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
-            ProductManager::getInstance()->updateProductCostForOneUnit($productId);
             return $this->updateByPk($dto);
         }
 
@@ -87,7 +86,6 @@ namespace crm\managers {
             $orderDate = RecipientOrderManager::getInstance()->selectByPk($recipientOrderId)->getOrderDate();
             $rate = CurrencyRateManager::getInstance()->getCurrencyRateByDate($orderDate, $currencyId);
             $dto->setCurrencyRate($rate);
-            ProductManager::getInstance()->updateProductCostForOneUnit($productId);
             return $this->insertDto($dto);
         }
 

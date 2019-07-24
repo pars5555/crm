@@ -105,11 +105,6 @@ use crm\dal\mappers\SaleOrderMapper;
             return false;
         }
 
-        public function updateAllDependingSaleOrderLines($saleOrderId) {
-            $productsIds = $this->getProductsIdsInOrder($saleOrderId);
-            $this->updateAllOrderLinesThatContainsProducts($productsIds);
-        }
-
         public function getProductsIdsInOrder($saleOrderId) {
             $soLines = SaleOrderLineManager::getInstance()->selectAdvance('*', ['sale_order_id', '=', $saleOrderId]);
             $productIds = [];

@@ -101,11 +101,6 @@ namespace crm\managers {
             return $roDtos;
         }
 
-        public function updateAllDependingSaleOrderLines($recipientOrderId) {
-            $productsIds = $this->getProductsIdsInOrder($recipientOrderId);
-            SaleOrderManager::getInstance()->updateAllOrderLinesThatContainsProducts($productsIds);
-        }
-
         public function getProductsIdsInOrder($recipientOrderId) {
             $poLines = RecipientOrderLineManager::getInstance()->selectAdvance('*', ['recipient_order_id', '=', $recipientOrderId]);
             $productIds = [];
