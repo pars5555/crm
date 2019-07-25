@@ -35,7 +35,7 @@ namespace crm\actions\api\vanilla {
                     if ($tryCount < 120) {
                         VanillaCardsManager::getInstance()->updateField($id, 'try_count', $tryCount + 1);
                         $this->addParam('success', true);
-                        return;
+                        continue;
                     }
                     if ($card->getClosed() == 0) {
                         $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
