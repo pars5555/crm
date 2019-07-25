@@ -32,7 +32,7 @@ namespace crm\actions\api\vanilla {
                 foreach ($idsArray as $ccid) {
                     $card = VanillaCardsManager::getInstance()->selectByPK($ccid);
                     $tryCount = intval($card->getTryCount());
-                    if ($tryCount < 10) {
+                    if ($tryCount < 120) {
                         VanillaCardsManager::getInstance()->updateField($id, 'try_count', $tryCount + 1);
                         $this->addParam('success', true);
                         return;
