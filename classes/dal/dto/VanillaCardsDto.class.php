@@ -45,6 +45,7 @@ namespace crm\dal\dto {
             "transaction_history" => "transactionHistory",
             "closed" => "closed",
             "invalid" => "invalid",
+            "try_count" => "tryCount",
             "deleted" => "deleted",
             "updated_at" => "updatedAt",
             "created_at" => "createdAt"

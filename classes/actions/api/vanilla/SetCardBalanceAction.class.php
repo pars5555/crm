@@ -31,14 +31,20 @@ namespace crm\actions\api\vanilla {
                 $idsArray = explode(',', $closedCardIds);
                 foreach ($idsArray as $ccid) {
                     $card = VanillaCardsManager::getInstance()->selectByPK($ccid);
+                    $tryCount = intval($card->getTryCount());
+                    if ($tryCount < 10) {
+                        VanillaCardsManager::getInstance()->updateField($id, 'try_count', $tryCount + 1);
+                        $this->addParam('success', true);
+                        return;
+                    }
                     if ($card->getClosed() == 0) {
                         $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
-                        
+
                         $note = trim($card->getNote());
-                        if (!empty($note)){
-                            $note = ' note: '.$note;
+                        if (!empty($note)) {
+                            $note = ' note: ' . $note;
                         }
-                        $manager->postMessage('****'.substr($card->getNumber(),-6) . ' is closed! last available balance was: $' . $card->getBalance(). ' initial balance was: '. $card->getInitialBalance(). $note. ' card supplied at: '. $card->getCreatedAt()); 
+                        $manager->postMessage('****' . substr($card->getNumber(), -6) . ' is closed! last available balance was: $' . $card->getBalance() . ' initial balance was: ' . $card->getInitialBalance() . $note . ' card supplied at: ' . $card->getCreatedAt());
                         VanillaCardsManager::getInstance()->updateField($ccid, 'closed', 1);
                         VanillaCardsManager::getInstance()->updateField($ccid, 'updated_at', date('Y-m-d H:i:s'));
                     }
@@ -60,10 +66,10 @@ namespace crm\actions\api\vanilla {
                 $card = VanillaCardsManager::getInstance()->selectByPK($id);
                 $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
                 $note = trim($card->getNote());
-                        if (!empty($note)){
-                            $note = ' note: '.$note;
-                        }
-                $manager->postMessage('****'.substr($card->getNumber(),-6) . ' balance is: $' . $balance . $note. ' card supplied at: '. $card->getCreatedAt());
+                if (!empty($note)) {
+                    $note = ' note: ' . $note;
+                }
+                $manager->postMessage('****' . substr($card->getNumber(), -6) . ' balance is: $' . $balance . $note . ' card supplied at: ' . $card->getCreatedAt());
             }
             VanillaCardsManager::getInstance()->updateField($id, 'balance', $balance);
             VanillaCardsManager::getInstance()->updateField($id, 'transaction_history', $transaction_history);
