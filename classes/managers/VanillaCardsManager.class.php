@@ -113,7 +113,7 @@ namespace crm\managers {
         }
 
         public function isBotWorking() {
-            $twoMinuteAgo = date('Y-m-d H:i:s', strtotime("-2 minutes"));
+            $twoMinuteAgo = date('Y-m-d H:i:s', strtotime("-15 minutes"));
             $rows = $this->selectAdvance('updated_at', [], 'updated_at', 'desc', 0, 1);
             if (empty($rows)) {
                 return true;
