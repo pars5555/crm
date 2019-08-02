@@ -78,23 +78,23 @@
                     {if $ns.user->getType() == 'root'}
                         <td class="table-cell f_editable_cell" data-field-name="express_unit_address">{$recipient->getExpressUnitAddress()}</td>
                     {/if}
-                    <td class="table-cell f_editable_cell" data-field-name="express_unit_address_1">{$recipient->getExpressUnitAddress1()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="express_unit_address_1">{$recipient->getExpressUnitAddress_1()}</td>
                     {if $ns.user->getType() == 'root'}
                         <td class="table-cell f_editable_cell" data-field-name="onex_express_unit">{$recipient->getOnexExpressUnit()}</td>
                     {/if}
-                    <td class="table-cell f_editable_cell" data-field-name="onex_express_unit_1">{$recipient->getOnexExpressUnit1()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="onex_express_unit_1">{$recipient->getOnexExpressUnit_1()}</td>
                     {if $ns.user->getType() == 'root'}
                         <td class="table-cell f_editable_cell" data-field-name="nova_express_unit">{$recipient->getNovaExpressUnit()}</td>
                     {/if}
-                    <td class="table-cell f_editable_cell" data-field-name="nova_express_unit_1">{$recipient->getNovaExpressUnit1()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="nova_express_unit_1">{$recipient->getNovaExpressUnit_1()}</td>
                     {if $ns.user->getType() == 'root'}
                         <td class="table-cell f_editable_cell" data-field-name="shipex_express_unit">{$recipient->getShipexExpressUnit()}</td>
                     {/if}
-                    <td class="table-cell f_editable_cell" data-field-name="shipex_express_unit_1">{$recipient->getShipexExpressUnit1()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="shipex_express_unit_1">{$recipient->getShipexExpressUnit_1()}</td>
                     {if $ns.user->getType() == 'root'}
                         <td class="table-cell f_editable_cell" data-field-name="cheapex_express_unit">{$recipient->getCheapexExpressUnit()}</td>
                     {/if}
-                    <td class="table-cell f_editable_cell" data-field-name="cheapex_express_unit_1">{$recipient->getCheapexExpressUnit1()}</td>
+                    <td class="table-cell f_editable_cell" data-field-name="cheapex_express_unit_1">{$recipient->getCheapexExpressUnit_1()}</td>
                     {if $ns.selectedFilterShowStandardUnits == 'yes'}
                         <td>{$recipient->getStandardUnitAddress()} {$recipient->getOnexStandardUnit()} {$recipient->getNovaStandardUnit()} {$recipient->getShipexStandardUnit()} {$recipient->getCheapexStandardUnit()}</td>
                     {/if}

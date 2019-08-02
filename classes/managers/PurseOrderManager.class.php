@@ -133,15 +133,15 @@ namespace crm\managers {
             $partnerIdMappedByExpressUnitAddresses = [];
             foreach ($recipients as $recipient) {
                 $expressUnitAddress = $recipient->getExpressUnitAddress();
-                $expressUnitAddress1 = $recipient->getExpressUnitAddress1();
+                $expressUnitAddress1 = $recipient->getExpressUnitAddress_1();
                 $onexExpressUnit = $recipient->getOnexExpressUnit();
-                $onexExpressUnit1 = $recipient->getOnexExpressUnit1();
+                $onexExpressUnit1 = $recipient->getOnexExpressUnit_1();
                 $novaExpressUnit = $recipient->getNovaExpressUnit();
-                $novaExpressUnit1 = $recipient->getNovaExpressUnit1();
+                $novaExpressUnit1 = $recipient->getNovaExpressUnit_1();
                 $shipexExpressUnit = $recipient->getShipexExpressUnit();
-                $shipexExpressUnit1 = $recipient->getShipexExpressUnit1();
+                $shipexExpressUnit1 = $recipient->getShipexExpressUnit_1();
                 $cheapexExpressUnit = $recipient->getCheapexExpressUnit();
-                $cheapexExpressUnit1 = $recipient->getCheapexExpressUnit1();
+                $cheapexExpressUnit1 = $recipient->getCheapexExpressUnit_1();
                 if (empty($expressUnitAddress) && empty($onexExpressUnit) && empty($novaExpressUnit) && empty($shipexExpressUnit) && empty($cheapexExpressUnit) && 
                         empty($expressUnitAddress1) && empty($onexExpressUnit1) && empty($novaExpressUnit1) && empty($shipexExpressUnit1) && empty($cheapexExpressUnit1)) {
                     continue;

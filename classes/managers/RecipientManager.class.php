@@ -94,15 +94,15 @@ namespace crm\managers {
             }
             if (
                     strtolower($row->getExpressUnitAddress()) === strtolower($unitAddress) ||
-                    strtolower($row->getExpressUnitAddress1()) === strtolower($unitAddress) ||
+                    strtolower($row->getExpressUnitAddress_1()) === strtolower($unitAddress) ||
                     strtolower($row->getOnexExpressUnit()) === strtolower($unitAddress) ||
-                    strtolower($row->getOnexExpressUnit1()) === strtolower($unitAddress) ||
+                    strtolower($row->getOnexExpressUnit_1()) === strtolower($unitAddress) ||
                     strtolower($row->getShipexExpressUnit()) === strtolower($unitAddress) ||
-                    strtolower($row->getShipexExpressUnit1()) === strtolower($unitAddress) ||
+                    strtolower($row->getShipexExpressUnit_1()) === strtolower($unitAddress) ||
                     strtolower($row->getCheapexExpressUnit()) === strtolower($unitAddress) ||
-                    strtolower($row->getCheapexExpressUnit1()) === strtolower($unitAddress) ||
+                    strtolower($row->getCheapexExpressUnit_1()) === strtolower($unitAddress) ||
                     strtolower($row->getNovaExpressUnit()) === strtolower($unitAddress) ||
-                    strtolower($row->getNovaExpressUnit1()) === strtolower($unitAddress)) {
+                    strtolower($row->getNovaExpressUnit_1()) === strtolower($unitAddress)) {
                 return 'express';
             }
             if (strtolower($row->getStandardUnitAddress()) === strtolower($unitAddress) ||
@@ -125,8 +125,8 @@ namespace crm\managers {
 
         public function getRecipientUnitAddresses($recipintId, $sqlReady = false) {
             $recipient = $this->selectByPk($recipintId);
-            $res = [$recipient->getExpressUnitAddress(),$recipient->getExpressUnitAddress1(), $recipient->getOnexExpressUnit(),$recipient->getOnexExpressUnit1(), $recipient->getNovaExpressUnit(),
-                $recipient->getNovaExpressUnit1(), $recipient->getShipexExpressUnit(), $recipient->getShipexExpressUnit1(), $recipient->getCheapexExpressUnit(),$recipient->getCheapexExpressUnit1(),
+            $res = [$recipient->getExpressUnitAddress(),$recipient->getExpressUnitAddress_1(), $recipient->getOnexExpressUnit(),$recipient->getOnexExpressUnit_1(), $recipient->getNovaExpressUnit(),
+                $recipient->getNovaExpressUnit_1(), $recipient->getShipexExpressUnit(), $recipient->getShipexExpressUnit_1(), $recipient->getCheapexExpressUnit(),$recipient->getCheapexExpressUnit_1(),
                 $recipient->getStandardUnitAddress(), $recipient->getOnexStandardUnit(), $recipient->getNovaStandardUnit(), $recipient->getShipexStandardUnit(), $recipient->getCheapexStandardUnit()];
             $res = array_filter($res, function($value) {
                 $value = trim($value);
