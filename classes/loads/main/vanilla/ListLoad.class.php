@@ -24,10 +24,16 @@ namespace crm\loads\main\vanilla {
 
         public static function initLoad($load) {
             $limit = 100;
-            list($offset, $selectedFilterPartnerId, $sortByFieldName, $selectedFilterSortByAscDesc, $balance, $searchText, $selectedFilterShowDeleted, $selectedFilterCalculationMonths) = self::initFilters($limit, $load);
+            list($offset, $selectedFilterPartnerId, $sortByFieldName, $selectedFilterSortByAscDesc, $balance, $searchText, $selectedFilterShowDeleted, $selectedFilterCalculationMonths, $selectedFilterAdmin) = self::initFilters($limit, $load);
             $where = ['1', '=', '1'];
             if ($selectedFilterShowDeleted === 'no') {
                 $where = array_merge($where, ['AND', 'deleted', '=', '0', 'AND', 'closed', '=', '0']);
+            }
+            if ($selectedFilterAdmin === 'musho') {
+                $where = array_merge($where, ['AND ', 'admin_id', '=', 9]);
+            }
+            if ($selectedFilterAdmin === 'lilit') {
+                $where = array_merge($where, ['AND ', 'admin_id', '<>', 9]);
             }
             $telegramChatIdsSql = "";
             if ($selectedFilterPartnerId > 0) {
@@ -37,7 +43,7 @@ namespace crm\loads\main\vanilla {
                     $where = array_merge($where, ['AND', 'telegram_chat_id', 'in', $telegramChatIdsSql]);
                 }
             }
-            
+
             if ($balance > 0) {
                 $where = array_merge($where, ['AND', 'balance', '>=', $balance]);
             }
@@ -145,6 +151,11 @@ namespace crm\loads\main\vanilla {
                 }
             }
 
+            $selectedFilterAdmin = 'all';
+            if (isset(NGS()->args()->adm)) {
+                $selectedFilterAdmin = strtolower(NGS()->args()->adm);
+            }
+
             $minBalance = 0;
             if (isset(NGS()->args()->bal)) {
                 $minBalance = floatval(NGS()->args()->bal);
@@ -162,11 +173,12 @@ namespace crm\loads\main\vanilla {
             $load->addParam('searchText', $searchText);
             $load->addParam('selectedFilterShowDeleted', $selectedFilterShowDeleted);
             $load->addParam('selectedFilterCalculationMonths', $selectedFilterCalculationMonths);
+            $load->addParam('selectedFilterAdmin', $selectedFilterAdmin);
             $load->addParam('minBalance', $minBalance);
             $load->addParam('selectedFilterPartnerId', $selectedFilterPartnerId);
             $load->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
             $load->addParam('selectedFilterSortBy', $selectedFilterSortBy);
-            return [$offset, $selectedFilterPartnerId, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $minBalance, $searchText, $selectedFilterShowDeleted, $selectedFilterCalculationMonths];
+            return [$offset, $selectedFilterPartnerId, $selectedFilterSortBy, $selectedFilterSortByAscDesc, $minBalance, $searchText, $selectedFilterShowDeleted, $selectedFilterCalculationMonths, $selectedFilterAdmin];
         }
 
         public function getTemplate() {

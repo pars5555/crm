@@ -52,6 +52,16 @@
                 <option value="4" {if $ns.selectedFilterCalculationMonths == '4'}selected{/if}>4 Month</option>
             </select>
         </div>
+        {if $ns.user->getType() == 'root'}
+            <div class="filter">
+                <label>Admins</label>
+                <select name="adm">
+                    <option value="all" {if $ns.selectedFilterAdmin == 'all'}selected{/if}>All</option>
+                    <option value="lilit" {if $ns.selectedFilterAdmin == 'lilit'}selected{/if}>Lilit</option>
+                    <option value="musho" {if $ns.selectedFilterAdmin == 'musho'}selected{/if}>Musho</option>
+                </select>
+            </div>
+        {/if}
 
         <button type="submit" style="visibility: hidden">search</button>
     </div>

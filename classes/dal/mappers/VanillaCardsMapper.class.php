@@ -42,8 +42,6 @@ namespace crm\dal\mappers {
             return $this->tableName;
         }
 
-        
-
         public function getTotalInitialBalanceExcludeSaleToOthers($datetime = null, $telegramChatIdsSql = "",$adminId = 0) {
             $sql = "SELECT SUM(initial_balance) as initial_balance_total, SUM(sold_amount) as sold_amount_total FROM `%s` WHERE bonus_supplied = 0 ";
             
