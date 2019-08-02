@@ -37,14 +37,7 @@ namespace crm\loads\main\vanilla {
                     $where = array_merge($where, ['AND', 'telegram_chat_id', 'in', $telegramChatIdsSql]);
                 }
             }
-            $adminId = NGS()->getSessionManager()->getUserId();
-            $userType = \crm\managers\AdminManager::getInstance()->getById($adminId)->getType();
-            $maxBalanceToShow = 5000;
-//            if ($userType === 'level2') {
-//                $maxBalanceToShow = 50000;
-//                $where = array_merge($where, ['AND', 'balance', '<',  $maxBalanceToShow]);
-//            }
-
+            
             if ($balance > 0) {
                 $where = array_merge($where, ['AND', 'balance', '>=', $balance]);
             }
@@ -103,7 +96,7 @@ namespace crm\loads\main\vanilla {
             $exOrdersMappedById = \crm\managers\PurseOrderManager::getInstance()->selectByPKs($externalOrderIdsArray, true);
 
             self::addOrdersInfoToRows($rows, $exOrdersMappedById);
-            $totalBalance = VanillaCardsManager::getInstance()->getTotalBalance(10, $telegramChatIdsSql, $maxBalanceToShow);
+            $totalBalance = VanillaCardsManager::getInstance()->getTotalBalance(10, $telegramChatIdsSql);
             $load->addParam('total_balance', $totalBalance);
             $load->addParam('total_supplied', $totalSuppliedBalance);
             $load->addParam('totalConfirmedClothing', $totalConfirmedClothing);

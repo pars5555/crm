@@ -22,6 +22,8 @@ namespace crm\managers {
          * @var $instance
          */
         public static $instance;
+        private $filteredAdminId;
+        private $globalWhere = [];
 
         /**
          * Returns an singleton instance of this class
@@ -36,13 +38,26 @@ namespace crm\managers {
             }
             return self::$instance;
         }
-        
+
+        public function __construct($mapper) {
+            $adminId = NGS()->getSessionManager()->getUserId();
+            $this->filteredAdminId = false;
+            if ($adminId > 0) {
+                $userType = \crm\managers\AdminManager::getInstance()->getById($adminId)->getType();
+                if ($userType !== 'root') {
+                    $this->filteredAdminId = $adminId;
+                    $this->globalWhere = [1000 => 'AND', 1001 => 'admin_id', 1002 => '=', 1003 => $adminId];
+                }
+            }
+            parent::__construct($mapper);
+        }
+
         public function getDeliveredOrdersTotal($monthsCount = 0, $telegramChatIdsSql = "") {
             $date = null;
             if ($monthsCount > 0) {
                 $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
             }
-            return $this->mapper->getDeliveredOrdersTotal($date, $telegramChatIdsSql);
+            return $this->mapper->getDeliveredOrdersTotal($date, $telegramChatIdsSql, $this->filteredAdminId);
         }
 
         public function getTotalCanclledOrdersPendingBalance($monthsCount = null, $telegramChatIdsSql = "") {
@@ -50,7 +65,7 @@ namespace crm\managers {
             if ($monthsCount > 0) {
                 $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
             }
-            return $this->mapper->getTotalCanclledOrdersPendingBalance($date, $telegramChatIdsSql);
+            return $this->mapper->getTotalCanclledOrdersPendingBalance($date, $telegramChatIdsSql, $this->filteredAdminId);
         }
 
         public function getAllChatIds() {
@@ -82,7 +97,10 @@ namespace crm\managers {
             if (!empty($telegramChatIdsSql)) {
                 $where = array_merge($where, ['AND', 'telegram_chat_id', 'in', $telegramChatIdsSql]);
             }
-            $rows = $this->selectAdvance('*', $where);
+            if (!empty($this->filteredAdminId)) {
+                $where = array_merge($where, ['AND', 'admin_id', '=', $this->filteredAdminId]);
+            }
+            $rows = $this->selectAdvance('*', $where + $this->globalWhere);
             $totalConfirmed = 0;
             $totalPending = 0;
             foreach ($rows as $row) {
@@ -97,7 +115,7 @@ namespace crm\managers {
             if ($monthsCount > 0) {
                 $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
             }
-            return $this->mapper->getPendingOrdersTotal($date, $telegramChatIdsSql);
+            return $this->mapper->getPendingOrdersTotal($date, $telegramChatIdsSql, $this->filteredAdminId);
         }
 
         public function getTotalInitialBalanceExcludeSaleToOthers($monthsCount = 0, $telegramChatIdsSql = "") {
@@ -105,11 +123,11 @@ namespace crm\managers {
             if ($monthsCount > 0) {
                 $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
             }
-            return $this->mapper->getTotalInitialBalanceExcludeSaleToOthers($date, $telegramChatIdsSql);
+            return $this->mapper->getTotalInitialBalanceExcludeSaleToOthers($date, $telegramChatIdsSql, $this->filteredAdminId);
         }
 
-        public function getTotalBalance($ignoreLessThan = 10, $telegramChatIdsSql = "", $notRootMaxBalanceToShow = 50) {
-            return $this->mapper->getTotalBalance($ignoreLessThan, $telegramChatIdsSql, $notRootMaxBalanceToShow);
+        public function getTotalBalance($ignoreLessThan = 10, $telegramChatIdsSql = "") {
+            return $this->mapper->getTotalBalance($ignoreLessThan, $telegramChatIdsSql, $this->filteredAdminId);
         }
 
         public function isBotWorking() {

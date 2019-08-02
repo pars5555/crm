@@ -29,6 +29,7 @@ namespace crm\dal\dto {
         private $succeed_order_amounts = [];
         // Map of DB value to Field value
         private $mapArray = array("id" => "id",
+            "admin_id" => "adminId",
             "number" => "number",
             "month" => "month",
             "year" => "year",
