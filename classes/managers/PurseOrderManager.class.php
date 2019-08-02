@@ -133,27 +133,48 @@ namespace crm\managers {
             $partnerIdMappedByExpressUnitAddresses = [];
             foreach ($recipients as $recipient) {
                 $expressUnitAddress = $recipient->getExpressUnitAddress();
+                $expressUnitAddress1 = $recipient->getExpressUnitAddress1();
                 $onexExpressUnit = $recipient->getOnexExpressUnit();
+                $onexExpressUnit1 = $recipient->getOnexExpressUnit1();
                 $novaExpressUnit = $recipient->getNovaExpressUnit();
+                $novaExpressUnit1 = $recipient->getNovaExpressUnit1();
                 $shipexExpressUnit = $recipient->getShipexExpressUnit();
+                $shipexExpressUnit1 = $recipient->getShipexExpressUnit1();
                 $cheapexExpressUnit = $recipient->getCheapexExpressUnit();
-                if (empty($expressUnitAddress) && empty($onexExpressUnit) && empty($novaExpressUnit) && empty($shipexExpressUnit) && empty($cheapexExpressUnit)) {
+                $cheapexExpressUnit1 = $recipient->getCheapexExpressUnit1();
+                if (empty($expressUnitAddress) && empty($onexExpressUnit) && empty($novaExpressUnit) && empty($shipexExpressUnit) && empty($cheapexExpressUnit) && 
+                        empty($expressUnitAddress1) && empty($onexExpressUnit1) && empty($novaExpressUnit1) && empty($shipexExpressUnit1) && empty($cheapexExpressUnit1)) {
                     continue;
                 }
                 if (!empty($expressUnitAddress)) {
                     $partnerIdMappedByExpressUnitAddresses[strtolower($expressUnitAddress)] = $recipient->getId();
                 }
+                if (!empty($expressUnitAddress1)) {
+                    $partnerIdMappedByExpressUnitAddresses[strtolower($expressUnitAddress1)] = $recipient->getId();
+                }
                 if (!empty($onexExpressUnit)) {
                     $partnerIdMappedByExpressUnitAddresses[strtolower($onexExpressUnit)] = $recipient->getId();
+                }
+                if (!empty($onexExpressUnit1)) {
+                    $partnerIdMappedByExpressUnitAddresses[strtolower($onexExpressUnit1)] = $recipient->getId();
                 }
                 if (!empty($shipexExpressUnit)) {
                     $partnerIdMappedByExpressUnitAddresses[strtolower($shipexExpressUnit)] = $recipient->getId();
                 }
+                if (!empty($shipexExpressUnit1)) {
+                    $partnerIdMappedByExpressUnitAddresses[strtolower($shipexExpressUnit1)] = $recipient->getId();
+                }
                 if (!empty($cheapexExpressUnit)) {
                     $partnerIdMappedByExpressUnitAddresses[strtolower($cheapexExpressUnit)] = $recipient->getId();
                 }
+                if (!empty($cheapexExpressUnit1)) {
+                    $partnerIdMappedByExpressUnitAddresses[strtolower($cheapexExpressUnit1)] = $recipient->getId();
+                }
                 if (!empty($novaExpressUnit)) {
                     $partnerIdMappedByExpressUnitAddresses[strtolower($novaExpressUnit)] = $recipient->getId();
+                }
+                if (!empty($novaExpressUnit1)) {
+                    $partnerIdMappedByExpressUnitAddresses[strtolower($novaExpressUnit1)] = $recipient->getId();
                 }
             }
             $unitAddressSql = "('" . implode("','", array_keys($partnerIdMappedByExpressUnitAddresses)) . "')";

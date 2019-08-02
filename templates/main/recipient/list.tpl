@@ -18,10 +18,25 @@
                 <th>Last Name</th>
                 <th>Email</th>
                     {*                <th>Tel.</th>*}
+                    {if $ns.user->getType() == 'root'}
+                    <th>Ex Unit Glob</th>
+                    {/if}
                 <th>Ex Unit Glob</th>
+                    {if $ns.user->getType() == 'root'}
+                    <th>Ex Unit Onex</th>
+                    {/if}
                 <th>Ex Unit Onex</th>
+                    {if $ns.user->getType() == 'root'}
+                    <th>Ex Unit Nova</th>
+                    {/if}
                 <th>Ex Unit Nova</th>
+                    {if $ns.user->getType() == 'root'}
+                    <th>Ex Unit Shipex</th>
+                    {/if}
                 <th>Ex Unit Shipex</th>
+                    {if $ns.user->getType() == 'root'}
+                    <th>Ex Unit Cheapex</th>
+                    {/if}
                 <th>Ex Unit Cheapex</th>
                     {if $ns.selectedFilterShowStandardUnits == 'yes'}
                     <th>St Unit</th>
@@ -52,11 +67,26 @@
                     <td>{$recipient->getLastName()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="email">{$recipient->getEmail()}</td>
                     {*                    <td style="white-space: nowrap"> {$recipient->getPhoneNumber()|replace:',':'</br>'} </td>*}
+                    {if $ns.user->getType() == 'root'}
                     <td class="table-cell f_editable_cell" data-field-name="express_unit_address">{$recipient->getExpressUnitAddress()}</td>
+                    {/if}
+                    <td class="table-cell f_editable_cell" data-field-name="express_unit_address_1">{$recipient->getExpressUnitAddress1()}</td>
+                    {if $ns.user->getType() == 'root'}
                     <td class="table-cell f_editable_cell" data-field-name="onex_express_unit">{$recipient->getOnexExpressUnit()}</td>
+                    {/if}
+                    <td class="table-cell f_editable_cell" data-field-name="onex_express_unit_1">{$recipient->getOnexExpressUnit1()}</td>
+                    {if $ns.user->getType() == 'root'}
                     <td class="table-cell f_editable_cell" data-field-name="nova_express_unit">{$recipient->getNovaExpressUnit()}</td>
+                    {/if}
+                    <td class="table-cell f_editable_cell" data-field-name="nova_express_unit_1">{$recipient->getNovaExpressUnit1()}</td>
+                    {if $ns.user->getType() == 'root'}
                     <td class="table-cell f_editable_cell" data-field-name="shipex_express_unit">{$recipient->getShipexExpressUnit()}</td>
+                    {/if}
+                    <td class="table-cell f_editable_cell" data-field-name="shipex_express_unit_1">{$recipient->getShipexExpressUnit1()}</td>
+                    {if $ns.user->getType() == 'root'}
                     <td class="table-cell f_editable_cell" data-field-name="cheapex_express_unit">{$recipient->getCheapexExpressUnit()}</td>
+                    {/if}
+                    <td class="table-cell f_editable_cell" data-field-name="cheapex_express_unit_1">{$recipient->getCheapexExpressUnit1()}</td>
                     {if $ns.selectedFilterShowStandardUnits == 'yes'}
                         <td>{$recipient->getStandardUnitAddress()} {$recipient->getOnexStandardUnit()} {$recipient->getNovaStandardUnit()} {$recipient->getShipexStandardUnit()} {$recipient->getCheapexStandardUnit()}</td>
                     {/if}
@@ -74,7 +104,7 @@
                         {if isset($ns.recipientsRecentOrdersMappedByRecipientId[$recipient->getId()])}
                             {assign recipientOrders $ns.recipientsRecentOrdersMappedByRecipientId[$recipient->getId()]}
                             <a {if $recipientOrders['total']>=$ns.recipient_monthly_limit_usd}style="color:red;"{/if} class="link" data-orders='{$recipientOrders|@json_encode|escape}'
-                               href="{$SITE_PATH}/rorder/list?prt={$recipient->getId()}">
+                                                                                              href="{$SITE_PATH}/rorder/list?prt={$recipient->getId()}">
                                 {$recipientOrders['count']} (${$recipientOrders['total']})
 
                             </a>
@@ -95,15 +125,15 @@
                         </a>
                     </td>
                     <td class="icon-cell">
-                         {if $ns.user->getType() == 'root' }
-                        <input class="f_checked_checkbox" data-recipient_id="{$recipient->getId()}" type="checkbox"
-                               value="1" {if $recipient->getChecked() ==1}checked{/if}/>
+                        {if $ns.user->getType() == 'root' }
+                            <input class="f_checked_checkbox" data-recipient_id="{$recipient->getId()}" type="checkbox"
+                                   value="1" {if $recipient->getChecked() ==1}checked{/if}/>
                         {/if}
                     </td>
                     <td class="icon-cell">
-                         {if $ns.user->getType() == 'root' }
-                        <input class="f_deleted_checkbox" data-recipient_id="{$recipient->getId()}" type="checkbox"
-                               value="1" {if $recipient->getDeleted() ==1}checked{/if}/>
+                        {if $ns.user->getType() == 'root' }
+                            <input class="f_deleted_checkbox" data-recipient_id="{$recipient->getId()}" type="checkbox"
+                                   value="1" {if $recipient->getDeleted() ==1}checked{/if}/>
                         {/if}
                     </td>
                 </tr>

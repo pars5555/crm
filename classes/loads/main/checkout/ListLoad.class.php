@@ -90,10 +90,13 @@ namespace crm\loads\main\checkout {
             $recipientsMappedByUnitAddress = [];
             foreach ($allRecipients as $recipient) {
                 $recipientsMappedByUnitAddress [$recipient->getExpressUnitAddress()] = $recipient;
+                $recipientsMappedByUnitAddress [$recipient->getExpressUnitAddress1()] = $recipient;
                 $recipientsMappedByUnitAddress [$recipient->getStandardUnitAddress()] = $recipient;
                 $recipientsMappedByUnitAddress [$recipient->getOnexExpressUnit()] = $recipient;
+                $recipientsMappedByUnitAddress [$recipient->getOnexExpressUnit1()] = $recipient;
                 $recipientsMappedByUnitAddress [$recipient->getOnexStandardUnit()] = $recipient;
                 $recipientsMappedByUnitAddress [$recipient->getNovaExpressUnit()] = $recipient;
+                $recipientsMappedByUnitAddress [$recipient->getNovaExpressUnit1()] = $recipient;
                 $recipientsMappedByUnitAddress [$recipient->getNovaStandardUnit()] = $recipient;
             }
             $this->addParam('recipientsMappedByUnitAddress', $recipientsMappedByUnitAddress);
