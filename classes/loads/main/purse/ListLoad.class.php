@@ -303,10 +303,10 @@ namespace crm\loads\main\purse {
             if ($selectedFilterStatus === 'active') {
                 $where = array_merge($where, ['AND ', 'status', 'in', $activeStatusesSql]);
             }
-            if ($selectedFilterStatus === 'musho') {
+            if ($selectedFiltereAdmin === 'musho') {
                 $where = array_merge($where, ['AND ', 'admin_id', '=', 9]);
             }
-            if ($selectedFilterStatus === 'lilit') {
+            if ($selectedFiltereAdmin === 'lilit') {
                 $where = array_merge($where, ['AND ', 'admin_id', '<>', 9]);
             }
             if ($selectedFilterStatus === 'inactive') {
