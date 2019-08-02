@@ -213,6 +213,11 @@ namespace crm\loads\main\purse {
             if (isset(NGS()->args()->estts)) {
                 $selectedFiltereStatus = strtolower(NGS()->args()->estts);
             }
+            $selectedFiltereAdmin = 'all';
+            if (isset(NGS()->args()->adm)) {
+                $selectedFiltereAdmin = strtolower(NGS()->args()->adm);
+            }
+            
             if (!empty($load)) {
                 $all_merchant_names_list = explode(',', SettingManager::getInstance()->getSetting('all_merchant_names_list'));
                 $load->addParam('all_merchant_names_list', $all_merchant_names_list);
@@ -260,6 +265,7 @@ namespace crm\loads\main\purse {
                 $selectedFilterHidden = 'no';
                 $selectedFilterStatus = 'all';
                 $selectedFiltereStatus = 'all';
+                $selectedFiltereAdmin = 'all';
                 $selectedFilterShippingType = 'all';
                 $orderType = 'all';
                 $selectedFilterRecipientId = 0;
@@ -276,6 +282,7 @@ namespace crm\loads\main\purse {
                 $load->addParam('notRegOrdersInWarehouse', $regOrdersInWarehouse);
                 $load->addParam('selectedFilterHidden', $selectedFilterHidden);
                 $load->addParam('selectedFilterStatus', $selectedFilterStatus);
+                $load->addParam('selectedFilterAdmin', $selectedFiltereAdmin);
                 $load->addParam('selectedFiltereStatus', $selectedFiltereStatus);
                 $load->addParam('selectedFilterShippingType', $selectedFilterShippingType);
                 $load->addParam('orderType', $orderType);
@@ -295,6 +302,12 @@ namespace crm\loads\main\purse {
             $activeStatusesSql = "('open', 'shipping', 'shipped', 'partially_delivered', 'under_balance','under_balance.confirming', 'accepted')";
             if ($selectedFilterStatus === 'active') {
                 $where = array_merge($where, ['AND ', 'status', 'in', $activeStatusesSql]);
+            }
+            if ($selectedFilterStatus === 'musho') {
+                $where = array_merge($where, ['AND ', 'admin_id', '=', 9]);
+            }
+            if ($selectedFilterStatus === 'lilit') {
+                $where = array_merge($where, ['AND ', 'admin_id', '<>', 9]);
             }
             if ($selectedFilterStatus === 'inactive') {
                 $where = array_merge($where, ['AND ', 'status', 'not in', $activeStatusesSql]);

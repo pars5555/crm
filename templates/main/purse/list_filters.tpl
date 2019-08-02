@@ -97,6 +97,16 @@
             <label>last 12 hours changed</label>
             <input name="nc" type="checkbox" {if $ns.new_changed == 1}checked{/if} value="1"/>
         </div>
+        {if $ns.user->getType() == 'root'}
+            <div class="filter">
+                <label>Admins</label>
+                <select name="adm">
+                    <option value="all" {if $ns.selectedFilterAdmin == 'all'}selected{/if}>All</option>
+                    <option value="lilit" {if $ns.selectedFilterAdmin == 'lilit'}selected{/if}>Lilit</option>
+                    <option value="musho" {if $ns.selectedFilterAdmin == 'musho'}selected{/if}>Musho</option>
+                </select>
+            </div>
+        {/if}
     </div>
 
     {if $ns.pagesCount > 0}
