@@ -91,7 +91,7 @@
                                                         <span class="f_editable_cell" data-field-name="unit_address">
                                                         {$order->getUnitAddress()} 
                                                         </span>
-                                                    {if $order->getLocalCarrierName() === 'globbing' && isset($recipientsMappedByUnitAddress[$order->getUnitAddress()])}{$recipientsMappedByUnitAddress[$order->getUnitAddress()]->getEmail()|truncate:4:""}{/if} ({$order->getAccountName()|replace:'purse_':''})</td>
+                                                    {if $order->getLocalCarrierName() === 'globbing' && isset($recipientsMappedByUnitAddress[$order->getUnitAddress()])}{$recipientsMappedByUnitAddress[$order->getUnitAddress()]->getEmail()|truncate:10:""}{/if} ({$order->getAccountName()|replace:'purse_':''})</td>
 
                                                 <td> 
                                                     <img src="{$order->getImageUrl()}" width="100"/>
