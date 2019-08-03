@@ -23,7 +23,7 @@ namespace crm\actions\api\vanilla {
         public function service() {
             $id = intval(NGS()->args()->card_id);
             VanillaCardsManager::getInstance()->updateField($id, 'updated_at', date('Y-m-d H:i:s'));
-            VanillaCardsManager::getInstance()->updateField($id, 'invalid', 1);
+            //VanillaCardsManager::getInstance()->updateField($id, 'invalid', 1);
             $this->addParam('success', true);
         }
 
