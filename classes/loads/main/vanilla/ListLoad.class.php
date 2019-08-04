@@ -29,7 +29,7 @@ namespace crm\loads\main\vanilla {
             if ($selectedFilterShowDeleted === 'no') {
                 $where = array_merge($where, ['AND', 'deleted', '=', '0', 'AND', 'closed', '=', '0']);
             }
-            $adminId = NGS()->getSessionManager()->getUserId();
+            $adminId = intval(NGS()->getSessionManager()->getUserId());
             if ($selectedFilterAdmin === 'musho' || $adminId === 9) {
                 $where = array_merge($where, ['AND ', 'admin_id', '=', 9]);
             }
