@@ -57,7 +57,7 @@ namespace crm\actions\api\vanilla {
                 }
             }
 
-            $balance = floatval(NGS()->args()->balance);
+            $balance = floatval(trim(trim(NGS()->args()->balance),'$'));
             $transaction_history = trim(urldecode(trim(NGS()->args()->transaction_history)));
             $transaction_history = preg_replace('/\s+/', ' ', $transaction_history);
             $transaction_history = preg_replace('^\\d{1,2}/\\d{2}/\\d{4}^', "\r\n", $transaction_history);
