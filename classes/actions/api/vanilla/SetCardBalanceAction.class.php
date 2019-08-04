@@ -32,6 +32,7 @@ namespace crm\actions\api\vanilla {
                 $card = VanillaCardsManager::getInstance()->selectByPK($id);
                 $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
                 $manager->postMessage('****' . substr($card->getNumber(), -6) . ' is invalid!');
+                VanillaCardsManager::getInstance()->updateField($id, 'updated_at', date('Y-m-d H:i:s'));
                 $this->addParam('success', true);
                 return;
             }
