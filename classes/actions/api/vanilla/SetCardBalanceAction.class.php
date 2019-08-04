@@ -25,51 +25,54 @@ namespace crm\actions\api\vanilla {
             $telegramToken = SettingManager::getInstance()->getSetting('telegram_bot_token');
             $telegramCrmChannelId = SettingManager::getInstance()->getSetting('telegram_crm_channel_id');
             $vanilla_telegram_notification_min_balance = SettingManager::getInstance()->getSetting('vanilla_telegram_notification_min_balance');
+            $id = intval(NGS()->args()->card_id);
+            $message = trim(NGS()->args()->message);
 
-            $closedCardIds = trim(NGS()->args()->closed_cards_ids);
-            if (!empty($closedCardIds)) {
-                $idsArray = explode(',', $closedCardIds);
-                foreach ($idsArray as $ccid) {
-                    $card = VanillaCardsManager::getInstance()->selectByPK($ccid);
-                    $tryCount = intval($card->getTryCount());
-                    if ($tryCount < 120) {
-                        VanillaCardsManager::getInstance()->updateField($ccid, 'try_count', $tryCount + 1);
-                        $this->addParam('success', true);
-                        continue;
-                    }
-                    if ($card->getClosed() == 0) {
-                        $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
+            if (!empty($message) && strpos($message, 'invalid')) {
+                $card = VanillaCardsManager::getInstance()->selectByPK($id);
+                $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
+                $manager->postMessage('****' . substr($card->getNumber(), -6) . ' is invalid!');
+                $this->addParam('success', true);
+                return;
+            }
 
-                        $note = trim($card->getNote());
-                        if (!empty($note)) {
-                            $note = ' note: ' . $note;
-                        }
-                        $manager->postMessage('****' . substr($card->getNumber(), -6) . ' is closed! last available balance was: $' . $card->getBalance() . ' initial balance was: ' . $card->getInitialBalance() . $note . ' card supplied at: ' . $card->getCreatedAt());
-                        VanillaCardsManager::getInstance()->updateField($ccid, 'closed', 1);
-                        VanillaCardsManager::getInstance()->updateField($ccid, 'updated_at', date('Y-m-d H:i:s'));
+            if (!empty($message) && strpos($message, 'issue with your account')) {
+                $card = VanillaCardsManager::getInstance()->selectByPK($id);
+                $tryCount = intval($card->getTryCount());
+                if ($tryCount < 10) {
+                    VanillaCardsManager::getInstance()->updateField($id, 'try_count', $tryCount + 1);
+                    $this->addParam('success', true);
+                    return;
+                }
+                if ($card->getClosed() == 0) {
+                    $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
+                    $note = trim($card->getNote());
+                    if (!empty($note)) {
+                        $note = ' note: ' . $note;
                     }
+                    $manager->postMessage('****' . substr($card->getNumber(), -6) . ' is closed! last available balance was: $' . $card->getBalance() . ' initial balance was: ' . $card->getInitialBalance() . $note . ' card supplied at: ' . $card->getCreatedAt());
+                    VanillaCardsManager::getInstance()->updateField($id, 'closed', 1);
+                    VanillaCardsManager::getInstance()->updateField($id, 'updated_at', date('Y-m-d H:i:s'));
+                    return;
                 }
             }
 
-            $id = intval(NGS()->args()->card_id);
             $balance = floatval(NGS()->args()->balance);
             $transaction_history = trim(urldecode(trim(NGS()->args()->transaction_history)));
             $transaction_history = preg_replace('/\s+/', ' ', $transaction_history);
             $transaction_history = preg_replace('^\\d{1,2}/\\d{2}/\\d{4}^', "\r\n", $transaction_history);
             VanillaCardsManager::getInstance()->updateField($id, 'updated_at', date('Y-m-d H:i:s'));
-            if (isset(NGS()->args()->skip) && NGS()->args()->skip == 1) {
-                $this->addParam('success', true);
-                return;
-            }
-
+            $card = VanillaCardsManager::getInstance()->selectByPK($id);
             if ($balance >= $vanilla_telegram_notification_min_balance) {
-                $card = VanillaCardsManager::getInstance()->selectByPK($id);
                 $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
                 $note = trim($card->getNote());
                 if (!empty($note)) {
                     $note = ' note: ' . $note;
                 }
                 $manager->postMessage('****' . substr($card->getNumber(), -6) . ' balance is: $' . $balance . $note . ' card supplied at: ' . $card->getCreatedAt());
+            }
+            if ($card->getInitialBalance() == null) {
+                VanillaCardsManager::getInstance()->updateField($id, 'initial_balance', $balance);
             }
             VanillaCardsManager::getInstance()->updateField($id, 'balance', $balance);
             VanillaCardsManager::getInstance()->updateField($id, 'transaction_history', $transaction_history);
