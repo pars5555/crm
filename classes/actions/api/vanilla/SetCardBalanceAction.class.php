@@ -28,7 +28,7 @@ namespace crm\actions\api\vanilla {
             $id = intval(NGS()->args()->card_id);
             $message = trim(NGS()->args()->message);
 
-            if (!empty($message) && strpos($message, 'invalid')) {
+            if (!empty($message) && strpos($message, 'valid')) {
                 $card = VanillaCardsManager::getInstance()->selectByPK($id);
                 $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
                 $manager->postMessage('****' . substr($card->getNumber(), -6) . ' is invalid!');
