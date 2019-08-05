@@ -31,10 +31,10 @@ namespace crm\loads\main\vanilla {
             }
             $adminId = intval(NGS()->getSessionManager()->getUserId());
             if ($selectedFilterAdmin === 'musho' || $adminId === 9) {
-                $where = array_merge($where, ['AND ', 'admin_id', '=', 9]);
+                $where = array_merge($where, ['AND ', 'admin_id', '=', '9']);
             }
             if ($selectedFilterAdmin === 'lilit') {
-                $where = array_merge($where, ['AND ', 'admin_id', '<>', 9]);
+                $where = array_merge($where, ['AND ', '(','admin_id', '<>', '9','or', 'admin_id', 'IS NULL',')']);
             }
             $telegramChatIdsSql = "";
             if ($selectedFilterPartnerId > 0) {
