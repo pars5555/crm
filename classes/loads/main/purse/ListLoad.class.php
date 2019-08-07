@@ -71,7 +71,9 @@ namespace crm\loads\main\purse {
                             $searchedItemCount += intval($order->getQuantity());
                         }
                     }
-                    $totalPuposedToNotReceived += floatval($order->getAmazonTotal());
+                    if ($order->getAdminId()<>'9'){
+                        $totalPuposedToNotReceived += floatval($order->getAmazonTotal());
+                    }
                 }
                 $this->addParam('total_puposed_to_not_received', $totalPuposedToNotReceived);
 
