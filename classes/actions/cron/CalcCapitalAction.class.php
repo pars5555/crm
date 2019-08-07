@@ -51,7 +51,7 @@ namespace crm\actions\cron {
             $manager = new \naffiq\telegram\channel\Manager($telegramToken, $telegramCrmChannelId);
             $botDateOrBool = \crm\managers\VanillaCardsManager::getInstance()->isBotWorking();
             if ($botDateOrBool !== true) {
-                $manager->postMessage('Vanilla checker stopped! last updated date: '. $botDateOrBool);
+                $manager->postMessage('Vanilla checker stopped! last updated date: ' . $botDateOrBool);
             }
         }
 

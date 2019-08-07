@@ -31,6 +31,7 @@
                 <th>order amounts</th>
                 <th>Succeed amounts</th>
                 <th>Attention</th>
+                <th>Important</th>
                 <th>Sold to others Total</th>
                 <th>Note</th>
                 <th>Pending Amounts</th>
@@ -65,6 +66,11 @@
 
                         <input class="f_attention"
                                data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getAttention() == 1}checked{/if}/>
+                    </td>
+                    <td class="icon-cell">
+
+                        <input class="f_important"
+                               data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getImportant() == 1}checked{/if}/>
                     </td>
                     <td class="table-cell f_editable_cell" data-field-name="sold_amount">{$row->getSoldAmount()}</td>
                     <td class="table-cell f_editable_cell" data-field-name="note">{$row->getNote()}</td>

@@ -40,6 +40,7 @@ namespace crm\dal\dto {
             "external_orders_ids" => "externalOrdersIds",
             "telegram_chat_id" => "telegramChatId",
             "attention" => "attention",
+            "important" => "important",
             "sold_amount" => "soldAmount",
             "note" => "note",
             "bonus_supplied" => "bonusSupplied",
