@@ -580,7 +580,7 @@ namespace crm\managers {
             } else {
                 $where = ['(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR', 'checkout_order_id', 'IS NULL', ')'];
             }
-            $where = array_merge($where, ['AND', 'hidden', '=', 0, 'AND',
+            $where = array_merge($where, ['AND', 'hidden', '=', 0, 'AND', 'admin_id' ,'<>', '9', 'AND',
                 '(',
                 '(',
                 'status', 'in', "('shipping', 'shipped', 'accepted')", 'AND',
