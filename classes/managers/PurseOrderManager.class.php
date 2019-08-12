@@ -403,7 +403,7 @@ namespace crm\managers {
                 $trackingLinks = $el->getElementsByTagName('a');
                 if ($trackingLinks->length > 0) {
                     $trackingNumber = $trackingLinks->item(0)->nodeValue;
-                    $trackingNumber = trim(str_replace('Tracking ID', '', $trackingNumber));
+                    $trackingNumber = trim(trim(trim(str_replace('Tracking ID', '', $trackingNumber)), ':'));
                     if (preg_match('/\\d/', $trackingNumber) === 1) {
                         $shippingCarrierName = $this->getShippingCarrierName($el);
                         break;
