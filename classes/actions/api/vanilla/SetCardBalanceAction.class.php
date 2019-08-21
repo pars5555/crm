@@ -73,6 +73,9 @@ namespace crm\actions\api\vanilla {
                 $manager->postMessage('****' . substr($card->getNumber(), -6) . ' balance is: $' . $balance . $note . ' card supplied at: ' . $card->getCreatedAt());
             }
             if ($card->getInitialBalance() == null) {
+                if ($balance < 80) {
+                    VanillaCardsManager::getInstance()->updateField($id, 'admin_id', 9);
+                }
                 VanillaCardsManager::getInstance()->updateField($id, 'initial_balance', $balance);
             }
             VanillaCardsManager::getInstance()->updateField($id, 'balance', $balance);
