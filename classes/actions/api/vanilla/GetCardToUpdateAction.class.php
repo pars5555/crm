@@ -28,7 +28,7 @@ namespace crm\actions\api\vanilla {
                 $brandWhere = ['NOT', '(', 'number', 'like', "'5432%'", 'OR', 'number', 'like', "'4847%'", 'OR', 'number', 'like', "'4941%'", ')', 'AND'];
             }
             $date = new \DateTime();
-            $date->modify('-5 day');
+            $date->modify('-15 day');
             $hourAgo = $date->format('Y-m-d H:i:s');
             $where = array_merge($brandWhere, ['closed', '=', 0, 'AND', 'invalid', '=', 0, 'AND' , 'created_at','>=',"'$hourAgo'"]);
             $rows = VanillaCardsManager::getInstance()->selectAdvance(['id', 'number', 'month', 'year', 'cvv'], $where, 'updated_at', 'ASC', 0, 1);
