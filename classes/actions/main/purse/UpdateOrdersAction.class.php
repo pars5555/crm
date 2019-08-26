@@ -47,8 +47,6 @@ namespace crm\actions\main\purse {
             }
             SettingManager::getInstance()->setSetting($settingVarName, json_encode($userInfo));
             
-            
-            
             $res = PurseOrderManager::getInstance()->getActiveOrders($token);
             if (empty($res) || !isset($res['results'])) {
                 $this->addParam('success', false);

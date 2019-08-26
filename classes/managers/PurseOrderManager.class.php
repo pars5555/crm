@@ -630,7 +630,7 @@ namespace crm\managers {
 
         public function getActiveOrders($token) {
             $headers = $this->getPurseHeader($token);
-            return json_decode($this->curl_get_contents('https://api.purse.io/api/v1/orders/me/active', $headers), true);
+            return json_decode($this->curl_get_contents('https://api.purse.io/api/v1/orders/me/active?limit=500&offset=0', $headers), true);
         }
 
         public function getUserInfo($token) {
