@@ -142,7 +142,7 @@ namespace crm\managers {
                 $shipexExpressUnit1 = $recipient->getShipexExpressUnit_1();
                 $cheapexExpressUnit = $recipient->getCheapexExpressUnit();
                 $cheapexExpressUnit1 = $recipient->getCheapexExpressUnit_1();
-                if (empty($expressUnitAddress) && empty($onexExpressUnit) && empty($novaExpressUnit) && empty($shipexExpressUnit) && empty($cheapexExpressUnit) && 
+                if (empty($expressUnitAddress) && empty($onexExpressUnit) && empty($novaExpressUnit) && empty($shipexExpressUnit) && empty($cheapexExpressUnit) &&
                         empty($expressUnitAddress1) && empty($onexExpressUnit1) && empty($novaExpressUnit1) && empty($shipexExpressUnit1) && empty($cheapexExpressUnit1)) {
                     continue;
                 }
@@ -458,6 +458,10 @@ namespace crm\managers {
             $dto->setExternal($external);
             $dto->setExternalProductNumber($externalProductNumber);
             $dto->setUnitAddress($unitAddress);
+            $fakeRecipientUnitAddressesArray = RecipientManager::getInstance()->getFakeRecipientUnitAddressesArray();
+            if (preg_grep("/$unitAddress/i", $fakeRecipientUnitAddressesArray)) {
+                $dto->setOriginalUnitAddress($unitAddress);
+            }
             $shippingType = RecipientManager::getInstance()->getShippingTypeByUnitAddress($unitAddress);
             $dto->setShippingType($shippingType);
             $recipient = RecipientManager::getInstance()->getRecipientByUnitAddress($unitAddress);
@@ -509,6 +513,10 @@ namespace crm\managers {
             $unitAddress = trim($order['shipping']['verbose']['street2']);
             if (empty($dtos)) {
                 $dto->setUnitAddress($unitAddress);
+                $fakeRecipientUnitAddressesArray = RecipientManager::getInstance()->getFakeRecipientUnitAddressesArray();
+                if (preg_grep("/$unitAddress/i", $fakeRecipientUnitAddressesArray)) {
+                    $dto->setOriginalUnitAddress($unitAddress);
+                }
                 $dto->setRecipientName($order['shipping']['verbose']['full_name']);
             }
             $shippingType = RecipientManager::getInstance()->getShippingTypeByUnitAddress($unitAddress);
@@ -580,7 +588,7 @@ namespace crm\managers {
             } else {
                 $where = ['(', 'unit_address', 'not in', "($this->fakeRecipientUnitAddressesStr)", 'OR', 'checkout_order_id', 'IS NULL', ')'];
             }
-            $where = array_merge($where, ['AND', 'hidden', '=', 0, 'AND', 'admin_id' ,'<>', '9', 'AND',
+            $where = array_merge($where, ['AND', 'hidden', '=', 0, 'AND', 'admin_id', '<>', '9', 'AND',
                 '(',
                 '(',
                 'status', 'in', "('shipping', 'shipped', 'accepted')", 'AND',

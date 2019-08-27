@@ -60,10 +60,10 @@
         <div class="filter">
             <label>Exact Status</label>
             <select name="estts">
-                <option value="all" {if $ns.selectedFiltereStatus == 'all'}selected{/if}>All</option>
-                <option value="delivered" {if $ns.selectedFiltereStatus == 'delivered'}selected{/if}>Delivered</option>
-                <option value="canceled" {if $ns.selectedFiltereStatus == 'canceled'}selected{/if}>Canceled</option>
-                <option value="shipping" {if $ns.selectedFiltereStatus == 'shipping'}selected{/if}>Shipping</option>
+                <option value="all" {if $ns.selectedFilterStatus == 'all'}selected{/if}>All</option>
+                <option value="delivered" {if $ns.selectedFilterStatus == 'delivered'}selected{/if}>Delivered</option>
+                <option value="canceled" {if $ns.selectedFilterStatus == 'canceled'}selected{/if}>Canceled</option>
+                <option value="shipping" {if $ns.selectedFilterStatus == 'shipping'}selected{/if}>Shipping</option>
             </select>
         </div>
         <div class="filter">
@@ -87,6 +87,14 @@
             <select name="hddn">
                 <option value="all" {if $ns.selectedFilterHidden == 'all'}selected{/if}>All</option>
                 <option value="no" {if $ns.selectedFilterHidden == 'no'}selected{/if}>No</option>
+            </select>
+        </div>
+        <div class="filter">
+            <label>Show Adam only</label>
+            <select name="adam">
+                <option value="all" {if $ns.selectedFilterAdam== 'all'}selected{/if}>All</option>
+                <option value="no" {if $ns.selectedFilterAdam == 'no'}selected{/if}>No</option>
+                <option value="yes" {if $ns.selectedFilterAdam == 'yes'}selected{/if}>Yes</option>
             </select>
         </div>
         <div class="filter">

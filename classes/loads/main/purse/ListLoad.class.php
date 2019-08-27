@@ -214,13 +214,19 @@ namespace crm\loads\main\purse {
                     $selectedFilterStatus = strtolower(NGS()->args()->stts);
                 }
             }
-            $selectedFiltereStatus = 'all';
-            if (isset(NGS()->args()->estts)) {
-                $selectedFiltereStatus = strtolower(NGS()->args()->estts);
+            $selectedFilterAdam = 'all';
+            if (isset(NGS()->args()->adam)) {
+                if (in_array(strtolower(NGS()->args()->adam), ['all', 'yes', 'no'])) {
+                    $selectedFilterAdam = strtolower(NGS()->args()->adam);
+                }
             }
-            $selectedFiltereAdmin = 'all';
+            $selectedFilterStatus = 'all';
+            if (isset(NGS()->args()->estts)) {
+                $selectedFilterStatus = strtolower(NGS()->args()->estts);
+            }
+            $selectedFilterAdmin = 'all';
             if (isset(NGS()->args()->adm)) {
-                $selectedFiltereAdmin = strtolower(NGS()->args()->adm);
+                $selectedFilterAdmin = strtolower(NGS()->args()->adm);
             }
 
             if (!empty($load)) {
@@ -269,8 +275,9 @@ namespace crm\loads\main\purse {
                 $selectedFilterMerchant = 'all';
                 $selectedFilterHidden = 'no';
                 $selectedFilterStatus = 'all';
-                $selectedFiltereStatus = 'all';
-                $selectedFiltereAdmin = 'all';
+                $selectedFilterStatus = 'all';
+                $selectedFilterAdam = 'all';
+                $selectedFilterAdmin = 'all';
                 $selectedFilterShippingType = 'all';
                 $orderType = 'all';
                 $selectedFilterRecipientId = 0;
@@ -287,8 +294,9 @@ namespace crm\loads\main\purse {
                 $load->addParam('notRegOrdersInWarehouse', $regOrdersInWarehouse);
                 $load->addParam('selectedFilterHidden', $selectedFilterHidden);
                 $load->addParam('selectedFilterStatus', $selectedFilterStatus);
-                $load->addParam('selectedFilterAdmin', $selectedFiltereAdmin);
-                $load->addParam('selectedFiltereStatus', $selectedFiltereStatus);
+                $load->addParam('selectedFilterAdmin', $selectedFilterAdmin);
+                $load->addParam('selectedFilterStatus', $selectedFilterStatus);
+                $load->addParam('selectedFilterAdam', $selectedFilterAdam);
                 $load->addParam('selectedFilterShippingType', $selectedFilterShippingType);
                 $load->addParam('orderType', $orderType);
                 $load->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
@@ -308,20 +316,26 @@ namespace crm\loads\main\purse {
             if ($selectedFilterStatus === 'active') {
                 $where = array_merge($where, ['AND ', 'status', 'in', $activeStatusesSql]);
             }
-            if ($selectedFiltereAdmin === 'musho') {
+            if ($selectedFilterAdmin === 'musho') {
                 $where = array_merge($where, ['AND ', 'admin_id', '=', 9]);
             }
-            if ($selectedFiltereAdmin === 'lilit') {
+            if ($selectedFilterAdmin === 'lilit') {
                 $where = array_merge($where, ['AND ', 'admin_id', '<>', 9]);
             }
             if ($selectedFilterStatus === 'inactive') {
                 $where = array_merge($where, ['AND ', 'status', 'not in', $activeStatusesSql]);
             }
-            if ($selectedFiltereStatus !== 'all') {
-                $where = array_merge($where, ['AND ', 'status', '=', "'$selectedFiltereStatus'"]);
+            if ($selectedFilterStatus !== 'all') {
+                $where = array_merge($where, ['AND ', 'status', '=', "'$selectedFilterStatus'"]);
             }
             if ($selectedFilterHidden !== 'all') {
                 $where = array_merge($where, ['AND ', 'hidden', '=', 0]);
+            }
+            if ($selectedFilterAdam === 'yes') {
+                $where = array_merge($where, ['AND ', 'original_unit_address', 'IS NOT NULL']);
+            }
+            if ($selectedFilterAdam === 'no') {
+                $where = array_merge($where, ['AND ', 'original_unit_address', 'IS NULL']);
             }
             if ($selectedFilterShippingType !== 'all') {
                 $where = array_merge($where, ['AND ', 'shipping_type', '=', "'$selectedFilterShippingType'"]);
