@@ -86,7 +86,7 @@ namespace crm\loads\main\checkout {
             $this->addParam('btc_products_days_diff_for_delivery_date', $btc_products_days_diff_for_delivery_date);
 
 
-            $allRecipients = RecipientManager::getInstance()->selectAdvance('*', [], ['email','first_name', 'last_name']);
+            $allRecipients = RecipientManager::getInstance()->selectAdvance('*', [], ['email', 'first_name', 'last_name']);
             $recipientsMappedByUnitAddress = [];
             foreach ($allRecipients as $recipient) {
                 $recipientsMappedByUnitAddress [$recipient->getExpressUnitAddress()] = $recipient;
@@ -100,7 +100,7 @@ namespace crm\loads\main\checkout {
                 $recipientsMappedByUnitAddress [$recipient->getNovaStandardUnit()] = $recipient;
             }
             $this->addParam('recipientsMappedByUnitAddress', $recipientsMappedByUnitAddress);
-            
+
             $this->addParam('checkout_order_statuses', PurseOrderDto::CHECKOUT_ORDER_STATUSES);
 
 
@@ -161,6 +161,12 @@ namespace crm\loads\main\checkout {
                     $selectedFilterStatus = strtolower(NGS()->args()->stts);
                 }
             }
+            $selectedFilterAdam = 'all';
+            if (isset(NGS()->args()->adam)) {
+                if (in_array(strtolower(NGS()->args()->adam), ['all', 'yes', 'no'])) {
+                    $selectedFilterAdam = strtolower(NGS()->args()->adam);
+                }
+            }
             $selectedFilterMerchant = 'all';
             if (isset(NGS()->args()->mrch)) {
                 $selectedFilterMerchant = strtolower(NGS()->args()->mrch);
@@ -206,6 +212,7 @@ namespace crm\loads\main\checkout {
                 $selectedFilterAccount = '';
                 $selectedFilterCheckoutStatus = 'active';
                 $selectedFilterStatus = 'all';
+                $selectedFilterAdam = 'all';
                 $selectedFilterShippingType = 'all';
                 $orderType = 'all';
                 $selectedFilterRecipientId = 0;
@@ -221,6 +228,7 @@ namespace crm\loads\main\checkout {
                 $load->addParam('selectedFilterAccount', $selectedFilterAccount);
                 $load->addParam('selectedFilterCheckoutStatus', $selectedFilterCheckoutStatus);
                 $load->addParam('selectedFilterStatus', $selectedFilterStatus);
+                $load->addParam('selectedFilterAdam', $selectedFilterAdam);
                 $load->addParam('selectedFilterShippingType', $selectedFilterShippingType);
                 $load->addParam('orderType', $orderType);
                 $load->addParam('selectedFilterSortByAscDesc', $selectedFilterSortByAscDesc);
@@ -254,6 +262,12 @@ namespace crm\loads\main\checkout {
             if ($selectedFilterRecipientId > 0) {
                 $recipientUnitAddressesSql = RecipientManager::getInstance()->getRecipientUnitAddresses($selectedFilterRecipientId, true);
                 $where = array_merge($where, ['AND ', 'unit_address', 'in', $recipientUnitAddressesSql]);
+            }
+            if ($selectedFilterAdam === 'yes') {
+                $where = array_merge($where, ['AND ', 'original_unit_address', 'IS NOT NULL']);
+            }
+            if ($selectedFilterAdam === 'no') {
+                $where = array_merge($where, ['AND ', 'original_unit_address', 'IS NULL']);
             }
             if ($showUnitAddressesOrdersOnly == 1) {
                 $fakeRecipientUnitAddressesSql = RecipientManager::getInstance()->getFakeRecipientUnitAddressesSql();

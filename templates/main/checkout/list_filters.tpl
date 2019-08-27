@@ -57,6 +57,14 @@
             </select>
         </div>
         <div class="filter">
+            <label>Show Adam only</label>
+            <select name="adam">
+                <option value="all" {if $ns.selectedFilterAdam== 'all'}selected{/if}>All</option>
+                <option value="no" {if $ns.selectedFilterAdam == 'no'}selected{/if}>No</option>
+                <option value="yes" {if $ns.selectedFilterAdam == 'yes'}selected{/if}>Yes</option>
+            </select>
+        </div>
+        <div class="filter">
             <label>Problematic</label>
             <input type="checkbox" name="pr" {if $ns.problematic == 1}checked{/if} value="1"/>
         </div>
