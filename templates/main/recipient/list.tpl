@@ -20,7 +20,7 @@
                     <th>Email</th>
                     {/if}
                     {*                <th>Tel.</th>*}
-                    {if $ns.user->getType() == 'root'}
+                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
                     <th>Ex Unit Glob</th>
                     {/if}
                 <th>Ex Unit Glob</th>
