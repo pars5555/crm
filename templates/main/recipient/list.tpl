@@ -20,26 +20,36 @@
                     <th>Email</th>
                     {/if}
                     {*                <th>Tel.</th>*}
-                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
+                    {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
                     <th>Ex Unit Glob</th>
                     {/if}
-                <th>Ex Unit Glob</th>
+                    {if $ns.user->getType() == 'root' }
+                    <th>Ex Unit Glob</th>
+                    {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
                     <th>Ex Unit Onex</th>
                     {/if}
-                <th>Ex Unit Onex</th>
+                    {if $ns.user->getType() == 'root' }
+                    <th>Ex Unit Onex</th>
+                    {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
                     <th>Ex Unit Nova</th>
                     {/if}
-                <th>Ex Unit Nova</th>
-                   {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
+                    {if $ns.user->getType() == 'root' }
+                    <th>Ex Unit Nova</th>
+                    {/if}
+                    {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
                     <th>Ex Unit Shipex</th>
                     {/if}
-                <th>Ex Unit Shipex</th>
+                    {if $ns.user->getType() == 'root' }
+                    <th>Ex Unit Shipex</th>
+                    {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
                     <th>Ex Unit Cheapex</th>
                     {/if}
-                <th>Ex Unit Cheapex</th>
+                    {if $ns.user->getType() == 'root' }
+                    <th>Ex Unit Cheapex</th>
+                    {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes'}
                     <th>St Unit</th>
                     {/if}
@@ -79,31 +89,31 @@
                         <td class="table-cell f_editable_cell" data-field-name="express_unit_address">{$recipient->getExpressUnitAddress()}</td>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
-                    <td class="table-cell f_editable_cell" data-field-name="express_unit_address_1">{$recipient->getExpressUnitAddress_1()}</td>
+                        <td class="table-cell f_editable_cell" data-field-name="express_unit_address_1">{$recipient->getExpressUnitAddress_1()}</td>
                     {/if}
                     {if $ns.user->getType() == 'root'}
                         <td class="table-cell f_editable_cell" data-field-name="onex_express_unit">{$recipient->getOnexExpressUnit()}</td>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
-                    <td class="table-cell f_editable_cell" data-field-name="onex_express_unit_1">{$recipient->getOnexExpressUnit_1()}</td>
+                        <td class="table-cell f_editable_cell" data-field-name="onex_express_unit_1">{$recipient->getOnexExpressUnit_1()}</td>
                     {/if}
                     {if $ns.user->getType() == 'root'}
                         <td class="table-cell f_editable_cell" data-field-name="nova_express_unit">{$recipient->getNovaExpressUnit()}</td>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
-                    <td class="table-cell f_editable_cell" data-field-name="nova_express_unit_1">{$recipient->getNovaExpressUnit_1()}</td>
+                        <td class="table-cell f_editable_cell" data-field-name="nova_express_unit_1">{$recipient->getNovaExpressUnit_1()}</td>
                     {/if}
                     {if $ns.user->getType() == 'root'}
                         <td class="table-cell f_editable_cell" data-field-name="shipex_express_unit">{$recipient->getShipexExpressUnit()}</td>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
-                    <td class="table-cell f_editable_cell" data-field-name="shipex_express_unit_1">{$recipient->getShipexExpressUnit_1()}</td>
+                        <td class="table-cell f_editable_cell" data-field-name="shipex_express_unit_1">{$recipient->getShipexExpressUnit_1()}</td>
                     {/if}
                     {if $ns.user->getType() == 'root'}
                         <td class="table-cell f_editable_cell" data-field-name="cheapex_express_unit">{$recipient->getCheapexExpressUnit()}</td>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
-                    <td class="table-cell f_editable_cell" data-field-name="cheapex_express_unit_1">{$recipient->getCheapexExpressUnit_1()}</td>
+                        <td class="table-cell f_editable_cell" data-field-name="cheapex_express_unit_1">{$recipient->getCheapexExpressUnit_1()}</td>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes'}
                         <td>{$recipient->getStandardUnitAddress()} {$recipient->getOnexStandardUnit()} {$recipient->getNovaStandardUnit()} {$recipient->getShipexStandardUnit()} {$recipient->getCheapexStandardUnit()}</td>
