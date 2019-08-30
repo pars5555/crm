@@ -26,19 +26,29 @@
         <table>
             <tr>
                 <th>Actions</th>
-                <th>Order Number</th>
+                    {if $ns.user->getType() == 'root'}
+                    <th>Order Number</th>
+                    {/if}
                 <th>Recipient</th>
-                <th>Img</th>
-                <th>Product ID</th>
-                <th> Qty </th>
+                    {if $ns.user->getType() == 'root'}
+                    <th>Img</th>
+                    <th>Product ID</th>
+                    <th> Qty </th>
+                    {/if}
                 <th> Product Name </th>
                 <th> Total </th>
-                <th> Caluclation Price</th>
+                    {if $ns.user->getType() == 'root'}
+                    <th> Caluclation Price</th>
+                    {/if}
                 <th> Account </th>
-                <th> % </th>
+                    {if $ns.user->getType() == 'root'}
+                    <th> % </th>
+                    {/if}
                 <th> Status </th>
                 <th> Note </th>
-                <th> S/N </th>
+                    {if $ns.user->getType() == 'root'}
+                    <th> S/N </th>
+                    {/if}
                 <th> amazon Order Number </th>
                 <th> Tracking Number </th>
                 <th> hidden At </th>
@@ -78,26 +88,30 @@
                                                         {/if}
                                                     </td>
 
-                                                    <td>
-                                                        <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a>
-                                                        <br/>
-                                                        <span {if $order->getShippingType()=='standard'}style='color:red'{/if} >{$order->getShippingType()}</span>
-                                                    </td>
+                                                    {if $ns.user->getType() == 'root'}
+                                                        <td>
+                                                            <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a>
+                                                            <br/>
+                                                            <span {if $order->getShippingType()=='standard'}style='color:red'{/if} >{$order->getShippingType()}</span>
+                                                        </td>
+                                                    {/if}
                                                     <td > 
                                                         {if not $order->getRecipientName()}
                                                             <a href="javascript:void(0);" class="fa fa-refresh f_refresh_recipient" data-id='{$order->getId()}'></a>
                                                         {/if}
                                                         {$order->getRecipientName()} 
                                                         <span class="f_editable_cell" data-field-name="unit_address">
-                                                        {$order->getUnitAddress()} 
+                                                            {$order->getUnitAddress()} 
                                                         </span>
                                                     {if $order->getLocalCarrierName() === 'globbing' && isset($recipientsMappedByUnitAddress[$order->getUnitAddress()])}{$recipientsMappedByUnitAddress[$order->getUnitAddress()]->getEmail()|truncate:10:""}{/if} ({$order->getAccountName()|replace:'purse_':''})</td>
 
-                                                <td> 
-                                                    <img src="{$order->getImageUrl()}" width="100"/>
-                                                    <a target="_blank" href="{$order->getCheckoutOrderProductLink()}"><img src="{$SITE_PATH}/img/link.png" width="32"/></a> </td>
-                                                <td class="f_editable_cell" data-field-name="product_id"> {$order->getProductId()|default:'N/A'} </td>
-                                                <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="quantity"> {$order->getQuantity()} </td>
+                                                {if $ns.user->getType() == 'root'}
+                                                    <td> 
+                                                        <img src="{$order->getImageUrl()}" width="100"/>
+                                                        <a target="_blank" href="{$order->getCheckoutOrderProductLink()}"><img src="{$SITE_PATH}/img/link.png" width="32"/></a> </td>
+                                                    <td class="f_editable_cell" data-field-name="product_id"> {$order->getProductId()|default:'N/A'} </td>
+                                                    <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="quantity"> {$order->getQuantity()} </td>
+                                                {/if}
                                                 <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="product_name">
                                                     {if $order->getAmazonOrderNumber()|count_characters > 5}
                                                         <a class="link " target="_black" href="https://www.amazon.com/returns/cart?orderId={$order->getAmazonOrderNumber()}">{$order->getProductName()}</a>
@@ -106,13 +120,19 @@
                                                     {/if}
                                                 </td>
                                                 <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="amazon_total"> {$order->getAmazonTotal()} </td>
-                                                <td class="f_editable_cell" data-field-name="supposed_purchase_price"> {$order->getSupposedPurchasePrice()} </td>
+                                                {if $ns.user->getType() == 'root'}
+                                                    <td class="f_editable_cell" data-field-name="supposed_purchase_price"> {$order->getSupposedPurchasePrice()} </td>
+                                                {/if}
                                                 <td class="f_editable_cell" data-list="account_name_list" data-field-name="account_name"> {$order->getAccountName()} </td>
 
-                                                <td> {$order->getDiscount()} </td>
+                                                {if $ns.user->getType() == 'root'}
+                                                    <td> {$order->getDiscount()} </td>
+                                                {/if}
                                                 <td {if $order->getExternal() == 1}class="f_selectable_cell"{/if} data-value="{$order->getStatus()}" data-field-name="status" data-template-select-id="order_status_select"> {$order->getStatus()} </td>
                                                 <td class="table-cell f_editable_cell" data-field-name="note" data-type="richtext" style="min-width: 100px"> {$order->getNote()} </td>
-                                                <td class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </td>
+                                                {if $ns.user->getType() == 'root'}
+                                                    <td class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </td>
+                                                {/if}
                                                 <td class="table-cell f_editable_cell"  data-field-name="amazon_order_number">
                                                     <a class="link" target="_black" href="https://www.amazon.com/progress-tracker/package/ref=oh_aui_hz_st_btn?_encoding=UTF8&itemId=jnljnvjtqlspon&orderId={$order->getAmazonOrderNumber()}" > {$order->getAmazonOrderNumber()} </a>
                                                     <br/>
@@ -160,9 +180,9 @@
                 <option value="{$an}"/>
             {/foreach}
         </datalist>
-        
+
         <select id='order_status_select' class="hidden" style="width: 120px" >
-        <option value="shipping">shipping</option>
-        <option value="canceled">canceled</option>
-        <option value="delivered">delivered</option>
-</select>
+            <option value="shipping">shipping</option>
+            <option value="canceled">canceled</option>
+            <option value="delivered">delivered</option>
+        </select>

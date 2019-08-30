@@ -1,14 +1,16 @@
 <form class="filters--form" id="productFilters" autocomplete="off" action="{$SITE_PATH}/purse/list" method="GET">
     <div class="form-group filters-group">
-        <div class="filter">
-            <label>Recipient</label>
-            <select name="rcpt" data-autocomplete="true">
-                <option value="0" {if $ns.selectedFilterRecipientId == 0}selected{/if}>All</option>
-                {foreach from=$ns.recipients item=p}
-                    <option value="{$p->getId()}" {if $ns.selectedFilterRecipientId == $p->getId()}selected{/if}>{$p->getFirstName()} {$p->getLastName()}</option>
-                {/foreach}
-            </select>
-        </div>
+        {if $ns.user->getType() == 'root'}
+            <div class="filter">
+                <label>Recipient</label>
+                <select name="rcpt" data-autocomplete="true">
+                    <option value="0" {if $ns.selectedFilterRecipientId == 0}selected{/if}>All</option>
+                    {foreach from=$ns.recipients item=p}
+                        <option value="{$p->getId()}" {if $ns.selectedFilterRecipientId == $p->getId()}selected{/if}>{$p->getFirstName()} {$p->getLastName()}</option>
+                    {/foreach}
+                </select>
+            </div>
+        {/if}
         <div class="filter search">
             <label>Search</label>
             <div class="search-container">
@@ -66,6 +68,7 @@
                 <option value="shipping" {if $ns.selectedFilterStatus == 'shipping'}selected{/if}>Shipping</option>
             </select>
         </div>
+             {if $ns.user->getType() == 'root'}
         <div class="filter">
             <label>Shipping Type</label>
             <select name="sht">
@@ -74,6 +77,8 @@
                 <option value="standard" {if $ns.selectedFilterShippingType == 'standard'}selected{/if}>Standard</option>
             </select>
         </div>
+            {/if}
+            {if $ns.user->getType() == 'root'}
         <div class="filter">
             <label>Type (Ex/BTC)</label>
             <select name="tp">
@@ -82,6 +87,7 @@
                 <option value="btc" {if $ns.orderType == 'btc'}selected{/if}>Btc</option>
             </select>
         </div>
+            {/if}
         <div class="filter">
             <label>Show Hiddens</label>
             <select name="hddn">
@@ -89,14 +95,16 @@
                 <option value="no" {if $ns.selectedFilterHidden == 'no'}selected{/if}>No</option>
             </select>
         </div>
-        <div class="filter">
-            <label>Show Adam only</label>
-            <select name="adam">
-                <option value="all" {if $ns.selectedFilterAdam== 'all'}selected{/if}>All</option>
-                <option value="no" {if $ns.selectedFilterAdam == 'no'}selected{/if}>No</option>
-                <option value="yes" {if $ns.selectedFilterAdam == 'yes'}selected{/if}>Yes</option>
-            </select>
-        </div>
+        {if $ns.user->getType() == 'root'}
+            <div class="filter">
+                <label>Show Adam only</label>
+                <select name="adam">
+                    <option value="all" {if $ns.selectedFilterAdam== 'all'}selected{/if}>All</option>
+                    <option value="no" {if $ns.selectedFilterAdam == 'no'}selected{/if}>No</option>
+                    <option value="yes" {if $ns.selectedFilterAdam == 'yes'}selected{/if}>Yes</option>
+                </select>
+            </div>
+        {/if}
         <div class="filter">
             <label>Problematic</label>
             <input name="pr" type="checkbox" {if $ns.problematic == 1}checked{/if} value="1"/>
@@ -127,22 +135,26 @@
             </select>
         </div>
     {/if}
-    <div class="filter csv right">
-        <a href="javascript:void(0);" class="inline-block" id="export_csv"><img src="{$SITE_PATH}/img/csv.png" width="45"/></a>
-    </div>
+    {if $ns.user->getType() == 'root'}
+        <div class="filter csv right">
+            <a href="javascript:void(0);" class="inline-block" id="export_csv"><img src="{$SITE_PATH}/img/csv.png" width="45"/></a>
+        </div>
+    {/if}
     <div class="filter">
         <div class="add-new-btn">
             <a id="add_external_order_button" >+</a>
         </div>
     </div>
 </form>
-<button class="button blue small inline f_update_purse" data-account_name='purse_pars'>Pars ({$ns.parsUpdatedDate}) </br><span style="color: #c77405">{$ns.pars_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.pars_btc_balance)|number_format}</button>
-<button class="button blue small inline f_update_purse" data-account_name='purse_info'>Info ({$ns.infoUpdatedDate}) </br><span style="color: #c77405">{$ns.info_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.info_btc_balance)|number_format}</button>
-<button class="button blue small inline f_update_purse" data-account_name='purse_checkout'>Checkout ({$ns.checkoutUpdatedDate}) </br><span style="color: #c77405">{$ns.checkout_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.checkout_btc_balance)|number_format}</button>
-<br/>
-pars: {$ns.pars_btc_address|default:'N/A'}<br/>
-info: {$ns.info_btc_address|default:'N/A'}<br/>
-checkout: {$ns.checkout_btc_address|default:'N/A'}<br/>
+{if $ns.user->getType() == 'root'}
+    <button class="button blue small inline f_update_purse" data-account_name='purse_pars'>Pars ({$ns.parsUpdatedDate}) </br><span style="color: #c77405">{$ns.pars_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.pars_btc_balance)|number_format}</button>
+    <button class="button blue small inline f_update_purse" data-account_name='purse_info'>Info ({$ns.infoUpdatedDate}) </br><span style="color: #c77405">{$ns.info_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.info_btc_balance)|number_format}</button>
+    <button class="button blue small inline f_update_purse" data-account_name='purse_checkout'>Checkout ({$ns.checkoutUpdatedDate}) </br><span style="color: #c77405">{$ns.checkout_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.checkout_btc_balance)|number_format}</button>
+    <br/>
+    pars: {$ns.pars_btc_address|default:'N/A'}<br/>
+    info: {$ns.info_btc_address|default:'N/A'}<br/>
+    checkout: {$ns.checkout_btc_address|default:'N/A'}<br/>
+{/if}
 <h2>
     Rows Count: {$ns.count}
 </h2>
@@ -159,11 +171,13 @@ checkout: {$ns.checkout_btc_address|default:'N/A'}<br/>
 {if !empty($ns.searchText)}
     Searched text corresponding not received to recipient count:  {$ns.searchedItemPuposedCount} ({$ns.searchedItemCountThatHasTrackingNumber})
 {/if}
-<div class="form-group" style="float: right">
-    <a id="not_registered_trackings_button" class="button blue small inline">Not Registered Trackings on destination Warehouse</a>
-    <a id="hide_by_trackings_button" class="button blue small inline">Hide By Trackings</a>
-    <a id="find_trackings_button" class="button blue small inline">Find Trackings</a>
-</div>
+{if $ns.user->getType() == 'root'}
+    <div class="form-group" style="float: right">
+        <a id="not_registered_trackings_button" class="button blue small inline">Not Registered Trackings on destination Warehouse</a>
+        <a id="hide_by_trackings_button" class="button blue small inline">Hide By Trackings</a>
+        <a id="find_trackings_button" class="button blue small inline">Find Trackings</a>
+    </div>
+{/if}
 
 
 <div id="trackings_modalBox" class="modal modal-large">

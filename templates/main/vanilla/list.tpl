@@ -43,7 +43,9 @@
                 <th>Updated At</th>
                 <th>Invalid</th>
                 <th>Created At</th>
+                    {if $ns.user->getType() == 'root'}
                 <th>Delete</th>
+                    {/if}
             </tr>
 
             {foreach from=$ns.rows item=row}
@@ -94,6 +96,7 @@
                                data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getInvalid() == 1}checked{/if}/>
                     </td>
                     <td class="table-cell " data-field-name="created_at">{$row->getCreatedAt()}</td>                    
+                    {if $ns.user->getType() == 'root'}
                     <td class="icon-cell">
                         {if $row->getClosed() == 1}
                             Closed<br>
@@ -113,6 +116,7 @@
 
                         {/if}
                     </td>
+                    {/if}
                 </tr>
             {/foreach}
         </table>
