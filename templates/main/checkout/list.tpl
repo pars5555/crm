@@ -1,5 +1,5 @@
 <div class="container product--list--container">
-    <h1 class="main_title">BTC Products</h1>
+    <h1 class="main_title">Checkout.am</h1>
 
     {if isset($ns.error_message)}
         {include file="{ngs cmd=get_template_dir}/main/message.tpl" type="error" content="{$ns.error_message}"}
