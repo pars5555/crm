@@ -1,6 +1,6 @@
 <form class="filters--form" id="recipientFilters" autocomplete="off" action="{$SITE_PATH}/recipient/list" method="GET">
     <div class="form-group filters-group">
-         <div class="filter search">
+        <div class="filter search">
             <label>Search</label>
             <div class="search-container">
                 <input class="text" style="max-width: 200px;" type="text" name="st" value="{$ns.searchText}"/>
@@ -26,13 +26,15 @@
                 <option value="no" {if $ns.selectedFilterDeleted == 'no'}selected{/if}>No</option>
             </select>
         </div>
-        <div class="filter">
-            <label>Show Standard Units</label>
-            <select name="ssu">
-                <option value="no" {if $ns.selectedFilterShowStandardUnits == 'no'}selected{/if}>No</option>
-                <option value="yes" {if $ns.selectedFilterShowStandardUnits == 'yes'}selected{/if}>Yes</option>
-            </select>
-        </div>
+        {if $ns.user->getType() == 'root' }
+            <div class="filter">
+                <label>Show Standard Units</label>
+                <select name="ssu">
+                    <option value="no" {if $ns.selectedFilterShowStandardUnits == 'no'}selected{/if}>No</option>
+                    <option value="yes" {if $ns.selectedFilterShowStandardUnits == 'yes'}selected{/if}>Yes</option>
+                </select>
+            </div>
+        {/if}
         <div class="filter wide text-right">
             <div class="add-new-btn">
                 <a href="{$SITE_PATH}/recipient/create">
