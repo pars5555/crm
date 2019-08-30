@@ -24,19 +24,19 @@
                     <th>Ex Unit Glob</th>
                     {/if}
                 <th>Ex Unit Glob</th>
-                    {if $ns.user->getType() == 'root'}
+                    {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
                     <th>Ex Unit Onex</th>
                     {/if}
                 <th>Ex Unit Onex</th>
-                    {if $ns.user->getType() == 'root'}
+                    {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
                     <th>Ex Unit Nova</th>
                     {/if}
                 <th>Ex Unit Nova</th>
-                    {if $ns.user->getType() == 'root'}
+                   {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
                     <th>Ex Unit Shipex</th>
                     {/if}
                 <th>Ex Unit Shipex</th>
-                    {if $ns.user->getType() == 'root'}
+                    {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level2'}
                     <th>Ex Unit Cheapex</th>
                     {/if}
                 <th>Ex Unit Cheapex</th>
