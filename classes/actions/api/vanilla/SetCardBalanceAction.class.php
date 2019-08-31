@@ -73,7 +73,8 @@ namespace crm\actions\api\vanilla {
                 $manager->postMessage('****' . substr($card->getNumber(), -6) . ' balance is: $' . $balance . $note . ' card supplied at: ' . $card->getCreatedAt());
             }
             if ($card->getInitialBalance() == null) {
-                if ($balance < 80) {
+                $barney_telegram_ids_array = explode(',', trim(SettingManager::getInstance()->getSetting('barney_telegram_ids')));
+                if ($balance < 80 && in_array($card->getTelegramUserId(), $barney_telegram_ids_array)) {
                     VanillaCardsManager::getInstance()->updateField($id, 'admin_id', 9);
                 }
                 VanillaCardsManager::getInstance()->updateField($id, 'initial_balance', $balance);
