@@ -86,8 +86,9 @@ namespace crm\managers {
                 $date = date('Y-m-d H:i:s', strtotime('-' . $monthsCount . ' month'));
             }
             $where = ['1', '=', '1', 'AND', '('];
-            foreach ($merchartNammes as $word) {
-                $where = array_merge($where, ['transaction_history', 'like', "'%$word%'", 'OR']);
+            foreach ($merchartNammes as $merchant) {
+                $m = strtolower($merchant);
+                $where = array_merge($where, ['lower(`transaction_history`)', 'like', "'%$m%'", 'OR']);
             }
             $where = array_slice($where, 0, -1);
             $where[] = ')';

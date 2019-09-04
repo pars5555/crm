@@ -88,7 +88,7 @@ namespace crm\dal\dto {
                     //12:08 PM WINN-DIXIE #03 7024 BER - $12.84 
                     $_th = substr($th, 9);
                     //WINN-DIXIE #03 7024 BER - $12.84 
-                    if (strpos($_th, 'Pending') !== false && self::strposa($_th, $merchantNames)) {
+                    if (strpos($_th, 'Pending') !== false && self::strposarray($_th, $merchantNames)) {
                         $parts = explode('-', $_th);
                         $amount = trim(trim($parts[count($parts) - 1]), '$');
                         $total += $amount;
@@ -98,7 +98,20 @@ namespace crm\dal\dto {
             }
             return $total;
         }
-        
+//        $_th = substr($th, 19);
+//                    //WINN-DIXIE #03 7024 BER - $12.84 
+//                    $parts = explode('-', $_th);
+//                    $amount = trim(trim($parts[count($parts) - 1]), '$');
+//                    //12.84 
+//                    $merchant = trim(explode('-', $_th)[0]);
+//                    //WINN-DIXIE #03 7024 BER
+//                    if ($amount === '0.00' || isset($merchantAmountMap[$merchant . '_' . $amount])) {
+//                        $merchantAmountMap[$merchant . '_' . $amount] = 1;
+//                        $ret[] = '<span style="color:red">' . $th . '</span>';
+//                    } else {
+//                        $ret[] = $th;
+//                        $merchantAmountMap[$merchant . '_' . $amount] = 1;
+//                    }
         public function getNotPendingAmountByMerchantName($merchantNames = []) {
             if (empty($merchantNames)) {
                 return 0;
@@ -111,7 +124,7 @@ namespace crm\dal\dto {
                     //12:08 PM WINN-DIXIE #03 7024 BER - $12.84 
                     $_th = substr($th, 9);
                     //WINN-DIXIE #03 7024 BER - $12.84 
-                    if (strpos($_th, 'Pending') === false && self::strposa($_th, $merchantNames)) {
+                    if (stripos($_th, 'Pending') === false && self::strposarray($_th, $merchantNames)) {
                         $parts = explode('-', $_th);
                         $amount = trim(trim($parts[count($parts) - 1]), '$');
                         $total += $amount;
@@ -179,7 +192,7 @@ namespace crm\dal\dto {
             return implode(' ; ', $this->succeed_order_amounts);
         }
 
-        private static function strposa($haystack, $needles = array(), $offset = 0) {
+        private static function strposarray($haystack, $needles = array(), $offset = 0) {
             $chr = array();
             foreach ($needles as $needle) {
                 $res = strpos($haystack, $needle, $offset);

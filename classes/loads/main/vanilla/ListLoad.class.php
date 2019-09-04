@@ -76,7 +76,7 @@ namespace crm\loads\main\vanilla {
             $totalSuccess = VanillaCardsManager::getInstance()->getDeliveredOrdersTotal($selectedFilterCalculationMonths, $telegramChatIdsSql);
             $totalPending = VanillaCardsManager::getInstance()->getPendingOrdersTotal($selectedFilterCalculationMonths, $telegramChatIdsSql);
             $totalSuppliedBalance = VanillaCardsManager::getInstance()->getTotalInitialBalanceExcludeSaleToOthers($selectedFilterCalculationMonths, $telegramChatIdsSql);
-            list($totalConfirmedClothing, $totalPendingClothing) = VanillaCardsManager::getInstance()->getConfirmedAndPendigTransactionsTotalByTransactionNames(['Zara.com', 'OLD NAVY', 'carters', 'THECHILDRENSPLACE'], $selectedFilterCalculationMonths, $telegramChatIdsSql);
+            list($totalConfirmedClothing, $totalPendingClothing) = VanillaCardsManager::getInstance()->getConfirmedAndPendigTransactionsTotalByTransactionNames(['Zara.com', 'OLD NAVY', 'carters', 'THECHILDRENSPLACE', 'WALMART', 'puma', 'ADIDAS', 'PATPAT', 'GERBER'], $selectedFilterCalculationMonths, $telegramChatIdsSql);
             ['walmart', 'blinq', 'frys'];
             $totalCanclledOrdersPendingBalance = VanillaCardsManager::getInstance()->getTotalCanclledOrdersPendingBalance($selectedFilterCalculationMonths, $telegramChatIdsSql);
             $rows = VanillaCardsManager::getInstance()->selectAdvance('*', $where, $sortByFieldName, $selectedFilterSortByAscDesc, $offset, $limit);
