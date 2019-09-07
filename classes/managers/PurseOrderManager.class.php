@@ -620,7 +620,7 @@ namespace crm\managers {
 
         public function getInactiveOrders($token) {
             $headers = $this->getPurseHeader($token);
-            $rawData = $this->curl_get_contents('https://api.purse.io/api/v1/orders/me/inactive?limit=500&offset=0', $headers);
+            $rawData = $this->curl_get_contents('https://api.purse.io/api/v1/orders/me/inactive?limit=2000&offset=0', $headers);
             $listener = new \JsonStreamingParser\Listener\InMemoryListener();
             $stream = fopen('php://memory', 'r+');
             fwrite($stream, $rawData);
