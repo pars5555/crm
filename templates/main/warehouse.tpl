@@ -39,8 +39,8 @@
                     {if $ns.vahagn_cookie === 'Vahagn123'}
                     <th>Include In Price</th>
                     {/if}
-                <th>Sale Price</th>
                     {if $ns.userType == $ns.userTypeAdmin}
+                    <th>Sale Price</th>
                     <th>Location</th>
                         {*                <th>Uom</th>*}
                     <th>Quantity</th>
@@ -79,7 +79,7 @@
                     {/if}
                 {/if}
                 <tr {if $qty<0 || (isset($ns.pwarehousesProductsQuantity[$product->getId()]) && $ns.pwarehousesProductsQuantity[$product->getId()]<0)}style="background: yellow"{else}{if $product->getQtyChecked() == 1}style="background: lightgreen"{/if}{/if} 
-                    data-id="{$product->getId()}" data-type="product">
+                                                                                                                                                      data-id="{$product->getId()}" data-type="product">
                     <td>{$product->getId()}</td>
                     <td class="f_editable_image_cell" data-field-name="image_url"> <img src="{$product->getImageUrl()}" width="100"/> </td>
                     <td style="min-width: 250px; {if $product->getId()|in_array:$ns.newProductIds} color:blue; {/if}" data-field-name="name">{$product->getName()}</td>
@@ -95,8 +95,8 @@
                                    value="1" {if $product->getIncludeInPriceXlsx() == 1}checked{/if}/>
                         </td>
                     {/if}
-                    <td {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}class="f_editable_cell" data-field-name="sale_price"{/if}>{$product->getSalePrice()|number_format:2}</td>                            
                     {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}
+                        <td class="f_editable_cell" data-field-name="sale_price">{$product->getSalePrice()|number_format:2}</td>                            
                         {if $ns.userType == $ns.userTypeAdmin}
                             <td style="max-width: 90px;" class="f_editable_cell" data-type="richtext"  data-field-name="location_note">{$product->getLocationNote()}
                             </td>
