@@ -131,19 +131,6 @@ namespace crm\managers {
             return $this->mapper->getTotalBalance($ignoreLessThan, $telegramChatIdsSql, $this->filteredAdminId);
         }
 
-        public function isBotWorking() {
-            $twoMinuteAgo = date('Y-m-d H:i:s', strtotime("-15 minutes"));
-            $rows = $this->selectAdvance('updated_at', [], 'updated_at', 'desc', 0, 1);
-            if (empty($rows)) {
-                return true;
-            }
-            $row = $rows[0];
-            if ($row->getUpdatedAt() <= $twoMinuteAgo) {
-                return $row->getUpdatedAt();
-            }
-            return true;
-        }
-
         public function addRow() {
             $dto = $this->createDto();
             $dto->setCreatedAt(date('Y-m-d H:i:s'));
