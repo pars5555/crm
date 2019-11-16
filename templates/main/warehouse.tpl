@@ -47,6 +47,7 @@
                     <th>Reserved Qty</th>
                         {if $ns.showprofit == 1}
                         <th>Price</th>
+                        <th>Note</th>
                         {/if }
                     <th>Stock Price</th>
                     <th>Qty Checked</th>
@@ -143,6 +144,7 @@
                                     <span style="color:red">partner</span>
                                 {/if}
                             </td>
+                            <td class="f_editable_cell" data-field-name="note">{$product->getNote()}</td>
                         {/if}
 
                         <td {if $ns.userType == $ns.userTypeAdmin}class="f_editable_cell" data-field-name="stock_price"{/if}
