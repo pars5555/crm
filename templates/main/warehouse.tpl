@@ -156,7 +156,7 @@
                                    data-product_id="{$product->getId()}" type="checkbox"
                                    value="1" {if $product->getQtyChecked() ==1}checked{/if}/>
                         </td>
-                        {{if $ns.user->getType() == 'root'}
+                        {if $ns.user->getType() == 'root'}
                             <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
                                 {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
                                 <p style="display: none">
