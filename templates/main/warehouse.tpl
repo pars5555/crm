@@ -40,6 +40,10 @@
                     <th>Include In Price</th>
                     {/if}
                     {if $ns.user->getType() == 'root'}
+                    <th>List.am Price</th>
+                        {/if }
+                    
+                    {if $ns.user->getType() == 'root'}
                     <th>Sale Price</th>
                     <th>Location</th>
                         {*                <th>Uom</th>*}
