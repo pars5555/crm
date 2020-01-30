@@ -101,7 +101,7 @@
                         </td>
                     {/if}
                    {if $ns.user->getType() == 'level3' || $ns.user->getType() == 'root'}
-                        <td {if $ns.user->getType() == 'root'}class="f_editable_cell" data-field-name="list_am_price"{/if}>{$product->getListamPrice()|number_format:2}</td>                            
+                        <td {if $ns.user->getType() == 'root'}class="f_editable_cell" data-field-name="list_am_price"{/if}>{$product->getListAmPrice()|number_format:2}</td>                            
                    {/if}
                    {if $ns.user->getType() == 'root' || $ns.vahagn_cookie === 'Vahagn123'}
                         <td class="f_editable_cell" data-field-name="sale_price">{$product->getSalePrice()|number_format:2}</td>                            
