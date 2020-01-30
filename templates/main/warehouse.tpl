@@ -17,7 +17,7 @@
 </form>
 <div class="container warehouse--container">
     <h1 class="main_title">Warehouse</h1>
-    {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}
+    {if $ns.user->getType() == 'root' || $ns.vahagn_cookie === 'Vahagn123'}
         <h1 class="left">Total: {$ns.total|number_format:2}</h1>
         <br/><br/>
         <h2 class="left">Total Stock: {$ns.total_stock|number_format:2}</h2>
@@ -39,7 +39,7 @@
                     {if $ns.vahagn_cookie === 'Vahagn123'}
                     <th>Include In Price</th>
                     {/if}
-                    {if $ns.userType == $ns.userTypeAdmin}
+                    {if $ns.user->getType() == 'root'}
                     <th>Sale Price</th>
                     <th>Location</th>
                         {*                <th>Uom</th>*}
@@ -51,7 +51,7 @@
                         {/if }
                     <th>Stock Price</th>
                     <th>Qty Checked</th>
-                        {if $ns.userType == $ns.userTypeAdmin}
+                       {if $ns.user->getType() == 'root'}
                         <th>Purchase Orders</th>
                         <th>Sale Orders</th>
                         {/if}
@@ -96,9 +96,9 @@
                                    value="1" {if $product->getIncludeInPriceXlsx() == 1}checked{/if}/>
                         </td>
                     {/if}
-                    {if $ns.userType == $ns.userTypeAdmin || $ns.vahagn_cookie === 'Vahagn123'}
+                   {if $ns.user->getType() == 'root' || $ns.vahagn_cookie === 'Vahagn123'}
                         <td class="f_editable_cell" data-field-name="sale_price">{$product->getSalePrice()|number_format:2}</td>                            
-                        {if $ns.userType == $ns.userTypeAdmin}
+                        {if $ns.user->getType() == 'root'}
                             <td style="max-width: 90px;" class="f_editable_cell" data-type="richtext"  data-field-name="location_note">{$product->getLocationNote()}
                             </td>
                         {/if}
@@ -147,7 +147,7 @@
                             <td class="f_editable_cell" data-field-name="note">{$product->getNote()}</td>
                         {/if}
 
-                        <td {if $ns.userType == $ns.userTypeAdmin}class="f_editable_cell" data-field-name="stock_price"{/if}
+                        <td {if $ns.user->getType() == 'root'}class="f_editable_cell" data-field-name="stock_price"{/if}
                                                                   {if isset($ns.productsPrice[$product->getId()]) && $product->getStockPrice()<=$ns.productsPrice[$product->getId()]}style="color:orange"{/if} 
                                                                   >{$product->getStockPrice()|number_format:2}</td>                            
 
@@ -156,7 +156,7 @@
                                    data-product_id="{$product->getId()}" type="checkbox"
                                    value="1" {if $product->getQtyChecked() ==1}checked{/if}/>
                         </td>
-                        {if $ns.userType == $ns.userTypeAdmin}
+                        {{if $ns.user->getType() == 'root'}
                             <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
                                 {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
                                 <p style="display: none">
