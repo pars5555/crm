@@ -35,6 +35,9 @@
                     {/if}
                 
                 
+                    {if $ns.user->getType() == 'level3'}
+                    <li><a {if $ns.loadName=='warehouse'}class="active"{/if} href="{$SITE_PATH}/warehouse">Warehouse</a></li>
+                    {/if}
                     {if $ns.user->getType() == 'root' || $ns.user->getType() == 'level3'}
                         <li><a {if $ns.loadName=='giftcards'}class="active"{/if} href="{$SITE_PATH}/giftcards/list">Giftcards</a></li>
                     {/if}
