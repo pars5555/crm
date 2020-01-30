@@ -39,7 +39,7 @@
                     {if $ns.vahagn_cookie === 'Vahagn123'}
                     <th>Include In Price</th>
                     {/if}
-                    {if $ns.user->getType() == 'root'}
+                    {if $ns.user->getType() == 'root' || $ns.user->getType() == 'level3'}
                     <th>List.am Price</th>
                         {/if }
                     
