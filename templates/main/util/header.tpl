@@ -2,7 +2,7 @@
     <div class="menu-trigger" id="leftMenuTrigger"><span class="bar"></span></div>
     <a href="{$SITE_PATH}" class="logo">CRM.AM</a>
 </div>
-{if $ns.user->getType() == 'root'}
+{if isset($ns.user) && $ns.user->getType() == 'root'}
     <div class="header-links">
         <a id="open_sticky_note" href="javascript:void(0);" style="margin-right: 100px">
             <img src="{$SITE_PATH}/img/sticky_note.png" width="45"/>
