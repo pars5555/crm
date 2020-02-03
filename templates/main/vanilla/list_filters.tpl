@@ -52,7 +52,7 @@
                 <option value="4" {if $ns.selectedFilterCalculationMonths == '4'}selected{/if}>4 Month</option>
             </select>
         </div>
-        {if $ns.user->getType() == 'root'}
+        {if !empty($ns.user) && $ns.user->getType() == 'root'}
             <div class="filter">
                 <label>Admins</label>
                 <select name="adm">

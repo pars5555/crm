@@ -26,7 +26,7 @@
                 <option value="no" {if $ns.selectedFilterDeleted == 'no'}selected{/if}>No</option>
             </select>
         </div>
-        {if $ns.user->getType() == 'root' }
+        {if !empty($ns.user) && $ns.user->getType() == 'root' }
             <div class="filter">
                 <label>Show Standard Units</label>
                 <select name="ssu">

@@ -26,27 +26,27 @@
         <table>
             <tr>
                 <th>Actions</th>
-                    {if $ns.user->getType() == 'root'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root'}
                     <th>Order Number</th>
                     {/if}
                 <th>Recipient</th>
-                    {if $ns.user->getType() == 'root'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root'}
                     <th>Img</th>
                     <th>Product ID</th>
                     <th> Qty </th>
                     {/if}
                 <th> Product Name </th>
                 <th> Total </th>
-                    {if $ns.user->getType() == 'root'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root'}
                     <th> Caluclation Price</th>
                     {/if}
                 <th> Account </th>
-                    {if $ns.user->getType() == 'root'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root'}
                     <th> % </th>
                     {/if}
                 <th> Status </th>
                 <th> Note </th>
-                    {if $ns.user->getType() == 'root'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root'}
                     <th> S/N </th>
                     {/if}
                 <th> amazon Order Number </th>
@@ -88,7 +88,7 @@
                                                         {/if}
                                                     </td>
 
-                                                    {if $ns.user->getType() == 'root'}
+                                                    {if !empty($ns.user) && $ns.user->getType() == 'root'}
                                                         <td>
                                                             <a class="link" target="_black" href="https://purse.io/order/{$order->getOrderNumber()}" > {$order->getOrderNumber()} </a>
                                                             <br/>
@@ -105,7 +105,7 @@
                                                         </span>
                                                     {if $order->getLocalCarrierName() === 'globbing' && isset($recipientsMappedByUnitAddress[$order->getUnitAddress()])}{$recipientsMappedByUnitAddress[$order->getUnitAddress()]->getEmail()|truncate:10:""}{/if} ({$order->getAccountName()|replace:'purse_':''})</td>
 
-                                                {if $ns.user->getType() == 'root'}
+                                                {if !empty($ns.user) && $ns.user->getType() == 'root'}
                                                     <td> 
                                                         <img src="{$order->getImageUrl()}" width="100"/>
                                                         <a target="_blank" href="{$order->getCheckoutOrderProductLink()}"><img src="{$SITE_PATH}/img/link.png" width="32"/></a> </td>
@@ -120,17 +120,17 @@
                                                     {/if}
                                                 </td>
                                                 <td {if $order->getExternal() == 1}class="f_editable_cell"{/if} data-field-name="amazon_total"> {$order->getAmazonTotal()} </td>
-                                                {if $ns.user->getType() == 'root'}
+                                                {if !empty($ns.user) && $ns.user->getType() == 'root'}
                                                     <td class="f_editable_cell" data-field-name="supposed_purchase_price"> {$order->getSupposedPurchasePrice()} </td>
                                                 {/if}
                                                 <td class="f_editable_cell" data-list="account_name_list" data-field-name="account_name"> {$order->getAccountName()} </td>
 
-                                                {if $ns.user->getType() == 'root'}
+                                                {if !empty($ns.user) && $ns.user->getType() == 'root'}
                                                     <td> {$order->getDiscount()} </td>
                                                 {/if}
                                                 <td {if $order->getExternal() == 1}class="f_selectable_cell"{/if} data-value="{$order->getStatus()}" data-field-name="status" data-template-select-id="order_status_select"> {$order->getStatus()} </td>
                                                 <td class="table-cell f_editable_cell" data-field-name="note" data-type="richtext" style="min-width: 100px"> {$order->getNote()} </td>
-                                                {if $ns.user->getType() == 'root'}
+                                                {if !empty($ns.user) && $ns.user->getType() == 'root'}
                                                     <td class="table-cell f_editable_cell" data-field-name="serial_number"  > {$order->getSerialNumber()} </td>
                                                 {/if}
                                                 <td class="table-cell f_editable_cell"  data-field-name="amazon_order_number">

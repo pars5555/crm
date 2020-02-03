@@ -1,6 +1,6 @@
 <form class="filters--form" id="productFilters" autocomplete="off" action="{$SITE_PATH}/purse/list" method="GET">
     <div class="form-group filters-group">
-        {if $ns.user->getType() == 'root'}
+        {if !empty($ns.user) && $ns.user->getType() == 'root'}
             <div class="filter">
                 <label>Recipient</label>
                 <select name="rcpt" data-autocomplete="true">
@@ -68,7 +68,7 @@
                 <option value="shipping" {if $ns.selectedFilterStatus == 'shipping'}selected{/if}>Shipping</option>
             </select>
         </div>
-             {if $ns.user->getType() == 'root'}
+             {if !empty($ns.user) && $ns.user->getType() == 'root'}
         <div class="filter">
             <label>Shipping Type</label>
             <select name="sht">
@@ -78,7 +78,7 @@
             </select>
         </div>
             {/if}
-            {if $ns.user->getType() == 'root'}
+            {if !empty($ns.user) && $ns.user->getType() == 'root'}
         <div class="filter">
             <label>Type (Ex/BTC)</label>
             <select name="tp">
@@ -95,7 +95,7 @@
                 <option value="no" {if $ns.selectedFilterHidden == 'no'}selected{/if}>No</option>
             </select>
         </div>
-        {if $ns.user->getType() == 'root'}
+        {if !empty($ns.user) && $ns.user->getType() == 'root'}
             <div class="filter">
                 <label>Show Adam only</label>
                 <select name="adam">
@@ -113,7 +113,7 @@
             <label>last 12 hours changed</label>
             <input name="nc" type="checkbox" {if $ns.new_changed == 1}checked{/if} value="1"/>
         </div>
-        {if $ns.user->getType() == 'root'}
+        {if !empty($ns.user) && $ns.user->getType() == 'root'}
             <div class="filter">
                 <label>Admins</label>
                 <select name="adm">
@@ -135,7 +135,7 @@
             </select>
         </div>
     {/if}
-    {if $ns.user->getType() == 'root'}
+    {if !empty($ns.user) && $ns.user->getType() == 'root'}
         <div class="filter csv right">
             <a href="javascript:void(0);" class="inline-block" id="export_csv"><img src="{$SITE_PATH}/img/csv.png" width="45"/></a>
         </div>
@@ -146,7 +146,7 @@
         </div>
     </div>
 </form>
-{if $ns.user->getType() == 'root'}
+{if !empty($ns.user) && $ns.user->getType() == 'root'}
     <button class="button blue small inline f_update_purse" data-account_name='purse_pars'>Pars ({$ns.parsUpdatedDate}) </br><span style="color: #c77405">{$ns.pars_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.pars_btc_balance)|number_format}</button>
     <button class="button blue small inline f_update_purse" data-account_name='purse_info'>Info ({$ns.infoUpdatedDate}) </br><span style="color: #c77405">{$ns.info_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.info_btc_balance)|number_format}</button>
     <button class="button blue small inline f_update_purse" data-account_name='purse_checkout'>Checkout ({$ns.checkoutUpdatedDate}) </br><span style="color: #c77405">{$ns.checkout_btc_balance|default:'N/A'}</span> ${($ns.btc_rate*$ns.checkout_btc_balance)|number_format}</button>
@@ -171,7 +171,7 @@
 {if !empty($ns.searchText)}
     Searched text corresponding not received to recipient count:  {$ns.searchedItemPuposedCount} ({$ns.searchedItemCountThatHasTrackingNumber})
 {/if}
-{if $ns.user->getType() == 'root'}
+{if !empty($ns.user) && $ns.user->getType() == 'root'}
     <div class="form-group" style="float: right">
         <a id="not_registered_trackings_button" class="button blue small inline">Not Registered Trackings on destination Warehouse</a>
         <a id="hide_by_trackings_button" class="button blue small inline">Hide By Trackings</a>

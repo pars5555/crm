@@ -16,44 +16,44 @@
                 <th>Id</th>
                 <th>First Name</th>
                 <th>Last Name</th>
-                    {if $ns.user->getType() == 'root'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root'}
                     <th>Email</th>
                     {/if}
                     {*                <th>Tel.</th>*}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level3'}
                     <th>Ex Unit Glob</th>
                     {/if}
-                    {if $ns.user->getType() == 'root' }
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' }
                     <th>Ex Unit Glob</th>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level3'}
                     <th>Ex Unit Onex</th>
                     {/if}
-                    {if $ns.user->getType() == 'root' }
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' }
                     <th>Ex Unit Onex</th>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level3'}
                     <th>Ex Unit Nova</th>
                     {/if}
-                    {if $ns.user->getType() == 'root' }
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' }
                     <th>Ex Unit Nova</th>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level3'}
                     <th>Ex Unit Shipex</th>
                     {/if}
-                    {if $ns.user->getType() == 'root' }
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' }
                     <th>Ex Unit Shipex</th>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level3'}
                     <th>Ex Unit Cheapex</th>
                     {/if}
-                    {if $ns.user->getType() == 'root' }
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' }
                     <th>Ex Unit Cheapex</th>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes'}
                     <th>St Unit</th>
                     {/if}
-                    {if $ns.user->getType() == 'root' }
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' }
                     <th>Doc Number</th>
                         {*                <th>Doc Type</th>*}
                     <th>Social Id</th>
@@ -61,7 +61,7 @@
                 <th>Note</th>
                 <th>Favorite</th>
                 <th>Orders</th>
-                    {if $ns.user->getType() == 'root' }
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' }
                     <th class="icon-cell">View</th>
                     <th class="icon-cell">Edit</th>
                     <th class="icon-cell">Checked</th>
@@ -81,35 +81,35 @@
                     </td>
                     <td>{$recipient->getFirstName()}</td>
                     <td>{$recipient->getLastName()}</td>
-                    {if $ns.user->getType() == 'root' }
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' }
                         <td class="table-cell f_editable_cell" data-field-name="email">{$recipient->getEmail()}</td>
                     {/if}
                     {*                    <td style="white-space: nowrap"> {$recipient->getPhoneNumber()|replace:',':'</br>'} </td>*}
-                    {if $ns.user->getType() == 'root' || $ns.user->getType() == 'level3'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' || $ns.user->getType() == 'level3'}
                         <td class="table-cell f_editable_cell" data-field-name="express_unit_address">{$recipient->getExpressUnitAddress()}</td>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level3'}
                         <td class="table-cell f_editable_cell" data-field-name="express_unit_address_1">{$recipient->getExpressUnitAddress_1()}</td>
                     {/if}
-                    {if $ns.user->getType() == 'root' || $ns.user->getType() == 'level3'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' || $ns.user->getType() == 'level3'}
                         <td class="table-cell f_editable_cell" data-field-name="onex_express_unit">{$recipient->getOnexExpressUnit()}</td>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level3'}
                         <td class="table-cell f_editable_cell" data-field-name="onex_express_unit_1">{$recipient->getOnexExpressUnit_1()}</td>
                     {/if}
-                    {if $ns.user->getType() == 'root' || $ns.user->getType() == 'level3'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' || $ns.user->getType() == 'level3'}
                         <td class="table-cell f_editable_cell" data-field-name="nova_express_unit">{$recipient->getNovaExpressUnit()}</td>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level3'}
                         <td class="table-cell f_editable_cell" data-field-name="nova_express_unit_1">{$recipient->getNovaExpressUnit_1()}</td>
                     {/if}
-                    {if $ns.user->getType() == 'root' || $ns.user->getType() == 'level3'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' || $ns.user->getType() == 'level3'}
                         <td class="table-cell f_editable_cell" data-field-name="shipex_express_unit">{$recipient->getShipexExpressUnit()}</td>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level3'}
                         <td class="table-cell f_editable_cell" data-field-name="shipex_express_unit_1">{$recipient->getShipexExpressUnit_1()}</td>
                     {/if}
-                    {if $ns.user->getType() == 'root' || $ns.user->getType() == 'level3'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' || $ns.user->getType() == 'level3'}
                         <td class="table-cell f_editable_cell" data-field-name="cheapex_express_unit">{$recipient->getCheapexExpressUnit()}</td>
                     {/if}
                     {if $ns.selectedFilterShowStandardUnits == 'yes' || $ns.user->getType() == 'level3'}
@@ -118,7 +118,7 @@
                     {if $ns.selectedFilterShowStandardUnits == 'yes'}
                         <td>{$recipient->getStandardUnitAddress()} {$recipient->getOnexStandardUnit()} {$recipient->getNovaStandardUnit()} {$recipient->getShipexStandardUnit()} {$recipient->getCheapexStandardUnit()}</td>
                     {/if}
-                    {if $ns.user->getType() == 'root' }
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' }
                         <td class="f_editable_cell" data-field-name="document_number">{$recipient->getDocumentNumber()}</td>
                         {*                    <td>{$recipient->getDocumentType()}</td>*}
                         <td class="f_editable_cell" data-field-name="ssid">{$recipient->getSsid()}</td>
@@ -140,7 +140,7 @@
                             </a>
                         {/if}
                     </td>
-                    {if $ns.user->getType() == 'root' }
+                    {if !empty($ns.user) && $ns.user->getType() == 'root' }
                         <td class="icon-cell">
                             <a class="view_item" href="{$SITE_PATH}/recipient/{$recipient->getId()}">
                                 <span class="button_icon" title="View">
@@ -156,13 +156,13 @@
                             </a>
                         </td>
                         <td class="icon-cell">
-                            {if $ns.user->getType() == 'root' }
+                            {if !empty($ns.user) && $ns.user->getType() == 'root' }
                                 <input class="f_checked_checkbox" data-recipient_id="{$recipient->getId()}" type="checkbox"
                                        value="1" {if $recipient->getChecked() ==1}checked{/if}/>
                             {/if}
                         </td>
                         <td class="icon-cell">
-                            {if $ns.user->getType() == 'root' }
+                            {if !empty($ns.user) && $ns.user->getType() == 'root' }
                                 <input class="f_deleted_checkbox" data-recipient_id="{$recipient->getId()}" type="checkbox"
                                        value="1" {if $recipient->getDeleted() ==1}checked{/if}/>
                             {/if}

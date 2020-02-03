@@ -36,14 +36,14 @@
                 <th>Note</th>
                 <th>Pending Amounts</th>
                 <th>Transactions History</th>
-                    {if $ns.user->getType() == 'root'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root'}
                     <th>Visible To Musho</th>
                     {/if}
                 <th>Closed</th>
                 <th>Updated At</th>
                 <th>Invalid</th>
                 <th>Created At</th>
-                    {if $ns.user->getType() == 'root'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root'}
                 <th>Delete</th>
                     {/if}
             </tr>
@@ -79,7 +79,7 @@
 
                     <td style="white-space: pre-line" class="table-cell">{if $pams[0] > 0}${$pams[0]} ({foreach from=$pams[1] item=pam}${$pam|number_format:2:".":""}   {/foreach}){/if}</td>
                     <td style="white-space: pre-line" class="table-cell">{$row->getTransactionHistoryText()}</td>
-                    {if $ns.user->getType() == 'root'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root'}
                         <td class="icon-cell">
                             <input class="f_musho"
                                    data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getAdminId() == 9}checked{/if}/>
@@ -96,7 +96,7 @@
                                data-id="{$row->getId()}" type="checkbox" value="1" {if $row->getInvalid() == 1}checked{/if}/>
                     </td>
                     <td class="table-cell " data-field-name="created_at">{$row->getCreatedAt()}</td>                    
-                    {if $ns.user->getType() == 'root'}
+                    {if !empty($ns.user) && $ns.user->getType() == 'root'}
                     <td class="icon-cell">
                         {if $row->getClosed() == 1}
                             Closed<br>
