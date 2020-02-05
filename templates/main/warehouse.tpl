@@ -197,13 +197,15 @@
                                 </p>
                             </td>
                         {/if}
-                        <td class="icon-cell">
-                            <a href="{$SITE_PATH}/product/{$product->getId()}">
-                                <span class="button_icon" title="View">
-                                    <i class="fa fa-eye"></i>
-                                </span>
-                            </a>
-                        </td>
+                        {if !empty($ns.user) && $ns.user->getType() == 'root'}
+                            <td class="icon-cell">
+                                <a href="{$SITE_PATH}/product/{$product->getId()}">
+                                    <span class="button_icon" title="View">
+                                        <i class="fa fa-eye"></i>
+                                    </span>
+                                </a>
+                            </td>
+                        {/if}
                     {/if}
                 </tr>
                 {/if}
