@@ -48,17 +48,13 @@
                         {if !empty($ns.user) && $ns.user->getType() == 'root'}
                         <th>Location</th>
                         {/if}
-                        {if $ns.vahagn_cookie === 'Vahagn123'}
                         <th>Quantity</th>
-                        {/if}
                     <th>Reserved Qty</th>
                         {if $ns.showprofit == 1}
                         <th>Price</th>
                         <th>Note</th>
                         {/if }
-                        {if $ns.vahagn_cookie === 'Vahagn123'}
                         <th>Stock Price</th>
-                        {/if}
                         {if !empty($ns.user) && $ns.user->getType() == 'root'}
                         <th>Qty Checked</th>
                         {/if}
