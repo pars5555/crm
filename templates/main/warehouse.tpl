@@ -61,12 +61,16 @@
                         {if $ns.vahagn_cookie === 'Vahagn123'}
                         <th>Stock Price</th>
                         {/if}
-                    <th>Qty Checked</th>
+                        {if !empty($ns.user) && $ns.user->getType() == 'root'}
+                        <th>Qty Checked</th>
+                        {/if}
                         {if !empty($ns.user) && $ns.user->getType() == 'root'}
                         <th>Purchase Orders</th>
                         <th>Sale Orders</th>
                         {/if}
-                    <th class="icon-cell">View</th>
+                        {if !empty($ns.user) && $ns.user->getType() == 'root'}
+                        <th class="icon-cell">View</th>
+                        {/if}
                     {/if}
             </tr>
             {assign cat 0}
