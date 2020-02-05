@@ -44,9 +44,7 @@
                     {/if }
 
                 {if !empty($ns.user) && $ns.user->getType() == 'root' || $ns.vahagn_cookie === 'Vahagn123'}
-                    {if $ns.vahagn_cookie === 'Vahagn123'}
                         <th>Sale Price</th>
-                        {/if}
                         {if !empty($ns.user) && $ns.user->getType() == 'root'}
                         <th>Location</th>
                         {/if}
