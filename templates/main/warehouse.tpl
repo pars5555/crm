@@ -47,10 +47,12 @@
                     {if $ns.vahagn_cookie === 'Vahagn123'}
                         <th>Sale Price</th>
                         {/if}
-                    <th>Location</th>
-                      {if $ns.vahagn_cookie === 'Vahagn123'}
-                    <th>Quantity</th>
-                    {/if}
+                        {if !empty($ns.user) && $ns.user->getType() == 'root'}
+                        <th>Location</th>
+                        {/if}
+                        {if $ns.vahagn_cookie === 'Vahagn123'}
+                        <th>Quantity</th>
+                        {/if}
                     <th>Reserved Qty</th>
                         {if $ns.showprofit == 1}
                         <th>Price</th>
@@ -160,9 +162,9 @@
                         {/if}
 
                         <td {if !empty($ns.user) && $ns.user->getType() == 'root'}
-                             class="f_editable_cell" data-field-name="stock_price"{/if}
-                                                                                  {if isset($ns.productsPrice[$product->getId()]) && $product->getStockPrice()<=$ns.productsPrice[$product->getId()]}style="color:orange"{/if} 
-                                                                                  >{$product->getStockPrice()|number_format:2}</td>                            
+                            class="f_editable_cell" data-field-name="stock_price"{/if}
+                            {if isset($ns.productsPrice[$product->getId()]) && $product->getStockPrice()<=$ns.productsPrice[$product->getId()]}style="color:orange"{/if} 
+                            >{$product->getStockPrice()|number_format:2}</td>                            
 
                         {if !empty($ns.user) && $ns.user->getType() == 'root'}
                             <td class="icon-cell">
