@@ -37,7 +37,7 @@ namespace crm\loads\main\purse {
             $ret = [];
             foreach ($meta->items as $item) {
                 $name = $item->name;
-                $quantity = intval($item->quantity);
+                $quantity = intval(isset($item->quantity)?$item->quantity:1);
                 $price = floatval($item->fiat_price) / intval(max($quantity, 1));
                 if ($order->getSupposedPurchasePrice() > 0) {
                     $price = floatval($order->getSupposedPurchasePrice()) / intval(max($quantity, 1));
