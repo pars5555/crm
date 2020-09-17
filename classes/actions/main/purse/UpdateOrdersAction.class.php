@@ -29,6 +29,7 @@ namespace crm\actions\main\purse {
             $userInfo = PurseOrderManager::getInstance()->getUserInfo($token);
             if (empty($userInfo) || !isset($userInfo['email'])) {
                 $this->addParam('success', false);
+                $this->addParam('message', 'Update token');
                 return;
             }
             $accountEmail = explode('@',trim($userInfo['email']))[0];
