@@ -686,19 +686,23 @@ namespace crm\managers {
         }
 
         private function getPurseHeader($token) {
-            return ["authority: api.purse.io",
-                "method: GET",
-                "scheme: https",
-                "accept: application/json, text/javascript, */*; q=0.01",
-                "accept-language: en-US,en;q=0.9,hy;q=0.8",
-                "authorization: JWT $token",
-                "cache-control: no-cache",
-                "origin: https://purse.io",
-                "pragma: no-cache",
-                "referer: https://purse.io/orders",
-                "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"];
+            return [
+            "authority: api.purse.io",
+            "method: GET",
+            "scheme: https",
+            "accept: application/json, text/javascript, */*; q=0.01",
+            "accept-encoding: gzip, deflate, br",
+            "accept-language: en-US,en;q=0.9,hy;q=0.8",
+            "authorization: JWT $token",
+            "origin: https://purse.io",
+            "pragma: no-cache",
+            "referer: https://purse.io/orders",
+            "sec-fetch-dest: empty",
+            "sec-fetch-mode: cors",
+            "sec-fetch-site: same-site",
+            "user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"];
         }
-
+        
         public function fetchFedexPageDetails($trackingNumber) {
 //            $url = 'https://www.fedex.com/trackingCal/track';
 //            $params = [
@@ -709,29 +713,29 @@ namespace crm\managers {
 //                'format' => 'json'
 //            ];
 //            return $this->curl_post_contents($url, $params);
-        }
-
-        public function fetchUpsPageDetails($trackingNumber) {
-            
-        }
-
-        public function fetchUspsPageDetails($trackingNumber) {
-            $uspsApiUserId = SettingManager::getInstance()->getSetting('usps_api_user_id');
-            $xml = file_get_contents('http://production.shippingapis.com/ShippingApi.dll?API=TrackV2&XML=%3CTrackFieldRequest%20USERID=%22' . $uspsApiUserId . '%22%3E%20%3CTrackID%20ID=%22' . $trackingNumber . '%22%3E%20%3C/TrackID%3E%20%3C/TrackFieldRequest%3E');
-            $object = simplexml_load_string($xml);
-            if (!isset($object->TrackInfo) || !isset($object->TrackInfo->TrackSummary)) {
-                return [null, null, null];
-            }
-            $event = $object->TrackInfo->TrackSummary->Event;
-            if (strpos(strtolower($event), 'delivered') !== false) {
-                $dateStr = $object->TrackInfo->TrackSummary->EventDate;
-                $date = \DateTime::createFromFormat("M j, Y", $dateStr)->format('Y-m-d');
-                return [$date, $event, json_encode($object)];
-            } else {
-                return [null, $event, json_encode($object)];
-            }
-        }
-
     }
+
+    public function fetchUpsPageDetails($trackingNumber) {
+        
+    }
+
+    public function fetchUspsPageDetails($trackingNumber) {
+        $uspsApiUserId = SettingManager::getInstance()->getSetting('usps_api_user_id');
+        $xml = file_get_contents('http://production.shippingapis.com/ShippingApi.dll?API=TrackV2&XML=%3CTrackFieldRequest%20USERID=%22' . $uspsApiUserId . '%22%3E%20%3CTrackID%20ID=%22' . $trackingNumber . '%22%3E%20%3C/TrackID%3E%20%3C/TrackFieldRequest%3E');
+        $object = simplexml_load_string($xml);
+        if (!isset($object->TrackInfo) || !isset($object->TrackInfo->TrackSummary)) {
+            return [null, null, null];
+        }
+        $event = $object->TrackInfo->TrackSummary->Event;
+        if (strpos(strtolower($event), 'delivered') !== false) {
+            $dateStr = $object->TrackInfo->TrackSummary->EventDate;
+            $date = \DateTime::createFromFormat("M j, Y", $dateStr)->format('Y-m-d');
+            return [$date, $event, json_encode($object)];
+        } else {
+            return [null, $event, json_encode($object)];
+        }
+    }
+
+}
 
 }
