@@ -641,9 +641,10 @@ namespace crm\managers {
             return json_decode($this->curl_get_contents('https://api.purse.io/api/v1/orders/me/active?limit=500&offset=0', $headers), true);
         }
 
-        public function getUserInfo($token) {
+        public function getUserInfo($token, &$raw) {
             $headers = $this->getPurseHeader($token);
-            return json_decode($this->curl_get_contents('https://api.purse.io/api/v1/users/me', $headers), true);
+            $raw = $this->curl_get_contents('https://api.purse.io/api/v1/users/me', $headers);
+            return json_decode($raw, true);
         }
 
         private function curl_get_contents($url, $headers = [], $cookie = '') {

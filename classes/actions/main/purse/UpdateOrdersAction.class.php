@@ -26,10 +26,12 @@ namespace crm\actions\main\purse {
             set_time_limit(0);
             $accountName = NGS()->args()->account_name;
             $token = SettingManager::getInstance()->getSetting($accountName);
-            $userInfo = PurseOrderManager::getInstance()->getUserInfo($token);
+            $raw = null;
+            $userInfo = PurseOrderManager::getInstance()->getUserInfo($token, $raw);
             if (empty($userInfo) || !isset($userInfo['email'])) {
                 $this->addParam('success', false);
                 $this->addParam('message', 'Update token');
+                $this->addParam('user_info', $raw);
                 return;
             }
             $accountEmail = explode('@',trim($userInfo['email']))[0];
