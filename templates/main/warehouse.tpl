@@ -17,7 +17,7 @@
 </form>
 <div class="container warehouse--container">
     <h1 class="main_title">Warehouse</h1>
-    {if !empty($ns.user) && $ns.user->getType() == 'root' || $ns.vahagn_cookie === 'Vahagn123'}
+    {if !empty($ns.user) && $ns.user->getType() == 'root' || $ns.vahagn_cookie === 'Vahagn1234567'}
         <h1 class="left">Total: {$ns.total|number_format:2}</h1>
         <br/><br/>
         <h2 class="left">Total Stock: {$ns.total_stock|number_format:2}</h2>
@@ -36,14 +36,14 @@
                 <th>Brand</th>
                 <th>Model</th>
                 <th>Category</th>
-                    {if $ns.vahagn_cookie === 'Vahagn123'}
+                    {if $ns.vahagn_cookie === 'Vahagn1234567'}
                     <th>Include In Price</th>
                     {/if}
                     {if (!empty($ns.user) && $ns.user->getType() == 'root') || (!empty($ns.user) && $ns.user->getType() == 'level3')}
                     <th>List.am Price</th>
                     {/if }
 
-                {if !empty($ns.user) && $ns.user->getType() == 'root' || $ns.vahagn_cookie === 'Vahagn123'}
+                {if !empty($ns.user) && $ns.user->getType() == 'root' || $ns.vahagn_cookie === 'Vahagn1234567'}
                         <th>Sale Price</th>
                         {if !empty($ns.user) && $ns.user->getType() == 'root'}
                         <th>Location</th>
@@ -98,7 +98,7 @@
                     <td class="f_selectable_cell" data-value="{$product->getCategoryId()}" data-field-name="category_id" data-template-select-id="category_select">
                         {$ns.categoriesMappedById[$product->getCategoryId()]}
                     </td>
-                    {if $ns.vahagn_cookie === 'Vahagn123'}
+                    {if $ns.vahagn_cookie === 'Vahagn1234567'}
                         <td class="icon-cell">
                             <input class="f_include_in_price_xlsx_checkbox"
                                    data-product_id="{$product->getId()}" type="checkbox"
@@ -108,7 +108,7 @@
                     {if (!empty($ns.user) && $ns.user->getType() == 'level3') || (!empty($ns.user) && $ns.user->getType() == 'root')}
                         <td {if !empty($ns.user) && $ns.user->getType() == 'root'}class="f_editable_cell" data-field-name="list_am_price"{/if}>{$product->getListAmPrice()|number_format:2}</td>                            
                     {/if}
-                    {if (!empty($ns.user) && $ns.user->getType() == 'root') || $ns.vahagn_cookie === 'Vahagn123'}
+                    {if (!empty($ns.user) && $ns.user->getType() == 'root') || $ns.vahagn_cookie === 'Vahagn1234567'}
                         <td class="f_editable_cell" data-field-name="sale_price">{$product->getSalePrice()|number_format:2}</td>                            
                         {if !empty($ns.user) && $ns.user->getType() == 'root' }
                             <td style="max-width: 90px;" class="f_editable_cell" data-type="richtext"  data-field-name="location_note">{$product->getLocationNote()}
