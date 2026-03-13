@@ -9,6 +9,7 @@
  * @author     Rodney Rehm
  * @property string $content compiled content
  */
+#[\AllowDynamicProperties]
 class Smarty_Template_Compiled
 {
     /**

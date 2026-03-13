@@ -299,8 +299,8 @@ function smarty_function_html_select_date($params)
 
         for ($i = 1; $i <= 12; $i ++) {
             $_val = sprintf('%02d', $i);
-            $_text = isset($month_names) ? smarty_function_escape_special_chars($month_names[$i]) : ($month_format == "%m" ? $_val : strftime($month_format, $_month_timestamps[$i]));
-            $_value = $month_value_format == "%m" ? $_val : strftime($month_value_format, $_month_timestamps[$i]);
+            $_text = isset($month_names) ? smarty_function_escape_special_chars($month_names[$i]) : ($month_format == "%m" ? $_val : date(_smarty_strftime_format_to_date($month_format), $_month_timestamps[$i]));
+            $_value = $month_value_format == "%m" ? $_val : date(_smarty_strftime_format_to_date($month_value_format), $_month_timestamps[$i]);
             $_html_months .= '<option value="' . $_value . '"'
                 . ($_val == $_month ? ' selected="selected"' : '')
                 . '>' . $_text . '</option>' . $option_separator;
@@ -384,4 +384,14 @@ function smarty_function_html_select_date($params)
     }
 
     return $_html;
+}
+
+function _smarty_strftime_format_to_date($format) {
+    $map = [
+        '%B' => 'F', '%b' => 'M', '%m' => 'm',
+        '%d' => 'd', '%e' => 'j', '%Y' => 'Y', '%y' => 'y',
+        '%A' => 'l', '%a' => 'D', '%H' => 'H', '%I' => 'h',
+        '%M' => 'i', '%S' => 's', '%p' => 'A',
+    ];
+    return strtr($format, $map);
 }

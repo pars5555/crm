@@ -27,8 +27,8 @@ namespace crm\actions\main\purse {
             $order = PurseOrderManager::getInstance()->selectByPk($id);
             
             $this->addParam('id', $id);
-            $this->addParam('delivery_date', trim($order->getCarrierDeliveryDate()));
-            $this->addParam('status', trim($order->getCarrierTrackingStatus()));
+            $this->addParam('delivery_date', trim($order->getCarrierDeliveryDate() ?? ''));
+            $this->addParam('status', trim($order->getCarrierTrackingStatus() ?? ''));
         }
 
     }

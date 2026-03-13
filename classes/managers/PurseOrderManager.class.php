@@ -102,7 +102,7 @@ namespace crm\managers {
                     ] + $this->globalWhere, 'tracking_number_checked_at', 'ASC', 0, 1);
             if (!empty($rows)) {
                 $row = $rows[0];
-                $trackingNumber = trim(preg_replace('/[^A-Za-z0-9\-]/', '', $row->getTrackingNumber()));
+                $trackingNumber = trim(preg_replace('/[^A-Za-z0-9\-]/', '', $row->getTrackingNumber() ?? ''));
                 $this->updateField($row->getId(), 'tracking_number', $trackingNumber);
                 return $trackingNumber;
             }
@@ -186,7 +186,7 @@ namespace crm\managers {
             $recipientsRecentOrdersMappedByrecipientId = [];
             foreach ($orders as $order) {
                 $expressUnitAddress = $order->getUnitAddress();
-                $recipientId = $partnerIdMappedByExpressUnitAddresses[strtolower($expressUnitAddress)];
+                $recipientId = $partnerIdMappedByExpressUnitAddresses[strtolower($expressUnitAddress ?? '')];
                 if (!array_key_exists($recipientId, $recipientsRecentOrdersMappedByrecipientId)) {
                     $recipientsRecentOrdersMappedByrecipientId[$recipientId] = [];
                 }
@@ -220,7 +220,7 @@ namespace crm\managers {
                 if (strlen(strval(trim($trackingNumber))) < 5) {
                     continue;
                 }
-                $carrierFirst2Letter = substr(strtolower($order->getUnitAddress()), 0, 2);
+                $carrierFirst2Letter = substr(strtolower($order->getUnitAddress() ?? ''), 0, 2);
                 if ($local_carrier_name === 'globbing' && ($carrierFirst2Letter == 'nv' || $carrierFirst2Letter == 'ar')) {
                     continue;
                 }
@@ -317,9 +317,9 @@ namespace crm\managers {
         }
 
         private function findTrackingInArray($tracking, $trackingsArray) {
-            $tracking = strtolower($tracking);
+            $tracking = strtolower($tracking ?? '');
             foreach ($trackingsArray as $key => $tr) {
-                $tr = strtolower($tr);
+                $tr = strtolower($tr ?? '');
                 if (stripos(strval($tracking), strval($tr)) !== false || stripos(strval($tr), strval($tracking)) !== false) {
                     return $key;
                 }
@@ -347,7 +347,7 @@ namespace crm\managers {
                 return false;
             }
 
-            $shippingCarrier = strtolower($row->getShippingCarrier());
+            $shippingCarrier = strtolower($row->getShippingCarrier() ?? '');
             $deliveryDate = false;
             $trackingStatus = false;
             if (strpos($shippingCarrier, 'usps') !== false) {

@@ -1,5 +1,5 @@
 {
-    "name": "Sys Framework",
+    "name": "pars/crm",
     "description": "Sys Framework",
     "keywords": [
         "Sys",
@@ -20,12 +20,11 @@
         }
     ],
     "require": {
-        "php": ">=5.2.0",
-        "ext-curl": "*",        
+        "php": ">=7.4",
+        "ext-curl": "*",
         "php-curl-class/php-curl-class": "*",
         "salsify/json-streaming-parser": "*",
-        "phpoffice/phpspreadsheet": "^1.6",
-        "naffiq/telegram-channel-php": "^1.0"
+        "phpoffice/phpspreadsheet": "^1.20"
     }
 
 }

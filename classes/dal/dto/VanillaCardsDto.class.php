@@ -81,7 +81,7 @@ namespace crm\dal\dto {
                 return 0;
             }
             $total = 0;
-            $ths = explode("\r\n", $this->transaction_history);
+            $ths = explode("\r\n", $this->transaction_history ?? '');
             if (count($ths) > 2) {
                 $ths = array_slice($ths, 1, -1);
                 foreach (array_reverse($ths) as &$th) {
@@ -117,7 +117,7 @@ namespace crm\dal\dto {
                 return 0;
             }
             $total = 0;
-            $ths = explode("\r\n", $this->transaction_history);
+            $ths = explode("\r\n", $this->transaction_history ?? '');
             if (count($ths) > 2) {
                 $ths = array_slice($ths, 1, -1);
                 foreach (array_reverse($ths) as &$th) {
@@ -137,7 +137,7 @@ namespace crm\dal\dto {
 
         public function calcPendingAmounts() {
             //$0.00
-            $ths = explode("\r\n", $this->transaction_history);
+            $ths = explode("\r\n", $this->transaction_history ?? '');
             if (count($ths) > 2) {
                 $ths = array_slice($ths, 1, -1);
                 $pendingAmounts = [];
@@ -160,7 +160,7 @@ namespace crm\dal\dto {
 
         public function getTransactionHistoryText() {
             //$0.00
-            $ths = explode("\r\n", $this->transaction_history);
+            $ths = explode("\r\n", $this->transaction_history ?? '');
             if (count($ths) > 2) {
                 $ths = array_slice($ths, 1, -1);
                 $ret = [];

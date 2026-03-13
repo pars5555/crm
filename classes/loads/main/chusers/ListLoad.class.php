@@ -26,9 +26,9 @@ namespace crm\loads\main\chusers {
                 $where = array_merge($where, ['OR', 'email', 'like', "'%$searchText%'", ')']);
             }
             $res = \crm\managers\CheckoutManager::getInstance()->selectAdvance('User', [], $where, [], [$sortByFieldName => $selectedFilterSortByAscDesc], $offset, $limit);
-            $count = $res->count;
+            $count = is_object($res) && isset($res->count) ? $res->count : 0;
             $pagesCount = ceil($count / $limit);
-            $this->addParam('rows', $res->entities);
+            $this->addParam('rows', is_object($res) && isset($res->entities) ? $res->entities : []);
             $this->addParam('pagesCount', $pagesCount);
         }
 

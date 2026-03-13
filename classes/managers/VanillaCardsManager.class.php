@@ -72,7 +72,7 @@ namespace crm\managers {
             $orders = $this->selectAdvance('*', [], null, null, null, null, false, "", 'GROUP BY telegram_chat_id');
             $chatIds = [];
             foreach ($orders as $order) {
-                $telegramChatId = trim($order->getTelegramChatId());
+                $telegramChatId = trim($order->getTelegramChatId() ?? '');
                 if (!empty($telegramChatId)) {
                     $chatIds[] = $telegramChatId;
                 }

@@ -87,29 +87,29 @@ namespace crm\managers {
         }
 
         public function getShippingTypeByUnitAddress($unitAddress) {
-            $unitAddress = trim($unitAddress);
+            $unitAddress = trim($unitAddress ?? '');
             $row = $this->getRecipientByUnitAddress($unitAddress);
             if (empty($row)) {
                 return 'express';
             }
             if (
-                    strtolower($row->getExpressUnitAddress()) === strtolower($unitAddress) ||
-                    strtolower($row->getExpressUnitAddress_1()) === strtolower($unitAddress) ||
-                    strtolower($row->getOnexExpressUnit()) === strtolower($unitAddress) ||
-                    strtolower($row->getOnexExpressUnit_1()) === strtolower($unitAddress) ||
-                    strtolower($row->getShipexExpressUnit()) === strtolower($unitAddress) ||
-                    strtolower($row->getShipexExpressUnit_1()) === strtolower($unitAddress) ||
-                    strtolower($row->getCheapexExpressUnit()) === strtolower($unitAddress) ||
-                    strtolower($row->getCheapexExpressUnit_1()) === strtolower($unitAddress) ||
-                    strtolower($row->getNovaExpressUnit()) === strtolower($unitAddress) ||
-                    strtolower($row->getNovaExpressUnit_1()) === strtolower($unitAddress)) {
+                    strtolower($row->getExpressUnitAddress() ?? '') === strtolower($unitAddress) ||
+                    strtolower($row->getExpressUnitAddress_1() ?? '') === strtolower($unitAddress) ||
+                    strtolower($row->getOnexExpressUnit() ?? '') === strtolower($unitAddress) ||
+                    strtolower($row->getOnexExpressUnit_1() ?? '') === strtolower($unitAddress) ||
+                    strtolower($row->getShipexExpressUnit() ?? '') === strtolower($unitAddress) ||
+                    strtolower($row->getShipexExpressUnit_1() ?? '') === strtolower($unitAddress) ||
+                    strtolower($row->getCheapexExpressUnit() ?? '') === strtolower($unitAddress) ||
+                    strtolower($row->getCheapexExpressUnit_1() ?? '') === strtolower($unitAddress) ||
+                    strtolower($row->getNovaExpressUnit() ?? '') === strtolower($unitAddress) ||
+                    strtolower($row->getNovaExpressUnit_1() ?? '') === strtolower($unitAddress)) {
                 return 'express';
             }
-            if (strtolower($row->getStandardUnitAddress()) === strtolower($unitAddress) ||
-                    strtolower($row->getOnexStandardUnit()) === strtolower($unitAddress) ||
-                    strtolower($row->getShipexStandardUnit()) === strtolower($unitAddress) ||
-                    strtolower($row->getCheapexStandardUnit()) === strtolower($unitAddress) ||
-                    strtolower($row->getNovaStandardUnit()) === strtolower($unitAddress)) {
+            if (strtolower($row->getStandardUnitAddress() ?? '') === strtolower($unitAddress) ||
+                    strtolower($row->getOnexStandardUnit() ?? '') === strtolower($unitAddress) ||
+                    strtolower($row->getShipexStandardUnit() ?? '') === strtolower($unitAddress) ||
+                    strtolower($row->getCheapexStandardUnit() ?? '') === strtolower($unitAddress) ||
+                    strtolower($row->getNovaStandardUnit() ?? '') === strtolower($unitAddress)) {
                 return 'standard';
             }
             return '';
@@ -134,7 +134,7 @@ namespace crm\managers {
                 $recipient->getNovaExpressUnit_1(), $recipient->getShipexExpressUnit(), $recipient->getShipexExpressUnit_1(), $recipient->getCheapexExpressUnit(), $recipient->getCheapexExpressUnit_1(),
                 $recipient->getStandardUnitAddress(), $recipient->getOnexStandardUnit(), $recipient->getNovaStandardUnit(), $recipient->getShipexStandardUnit(), $recipient->getCheapexStandardUnit()];
             $res = array_filter($res, function($value) {
-                $value = trim($value);
+                $value = trim($value ?? '');
                 return !empty($value);
             });
             if (!$sqlReady) {

@@ -10,6 +10,6 @@
  
 function smarty_modifier_number_format($number, $decimals = 2, $dec_point = '.', $thousands_sep = ',')
 {
-    return number_format($number, $decimals, $dec_point, $thousands_sep);
+    return number_format($number ?? 0, $decimals, $dec_point, $thousands_sep);
 }
 ?>

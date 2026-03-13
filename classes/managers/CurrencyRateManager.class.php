@@ -55,7 +55,7 @@ namespace crm\managers {
 
         public function getCurrencyRateByDate($date, $currencyId) {
             $currencyIso = CurrencyManager::getInstance()->selectByPk($currencyId)->getIso();
-            if (strtolower($currencyIso) == strtolower(SettingManager::getInstance()->getSetting('main_currency_iso'))) {
+            if (strtolower($currencyIso ?? '') == strtolower(SettingManager::getInstance()->getSetting('main_currency_iso') ?? '')) {
                 return 1;
             }
             $oDate = new DateTime($date);

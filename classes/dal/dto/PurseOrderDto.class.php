@@ -67,7 +67,7 @@ namespace crm\dal\dto {
         }
 
         public function getLocalCarrierName() {
-            $carrierFirst2Letter = substr(strtolower($this->getUnitAddress()), 0, 2);
+            $carrierFirst2Letter = substr(strtolower($this->getUnitAddress() ?? ''), 0, 2);
             if ($carrierFirst2Letter == 'nv') {
                 return "nova";
             }
@@ -79,13 +79,13 @@ namespace crm\dal\dto {
 
         public function getCarrierTrackingUrl() {
             $trackingNumber = $this->getTrackingNumber();
-            if (strpos(strtolower($this->getShippingCarrier()), 'usps') !== false) {
+            if (strpos(strtolower($this->getShippingCarrier() ?? ''), 'usps') !== false) {
                 return 'https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=' . $trackingNumber;
             }
-            if (strpos(strtolower($this->getShippingCarrier()), 'fedex') !== false) {
+            if (strpos(strtolower($this->getShippingCarrier() ?? ''), 'fedex') !== false) {
                 return "https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=$trackingNumber&cntry_code=us&locale=en_US";
             }
-            if (strpos(strtolower($this->getShippingCarrier()), 'ups') !== false) {
+            if (strpos(strtolower($this->getShippingCarrier() ?? ''), 'ups') !== false) {
                 return "https://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=$trackingNumber&loc=en_am";
             }
             return false;
@@ -147,7 +147,7 @@ namespace crm\dal\dto {
             }
             $amazonOrderNumber = $this->getAmazonOrderNumber();
             foreach ($this->histores as $history) {
-                $aon = trim($history->getAmazonOrderNumber());
+                $aon = trim($history->getAmazonOrderNumber() ?? '');
                 if (!empty($amazonOrderNumber) && $amazonOrderNumber !== $aon) {
                     return true;
                 }

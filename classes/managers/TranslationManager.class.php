@@ -116,8 +116,8 @@ use crm\dal\mappers\TranslationMapper;
             $allp = $this->mapper->selectAll();
             foreach ($allp as $pdto) {
                 $this->allPhrases[$pdto->getId()]['en'] = $pdto->getPhraseEn();
-                $this->allPhrases[$pdto->getId()]['am'] = (strlen($pdto->getPhraseAm()) > 0 ? $pdto->getPhraseAm() : $pdto->getPhraseEn());
-                $this->allPhrases[$pdto->getId()]['ru'] = (strlen($pdto->getPhraseRu()) > 0 ? $pdto->getPhraseRu() : $pdto->getPhraseEn());
+                $this->allPhrases[$pdto->getId()]['am'] = (strlen($pdto->getPhraseAm() ?? '') > 0 ? $pdto->getPhraseAm() : $pdto->getPhraseEn());
+                $this->allPhrases[$pdto->getId()]['ru'] = (strlen($pdto->getPhraseRu() ?? '') > 0 ? $pdto->getPhraseRu() : $pdto->getPhraseEn());
                 $this->allPhrasesDtosMappedByPhraseEn[$pdto->getPhraseEn()] = $pdto;
                 $this->allPhrasesDtosMappedById[$pdto->getId()] = $pdto->toArray();
             }

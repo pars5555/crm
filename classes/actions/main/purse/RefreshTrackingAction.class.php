@@ -27,8 +27,8 @@ namespace crm\actions\main\purse {
             $order = PurseOrderManager::getInstance()->selectByPk($id);
             
             $this->addParam('id', $id);
-            $this->addParam('tracking_number', trim($order->getTrackingNumber()));
-            $this->addParam('tracking_url', trim($order->getCarrierTrackingUrl()));
+            $this->addParam('tracking_number', trim($order->getTrackingNumber() ?? ''));
+            $this->addParam('tracking_url', trim($order->getCarrierTrackingUrl() ?? ''));
         }
 
     }

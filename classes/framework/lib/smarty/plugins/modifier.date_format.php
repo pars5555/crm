@@ -44,21 +44,20 @@ function smarty_modifier_date_format($string, $format = null, $default_date = ''
         return;
     }
     if ($formatter == 'strftime' || ($formatter == 'auto' && strpos($format, '%') !== false)) {
-        if (DS == '\\') {
-            $_win_from = array('%D', '%h', '%n', '%r', '%R', '%t', '%T');
-            $_win_to = array('%m/%d/%y', '%b', "\n", '%I:%M:%S %p', '%H:%M', "\t", '%H:%M:%S');
-            if (strpos($format, '%e') !== false) {
-                $_win_from[] = '%e';
-                $_win_to[] = sprintf('%\' 2d', date('j', $timestamp));
-            }
-            if (strpos($format, '%l') !== false) {
-                $_win_from[] = '%l';
-                $_win_to[] = sprintf('%\' 2d', date('h', $timestamp));
-            }
-            $format = str_replace($_win_from, $_win_to, $format);
-        }
-
-        return strftime($format, $timestamp);
+        // Convert strftime format to date() format for PHP 8.2+ compatibility
+        $_strftime_to_date = array(
+            '%D' => 'm/d/y', '%h' => 'M', '%n' => "\n", '%r' => 'h:i:s A',
+            '%R' => 'H:i', '%t' => "\t", '%T' => 'H:i:s',
+            '%e' => 'j', '%l' => 'g',
+            '%B' => 'F', '%b' => 'M', '%m' => 'm', '%d' => 'd',
+            '%Y' => 'Y', '%y' => 'y', '%H' => 'H', '%I' => 'h',
+            '%M' => 'i', '%S' => 's', '%p' => 'A', '%A' => 'l',
+            '%a' => 'D', '%j' => 'z', '%Z' => 'T', '%c' => 'D M j H:i:s Y',
+            '%x' => 'm/d/y', '%X' => 'H:i:s',
+            '%%' => '%'
+        );
+        $date_format = strtr($format, $_strftime_to_date);
+        return date($date_format, $timestamp);
     } else {
         return date($format, $timestamp);
     }

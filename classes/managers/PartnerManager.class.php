@@ -57,7 +57,7 @@ namespace crm\managers {
         
         public function getTelegramChatIdsArray($id) {
             $partner = $this->selectByPk($id);
-            $chatIds = trim($partner->getTelegramChatIds());
+            $chatIds = trim($partner->getTelegramChatIds() ?? '');
             if (!empty($chatIds)) {
                 return array_map('trim',explode(',', $chatIds));
             }

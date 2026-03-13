@@ -139,7 +139,7 @@ class Smarty_Internal_Config_File_Compiler
             Smarty_Internal_Debug::end_compile($this->template);
         }
         // template header code
-        $template_header = "<?php /* Smarty version " . Smarty::SMARTY_VERSION . ", created on " . strftime("%Y-%m-%d %H:%M:%S") . "\n";
+        $template_header = "<?php /* Smarty version " . Smarty::SMARTY_VERSION . ", created on " . date("Y-m-d H:i:s") . "\n";
         $template_header .= "         compiled from \"" . $this->template->source->filepath . "\" */ ?>\n";
 
         $code = '<?php Smarty_Internal_Extension_Config::loadConfigVars($_smarty_tpl, ' . var_export($this->config_data, true) . '); ?>';

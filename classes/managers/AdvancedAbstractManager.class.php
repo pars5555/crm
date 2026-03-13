@@ -18,6 +18,7 @@ namespace crm\managers {
 
         protected $mapper;
         private $lastSelectAdvanceWhere = null;
+        private $lastSelectAdvanceLeftJoin = "";
 
         function __construct($mapper) {
             $this->mapper = $mapper;
@@ -128,7 +129,7 @@ namespace crm\managers {
                 $fields = '`' . implode('`, `', $fieldsArray) . '`';
             }
             $order = "";
-            if (!in_array(strtoupper($orderByAscDesc), ['ASC', 'DESC'])) {
+            if (!in_array(strtoupper($orderByAscDesc ?? ''), ['ASC', 'DESC'])) {
                 $orderByAscDesc = 'ASC';
             }
 
@@ -164,7 +165,7 @@ namespace crm\managers {
             }
             $where = "WHERE ";
             foreach ($filters as $filter) {
-                $strToLoqerFilter = strtolower($filter);
+                $strToLoqerFilter = strtolower($filter ?? '');
                 if (in_array($strToLoqerFilter, [')', '(', 'and', 'or', '<', '<=', '=', '>', '>=', 'is', 'null', 'not'])) {
                     $where .= ' ' . strtoupper($strToLoqerFilter) . ' ';
                 } else {

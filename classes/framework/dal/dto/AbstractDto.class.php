@@ -20,6 +20,7 @@
  */
 namespace ngs\framework\dal\dto {
 	use ngs\framework\dal\mappers\StandartArgs;
+	#[\AllowDynamicProperties]
 	abstract class AbstractDto {
 		public function __construct() {
 		}
