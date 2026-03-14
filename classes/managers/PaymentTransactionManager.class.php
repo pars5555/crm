@@ -129,11 +129,11 @@ namespace crm\managers {
             $dto->setAmount($amount);
             $dto->setDate($date);
             $dto->setNote($note);
-            $dto->setIsExpense($isExpense);
+            $dto->setIsExpense(intval($isExpense));
             $dto->setPaid($paid);
             $dto->setSignature($signature);
-            
-            
+
+
             $dto->setCreatedAt(date('y-m-d H:i:s'));
             $id = $this->insertDto($dto);
             
@@ -169,7 +169,7 @@ namespace crm\managers {
                 $dto->setAmount($amount);
                 $dto->setDate($date);
                 $dto->setNote($note);
-                $dto->setIsExpense($isExpense);
+                $dto->setIsExpense(intval($isExpense));
                 $dto->setPaid($paid);
                 $dto->setSignature($signature);
                 return $this->updateByPk($dto);
