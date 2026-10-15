@@ -21,6 +21,7 @@ namespace crm\loads {
     class LoginLoad extends NgsLoad {
 
         public function load() {
+            $this->addParam('loginError', isset(NGS()->args()->error));
             $userType = NGS()->getSessionManager()->getUserType();
             if (isset($userType) && $userType != UserGroups::$GUEST) {
                 $this->redirect('');

@@ -13,7 +13,8 @@ namespace crm\actions\login {
         public function service() {
             $adminDto = AdminManager::getInstance()->getByUsernamePassword(NGS()->args()->getUsername(), md5(NGS()->args()->getPassword()));
             if (!$adminDto) {
-                $this->redirect('login');
+                // back to the form with a flag, so the page can say the login was wrong
+                $this->redirect('login?error=1');
             }
             NGS()->getSessionManager()->login(UserGroups::$ADMIN, $adminDto->getId());
             if ($adminDto->getType() == 'checkout') {

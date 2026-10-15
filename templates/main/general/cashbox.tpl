@@ -17,4 +17,4 @@
         </select>
     </div>
 </div>
-Amount: {$ns.amount}
+<div class="calc-result">Amount: <strong>{$ns.amount}</strong></div>

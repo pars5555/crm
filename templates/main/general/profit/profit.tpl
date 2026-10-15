@@ -9,7 +9,7 @@
         <input id='endDateWidget' type="text" value="{$ns.endDate}"/>
     </div>
     <div>
-        Profit: {$ns.profit}
+        <span class="calc-result">Profit: <strong>{$ns.profit}</strong></span>
     </div>
 
     <div class="chart-container">

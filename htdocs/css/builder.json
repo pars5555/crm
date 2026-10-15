@@ -1,7 +1,7 @@
 [
     {
         "output_file": "styles.css",
-        "compress": true,
+        "compress": false,
         "builders": [
             {
                 "output_file": "main.css",
@@ -24,7 +24,8 @@
 
                     "pages/general.css",
                     "pages/partners.css",
-                    "pages/create_edit_pages.css"
+                    "pages/create_edit_pages.css",
+                    "modern.css"
                 ]
             }
         ]
