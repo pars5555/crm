@@ -21,7 +21,9 @@ NGS()->define("SESSION_MANAGER", 'crm\managers\SessionManager');
 //define error show status
 if (NGS()->getDefinedValue("ENVIRONMENT") != "production") {
     error_reporting(E_ALL);
-    ini_set('display_errors', '1');
+    // report everything, but never print into the page (paths / stack details must not reach visitors): log it
+    ini_set('display_errors', '0');
+    ini_set('log_errors', '1');
 }
 
 $documentRoot = $_SERVER['DOCUMENT_ROOT'];

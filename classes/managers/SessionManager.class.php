@@ -30,7 +30,13 @@ namespace crm\managers {
         private $user = null;
 
         public function __construct() {
-            session_start();
+            if (session_status() === PHP_SESSION_NONE) {
+                $https = (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off')
+                    || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https');
+                // the PHP session cookie gets the same protection as the login cookies
+                session_set_cookie_params(array('lifetime' => 0, 'path' => '/', 'secure' => $https, 'httponly' => true, 'samesite' => 'Lax'));
+                session_start();
+            }
         }
 
         /**

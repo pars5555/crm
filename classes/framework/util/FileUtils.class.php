@@ -28,11 +28,17 @@ namespace ngs\framework\util {
     class FileUtils {
 
         public function streamFile($module, $file) {
+            // The part after the first "/" of a "devout/..." url is the file's path inside the public dir.
+            // Anything else is not a streamable file (it used to fall through with $realFile undefined and
+            // try to stream the public directory itself, printing warnings and leaking server paths).
+            $realFile = '';
             if (strpos($file, "devout") !== false) {
                 $realFile = substr($file, strpos($file, "/") + 1);
             }
-            $filePath = realpath(NGS()->getPublicDir($module) . "/" . $realFile);
-            if ($filePath == false) {
+            $publicDir = realpath(NGS()->getPublicDir($module));
+            $filePath = ($publicDir !== false && $realFile !== '') ? realpath($publicDir . "/" . $realFile) : false;
+            // must be a regular file that really lives inside the public dir (no ../ escapes, no directories)
+            if ($filePath === false || !is_file($filePath) || strpos($filePath, $publicDir . DIRECTORY_SEPARATOR) !== 0) {
                 throw NGS()->getNotFoundException();
             }
             $options = array();

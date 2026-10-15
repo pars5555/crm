@@ -35,7 +35,9 @@ namespace ngs\framework\util {
     }
 
     public function getRequestProtocol() {
-      if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") || $_SERVER['SERVER_PORT'] == 443) {
+      // behind the reverse proxy the app itself only sees http: trust the proxy's X-Forwarded-Proto
+      $forwardedHttps = isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https';
+      if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") || $_SERVER['SERVER_PORT'] == 443 || $forwardedHttps) {
         $protocol = "https:";
       } else {
         $protocol = "http:";

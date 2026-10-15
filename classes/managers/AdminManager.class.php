@@ -66,7 +66,8 @@ namespace crm\managers {
      * @return boolean
      */
     public function loginUser($userId) {
-      $userHash = md5(time().$userId);
+      // unpredictable session token (it used to be md5(time().$userId), which can be guessed from the login time)
+      $userHash = bin2hex(random_bytes(16));
       $adminDto = AdminMapper::getInstance()->createDto();
       $adminDto->setId($userId);
       $adminDto->setHash($userHash);

@@ -38,6 +38,20 @@ namespace ngs\framework\session {
         }
 
         /**
+         * set an authentication cookie with safe flags: HttpOnly (scripts cannot read it), SameSite=Lax (not sent on
+         * cross-site sub-requests) and Secure when the request arrived over https (directly or via the reverse proxy)
+         */
+        protected function setAuthCookie($name, $value, $expires, $domain) {
+            $https = (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off')
+                || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https');
+            $options = array('expires' => (int)$expires, 'path' => '/', 'secure' => $https, 'httponly' => true, 'samesite' => 'Lax');
+            if ($domain) {
+                $options['domain'] = $domain;
+            }
+            return setcookie($name, (string)$value, $options);
+        }
+
+        /**
          * set user info into cookie and session
          *
          * @param mixed user Object| $user
@@ -47,7 +61,8 @@ namespace ngs\framework\session {
          * @return
          */
         public function setUser($user, $remember = false, $useDomain = true, $useSubdomain = false) {
-            $sessionTimeout = $remember ? 2078842581 : null;
+            // "remember me" now lasts 30 days (it used to be until the year 2035)
+            $sessionTimeout = $remember ? time() + 30 * 86400 : null;
             $domain = false;
       if ($useDomain) {
 
@@ -59,7 +74,7 @@ namespace ngs\framework\session {
             }
             $cookieParams = $user->getCookieParams();
             foreach ($cookieParams as $key => $value) {
-                setcookie($key, $value, $sessionTimeout, "/", $domain);
+                $this->setAuthCookie($key, $value, $sessionTimeout, $domain);
             }
             $sessionParams = $user->getSessionParams();
             foreach ($sessionParams as $key => $value) {
@@ -80,14 +95,14 @@ namespace ngs\framework\session {
       $domain = false;
       if ($useDomain) {
         if ($useSubdomain) {
-          $domain = NGS()->getHttpUtils->getHost();
+          $domain = NGS()->getHttpUtils()->getHost();
         } else {
-          $domain = ".".NGS()->getHttpUtils->getHost();
+          $domain = ".".NGS()->getHttpUtils()->getHost();
         }
       }
       $cookieParams = $user->getCookieParams();
       foreach ($cookieParams as $key => $value) {
-        setcookie($key, '', $sessionTimeout, "/", $domain);
+        $this->setAuthCookie($key, '', $sessionTimeout, $domain);
       }
       $sessionParams = $user->getSessionParams();
       foreach ($sessionParams as $key => $value) {
@@ -110,7 +125,7 @@ namespace ngs\framework\session {
                 $domain = "." . $domain;
             }
             $cookieParams = $user->getCookieParams();
-            setcookie($this->getUserHashKey(), $cookieParams["crmuh"], null, "/", $domain);
+            $this->setAuthCookie($this->getUserHashKey(), $cookieParams["crmuh"], null, $domain);
         }
 
         /**

@@ -32,7 +32,7 @@ namespace ngs\framework\util {
         $filePath = realpath(NGS()->getPublicDir()."/".$file);
         if (strpos($file, NGS()->getDefinedValue("PUBLIC_OUTPUT_DIR")) === false) {
           if (file_exists($filePath) == false) {
-            throw NGS()->getNotFoundException($filePath + " NOT FOUND");
+            throw NGS()->getNotFoundException($file . " NOT FOUND");
           }
         } elseif (file_exists($filePath) == false || fileatime($filePath) != fileatime($this->getBuilderFile())) {
           $this->build($file);
@@ -41,11 +41,16 @@ namespace ngs\framework\util {
         return;
       }
       
+      // a requested file must be a regular file that really lives inside the public dir (no ../ escapes)
+      $publicDir = realpath(NGS()->getPublicDir($module));
+      $inPublicDir = function ($path) use ($publicDir) {
+        return $publicDir !== false && $path !== false && is_file($path) && strpos($path, $publicDir . DIRECTORY_SEPARATOR) === 0;
+      };
       if (strpos($file, "devout") !== false) {
         $realFile = substr($file, strpos($file, "/") + 1);
         $realFile = realpath(NGS()->getPublicDir($module)."/".$realFile);
-        if ($realFile == null) {
-          throw NGS()->getDebugException($file." not found");
+        if (!$inPublicDir($realFile)) {
+          throw NGS()->getNotFoundException();
         }
         $buffer = file_get_contents($realFile);
         $buffer = $this->customBufferUpdates($buffer);
@@ -54,7 +59,7 @@ namespace ngs\framework\util {
         return;
       }
       $realFile = realpath(NGS()->getPublicDir($module)."/".$file);
-      if (file_exists($realFile)) {
+      if ($inPublicDir($realFile)) {
         NGS()->getFileUtils()->sendFile($realFile, array("mimeType" => $this->getContentType(), "cache" => false));
         return;
       }
