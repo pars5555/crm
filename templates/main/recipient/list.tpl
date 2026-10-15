@@ -63,7 +63,7 @@
                 <th>Orders</th>
                     {if !empty($ns.user) && $ns.user->getType() == 'root' }
                     <th class="icon-cell">View</th>
-                    <th class="icon-cell">Edit</th>
+                    {* hidden: the recipient edit page was never finished (it was a copy of the partner page) <th class="icon-cell">Edit</th> *}
                     <th class="icon-cell">Checked</th>
                     <th class="icon-cell">Deleted</th>
                     {/if}
@@ -148,13 +148,13 @@
                                 </span>
                             </a>
                         </td>
-                        <td class="icon-cell">
+                        {* hidden: see the header note above <td class="icon-cell">
                             <a class="view_item" href="{$SITE_PATH}/recipient/edit/{$recipient->getId()}">
                                 <span class="button_icon" title="Edit">
                                     <i class="fa fa-pencil"></i>
                                 </span>
                             </a>
-                        </td>
+                        </td> *}
                         <td class="icon-cell">
                             {if !empty($ns.user) && $ns.user->getType() == 'root' }
                                 <input class="f_checked_checkbox" data-recipient_id="{$recipient->getId()}" type="checkbox"

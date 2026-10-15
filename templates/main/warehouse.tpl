@@ -123,7 +123,7 @@
                             {/if}
                             {if isset($ns.pwarehousesProductsQuantity[$product->getId()])}
                                 <br/>
-                                <span style="color:red">{$pwarehousesProductsQuantity[$product->getId()]|default:'0'}</span>
+                                <span style="color:red">{$ns.pwarehousesProductsQuantity[$product->getId()]|default:'0'}</span>
                             {/if}
 
                         </td>
@@ -132,7 +132,7 @@
                                 {$ns.reservations[$product->getId()]|@count} Reservation
                             {/if}
                             <p style="display: none">
-                                {foreach from=$ns.reservations[$product->getId()] item=productReservation}
+                                {foreach from=$ns.reservations[$product->getId()]|default:array() item=productReservation}
                                     <a href="javascript:void(0);">
                                         qty: {$productReservation->getQuantity()}, ({$productReservation->getStartAt()|truncate:10:""} - {$productReservation->getHours()} hours), tel: {$productReservation->getPhone()}
                                         <br>
@@ -170,24 +170,31 @@
                                        data-product_id="{$product->getId()}" type="checkbox"
                                        value="1" {if $product->getQtyChecked() ==1}checked{/if}/>
                             </td>
-                            <td {if $ns.productsPurchaseOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
-                                {$ns.productsPurchaseOrder[$product->getId()]|@count} Purchase order(s)
+                            {* products without any order have no entry in these maps; the tooltip lists only the 15 newest orders (the page used to be 6 MB) *}
+                            {assign var=poList value=$ns.productsPurchaseOrder[$product->getId()]|default:array()}
+                            {assign var=poCount value=$poList|@count}
+                            <td {if $poCount>0}class="tooltipster"{/if}>
+                                {$poCount} Purchase order(s)
                                 <p style="display: none">
-                                    {foreach from=$ns.productsPurchaseOrder[$product->getId()] item=productPurchaseOrder}
+                                    {foreach from=$poList|@array_slice:-15 item=productPurchaseOrder}
                                         <a href="{$SITE_PATH}/purchase/{$productPurchaseOrder->getId()}">
-                                            &#8470; {$productPurchaseOrder->getId()} ({$productPurchaseOrder->getOrderDate()|truncate:10:""} {$partnersMappedByIds[$productPurchaseOrder->getPartnerId()]->getName()}) {$productPurchaseOrder->getProductPrice($product->getId())}
+                                            &#8470; {$productPurchaseOrder->getId()} ({$productPurchaseOrder->getOrderDate()|truncate:10:""} {if isset($partnersMappedByIds[$productPurchaseOrder->getPartnerId()])}{$partnersMappedByIds[$productPurchaseOrder->getPartnerId()]->getName()}{/if}) {$productPurchaseOrder->getProductPrice($product->getId())}
                                         </a> <br>
                                     {/foreach}
+                                    {if $poCount > 15}<em>&hellip; and {$poCount - 15} older &mdash; open the product to see all</em>{/if}
                                 </p>
                             </td>
-                            <td {if $ns.productsSaleOrder[$product->getId()]|@count>0}class="tooltipster"{/if}>
-                                {$ns.productsSaleOrder[$product->getId()]|@count} Sale order(s)
+                            {assign var=soList value=$ns.productsSaleOrder[$product->getId()]|default:array()}
+                            {assign var=soCount value=$soList|@count}
+                            <td {if $soCount>0}class="tooltipster"{/if}>
+                                {$soCount} Sale order(s)
                                 <p style="display: none">
-                                    {foreach from=$ns.productsSaleOrder[$product->getId()] item=productSaleOrder}
+                                    {foreach from=$soList|@array_slice:-15 item=productSaleOrder}
                                         <a href="{$SITE_PATH}/sale/{$productSaleOrder->getId()}">
-                                            &#8470; {$productSaleOrder->getId()} ({$productSaleOrder->getOrderDate()|truncate:10:""}  {$partnersMappedByIds[$productSaleOrder->getPartnerId()]->getName()}) {$productSaleOrder->getProductPrice($product->getId())}
+                                            &#8470; {$productSaleOrder->getId()} ({$productSaleOrder->getOrderDate()|truncate:10:""} {if isset($partnersMappedByIds[$productSaleOrder->getPartnerId()])}{$partnersMappedByIds[$productSaleOrder->getPartnerId()]->getName()}{/if}) {$productSaleOrder->getProductPrice($product->getId())}
                                         </a> <br>
                                     {/foreach}
+                                    {if $soCount > 15}<em>&hellip; and {$soCount - 15} older &mdash; open the product to see all</em>{/if}
                                 </p>
                             </td>
                         {/if}
@@ -224,7 +231,7 @@
                         <h2 class="f_product_name"></h2>
                         <input type="hidden" id="reserve_product_id"/>
                         <div class="modal-content">
-                            <div class="message {$type}-msg">
+                            <div class="message {$type|default:''}-msg">
                                 <span class="fontAwesome msg-icon"></span>
                                 <span class="f_error_message"></span>
                             </div>

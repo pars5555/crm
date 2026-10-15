@@ -56,9 +56,9 @@
             <div class="filter">
                 <label>Admins</label>
                 <select name="adm">
-                    <option value="all" {if $ns.selectedFilterAdmin == 'all'}selected{/if}>All</option>
-                    <option value="lilit" {if $ns.selectedFilterAdmin == 'lilit'}selected{/if}>Lilit</option>
-                    <option value="musho" {if $ns.selectedFilterAdmin == 'musho'}selected{/if}>Musho</option>
+                    <option value="all" {if ($ns.selectedFilterAdmin|default:'') == 'all'}selected{/if}>All</option>
+                    <option value="lilit" {if ($ns.selectedFilterAdmin|default:'') == 'lilit'}selected{/if}>Lilit</option>
+                    <option value="musho" {if ($ns.selectedFilterAdmin|default:'') == 'musho'}selected{/if}>Musho</option>
                 </select>
             </div>
         {/if}

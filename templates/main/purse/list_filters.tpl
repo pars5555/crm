@@ -5,7 +5,7 @@
                 <label>Recipient</label>
                 <select name="rcpt" data-autocomplete="true">
                     <option value="0" {if $ns.selectedFilterRecipientId == 0}selected{/if}>All</option>
-                    {foreach from=$ns.recipients item=p}
+                    {foreach from=$ns.recipients|default:array() item=p}
                         <option value="{$p->getId()}" {if $ns.selectedFilterRecipientId == $p->getId()}selected{/if}>{$p->getFirstName()} {$p->getLastName()}</option>
                     {/foreach}
                 </select>
@@ -117,9 +117,9 @@
             <div class="filter">
                 <label>Admins</label>
                 <select name="adm">
-                    <option value="all" {if $ns.selectedFilterAdmin == 'all'}selected{/if}>All</option>
-                    <option value="lilit" {if $ns.selectedFilterAdmin == 'lilit'}selected{/if}>Lilit</option>
-                    <option value="musho" {if $ns.selectedFilterAdmin == 'musho'}selected{/if}>Musho</option>
+                    <option value="all" {if ($ns.selectedFilterAdmin|default:'') == 'all'}selected{/if}>All</option>
+                    <option value="lilit" {if ($ns.selectedFilterAdmin|default:'') == 'lilit'}selected{/if}>Lilit</option>
+                    <option value="musho" {if ($ns.selectedFilterAdmin|default:'') == 'musho'}selected{/if}>Musho</option>
                 </select>
             </div>
         {/if}

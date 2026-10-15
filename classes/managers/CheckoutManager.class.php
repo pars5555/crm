@@ -100,7 +100,7 @@ namespace crm\managers {
                 $host = "http://api.checkoutdev.am";
             }
             $stream = $this->prepareCheckoutRequest();
-            $res = file_get_contents($host . $actionPath, false, $stream);
+            $res = @file_get_contents($host . $actionPath, false, $stream); // unreachable api host -> "connection problem" message below, no PHP warning
             $data = json_decode($res, $assoc);            
             $responseObject = $data;
             if ((isset($data->success) && $data->success === true) || (isset($data['success']) && $data['success'] === true)) {

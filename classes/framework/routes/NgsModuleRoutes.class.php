@@ -176,7 +176,9 @@ namespace ngs\framework\routes {
       $parsedUrl = parse_url($domain);
       $mainDomain = NGS()->getHttpUtils()->getMainDomain();
       $modulePart = $this->getModulePartByDomain($mainDomain);
-      $host = explode('.', $parsedUrl['path']);
+      // parse_url() has no "path" for a host that carries a port (crm.example:8080): fall back to "host"
+      $hostName = isset($parsedUrl['path']) ? $parsedUrl['path'] : (isset($parsedUrl['host']) ? $parsedUrl['host'] : '');
+      $host = explode('.', (string)$hostName);
       $subdomain = null;
       if (count($host) >= 3){
         if ($this->moduleArr = $this->getModuleBySubDomain($modulePart, $host[0])){

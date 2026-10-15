@@ -201,9 +201,11 @@
             
 <form id="upload_attachment_form" target="upload_target" enctype="multipart/form-data" method="post" action="{$SITE_PATH}/dyn/attachment/do_upload" autocomplete="off">
     <a class="button blue" id="select_attachment_button" >select attachment...</a>
+    {if isset($ns.preorder)}
     <input type="hidden" name="entity_id" value="{$ns.preorder->getId()}"/>
     <input type="hidden" name="entity_name" value="preorder"/>
     <input type="hidden" name="partner_id" value="{$ns.preorder->getPartnerId()}"/>
+    {/if}
     <input id="file_input" name="file" type="file" style="display:none" />
 </form>
 <iframe id="upload_target" name="upload_target" style="width:0;height:0;border:0px solid #fff;display: none;" ></iframe>

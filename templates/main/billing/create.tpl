@@ -77,7 +77,7 @@
         </div>
     </form>
     <div id="signatureContainer" style="width: 500px;border: 1px solid gray;color:#0f60a7; margin: 0 auto;">
-        <span class="hidden">{$ns.req.signature}</span>
+        <span class="hidden">{$ns.req.signature|default:''}</span>
     </div>
     <a class="button clearSignature" >Clear</a>
 </div>

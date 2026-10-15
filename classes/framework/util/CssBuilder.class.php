@@ -39,7 +39,7 @@ namespace ngs\framework\util {
         }
         $inputFile = realpath(NGS()->getCssDir($module)."/".trim($value["file"]));
         if (!$inputFile) {
-          throw NGS()->getNotFoundException($filePath." not found");
+          throw NGS()->getNotFoundException($value["file"]." not found");
         }
         $buf .= file_get_contents($inputFile)."\n\r";
       }

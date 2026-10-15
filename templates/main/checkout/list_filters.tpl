@@ -4,7 +4,7 @@
             <label>Recipient</label>
             <select name="rcpt" data-autocomplete="true">
                 <option value="0" {if $ns.selectedFilterRecipientId == 0}selected{/if}>All</option>
-                {foreach from=$ns.recipients item=p}
+                {foreach from=$ns.recipients|default:array() item=p}
                     <option value="{$p->getId()}" {if $ns.selectedFilterRecipientId == $p->getId()}selected{/if}>{$p->getFirstName()} {$p->getLastName()}</option>
                 {/foreach}
             </select>

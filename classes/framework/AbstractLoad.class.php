@@ -93,6 +93,10 @@ namespace ngs\framework {
 
             $actionArr = NGS()->getRoutesEngine()->getLoadORActionByAction($loadArr["action"]);
 
+            // a route that points to a load class which does not exist is a plain 404, not a fatal error
+            if (!class_exists($actionArr["action"])) {
+                throw NGS()->getNotFoundException();
+            }
             $loadObj = new $actionArr["action"];
             //set that this load is nested
             $loadObj->setIsNestedLoad(true);

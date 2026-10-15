@@ -1,5 +1,5 @@
 {if isset($type) && isset($content)}
-    <div class="message {$type}-msg" {if isset($autoClose)}data-auto-close="true"{/if}>
+    <div class="message {$type|default:''}-msg" {if isset($autoClose)}data-auto-close="true"{/if}>
         <span class="fontAwesome msg-icon"></span>
         <span class="message-content">{$content}</span>
     </div>

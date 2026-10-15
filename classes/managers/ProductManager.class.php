@@ -24,6 +24,12 @@ namespace crm\managers {
         public static $instance;
 
         /**
+         * product id of the cost calculation in progress (reported by InsufficientProductException)
+         * @var int|null
+         */
+        private $calculationProductId = null;
+
+        /**
          * Returns an singleton instance of this class
          *
          * @param object $config
