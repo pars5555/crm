@@ -15,14 +15,23 @@
 namespace crm\actions\main {
 
     use crm\actions\BaseAction;
+    use crm\security\RequestGroups;
+    use NGS;
 
     class SetLanguageAction extends BaseAction {
 
+        public function getRequestGroup() {
+            return RequestGroups::$guestRequest;
+        }
+
         public function service() {
-            if (isset(NGS()->args()->lang) && in_array(NGS()->args()->lang, ['am', 'en', 'ru'])) {
-                setcookie('ul', NGS()->args()->lang, time() + 60 * 60 * 24 * 365, "/", HTTP_HOST);
+            $lang = NGS()->args()->lang ?? null;
+            if ($lang && in_array($lang, ['am', 'en', 'ru'])) {
+                setcookie('ul', $lang, time() + 60 * 60 * 24 * 365, "/");
+                $_COOKIE['ul'] = $lang;
             }
-            header("location: " . $_SERVER['HTTP_REFERER']);
+            $redirectUrl = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/';
+            header("Location: " . $redirectUrl);
             exit;
         }
 

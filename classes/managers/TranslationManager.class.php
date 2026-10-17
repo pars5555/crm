@@ -44,6 +44,13 @@ use crm\dal\mappers\TranslationMapper;
             return self::$instance;
         }
 
+        public function getLang() {
+            if (!empty($_COOKIE['ul']) && in_array($_COOKIE['ul'], ['am', 'en', 'ru'])) {
+                return $_COOKIE['ul'];
+            }
+            return 'en';
+        }
+
         public function getPhrase($phraseFormula, $lang_code = null, $transform = 0) {
             $lc = 'en';
             if (!empty($lang_code) && ($lang_code == 'en' || $lang_code == 'am' || $lang_code == 'ru')) {
@@ -54,17 +61,20 @@ use crm\dal\mappers\TranslationMapper;
                 $lc = 'en';
             }
             $ret = $phraseFormula;
-            if (strpos($phraseFormula, '`') !== false) {
+            if (strpos((string)$phraseFormula, '`') !== false) {
                 $pid = $this->getPhraseFormulaFirstPhraseId($ret);
                 while ($pid > 0) {
-                    $ret = str_replace("`" . $pid . "`", $this->allPhrases[$pid][$lc], $ret);
+                    $phrase = isset($this->allPhrases[$pid][$lc]) ? $this->allPhrases[$pid][$lc] : (isset($this->allPhrases[$pid]['en']) ? $this->allPhrases[$pid]['en'] : '');
+                    $ret = str_replace("`" . $pid . "`", $phrase, $ret);
                     $pid = $this->getPhraseFormulaFirstPhraseId($ret);
                 }
             } else {
-                if (array_key_exists($phraseFormula, $this->allPhrases)) {
-                    $ret = $this->allPhrases[$phraseFormula][$lc];
+                if (is_numeric($phraseFormula) && array_key_exists((int)$phraseFormula, $this->allPhrases)) {
+                    $ret = $this->allPhrases[(int)$phraseFormula][$lc];
+                } elseif (is_string($phraseFormula) && ($pid = $this->getPhraseIdByPhraseEn($phraseFormula))) {
+                    $ret = $this->allPhrases[$pid][$lc];
                 } else {
-                    $ret = null;
+                    $ret = $phraseFormula;
                 }
             }
             switch ($transform) {

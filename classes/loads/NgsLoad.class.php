@@ -46,7 +46,8 @@ namespace crm\loads {
             $this->addParam('userTypeGuest', UserGroups::$GUEST);
             $this->addParam("lm", $lm);
             $this->addParam("loadName", NGS()->getRoutesEngine()->getPackage());
-            $this->addParam('showprofit', isset($_COOKIE['showprofit']) ? $_COOKIE['showprofit'] : 0);            
+            $this->addParam('showprofit', isset($_COOKIE['showprofit']) ? $_COOKIE['showprofit'] : 0);
+            $this->addParam('currentLang', $lm->getLang());
         }
 
         protected function initErrorMessages() {

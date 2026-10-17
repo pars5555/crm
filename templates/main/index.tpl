@@ -28,8 +28,8 @@
                             </span>
                             <h1 class="modal-headline" id='confirm_dlg_headline'></h1>
                             <h3 id='confirm_dlg_message'></h3>
-                            <a href="javascript:void(0);" id="popup_confirm_btn" class="button blue">Confirm</a>
-                            <a href="javascript:void(0);" id="popup_cancel_btn" class="button grey">Cancel</a>
+                            <a href="javascript:void(0);" id="popup_confirm_btn" class="button blue">{$ns.lm->getPhrase('Confirm')|default:'Confirm'}</a>
+                            <a href="javascript:void(0);" id="popup_cancel_btn" class="button grey">{$ns.lm->getPhrase('Cancel')|default:'Cancel'}</a>
                             <input id="confirm_item_id" type="hidden"/>
                             <input id="confirm_tmp_val" type="hidden"/>
                         </div>

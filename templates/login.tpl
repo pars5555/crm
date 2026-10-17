@@ -94,31 +94,38 @@
 </head>
 <body>
     <div class="login-card">
+        <div style="display: flex; justify-content: flex-end; gap: 8px; font-size: 13px; margin-bottom: 8px;">
+            <a href="{$SITE_PATH}/language/en" style="color: {if ($ns.currentLang|default:'en') == 'en'}var(--brand){else}var(--muted){/if}; font-weight: {if ($ns.currentLang|default:'en') == 'en'}700{else}400{/if}; text-decoration: none;">en</a>
+            <span style="color: var(--line)">|</span>
+            <a href="{$SITE_PATH}/language/am" style="color: {if ($ns.currentLang|default:'en') == 'am'}var(--brand){else}var(--muted){/if}; font-weight: {if ($ns.currentLang|default:'en') == 'am'}700{else}400{/if}; text-decoration: none;">am</a>
+            <span style="color: var(--line)">|</span>
+            <a href="{$SITE_PATH}/language/ru" style="color: {if ($ns.currentLang|default:'en') == 'ru'}var(--brand){else}var(--muted){/if}; font-weight: {if ($ns.currentLang|default:'en') == 'ru'}700{else}400{/if}; text-decoration: none;">ru</a>
+        </div>
         <div class="brand">
             <img class="brand-mark" src="{$SITE_PATH}/img/favicon.svg" alt="">
             <span class="brand-name">CRM</span>
         </div>
-        <p class="subtitle">Sign in to continue</p>
+        <p class="subtitle">{$ns.lm->getPhrase('Sign in to continue')|default:'Sign in to continue'}</p>
         {if !empty($ns.loginError)}
-            <div class="error" role="alert">Wrong username or password. Please try again.</div>
+            <div class="error" role="alert">{$ns.lm->getPhrase('Wrong username or password. Please try again.')|default:'Wrong username or password. Please try again.'}</div>
         {/if}
         <form action="{$SITE_PATH}/dyn/login/do_login" method="POST" id="loginForm">
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="username">{$ns.lm->getPhrase('Username')|default:'Username'}</label>
                 <div class="field">
-                    <input type="text" id="username" name="username" placeholder="Enter username" autocomplete="username" autocapitalize="none" spellcheck="false" autofocus required />
+                    <input type="text" id="username" name="username" placeholder="{$ns.lm->getPhrase('Enter username')|default:'Enter username'}" autocomplete="username" autocapitalize="none" spellcheck="false" autofocus required />
                 </div>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">{$ns.lm->getPhrase('Password')|default:'Password'}</label>
                 <div class="field">
-                    <input type="password" id="password" name="password" class="has-toggle" placeholder="Enter password" autocomplete="current-password" required />
-                    <button type="button" class="toggle" id="togglePw" aria-label="Show password">Show</button>
+                    <input type="password" id="password" name="password" class="has-toggle" placeholder="{$ns.lm->getPhrase('Enter password')|default:'Enter password'}" autocomplete="current-password" required />
+                    <button type="button" class="toggle" id="togglePw" aria-label="Show password">{$ns.lm->getPhrase('Show')|default:'Show'}</button>
                 </div>
             </div>
-            <button type="submit" class="login-btn" id="loginBtn">Sign in</button>
+            <button type="submit" class="login-btn" id="loginBtn">{$ns.lm->getPhrase('Sign in')|default:'Sign in'}</button>
         </form>
-        <div class="foot">Authorised use only</div>
+        <div class="foot">{$ns.lm->getPhrase('Authorised use only')|default:'Authorised use only'}</div>
     </div>
     {literal}
     <script>
